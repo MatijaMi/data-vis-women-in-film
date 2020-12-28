@@ -1,0 +1,166 @@
+body{
+	background: #ddd;
+	font-family:Arial,sans-serif;
+	padding-top: 0px;
+	margin: 0px;
+	text-align: center;
+}
+
+
+.header{
+	position: relative;
+	width: 100%;
+ 	text-align: left;
+	background-color: #eee;
+	margin-top: 0px;
+}
+
+.header a{
+    font-size: 18px;
+    width:10%;
+	display: inline-block;
+	padding-top:9px;
+	padding-bottom:9px;
+	text-decoration: none;
+    text-align: center;
+	color: black;
+}
+.header a:hover{
+	background-color: #bbb;
+}
+
+.caruText{
+    width:30%;
+    padding-left: 5%;
+    color: white;
+    padding-top: 5%;
+    font-size: 18px;
+}
+
+.caruText button{
+  display: inline-block;
+  padding: 0.5em 1.7em;
+  margin: 0 0.1em 0.1em 0;
+  margin-left:35%;
+  border: 0.16em solid rgb(255, 255, 255);
+  border-radius: 2em;
+  box-sizing: border-box;
+  text-decoration: none;
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+  color: #000;
+  text-shadow: 0 0.04em 0.04em rgba(255, 255, 255, 0.253);
+  text-align: center;
+  transition: all 0.2s;
+}
+
+.caruText button:hover {
+  color: black;
+  background-color: rgb(255, 255, 255);
+}
+
+.carousel{
+    text-align: left;
+    margin-top: 0px;
+    padding-top: 0px;
+    background:linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ), url("../Images/WFPP.png") repeat;
+    -webkit-animation: loader 100s steps(10000) infinite;
+    -moz-animation: loader 100s steps(10000) infinite;
+    -ms-animation: loader 100s steps(10000) infinite;
+    -o-animation: loader 100s steps(10000) infinite;
+    animation: loader 100s steps(10000) infinite;
+    height: 575px;
+}
+
+.sticky {
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+
+/* Add some top padding to the page content to prevent sudden quick movement (as the navigation bar gets a new position at the top of the page (position:fixed and top:0) */
+.sticky + .content {
+  padding-top: 60px;
+}
+
+.caruText h3{
+    padding-top:0px;
+    margin-top:0px;
+    color:white;
+}
+
+@-webkit-keyframes loader {
+  from {
+    background-position: 0;
+  }
+  to {
+    background-position: -13390px 0;
+  }
+}
+@-moz-keyframes loader {
+  from {
+    background-position: 0;
+  }
+  to {
+    background-position: -13390px 0;
+  }
+}
+@-ms-keyframes loader {
+  from {
+    background-position: 0;
+  }
+  to {
+    background-position: -13390px 0;
+  }
+}
+@-o-keyframes loader {
+  from {
+    background-position: 0;
+  }
+  to {
+    background-position: -13390px 0;
+  }
+}
+@keyframes loader {
+  from {
+    background-position: 0;
+  }
+  to {
+    background-position: -13390px 0;
+  }
+}
+
+.content{
+	position: relative;
+	background: #eee;
+	width:100%;
+	padding-top: 10px;
+}
+
+.contentPanel{
+    height: 300px;
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-top: 1%;
+    margin-bottom: 1%;
+    background-color: #ddd
+}
+
+.footer{
+    background-color: #333;
+    height: 100px;
+}
+
+@media (max-width: 950px) {
+	.content, .header, .textContent{
+		width: 80%;
+		left:10%;
+	}
+}
+
+@media (max-width: 650px) {
+	.content, .header, .textContent{
+		width: 90%;
+		left:5%;
+	}
+}
