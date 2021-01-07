@@ -1,3 +1,5 @@
+import { select } from "d3";
+
 window.smoothScroll = function(target) {
             var scrollContainer = target;
             do { //find scroll container
