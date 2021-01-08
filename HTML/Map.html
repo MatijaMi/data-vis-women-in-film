@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+
+<html lang="en" style="height: 100%">
+    
+    <head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>WFPP</title>
+        <link rel="stylesheet" href="/CSS/baseStyle.css">
+        <script type="module" src="/JS/indexBehaviour.js"></script>
+        <script src="https://d3js.org/d3.v5.min.js"></script>
+        <script src="https://d3js.org/topojson.v1.min.js"></script>
+        
+    </head>
+   
+    <body>
+      <style>
+              .node:hover{
+              stroke-width: 7px !important;
+              opacity: 1 !important;
+              }
+          </style>
+	<div class="header" id="header"> 
+    <a href="/index.html">Home</a>
+    <a href="/HTML/Map.html">Map</a>
+    <a href="/HTML/Viewer.html">Viewer</a>
+<a href="">Extra</a>
+    <a href="">Gallery</a>
+<a href="">About</a>
+      
+      </div>
+          <div class="viewer">
+              <div id="mySidepanel" class="sidepanel">
+              <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+              </div>
+  
+  <button class="openbtn" onclick="openNav()">&#9776;</button>
+              <div id="my_dataviz"></div>
+          </div>
+          
+          
+          
+          <script>
+              
+const width = 900;
+const height = 600;
+
+const svg = d3.select('body').append('svg').attr('width', width).attr('height', height);
+
+const projection = d3.geoMercator().scale(140)
+    .translate([width / 2, height / 1.4]);
+const path = d3.geoPath(projection);
+
+const g = svg.append('g');
+
+d3.json('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json')
+    .then(data => {
+
+        const countries = topojson.feature(data, data.objects.countries);
+        g.selectAll('path').data(countries.features).enter().append('path').attr('class', 'country').attr('d', path);
+
+    });
+  
+  </script>
+          <div class="footer">
+              
+          </div>
+          
+      </body>
+  </html>
