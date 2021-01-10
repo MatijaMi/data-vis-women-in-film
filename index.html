@@ -1,51 +1,61 @@
 <!DOCTYPE html>
 
 <html lang="en" style="height: 100%">
-    
-    <head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>WFPP</title>
-        <link rel="stylesheet" href="/CSS/baseStyle.css">
-        <script type="module" src="/JS/indexBehaviour.js"></script>
-    </head>
-    
-    <body>
-		
-	<div class="header" id="header"> 
-            <a href="/index.html">Home</a>
-            <a href="/HTML/Map.html">Map</a>
-            <a href="/HTML/Viewer.html">Viewer</a>
-			<a href="">Extra</a>
-            <a href="">Gallery</a>
-			<a href="">About</a>
-		
-        </div>
-        <div class="carousel">
+
+<head>
+    <title>WFPP</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/CSS/baseStyle.css">
+    <script type="module" src="/JS/indexBehaviour.js"></script>
+</head>
+
+<body>
+
+    <!-- Header -->
+    <div class="header" id="header">
+        <a href="index.html">Home</a>
+        <a href="HTML/Map.html">Map</a>
+        <a href="HTML/Viewer.html">Viewer</a>
+        <a href="">Extra</a>
+        <a href="">Gallery</a>
+        <a href="">About</a>
+      </div>
+
+    <!-- Carousel -->
+    <div class="carousel">
         <div class="caruText">
-        <h3> Learn about the female Pioneers of Cinema</h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            <h3> Learn about the female Pioneers of Cinema</h3>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+                dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+                ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+                fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
+                deserunt mollit anim id est laborum.
             </p>
-            <button  onclick="smoothScroll(document.getElementById('content'))">Discover</button>
+            <button onclick="smoothScroll(document.getElementById('content'))">Discover</button>
         </div>
+    </div>
+
+    <!-- Panels -->
+    <div class="content" id="content">
+
+        <div class="contentPanel">
+            <img>
+            <div class="contentPanelRight">
+            </div>
         </div>
-		
-        <div class="content" id="content"> 
-            
-            <div class="contentPanel">
-                <img>
-                <div class="contentPanelRight">
-                </div>
-            </div>
-            <div class="contentPanel">
-                
-            </div>
-            
-            <div class="contentPanel">
-            </div>
-		</div>
-        <div class="footer">
-            Add stuff here
+        
+        <div class="contentPanel">
+
         </div>
-    </body>
+
+        <div class="contentPanel">
+
+        </div>
+    </div>
+
+    
+
+</body>
+
 </html>
