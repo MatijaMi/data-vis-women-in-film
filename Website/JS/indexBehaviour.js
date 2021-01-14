@@ -1,6 +1,5 @@
-import { select } from "d3";
-
-window.smoothScroll = function(target) {
+window.smoothScroll = function() {
+            var target = document.getElementById('content');
             var scrollContainer = target;
             do { //find scroll container
                 scrollContainer = scrollContainer.parentNode;
@@ -23,6 +22,8 @@ window.smoothScroll = function(target) {
         scroll(scrollContainer, scrollContainer.scrollTop, targetY, 0);
 }
 
+document.getElementById("discoverButton").addEventListener("click", smoothScroll, false);
+
 window.onscroll = function() {makeSticky()};
 
 function makeSticky() {
@@ -36,12 +37,3 @@ function makeSticky() {
     }
 } 
 
-/* Set the width of the sidebar to 250px (show it) */
-function openNav() {
-  document.getElementById("mySidepanel").style.width = "250px";
-}
-
-/* Set the width of the sidebar to 0 (hide it) */
-function closeNav() {
-  document.getElementById("mySidepanel").style.width = "0";
-} 
