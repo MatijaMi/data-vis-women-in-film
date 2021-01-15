@@ -11,6 +11,7 @@
     <script type="module" src="../JS/jobCluser.js"></script>
     <script src="https://d3js.org/d3.v4.js"></script>
     <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+    <script type="text/javascript" src="../../Material/Data/WFPP.json"></script>
 </head>
 
 <body>
@@ -51,7 +52,8 @@
 
     <button id="sidepanel_button" class="openbtn">&#9776;</button>
 
-    <div id="my_dataviz"></div>
+     <!-- Clusterpanel -->
+    <div class="my_dataviz" id="my_dataviz"></div>
 
   <div class="footer">
 
@@ -59,7 +61,7 @@
 
   <style>
     .node:hover {
-      stroke-width: 7px !important;
+      stroke-width: 4px !important;
       opacity: 1 !important;
     }
   </style>
