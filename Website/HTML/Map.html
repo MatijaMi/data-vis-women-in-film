@@ -79,8 +79,8 @@
         // Data and color scale
         var data = d3.map();
         var colorScale = d3.scaleThreshold()
-            .domain([100000, 1000000, 10000000, 30000000, 100000000, 500000000])
-            .range(d3.schemeBlues[7]);
+            .domain([1, 2, 5, 15, 50, 100])
+            .range(d3.schemeBlues[6]);
 
         // Load external data and boot
         d3.queue()
@@ -106,6 +106,30 @@
 
             })
 
+            //Mouse Over
+            let mouseOver = function (d) {
+                d3.selectAll(".Country")
+                    .transition()
+                    .duration(200)
+                    //.style("opacity", .5)
+                d3.select(this)
+                    .transition()
+                    .duration(200)
+                    .style("opacity", 1)
+                    .style("stroke", "black")
+            }
+
+            let mouseLeave = function (d) {
+                d3.selectAll(".Country")
+                    .transition()
+                    .duration(0)
+                    .style("opacity", .8)
+                d3.select(this)
+                    .transition()
+                    .duration(0)
+                    .style("stroke", "transparent")
+            }
+
 
             // Draw the map
             svg.append("g")
@@ -118,6 +142,11 @@
                 .attr("d", d3.geoPath()
                     .projection(projection)
                 )
+
+                .attr("class", function (d) { return "Country" })
+                .style("opacity", .8)
+                .on("mouseover", mouseOver)
+                .on("mouseleave", mouseLeave)
 
                 // set the color of each country
                 .attr("fill", function (d) {
@@ -135,6 +164,8 @@
                 .style("fill", "none")
                 .style("stroke", "#69b3a2")
                 .style("stroke-width", 2)
+
+
 
         }
 
@@ -167,5 +198,4 @@
     .map {
         padding-top: 40px;
     }
-
 </style>
