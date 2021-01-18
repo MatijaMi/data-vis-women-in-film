@@ -30,7 +30,7 @@
     <!-- Sidepanel -->
     <div id="mySidepanel" class="sidepanel">
         <a href="javascript:void(0)" class="closebtn" id="sidePanelClose">&times;</a>
-   
+
         <label>Settings</label>
 
         <br><br>
@@ -45,7 +45,7 @@
         <input type="checkbox" id="checkbox1" name="checkbox1" value="checkbox1Checked">
         <label for="checkbox1">Only display top 10</label><br>
 
-        <br>   
+        <br>
 
         <input type="checkbox" id="checkbox2" name="checkbox2" value="checkbox2Checked">
         <label for="checkbox2">Show Connections</label><br>
@@ -54,7 +54,7 @@
     <button id="sidepanel_button" class="openbtn">&#9776;</button>
 
     <!-- Map Object -->
-    <div id = "map_panel"></div>
+    <div class="map" id="map_panel"></div>
 
     <!-- Map -->
     <script>
@@ -63,7 +63,7 @@
         var width = window.innerWidth;
         var height = window.innerHeight;
 
-        // append the svg object to the body of the page
+        // Append the svg object to the body of the page
         var svg = d3.select("#map_panel")
             .append("svg")
             .attr("width", width)
@@ -84,16 +84,33 @@
 
         // Load external data and boot
         d3.queue()
-            .defer(d3.json, "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson")
-            .defer(d3.csv, "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world_population.csv", function (d) { data.set(d.code, +d.pop); })
+            .defer(d3.json, "../Data/world_map.geojson")
+            .defer(d3.csv, "../Data/world_population.csv", function (d) { data.set(d.code, +d.pop); })
+            .defer(d3.csv, "../Data/connections.csv")
             .await(ready);
 
-        function ready(error, topo) {
+        //Forces page to automaticly reloade margin of header
+        scroll(0, 100)
+        scroll(0, 0)
+
+        function ready(error, map_data, population_data, connection_data) {
+
+
+            //Calculate connections
+            var link = []
+            connection_data.forEach(function (row) {
+                source = [+row.long1, +row.lat1]
+                target = [+row.long2, +row.lat2]
+                topush = { type: "LineString", coordinates: [source, target] }
+                link.push(topush)
+
+            })
+
 
             // Draw the map
             svg.append("g")
                 .selectAll("path")
-                .data(topo.features)
+                .data(map_data.features)
                 .enter()
                 .append("path")
 
@@ -107,7 +124,20 @@
                     d.total = data.get(d.id) || 0;
                     return colorScale(d.total);
                 });
+
+
+            // Add the path
+            svg.selectAll("myPath")
+                .data(link)
+                .enter()
+                .append("path")
+                .attr("d", function (d) { return path(d) })
+                .style("fill", "none")
+                .style("stroke", "#69b3a2")
+                .style("stroke-width", 2)
+
         }
+
 
     </script>
 
@@ -125,4 +155,17 @@
         fill: #ccc;
         stroke: #999;
     }
+
+    .header {
+        position: fixed;
+        width: 100%;
+        height: 40px;
+        text-align: left;
+        background-color: #eee;
+    }
+
+    .map {
+        padding-top: 40px;
+    }
+
 </style>
