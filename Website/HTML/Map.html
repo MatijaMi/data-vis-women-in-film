@@ -12,6 +12,7 @@
     <script src="https://d3js.org/d3.v4.js"></script>
     <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
     <script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
+    <script src="https://github.com/typeiii/jquery-csv"></script>
 
 </head>
 
@@ -28,30 +29,17 @@
     </div>
 
     <!-- Sidepanel -->
-    <div id="mySidepanel" class="sidepanel">
-        <a href="javascript:void(0)" class="closebtn" id="sidePanelClose">&times;</a>
-
-        <label>Settings</label>
+    <div id="sidepanel_main" class="sidenav">
+        <label class="sidepanel_headline" id="country_name_label"></label>
 
         <br><br>
 
-        <label for="FromYear">From:</label>
-        <input type="number" id="from" name="from" min="1800" max="2020">
-        <label for="ToYear">To:</label>
-        <input type="number" id="to" name="to" min="1800" max="2020">
-
-        <br><br>
-
-        <input type="checkbox" id="checkbox1" name="checkbox1" value="checkbox1Checked">
-        <label for="checkbox1">Only display top 10</label><br>
-
-        <br>
-
-        <input type="checkbox" id="checkbox2" name="checkbox2" value="checkbox2Checked">
-        <label for="checkbox2">Show Connections</label><br>
+        <label class="sidepanel_entry">Pinoeers: </label>
+        <label class="sidepanel_entry" id="pioneers_count_label"></label>
     </div>
 
-    <button id="sidepanel_button" class="openbtn">&#9776;</button>
+    <!-- Settings -->
+    <div class="settings" id="settings_panel"></div>
 
     <!-- Map Object -->
     <div class="map" id="map_panel"></div>
@@ -63,6 +51,11 @@
         var width = window.innerWidth;
         var height = window.innerHeight;
 
+        // Add a <div> container for the tooltip, which is hidden by default.
+        var tooltip = d3.select("#map_panel")
+            .append("div")
+            .attr("class", "tooltip");
+
         // Append the svg object to the body of the page
         var svg = d3.select("#map_panel")
             .append("svg")
@@ -72,7 +65,7 @@
         // Map and projection
         var path = d3.geoPath();
         var projection = d3.geoMercator()
-            .scale(70 * 3.5)
+            .scale(245)
             .center([0, 0])
             .translate([width / 2, height / 1.5]);
 
@@ -86,6 +79,7 @@
         d3.queue()
             .defer(d3.json, "../Data/world_map.geojson")
             .defer(d3.csv, "../Data/world_population.csv", function (d) { data.set(d.code, +d.pop); })
+            .defer(d3.csv, "../Data/world_population.csv")
             .defer(d3.csv, "../Data/connections.csv")
             .await(ready);
 
@@ -93,41 +87,87 @@
         scroll(0, 100)
         scroll(0, 0)
 
-        function ready(error, map_data, population_data, connection_data) {
-
-
-            //Calculate connections
-            var link = []
-            connection_data.forEach(function (row) {
-                source = [+row.long1, +row.lat1]
-                target = [+row.long2, +row.lat2]
-                topush = { type: "LineString", coordinates: [source, target] }
-                link.push(topush)
-
-            })
+        function ready(error, map_data, population_data, countries_data, connection_data) {
 
             //Mouse Over
             let mouseOver = function (d) {
+
+                //Check if country is used
+                var country_name = "";
+                countries_data.forEach(function (row) {
+                    if (row.code == d.id) country_name = row.name;
+                });
+
+                //Do not mouse over if country is not used
+                if (country_name == "") return;
+
+                //Animation
                 d3.selectAll(".Country")
                     .transition()
                     .duration(200)
-                    //.style("opacity", .5)
+                    .style("opacity", .8)
                 d3.select(this)
                     .transition()
                     .duration(200)
                     .style("opacity", 1)
                     .style("stroke", "black")
+
+                //Sidebar                
+                document.getElementById('country_name_label').innerHTML = country_name;
+                document.getElementById('pioneers_count_label').innerHTML = data.get(d.id) || 0;
+                document.getElementById('sidepanel_main').hidden = false;            
+
+                //Calculate connections
+                var link = []
+                connection_data.forEach(function (row) {
+                    if (row.country1 == country_name || row.country2 == country_name) {
+                        source = [+row.long1, +row.lat1]
+                        target = [+row.long2, +row.lat2]
+                        topush = { type: "LineString", coordinates: [source, target] }
+                        link.push(topush)
+                    }
+                })
+
+                // Add the path
+                svg.selectAll("myPath")
+                    .data(link)
+                    .enter()
+                    .append("path")
+                    .attr("d", function (d) { return path(d) })
+                    .attr("class", function (d) { return "Link" })
+                    .style("pointer-events", "none")
+                    .style("fill", "none")
+                    .style("stroke", "#00d4db")
+                    .style("stroke-width", 4)
+                    .style("opacity", 0)
+                    .transition()
+                    .duration(500)
+                    .style("opacity", 1)
+
             }
 
             let mouseLeave = function (d) {
+
+                //Animation
                 d3.selectAll(".Country")
                     .transition()
                     .duration(0)
-                    .style("opacity", .8)
+                    .style("opacity", 1)
                 d3.select(this)
                     .transition()
                     .duration(0)
                     .style("stroke", "transparent")
+
+                //Tooltip
+                tooltip.classed('hidden', true)
+                    .html("");
+
+                //Remove Links
+                svg.selectAll(".Link")
+                    .remove()
+
+                //Sidebar                
+                document.getElementById('sidepanel_main').hidden = true;
             }
 
 
@@ -153,22 +193,7 @@
                     d.total = data.get(d.id) || 0;
                     return colorScale(d.total);
                 });
-
-
-            // Add the path
-            svg.selectAll("myPath")
-                .data(link)
-                .enter()
-                .append("path")
-                .attr("d", function (d) { return path(d) })
-                .style("fill", "none")
-                .style("stroke", "#69b3a2")
-                .style("stroke-width", 2)
-
-
-
         }
-
 
     </script>
 
@@ -181,7 +206,20 @@
 
 </html>
 
+<!-- CSS definitions -->
 <style>
+
+    .sidepanel_headline{
+        font-size: 23px;
+        font-weight: bold;
+    }
+
+    .sidepanel_entry{
+        font-size: 15px;
+        font-weight: bold;
+        text-align: left;
+    }
+
     .country {
         fill: #ccc;
         stroke: #999;
@@ -197,5 +235,27 @@
 
     .map {
         padding-top: 40px;
+        padding-left: 100px;
     }
+
+    .settings {
+        font-weight: bold;
+        padding: 0.5rem;
+        border: 1px solid silver;
+        width: 100%;
+        height: 20px;
+    }
+
+    .sidenav {
+        width: 250px;
+        position: fixed;
+        top: 100px;
+        left: 20px;
+        background: #7c7a78e7;
+        border: 4px solid silver;
+        padding: 8px 0;
+        border-radius: 2%
+    }
+
+
 </style>

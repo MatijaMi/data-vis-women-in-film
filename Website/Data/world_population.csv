@@ -1,20 +1,18 @@
 name,code,pop
-England,GB,32
+Great Britan,GBR,34
 United States,USA,173
 Argentina,ARG,2
 Australia,AUS,16
 New Zealand,NZL,3
 Austria,AUT,4
-China,CHN,10
+China,CHN,14
 Germany,DEU,17
 Hungary,HUN,2
 Brazil,BRA,4
 Canada,CAN,9
 Italy,ITA,15
 France,FRA,20
-Scotland,GB,2
 Chile,CHL,4
-Hong Kong,HKG,4
 Japan,JPN,3
 Colombia,COL,2
 Czechoslovakia,CZE,3
@@ -28,8 +26,7 @@ Croatia,HRV,2
 Mexico,MEX,11
 Peru,PER,5
 Poland,POL,3
-Russia,RUS,8
-Soviet Union,RUS,8
+Russia and former Soviet Union,RUS,16
 Spain,ESP,3
 The Netherlands,NLD,3
 The Philippines,PHL,2
