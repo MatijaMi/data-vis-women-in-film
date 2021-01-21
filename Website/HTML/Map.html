@@ -13,6 +13,7 @@
     <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
     <script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
     <script src="https://github.com/typeiii/jquery-csv"></script>
+    <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
 
 </head>
 
@@ -30,16 +31,23 @@
 
     <!-- Sidepanel -->
     <div id="sidepanel_main" class="sidenav">
-        <label class="sidepanel_headline" id="country_name_label"></label>
+        <div id="sidepanel_holder" hidden="true">
+            <label class="sidepanel_headline" id="country_name_label"></label>
 
-        <br><br>
+            <br><br>
 
-        <label class="sidepanel_entry">Pinoeers: </label>
-        <label class="sidepanel_entry" id="pioneers_count_label"></label>
+            <label class="sidepanel_entry">Pioneers: </label>
+            <label class="sidepanel_entry" id="pioneers_count_label"></label>
+        </div>
     </div>
 
-    <!-- Settings -->
-    <div class="settings" id="settings_panel"></div>
+    <!-- Settings
+    <div class="settings" id="settings_panel">
+        <div class="button">Test</div>
+
+
+    </div> -->
+
 
     <!-- Map Object -->
     <div class="map" id="map_panel"></div>
@@ -84,8 +92,8 @@
             .await(ready);
 
         //Forces page to automaticly reloade margin of header
-        scroll(0, 100)
-        scroll(0, 0)
+        //scroll(0, 100)
+        //scroll(0, 0)
 
         function ready(error, map_data, population_data, countries_data, connection_data) {
 
@@ -115,7 +123,7 @@
                 //Sidebar                
                 document.getElementById('country_name_label').innerHTML = country_name;
                 document.getElementById('pioneers_count_label').innerHTML = data.get(d.id) || 0;
-                document.getElementById('sidepanel_main').hidden = false;            
+                document.getElementById('sidepanel_holder').hidden = false;
 
                 //Calculate connections
                 var link = []
@@ -167,7 +175,7 @@
                     .remove()
 
                 //Sidebar                
-                document.getElementById('sidepanel_main').hidden = true;
+                //document.getElementById('sidepanel_holder').hidden = true;
             }
 
 
@@ -208,14 +216,15 @@
 
 <!-- CSS definitions -->
 <style>
-
-    .sidepanel_headline{
-        font-size: 23px;
+    .sidepanel_headline {
+        font-size: 25px;
+        font-family: 'Roboto', sans-serif;
         font-weight: bold;
     }
 
-    .sidepanel_entry{
+    .sidepanel_entry {
         font-size: 15px;
+        font-family: 'Roboto', sans-serif;
         font-weight: bold;
         text-align: left;
     }
@@ -234,28 +243,42 @@
     }
 
     .map {
-        padding-top: 40px;
-        padding-left: 100px;
+        margin-left: 9%;
     }
 
     .settings {
-        font-weight: bold;
-        padding: 0.5rem;
-        border: 1px solid silver;
-        width: 100%;
-        height: 20px;
+        height: 40px;
+        display: block;
+        margin-left: auto;
+        width: 80%;
+        position: fixed;
+        top: 40px;
+        background: #7a7a7a;
+        border: 4px solid silver;
+        padding: 0px 0px;
+        border-radius: 2%
     }
 
     .sidenav {
-        width: 250px;
+        width: 18%;
+        height: 50%;
         position: fixed;
         top: 100px;
-        left: 20px;
+        left: 5px;
         background: #7c7a78e7;
         border: 4px solid silver;
         padding: 8px 0;
         border-radius: 2%
     }
 
-
+    .button {
+        background-color: #4CAF50;
+        border: 2px solid silver;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+    }
 </style>
