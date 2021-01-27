@@ -55,6 +55,63 @@
     <!-- Map -->
     <script>
 
+        //Classes
+        class Country {
+
+            //Constant data
+            country_name;
+            country_code;
+            country_long;
+            country_lat;
+
+            //Calculated data
+            country_population;
+
+
+            constructor(name, code, long, lat) {
+                this.country_name = name;
+                this.country_code = code;
+                this.country_long = long;
+                this.country_lat = lat;
+            }
+        }
+
+        //List of all data
+        let countries = [];
+        countries.push(new Country("Great Britain", "GBR", "955", "360"));
+        countries.push(new Country("United States", "USA", "550", "450"));
+        countries.push(new Country("Argentina", "ARG", "690", "780"));
+        countries.push(new Country("Australia", "AUS", "1600", "750"));
+        countries.push(new Country("New Zealand", "NZL", "1685", "835"));
+        countries.push(new Country("Austria", "AUT", "1025", "395"));
+        countries.push(new Country("China", "CHN", "1400", "450"));
+        countries.push(new Country("Germany", "DEU", "1010", "355"));
+        countries.push(new Country("Hungary", "HUN", "1045", "395"));
+        countries.push(new Country("Brazil", "BRA", "750", "680"));
+        countries.push(new Country("Canada", "CAN", "500", "300"));
+        countries.push(new Country("Italy", "ITA", "1010", "420"));
+        countries.push(new Country("France", "FRA", "970", "400"));
+        countries.push(new Country("Chile", "CHL", "645", "845"));
+        countries.push(new Country("Japan", "JPN", "1555", "455"));
+        countries.push(new Country("Colombia", "COL", "645", "615"));
+        countries.push(new Country("Czechoslovakia", "CZE", "1025", "380"));
+        countries.push(new Country("Denmark", "DNK", "1000", "330"));
+        countries.push(new Country("Norway", "NOR", "990", "290"));
+        countries.push(new Country("Sweden", "SWE", "1020", "290"));
+        countries.push(new Country("Ireland", "IRL", "925", "355"));
+        countries.push(new Country("Finland", "FIN", "1070", "280"));
+        countries.push(new Country("Portugal", "PRT", "925", "435"));
+        countries.push(new Country("Croatia", "HRV", "1030", "405"));
+        countries.push(new Country("Mexico", "MEX", "520", "520"));
+        countries.push(new Country("Peru", "PER", "635", "655"));
+        countries.push(new Country("Poland", "POL", "1040", "360"));
+        countries.push(new Country("Russia and former Soviet Union", "RUS", "1170", "300"));
+        countries.push(new Country("Spain", "ESP", "940", "430"));
+        countries.push(new Country("The Netherlands", "NLD", "985", "360"));
+        countries.push(new Country("The Philippines", "PHL", "1485", "580"));
+        countries.push(new Country("Tunisia", "TUN", "1000", "470"));
+        countries.push(new Country("Turkey", "TUR", "1120", "440"));
+
         // Dimensions
         var width = window.innerWidth;
         var height = window.innerHeight;
@@ -88,14 +145,34 @@
             .defer(d3.json, "../Data/world_map.geojson")
             .defer(d3.csv, "../Data/world_population.csv", function (d) { data.set(d.code, +d.pop); })
             .defer(d3.csv, "../Data/world_population.csv")
+            .defer(d3.csv, "../Data/complete_data.csv", function (data_entry) {
+
+                //Calculate values for each country
+                //Population
+                var curr_countries_names = data_entry.worked_in.split("|");
+                for (i = 0; i < curr_countries_names.length; i++) {
+                    var curr_country_name = curr_countries_names[i];
+                    var curr_country = findObjectByKey(countries, "country_name", curr_country_name);
+
+                    if (curr_country != null) {
+                        curr_country.country_population++;
+                    }
+                }
+
+                
+
+
+
+            })
             .defer(d3.csv, "../Data/connections.csv")
             .await(ready);
+
 
         //Forces page to automaticly reloade margin of header
         //scroll(0, 100)
         //scroll(0, 0)
 
-        function ready(error, map_data, population_data, countries_data, connection_data) {
+        function ready(error, map_data, population_data, countries_data, complete_data, connection_data) {
 
             //Mouse Over
             let mouseOver = function (d) {
@@ -203,6 +280,14 @@
                 });
         }
 
+        function findObjectByKey(array, key, value) {
+            for (var i = 0; i < array.length; i++) {
+                if (array[i][key] === value) {
+                    return array[i];
+                }
+            }
+            return null;
+        }
     </script>
 
     <!-- Footer -->
