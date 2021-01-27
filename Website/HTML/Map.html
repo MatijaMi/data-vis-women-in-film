@@ -36,8 +36,14 @@
 
             <br><br>
 
+            <img id="pioneers_image_1" src=https://wfpp.columbia.edu/wp-content/uploads/2013/08/WFP-BRE01.jpg
+                alt="Pioneer Name" style="width:60%">
+
+            <br><br>
+
             <label class="sidepanel_entry">Pioneers: </label>
             <label class="sidepanel_entry" id="pioneers_count_label"></label>
+
         </div>
     </div>
 
@@ -65,14 +71,29 @@
             country_lat;
 
             //Calculated data
-            country_population;
-
+            country_population = 0;
+            country_connected_countries = [];
+            country_pioneers = [];
 
             constructor(name, code, long, lat) {
                 this.country_name = name;
                 this.country_code = code;
                 this.country_long = long;
                 this.country_lat = lat;
+            }
+        }
+
+        //Classes
+        class Pioneer {
+
+            pioneer_name;
+            pioneer_image;
+            pioneer_worked_as = [];
+
+            constructor(name, image, worked_as) {
+                this.pioneer_name = name;
+                this.pioneer_image = image;
+                this.pioneer_worked_as = worked_as;
             }
         }
 
@@ -143,48 +164,46 @@
         // Load external data and boot
         d3.queue()
             .defer(d3.json, "../Data/world_map.geojson")
-            .defer(d3.csv, "../Data/world_population.csv", function (d) { data.set(d.code, +d.pop); })
-            .defer(d3.csv, "../Data/world_population.csv")
-            .defer(d3.csv, "../Data/complete_data.csv", function (data_entry) {
+            .defer(d3.csv, "../Data/complete_data.csv", function (row) {
 
                 //Calculate values for each country
                 //Population
-                var curr_countries_names = data_entry.worked_in.split("|");
+                var curr_countries_names = row.worked_in.split("|");
                 for (i = 0; i < curr_countries_names.length; i++) {
                     var curr_country_name = curr_countries_names[i];
                     var curr_country = findObjectByKey(countries, "country_name", curr_country_name);
 
                     if (curr_country != null) {
                         curr_country.country_population++;
+                        curr_country.country_pioneers.push(new Pioneer(row.name, row.image_url, row.worked_as));
+
+                        //Connections
+                        for (j = 0; j < curr_countries_names.length; j++) {
+                            var connection_name = curr_countries_names[j];
+                            if (curr_country_name !== connection_name) {
+                                if (curr_country.country_connected_countries.findIndex(x => x == connection_name) === -1) {
+                                    curr_country.country_connected_countries.push(connection_name);
+                                }
+
+                            }
+                        }
+
                     }
                 }
-
-                
 
 
 
             })
-            .defer(d3.csv, "../Data/connections.csv")
             .await(ready);
 
-
-        //Forces page to automaticly reloade margin of header
-        //scroll(0, 100)
-        //scroll(0, 0)
-
-        function ready(error, map_data, population_data, countries_data, complete_data, connection_data) {
+        function ready(error, map_data, complete_data) {
 
             //Mouse Over
             let mouseOver = function (d) {
 
                 //Check if country is used
-                var country_name = "";
-                countries_data.forEach(function (row) {
-                    if (row.code == d.id) country_name = row.name;
-                });
-
-                //Do not mouse over if country is not used
-                if (country_name == "") return;
+                var curr_country = findObjectByKey(countries, "country_code", d.id);
+                if (curr_country == null) return;
 
                 //Animation
                 d3.selectAll(".Country")
@@ -198,20 +217,22 @@
                     .style("stroke", "black")
 
                 //Sidebar                
-                document.getElementById('country_name_label').innerHTML = country_name;
-                document.getElementById('pioneers_count_label').innerHTML = data.get(d.id) || 0;
+                document.getElementById('country_name_label').innerHTML = curr_country.country_name;
+                document.getElementById('pioneers_image_1').src = curr_country.country_pioneers[curr_country.country_pioneers.length * Math.random() | 0].pioneer_image;
+                document.getElementById('pioneers_count_label').innerHTML = curr_country.country_population;
                 document.getElementById('sidepanel_holder').hidden = false;
 
                 //Calculate connections
                 var link = []
-                connection_data.forEach(function (row) {
-                    if (row.country1 == country_name || row.country2 == country_name) {
-                        source = [+row.long1, +row.lat1]
-                        target = [+row.long2, +row.lat2]
-                        topush = { type: "LineString", coordinates: [source, target] }
-                        link.push(topush)
-                    }
-                })
+                for (var i = 0; i < curr_country.country_connected_countries.length; i++) {
+                    var connected_country = findObjectByKey(countries, "country_name", curr_country.country_connected_countries[i]);
+
+                    source = [curr_country.country_long, curr_country.country_lat]
+                    target = [connected_country.country_long, connected_country.country_lat]
+                    topush = { type: "LineString", coordinates: [source, target] }
+                    link.push(topush)
+
+                }
 
                 // Add the path
                 svg.selectAll("myPath")
@@ -228,6 +249,39 @@
                     .transition()
                     .duration(500)
                     .style("opacity", 1)
+
+
+
+
+                /*Add the Images
+                      //Middle
+                var image_x = 0;
+                var image_y = 0;
+
+                for (var i = 0; i < d.geometry.coordinates[0][0].length; i++) {
+                    image_x += parseFloat(d.geometry.coordinates[0][0][i]);
+                }
+
+                if (d.geometry.coordinates[1] !== undefined) {
+                    for (var i = 0; i < d.geometry.coordinates[1][0].length; i++) {
+                        image_y += parseFloat(d.geometry.coordinates[1][0][i]);
+                    }
+                    image_y /= d.geometry.coordinates[1][0].length;
+                }
+
+
+                image_x /= d.geometry.coordinates[0][0].length;
+                svg.selectAll("myImages")
+                     .data(curr_country.country_pioneers)
+                     .enter()
+                     .append("svg:image")
+                     .attr("x", function (d) { return image_x * 100})
+                     .attr("y", function (d) { return image_y * 100})
+                     .attr('width', 50)
+                     .attr('height', 50)
+                     .attr("xlink:href", function (d) { return d.pioneer_image}) */
+
+
 
             }
 
@@ -256,14 +310,14 @@
             }
 
 
-            // Draw the map
+            //Draw the map
             svg.append("g")
                 .selectAll("path")
                 .data(map_data.features)
                 .enter()
                 .append("path")
 
-                // draw each country
+                //Draw each country
                 .attr("d", d3.geoPath()
                     .projection(projection)
                 )
@@ -272,12 +326,20 @@
                 .style("opacity", .8)
                 .on("mouseover", mouseOver)
                 .on("mouseleave", mouseLeave)
+                //.on("click", mouseOver)
 
-                // set the color of each country
+                //Set the color of each country
                 .attr("fill", function (d) {
-                    d.total = data.get(d.id) || 0;
-                    return colorScale(d.total);
+                    if (findObjectByKey(countries, "country_code", d.id) != null) {
+                        return colorScale(findObjectByKey(countries, "country_code", d.id).country_population);
+                    }
+                    else return colorScale(0);
+
                 });
+
+
+
+
         }
 
         function findObjectByKey(array, key, value) {
