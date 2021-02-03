@@ -7,8 +7,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../CSS/baseStyle.css">
-    <link rel="sidepanel_css" href="../CSS/map_sidepanel.css">
-    <script type="module" src="../JS/generalBehaviour.js"></script>
+    <link rel="stylesheet" href="../CSS/map.css">
     <script src="https://d3js.org/d3.v4.js"></script>
     <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
     <script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
@@ -30,120 +29,90 @@
     </div>
 
     <!-- Sidepanel -->
-    <div id="sidepanel_main" class="sidenav">
+    <div class="sidepanel_panel">
         <div id="sidepanel_holder" hidden="true">
             <label class="sidepanel_headline" id="country_name_label"></label>
-
-            <br><br>
-
-            <img id="pioneers_image_1" src=https://wfpp.columbia.edu/wp-content/uploads/2013/08/WFP-BRE01.jpg
-                alt="Pioneer Name" style="width:60%">
-
-            <br><br>
+            
+            <br><br> 
 
             <label class="sidepanel_entry">Pioneers: </label>
-            <label class="sidepanel_entry" id="pioneers_count_label"></label>
+            <label class="sidepanel_entry" id="pioneers_count_label"></label><br>
+
+            <label class="sidepanel_entry">Different Jobs: </label>
+            <label class="sidepanel_entry" id="pioneers_jobs_label"></label><br>
+
+            <label class="sidepanel_entry">Connections: </label>
+            <label class="sidepanel_entry" id="pioneers_connections_label"></label>
+
+            <br><br>
+
+            <label class="sidepanel_entry">Example Pioneer: </label><br>
+            <label class="sidepanel_entry" id="pioneers_ex_name"></label>
+
+            <br><br>
+            
+            <img class="sidepanel_image" id="pioneers_ex_image" src="https://wfpp.columbia.edu/wp-content/uploads/2018/05/adaalineurban.jpg" onerror="image_load_error()"><br><br>
+
+            <button class="Button" id="pioneers_ex_button">Read more</label>
 
         </div>
     </div>
 
-    <!-- Settings
-    <div class="settings" id="settings_panel">
-        <div class="button">Test</div>
+    <!-- Settings -->
+    <div class="settings_panel">
+        <label class="settings_headline">Settings</label>
+        
+        <br><br> 
 
+        <label class="settins_entry">From: </label>
+        <input type="number" id="settings_min_year" min="1830" max="1910" value="1830">
 
-    </div> -->
+        <label class="settins_entry">To: </label>
+        <input type="number" id="settings_max_year" min="1900" max="2020" value="1900"><br><br>
+
+        <input type="checkbox" id="settings_checkbox_unknown" checked>
+        <label for="settings_checkbox_unknown"> Include Pioneers with unknown dates</label>
+
+        <br><br>
+
+        <button class="Button" id="settings_button" onclick="settings_button_onclick()">Apply</label>
+
+    </div>
 
 
     <!-- Map Object -->
-    <div class="map" id="map_panel"></div>
+    <div class="map_body" id="map_body"></div>
 
     <!-- Map -->
+    <script src="../JS/map.js"></script>
     <script>
 
-        //Classes
-        class Country {
+        //Read cookies
+        var temp_min_year = getCookie("map_settings_min_year");
+        var temp_max_year = getCookie("map_settings_max_year");
+        var temp_unknown = getCookie("map_settings_checkbox_unknown");
 
-            //Constant data
-            country_name;
-            country_code;
-            country_long;
-            country_lat;
+        //Apply cookies
+        if(temp_min_year.length > 0) document.getElementById('settings_min_year').value = temp_min_year;
+        if(temp_max_year.length > 0) document.getElementById('settings_max_year').value = temp_max_year;
+        if(temp_unknown == "false") document.getElementById('settings_checkbox_unknown').checked = false;
 
-            //Calculated data
-            country_population = 0;
-            country_connected_countries = [];
-            country_pioneers = [];
-
-            constructor(name, code, long, lat) {
-                this.country_name = name;
-                this.country_code = code;
-                this.country_long = long;
-                this.country_lat = lat;
-            }
-        }
-
-        //Classes
-        class Pioneer {
-
-            pioneer_name;
-            pioneer_image;
-            pioneer_worked_as = [];
-
-            constructor(name, image, worked_as) {
-                this.pioneer_name = name;
-                this.pioneer_image = image;
-                this.pioneer_worked_as = worked_as;
-            }
-        }
-
-        //List of all data
-        let countries = [];
-        countries.push(new Country("Great Britain", "GBR", "955", "360"));
-        countries.push(new Country("United States", "USA", "550", "450"));
-        countries.push(new Country("Argentina", "ARG", "690", "780"));
-        countries.push(new Country("Australia", "AUS", "1600", "750"));
-        countries.push(new Country("New Zealand", "NZL", "1685", "835"));
-        countries.push(new Country("Austria", "AUT", "1025", "395"));
-        countries.push(new Country("China", "CHN", "1400", "450"));
-        countries.push(new Country("Germany", "DEU", "1010", "355"));
-        countries.push(new Country("Hungary", "HUN", "1045", "395"));
-        countries.push(new Country("Brazil", "BRA", "750", "680"));
-        countries.push(new Country("Canada", "CAN", "500", "300"));
-        countries.push(new Country("Italy", "ITA", "1010", "420"));
-        countries.push(new Country("France", "FRA", "970", "400"));
-        countries.push(new Country("Chile", "CHL", "645", "845"));
-        countries.push(new Country("Japan", "JPN", "1555", "455"));
-        countries.push(new Country("Colombia", "COL", "645", "615"));
-        countries.push(new Country("Czechoslovakia", "CZE", "1025", "380"));
-        countries.push(new Country("Denmark", "DNK", "1000", "330"));
-        countries.push(new Country("Norway", "NOR", "990", "290"));
-        countries.push(new Country("Sweden", "SWE", "1020", "290"));
-        countries.push(new Country("Ireland", "IRL", "925", "355"));
-        countries.push(new Country("Finland", "FIN", "1070", "280"));
-        countries.push(new Country("Portugal", "PRT", "925", "435"));
-        countries.push(new Country("Croatia", "HRV", "1030", "405"));
-        countries.push(new Country("Mexico", "MEX", "520", "520"));
-        countries.push(new Country("Peru", "PER", "635", "655"));
-        countries.push(new Country("Poland", "POL", "1040", "360"));
-        countries.push(new Country("Russia and former Soviet Union", "RUS", "1170", "300"));
-        countries.push(new Country("Spain", "ESP", "940", "430"));
-        countries.push(new Country("The Netherlands", "NLD", "985", "360"));
-        countries.push(new Country("The Philippines", "PHL", "1485", "580"));
-        countries.push(new Country("Tunisia", "TUN", "1000", "470"));
-        countries.push(new Country("Turkey", "TUR", "1120", "440"));
+        //Check settings values
+        if(document.getElementById('settings_min_year').value < document.getElementById('settings_min_year').min) document.getElementById('settings_min_year').value = document.getElementById('settings_min_year').min;
+        if(document.getElementById('settings_min_year').value > document.getElementById('settings_min_year').max) document.getElementById('settings_min_year').value = document.getElementById('settings_min_year').max;
+        if(document.getElementById('settings_max_year').value < document.getElementById('settings_max_year').min) document.getElementById('settings_max_year').value = document.getElementById('settings_max_year').min;
+        if(document.getElementById('settings_max_year').value > document.getElementById('settings_max_year').max) document.getElementById('settings_max_year').value = document.getElementById('settings_max_year').max;
+        if(document.getElementById('settings_max_year').value < document.getElementById('settings_min_year').value) document.getElementById('settings_max_year').value = document.getElementById('settings_min_year').value;
 
         // Dimensions
         var width = window.innerWidth;
         var height = window.innerHeight;
 
-        // Add a <div> container for the tooltip, which is hidden by default.
-        var tooltip = d3.select("#map_panel")
-            .append("div")
-            .attr("class", "tooltip");
+        //List of all countries
+        let countries = createAllCountries();
 
         // Append the svg object to the body of the page
-        var svg = d3.select("#map_panel")
+        var svg = d3.select("#map_body")
             .append("svg")
             .attr("width", width)
             .attr("height", height)
@@ -166,7 +135,14 @@
             .defer(d3.json, "../Data/world_map.geojson")
             .defer(d3.csv, "../Data/complete_data.csv", function (row) {
 
-                //Calculate values for each country
+                //Calculations for each row
+                //Use settings
+                if(!document.getElementById('settings_checkbox_unknown').checked){
+                    if(row.YOB.length == 0 || row.YOD.length == 0) return;
+                }                
+                if(row.YOB < document.getElementById('settings_min_year').value) return;
+                if(row.YOD > document.getElementById('settings_max_year').value) return;
+
                 //Population
                 var curr_countries_names = row.worked_in.split("|");
                 for (i = 0; i < curr_countries_names.length; i++) {
@@ -174,8 +150,7 @@
                     var curr_country = findObjectByKey(countries, "country_name", curr_country_name);
 
                     if (curr_country != null) {
-                        curr_country.country_population++;
-                        curr_country.country_pioneers.push(new Pioneer(row.name, row.image_url, row.worked_as));
+                        curr_country.country_pioneers.push(new Pioneer(row.name, row.image_url, row.link, curr_countries_names, row.worked_as.split("|")));
 
                         //Connections
                         for (j = 0; j < curr_countries_names.length; j++) {
@@ -187,11 +162,24 @@
 
                             }
                         }
-
                     }
                 }
 
-
+                //Different Jobs
+                for (i = 0; i < countries.length; i++) {
+                    var curr_country = countries[i];
+                    var jobs = []
+                    for (j = 0; j < curr_country.country_pioneers.length; j++) {
+                        var curr_pioneer = curr_country.country_pioneers[j];
+                        for (u = 0; u < curr_country.country_pioneers.length; u++) {
+                            var curr_job = curr_pioneer.pioneer_worked_as[u]
+                            if (jobs.findIndex(x => x == curr_job) === -1) {
+                                    jobs.push(curr_job);
+                                }
+                        }
+                    }
+                    curr_country.country_jobs = jobs;
+                }
 
             })
             .await(ready);
@@ -202,10 +190,10 @@
             let mouseOver = function (d) {
 
                 //Check if country is used
-                var curr_country = findObjectByKey(countries, "country_code", d.id);
-                if (curr_country == null) return;
+                if (findObjectByKey(countries, "country_code", d.id) == null) return;
+                if (findObjectByKey(countries, "country_code", d.id).country_pioneers.length == 0) return;
 
-                //Animation
+                //Mouser Over Animation
                 d3.selectAll(".Country")
                     .transition()
                     .duration(200)
@@ -216,11 +204,47 @@
                     .style("opacity", 1)
                     .style("stroke", "black")
 
+            }
+
+            let mouseLeave = function (d) {
+
+                //Mouser Leave Animation
+                d3.selectAll(".Country")
+                    .transition()
+                    .duration(200)
+                    .style("opacity", 1)
+                d3.select(this)
+                    .transition()
+                    .duration(0)
+                    .style("stroke", "transparent")
+            }
+
+            let mouseClick = function (d) {
+
+                //Get current country
+                var curr_country = findObjectByKey(countries, "country_code", d.id);
+
+                //Check if country is used                
+                if (findObjectByKey(countries, "country_code", d.id) == null) return;
+                if (findObjectByKey(countries, "country_code", d.id).country_pioneers.length == 0) return;
+
+                //Remove old links
+                svg.selectAll(".Link")
+                    .remove()
+
                 //Sidebar                
                 document.getElementById('country_name_label').innerHTML = curr_country.country_name;
-                document.getElementById('pioneers_image_1').src = curr_country.country_pioneers[curr_country.country_pioneers.length * Math.random() | 0].pioneer_image;
-                document.getElementById('pioneers_count_label').innerHTML = curr_country.country_population;
-                document.getElementById('sidepanel_holder').hidden = false;
+                document.getElementById('pioneers_count_label').innerHTML = curr_country.country_pioneers.length;
+                document.getElementById('pioneers_jobs_label').innerHTML = curr_country.country_jobs.length;
+                document.getElementById('pioneers_connections_label').innerHTML = curr_country.country_connected_countries.length;                
+
+                var example_pioneer = curr_country.country_pioneers[Math.floor(Math.random() * curr_country.country_pioneers.length)];
+
+                document.getElementById('pioneers_ex_name').innerHTML = example_pioneer.pioneer_name;
+                document.getElementById('pioneers_ex_image').src = "";
+                document.getElementById('pioneers_ex_image').src = example_pioneer.pioneer_image;         
+                document.getElementById('pioneers_ex_button').onclick = function(){window.open(example_pioneer.pioneer_link)};       
+                document.getElementById('sidepanel_holder').hidden = false;  
 
                 //Calculate connections
                 var link = []
@@ -231,7 +255,6 @@
                     target = [connected_country.country_long, connected_country.country_lat]
                     topush = { type: "LineString", coordinates: [source, target] }
                     link.push(topush)
-
                 }
 
                 // Add the path
@@ -249,66 +272,7 @@
                     .transition()
                     .duration(500)
                     .style("opacity", 1)
-
-
-
-
-                /*Add the Images
-                      //Middle
-                var image_x = 0;
-                var image_y = 0;
-
-                for (var i = 0; i < d.geometry.coordinates[0][0].length; i++) {
-                    image_x += parseFloat(d.geometry.coordinates[0][0][i]);
-                }
-
-                if (d.geometry.coordinates[1] !== undefined) {
-                    for (var i = 0; i < d.geometry.coordinates[1][0].length; i++) {
-                        image_y += parseFloat(d.geometry.coordinates[1][0][i]);
-                    }
-                    image_y /= d.geometry.coordinates[1][0].length;
-                }
-
-
-                image_x /= d.geometry.coordinates[0][0].length;
-                svg.selectAll("myImages")
-                     .data(curr_country.country_pioneers)
-                     .enter()
-                     .append("svg:image")
-                     .attr("x", function (d) { return image_x * 100})
-                     .attr("y", function (d) { return image_y * 100})
-                     .attr('width', 50)
-                     .attr('height', 50)
-                     .attr("xlink:href", function (d) { return d.pioneer_image}) */
-
-
-
             }
-
-            let mouseLeave = function (d) {
-
-                //Animation
-                d3.selectAll(".Country")
-                    .transition()
-                    .duration(0)
-                    .style("opacity", 1)
-                d3.select(this)
-                    .transition()
-                    .duration(0)
-                    .style("stroke", "transparent")
-
-                //Tooltip
-                tooltip.classed('hidden', true)
-                    .html("");
-
-                //Remove Links
-                svg.selectAll(".Link")
-                    .remove()
-
-                //Sidebar                
-                //document.getElementById('sidepanel_holder').hidden = true;
-            }
-
 
             //Draw the map
             svg.append("g")
@@ -326,30 +290,19 @@
                 .style("opacity", .8)
                 .on("mouseover", mouseOver)
                 .on("mouseleave", mouseLeave)
-                //.on("click", mouseOver)
+                .on("click", mouseClick)
 
                 //Set the color of each country
                 .attr("fill", function (d) {
                     if (findObjectByKey(countries, "country_code", d.id) != null) {
-                        return colorScale(findObjectByKey(countries, "country_code", d.id).country_population);
+                        return colorScale(findObjectByKey(countries, "country_code", d.id).country_pioneers.length);
                     }
                     else return colorScale(0);
 
                 });
-
-
-
-
         }
 
-        function findObjectByKey(array, key, value) {
-            for (var i = 0; i < array.length; i++) {
-                if (array[i][key] === value) {
-                    return array[i];
-                }
-            }
-            return null;
-        }
+
     </script>
 
     <!-- Footer -->
@@ -360,72 +313,3 @@
 </body>
 
 </html>
-
-<!-- CSS definitions -->
-<style>
-    .sidepanel_headline {
-        font-size: 25px;
-        font-family: 'Roboto', sans-serif;
-        font-weight: bold;
-    }
-
-    .sidepanel_entry {
-        font-size: 15px;
-        font-family: 'Roboto', sans-serif;
-        font-weight: bold;
-        text-align: left;
-    }
-
-    .country {
-        fill: #ccc;
-        stroke: #999;
-    }
-
-    .header {
-        position: fixed;
-        width: 100%;
-        height: 40px;
-        text-align: left;
-        background-color: #eee;
-    }
-
-    .map {
-        margin-left: 9%;
-    }
-
-    .settings {
-        height: 40px;
-        display: block;
-        margin-left: auto;
-        width: 80%;
-        position: fixed;
-        top: 40px;
-        background: #7a7a7a;
-        border: 4px solid silver;
-        padding: 0px 0px;
-        border-radius: 2%
-    }
-
-    .sidenav {
-        width: 18%;
-        height: 50%;
-        position: fixed;
-        top: 100px;
-        left: 5px;
-        background: #7c7a78e7;
-        border: 4px solid silver;
-        padding: 8px 0;
-        border-radius: 2%
-    }
-
-    .button {
-        background-color: #4CAF50;
-        border: 2px solid silver;
-        color: white;
-        padding: 15px 32px;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 16px;
-    }
-</style>

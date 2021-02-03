@@ -1,0 +1,69 @@
+.header {
+    position: fixed;
+    width: 100%;
+    height: 40px;
+    text-align: left;
+    background-color: #eee;
+}
+
+.sidepanel_panel {
+    width: 18%;
+    height: 50%;
+    position: fixed;
+    top: 7%;
+    left: 5px;
+    background: #7c7a78e7;
+    border: 4px solid silver;
+    padding: 8px 0;
+    border-radius: 2%
+}
+
+.sidepanel_headline {
+    font-size: 25px;
+    font-family: 'Roboto', sans-serif;
+    font-weight: bold;
+}
+
+.sidepanel_entry {
+    font-size: 20px;
+    font-family: 'Roboto', sans-serif;
+    font-weight: bold;
+    text-align: left;
+}
+
+.sidepanel_image { 
+    margin: 0 15px 0 0;
+    width:180px;
+    height:180px;
+    background-repeat:no-repeat;
+    background-size:cover;
+}
+
+.settings_panel {
+    width: 18%;
+    height: 35%;
+    position: fixed;
+    top: 60%;
+    left: 5px;
+    background: #7c7a78e7;
+    border: 4px solid silver;
+    padding: 8px 0;
+    border-radius: 2%
+}
+
+.settings_headline {
+    font-size: 28px;
+    font-family: 'Roboto', sans-serif;
+    font-weight: bold;
+}
+
+.settings_entry {
+    font-size: 20px;
+    font-family: 'Roboto', sans-serif;
+    font-weight: bold;
+    text-align: left;
+}
+
+.map_body {
+    margin-left: 9%;
+} 
