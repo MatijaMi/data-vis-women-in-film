@@ -1,4 +1,4 @@
-/*var jobData= new Map();
+var jobData= new Map();
 for(var i = 0; i <wfpp.entries.length; i++){
     for(var j =0; j< wfpp.entries[i].worked_as.length; j++){
         var entry=wfpp.entries[i].worked_as[j];
@@ -13,13 +13,16 @@ for(var i = 0; i <wfpp.entries.length; i++){
         } 
     }
 } 
-
-var str = "";
+console.log(wfpp.entries)
+var data = "job,count\r\n";
 
 jobData.forEach((values,keys)=>{ 
-      str+= keys + "," + values + "\r\n"
-    }); 
-*/
+      data+= keys + "," + values + "\r\n"
+    });
+
+
+console.log(data);
+data = d3.csvParse(data);
 
 // set the dimensions and margins of the graph
 var width = window.innerWidth;
@@ -31,18 +34,9 @@ var svg = d3.select("#my_dataviz")
       .attr("width", width)
       .attr("height", height)
 
-    // Read data
-d3.csv("professions.csv", function (data) {
-
-
-      // Color palette for continents?
-  var color = d3.scaleOrdinal()
-    .domain(["Asia", "Europe", "Africa", "Oceania", "Americas"])
-    .range(d3.schemeSet1);
-
       // Size scale for countries
   var size = d3.scaleLinear()
-    .domain([0, 1400000000])
+    .domain([0, 300])
     .range([7, 55])  // circle will be between 7 and 55 px wide
   
       // create a tooltip
@@ -64,7 +58,7 @@ d3.csv("professions.csv", function (data) {
       }
   var mousemove = function (d) {
         Tooltip
-          .html('<u>' + d.profession + '</u>' + "<br>" + d.count)
+          .html('<u>' + d.job + '</u>' + "<br>" + d.count)
           .style("left", (d3.mouse(this)[0] + 20) + "px")
           .style("top", (d3.mouse(this)[1]) + "px")
       }
@@ -73,6 +67,19 @@ d3.csv("professions.csv", function (data) {
           .style("opacity", 0)
       }
 
+  svg.append("pattern")
+     .attr("x", 0)
+     .attr("y", 0)
+     .attr("width", 20)
+	 .attr("height", 20)
+     .attr("id", "bg")
+     .append("image")
+       .attr("x", 0)
+       .attr("y", 0)
+   			.attr("width", 30)
+			.attr("height", 30)
+   .attr("xlink:href", "../JS/testsvg.svg");
+  
       // Initialize the circle: all located at the center of the svg area
   var node = svg.append("g")
         .selectAll("circle")
@@ -81,10 +88,11 @@ d3.csv("professions.csv", function (data) {
         .append("circle")
         .attr("class", "node")
         .attr("r", function (d) { return Math.max(15,d.count)})
-        .attr("cx",function (d) { return Math.max(15,d.count)/2})
-        .attr("cy", function (d) { return Math.max(15,d.count)/2})
-        .style("fill", function (d) { return "#734F46" })
-        .style("fill-opacity", 1.0)
+        .attr("cx",0)
+        .attr("cy", 0)
+        .attr("fill", function(d) {
+		return "url(#bg)";
+        })
         .attr("stroke", "black")
         .style("stroke-width", 0.8)
         .on("mouseover", mouseover) // What to do when hovered
@@ -94,6 +102,8 @@ d3.csv("professions.csv", function (data) {
           .on("start", dragstarted)
           .on("drag", dragged)
           .on("end", dragended));
+
+
 
       // Features of the forces applied to the nodes:
   var simulation = d3.forceSimulation()
@@ -125,5 +135,3 @@ d3.csv("professions.csv", function (data) {
         d.fx = null;
         d.fy = null;
       }
-
-    })
