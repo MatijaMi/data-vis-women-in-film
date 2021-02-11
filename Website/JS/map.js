@@ -38,7 +38,7 @@ class Pioneer {
 }
 
 //Functions
-function createAllCountries(){
+function createAllCountries() {
     let countries = [];
     countries.push(new Country("Great Britain", "GBR", "955", "360"));
     countries.push(new Country("United States", "USA", "550", "450"));
@@ -77,7 +77,7 @@ function createAllCountries(){
     return countries;
 }
 
-function settings_button_onclick(){
+function settings_button_onclick() {
     document.cookie = "map_settings_min_year=" + document.getElementById('settings_min_year').value;
     document.cookie = "map_settings_max_year=" + document.getElementById('settings_max_year').value;
     document.cookie = "map_settings_checkbox_unknown=" + document.getElementById('settings_checkbox_unknown').checked;
@@ -96,7 +96,7 @@ function findObjectByKey(array, key, value) {
     return null;
 }
 
-function image_load_error(){
+function image_load_error() {
     document.getElementById('pioneers_ex_image').src = "../Images/Pioneer-Placeholder.png";
 }
 
@@ -104,14 +104,26 @@ function getCookie(cname) {
     var name = cname + "=";
     var decodedCookie = decodeURIComponent(document.cookie);
     var ca = decodedCookie.split(';');
-    for(var i = 0; i <ca.length; i++) {
-      var c = ca[i];
-      while (c.charAt(0) == ' ') {
-        c = c.substring(1);
-      }
-      if (c.indexOf(name) == 0) {
-        return c.substring(name.length, c.length);
-      }
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
     }
     return "";
-  }
+}
+
+function uniq(a) {
+    var prims = { "boolean": {}, "number": {}, "string": {} }, objs = [];
+
+    return a.filter(function (item) {
+        var type = typeof item;
+        if (type in prims)
+            return prims[type].hasOwnProperty(item) ? false : (prims[type][item] = true);
+        else
+            return objs.indexOf(item) >= 0 ? false : objs.push(item);
+    });
+}

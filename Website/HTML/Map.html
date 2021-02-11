@@ -32,8 +32,8 @@
     <div class="sidepanel_panel">
         <div id="sidepanel_holder" hidden="true">
             <label class="sidepanel_headline" id="country_name_label"></label>
-            
-            <br><br> 
+
+            <br><br>
 
             <label class="sidepanel_entry">Pioneers: </label>
             <label class="sidepanel_entry" id="pioneers_count_label"></label><br>
@@ -50,8 +50,10 @@
             <label class="sidepanel_entry" id="pioneers_ex_name"></label>
 
             <br><br>
-            
-            <img class="sidepanel_image" id="pioneers_ex_image" src="https://wfpp.columbia.edu/wp-content/uploads/2018/05/adaalineurban.jpg" onerror="image_load_error()"><br><br>
+
+            <img class="sidepanel_image" id="pioneers_ex_image"
+                src="https://wfpp.columbia.edu/wp-content/uploads/2018/05/adaalineurban.jpg"
+                onerror="image_load_error()"><br><br>
 
             <button class="sidepanel_button" id="pioneers_ex_button">Read more</label>
 
@@ -61,8 +63,8 @@
     <!-- Settings -->
     <div class="settings_panel">
         <label class="settings_headline">Settings</label>
-        
-        <br><br> 
+
+        <br><br>
 
         <label class="settins_entry">From: </label>
         <input type="number" id="settings_min_year" min="1830" max="1910" value="1830">
@@ -93,16 +95,16 @@
         var temp_unknown = getCookie("map_settings_checkbox_unknown");
 
         //Apply cookies
-        if(temp_min_year.length > 0) document.getElementById('settings_min_year').value = temp_min_year;
-        if(temp_max_year.length > 0) document.getElementById('settings_max_year').value = temp_max_year;
-        if(temp_unknown == "false") document.getElementById('settings_checkbox_unknown').checked = false;
+        if (temp_min_year.length > 0) document.getElementById('settings_min_year').value = temp_min_year;
+        if (temp_max_year.length > 0) document.getElementById('settings_max_year').value = temp_max_year;
+        if (temp_unknown == "false") document.getElementById('settings_checkbox_unknown').checked = false;
 
         //Check settings values
-        if(document.getElementById('settings_min_year').value < document.getElementById('settings_min_year').min) document.getElementById('settings_min_year').value = document.getElementById('settings_min_year').min;
-        if(document.getElementById('settings_min_year').value > document.getElementById('settings_min_year').max) document.getElementById('settings_min_year').value = document.getElementById('settings_min_year').max;
-        if(document.getElementById('settings_max_year').value < document.getElementById('settings_max_year').min) document.getElementById('settings_max_year').value = document.getElementById('settings_max_year').min;
-        if(document.getElementById('settings_max_year').value > document.getElementById('settings_max_year').max) document.getElementById('settings_max_year').value = document.getElementById('settings_max_year').max;
-        if(document.getElementById('settings_max_year').value < document.getElementById('settings_min_year').value) document.getElementById('settings_max_year').value = document.getElementById('settings_min_year').value;
+        if (document.getElementById('settings_min_year').value < document.getElementById('settings_min_year').min) document.getElementById('settings_min_year').value = document.getElementById('settings_min_year').min;
+        if (document.getElementById('settings_min_year').value > document.getElementById('settings_min_year').max) document.getElementById('settings_min_year').value = document.getElementById('settings_min_year').max;
+        if (document.getElementById('settings_max_year').value < document.getElementById('settings_max_year').min) document.getElementById('settings_max_year').value = document.getElementById('settings_max_year').min;
+        if (document.getElementById('settings_max_year').value > document.getElementById('settings_max_year').max) document.getElementById('settings_max_year').value = document.getElementById('settings_max_year').max;
+        if (document.getElementById('settings_max_year').value < document.getElementById('settings_min_year').value) document.getElementById('settings_max_year').value = document.getElementById('settings_min_year').value;
 
         // Dimensions
         var width = window.innerWidth;
@@ -137,11 +139,11 @@
 
                 //Calculations for each row
                 //Use settings
-                if(!document.getElementById('settings_checkbox_unknown').checked){
-                    if(row.YOB.length == 0 || row.YOD.length == 0) return;
-                }                
-                if(row.YOB < document.getElementById('settings_min_year').value) return;
-                if(row.YOD > document.getElementById('settings_max_year').value) return;
+                if (!document.getElementById('settings_checkbox_unknown').checked) {
+                    if (row.YOB.length == 0 || row.YOD.length == 0) return;
+                }
+                if (row.YOB < document.getElementById('settings_min_year').value) return;
+                if (row.YOD > document.getElementById('settings_max_year').value) return;
 
                 //Population
                 var curr_countries_names = row.worked_in.split("|");
@@ -150,7 +152,12 @@
                     var curr_country = findObjectByKey(countries, "country_name", curr_country_name);
 
                     if (curr_country != null) {
-                        curr_country.country_pioneers.push(new Pioneer(row.name, row.image_url, row.link, curr_countries_names, row.worked_as.split("|")));
+                        var row_worked_as = row.worked_as.split("|");
+                        row_worked_as.forEach(function (part, index) {
+                            this[index] = this[index].split(">").pop();
+                        }, row_worked_as);
+
+                        curr_country.country_pioneers.push(new Pioneer(row.name, row.image_url, row.link, curr_countries_names, row_worked_as));
 
                         //Connections
                         for (j = 0; j < curr_countries_names.length; j++) {
@@ -173,14 +180,13 @@
                         var curr_pioneer = curr_country.country_pioneers[j];
                         for (u = 0; u < curr_country.country_pioneers.length; u++) {
                             var curr_job = curr_pioneer.pioneer_worked_as[u]
-                            if (jobs.findIndex(x => x == curr_job) === -1) {
-                                    jobs.push(curr_job);
-                                }
+                            if (typeof curr_job !== "undefined") {
+                                jobs.push(curr_job);
+                            }
                         }
                     }
-                    curr_country.country_jobs = jobs;
+                    curr_country.country_jobs = uniq(jobs);
                 }
-
             })
             .await(ready);
 
@@ -236,15 +242,15 @@
                 document.getElementById('country_name_label').innerHTML = curr_country.country_name;
                 document.getElementById('pioneers_count_label').innerHTML = curr_country.country_pioneers.length;
                 document.getElementById('pioneers_jobs_label').innerHTML = curr_country.country_jobs.length;
-                document.getElementById('pioneers_connections_label').innerHTML = curr_country.country_connected_countries.length;                
+                document.getElementById('pioneers_connections_label').innerHTML = curr_country.country_connected_countries.length;
 
                 var example_pioneer = curr_country.country_pioneers[Math.floor(Math.random() * curr_country.country_pioneers.length)];
 
                 document.getElementById('pioneers_ex_name').innerHTML = example_pioneer.pioneer_name;
                 document.getElementById('pioneers_ex_image').src = "";
-                document.getElementById('pioneers_ex_image').src = example_pioneer.pioneer_image;         
-                document.getElementById('pioneers_ex_button').onclick = function(){window.open(example_pioneer.pioneer_link)};       
-                document.getElementById('sidepanel_holder').hidden = false;  
+                document.getElementById('pioneers_ex_image').src = example_pioneer.pioneer_image;
+                document.getElementById('pioneers_ex_button').onclick = function () { window.open(example_pioneer.pioneer_link) };
+                document.getElementById('sidepanel_holder').hidden = false;
 
                 //Calculate connections
                 var link = []
