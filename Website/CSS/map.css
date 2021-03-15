@@ -12,8 +12,8 @@
     position: fixed;
     top: 7%;
     left: 5px;
-    background: #7c7a78e7;
-    border: 4px solid silver;
+    background-color: rgb(50, 50, 50);
+    border: 4px solid rgb(32, 32, 32);;
     padding: 8px 0;
     border-radius: 2%
 }
@@ -53,14 +53,19 @@
     text-align: center;
 }
 
+.sidepanel_empty_text{
+    font-family: "Roboto", sans-serif;
+    font-size: 25px;
+}
+
 .settings_panel {
     width: 18%;
-    height: 35%;
+    height: 30%;
     position: fixed;
     top: 60%;
     left: 5px;
-    background: #7c7a78e7;
-    border: 4px solid silver;
+    background-color: rgb(50, 50, 50);
+    border: 4px solid rgb(32, 32, 32);;
     padding: 8px 0;
     border-radius: 2%
 }
@@ -92,12 +97,37 @@
     text-align: center;
 }
 
-.map_body {
+.map_holder{
+    top:40px;
     margin-left: 9%;
-} 
+    position: fixed;
+}
 
 .slider-holder{
-    margin-left: auto;
-    margin-right: auto;
+    bottom: 6%; 
+    margin-left: 35%;
     width: 50%;
+    position: fixed;    
+}
+
+.slider-text-holder{
+    bottom: 8%; 
+    margin-left: 35%;
+    width: 50%;
+    position: fixed;   
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none; 
+}
+
+.footer{
+    position: fixed;
+    bottom: 0px; 
+    width: 100%;
+    height: 40px;
+    text-align: left;
+    background-color: rgb(50, 50, 50);
 }

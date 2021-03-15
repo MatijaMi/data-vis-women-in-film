@@ -16,7 +16,7 @@
     <script src="https://github.com/typeiii/jquery-csv"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>    
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src="../JS/map.js"></script>
 
 </head>
@@ -35,10 +35,12 @@
 
     <!-- Sidepanel -->
     <div class="sidepanel_panel">
-        <div id="sidepanel_holder" hidden="true">
-            <label class="sidepanel_headline" id="country_name_label"></label>
 
-            <br><br>
+        <label class="sidepanel_headline" id="country_name_label"></label>
+
+        <br><br>
+
+        <div id="sidepanel_holder" hidden="true">
 
             <label class="sidepanel_entry">Pioneers: </label>
             <label class="sidepanel_entry" id="pioneers_count_label"></label><br>
@@ -61,7 +63,10 @@
                 onerror="image_load_error()"><br><br>
 
             <button class="sidepanel_button" id="pioneers_ex_button">Read more</label>
-
+        </div>
+        <div class="sidepanel_empty_text" id="sidepanel_empty_text" hidden="true">
+            There are no known pioneers registered between the selected Years. <br><br>
+            If you know some, please contact us.
         </div>
     </div>
 
@@ -71,62 +76,60 @@
 
         <br><br>
 
-        <label class="settins_entry">From: </label>
-        <input type="number" id="settings_min_year" min="1830" max="1910" value="1830">
-
-        <label class="settins_entry">To: </label>
-        <input type="number" id="settings_max_year" min="1900" max="2020" value="2020"><br><br>
-
         <input type="checkbox" id="settings_checkbox_unknown" checked>
         <label for="settings_checkbox_unknown"> Include Pioneers with unknown dates</label>
 
         <br><br>
 
-        <button class="settings_button" id="settings_button" onclick="settings_button_onclick()">Apply</label>
-
     </div>
 
-
-
-
     <!-- Map Object -->
-    <div class="map_body" id="map_body"></div>
+    <div class="map_holder">
+        <div class="map_body" id="map_body"></div>
+    </div>
 
-    <p>
+    <!-- Slider -->
+    <div class="slider-text-holder">
         <input type="text" id="amount" readonly
-            style="border:0; color:#1fb9f6; font-weight:bold; text-align: center; font-size: 20px;">
-    </p>
+            style="border:0; color:#1fb9f6; font-weight:bold; text-align: center; font-size: 24px; pointer-events: none; width:150px"></input>
+    </div>
 
     <div class="slider-holder">
         <div id="slider-range"></div>
     </div>
 
+    <!-- Footer -->
+    <div class="footer"></div>
 
-    <!-- Map -->    
+    <!-- Map -->
     <script>
-        
+
         //Slider
-        setup_slider();
+        var sliderWasUsed = false;
+        var lastCountry = null;
+        $(function () {
+            $("#slider-range").slider({
+                range: true,
+                min: 1830,
+                max: 2020,
+                values: [1830, 2020],
+                change: function (event, ui) {
+                    load_data();
+                    sliderWasUsed = true;
+                },
+                slide: function (event, ui) {
+                    $("#amount").val(ui.values[0] + " - " + ui.values[1]);
+                }
+
+            });
+
+            $("#amount").val($("#slider-range").slider("values", 0) +
+                " - " + $("#slider-range").slider("values", 1));
+
+        });
 
         //List of all countries
         var countries = createAllCountries();
-
-        //Read cookies
-        var temp_min_year = getCookie("map_settings_min_year");
-        var temp_max_year = getCookie("map_settings_max_year");
-        var temp_unknown = getCookie("map_settings_checkbox_unknown");
-
-        //Apply cookies
-        if (temp_min_year.length > 0) document.getElementById('settings_min_year').value = temp_min_year;
-        if (temp_max_year.length > 0) document.getElementById('settings_max_year').value = temp_max_year;
-        if (temp_unknown == "false") document.getElementById('settings_checkbox_unknown').checked = false;
-
-        //Check settings values
-        if (document.getElementById('settings_min_year').value < document.getElementById('settings_min_year').min) document.getElementById('settings_min_year').value = document.getElementById('settings_min_year').min;
-        if (document.getElementById('settings_min_year').value > document.getElementById('settings_min_year').max) document.getElementById('settings_min_year').value = document.getElementById('settings_min_year').max;
-        if (document.getElementById('settings_max_year').value < document.getElementById('settings_max_year').min) document.getElementById('settings_max_year').value = document.getElementById('settings_max_year').min;
-        if (document.getElementById('settings_max_year').value > document.getElementById('settings_max_year').max) document.getElementById('settings_max_year').value = document.getElementById('settings_max_year').max;
-        if (document.getElementById('settings_max_year').value < document.getElementById('settings_min_year').value) document.getElementById('settings_max_year').value = document.getElementById('settings_min_year').value;
 
         // Dimensions
         var width = window.innerWidth;
@@ -135,8 +138,8 @@
         // Append the svg object to the body of the page
         var svg = d3.select("#map_body")
             .append("svg")
-            .attr("width", width)
-            .attr("height", height)
+            .attr("width", width / 1.11)
+            .attr("height", height / 1.01)
 
         // Map and projection
         var path = d3.geoPath();
@@ -154,35 +157,25 @@
         // Load external data and boot
         load_data();
 
+
+
         function ready(error, map_data, complete_data) {
 
             //Mouse Over
             let mouseOver = function (d) {
 
-                //Check if country is used
-                if (findObjectByKey(countries, "country_code", d.id) == null) return;
-                if (findObjectByKey(countries, "country_code", d.id).country_pioneers.length == 0) return;
-
-                //Mouser Over Animation
-                d3.selectAll(".Country")
-                    .transition()
-                    .duration(200)
-                    .style("opacity", .8)
+                //Mouser Over Animation               
                 d3.select(this)
                     .transition()
                     .duration(200)
                     .style("opacity", 1)
-                    .style("stroke", "black")
+                    .style("stroke", "black");
 
             }
 
             let mouseLeave = function (d) {
 
                 //Mouser Leave Animation
-                d3.selectAll(".Country")
-                    .transition()
-                    .duration(200)
-                    .style("opacity", 1)
                 d3.select(this)
                     .transition()
                     .duration(0)
@@ -191,12 +184,22 @@
 
             let mouseClick = function (d) {
 
+                //Set last country if slider will be used
+                lastCountry = d;
+
                 //Get current country
                 var curr_country = findObjectByKey(countries, "country_code", d.id);
 
-                //Check if country is used                
-                if (findObjectByKey(countries, "country_code", d.id) == null) return;
-                if (findObjectByKey(countries, "country_code", d.id).country_pioneers.length == 0) return;
+                //Check if country is used   
+                if (findObjectByKey(countries, "country_code", d.id) == null || findObjectByKey(countries, "country_code", d.id).country_pioneers.length == 0) {
+                    document.getElementById('country_name_label').innerHTML = d.properties.name;
+                    document.getElementById('sidepanel_holder').hidden = true;
+                    document.getElementById('sidepanel_empty_text').hidden = false;
+                    return;
+                }
+                else {
+                    document.getElementById('sidepanel_empty_text').hidden = true;
+                }
 
                 //Remove old links
                 svg.selectAll(".Link")
@@ -242,6 +245,7 @@
                     .transition()
                     .duration(500)
                     .style("opacity", 1)
+
             }
 
             //Draw the map
@@ -270,15 +274,14 @@
                     else return colorScale(0);
 
                 });
+
+            //Reset UI
+            if (sliderWasUsed && lastCountry !== null) {
+                mouseClick(lastCountry);
+            }
         }
 
-
     </script>
-
-    <!-- Footer -->
-    <div class="footer">
-
-    </div>
 
 </body>
 

@@ -1,4 +1,6 @@
-//Classes
+/**
+ * Class representing a Country
+ */
 class Country {
 
     //Constant data
@@ -26,6 +28,9 @@ class Country {
     }
 }
 
+/**
+ * Class representing a pioneer
+ */
 class Pioneer {
 
     pioneer_name;
@@ -43,7 +48,9 @@ class Pioneer {
     }
 }
 
-//Functions
+/**
+ * Creating the 32 countries which include data
+ */
 function createAllCountries() {
     var countries = [];
     countries.push(new Country("Great Britain", "GBR", "955", "360"));
@@ -83,22 +90,15 @@ function createAllCountries() {
     return countries;
 }
 
-function settings_button_onclick() {
-    document.cookie = "map_settings_min_year=" + document.getElementById('settings_min_year').value;
-    document.cookie = "map_settings_max_year=" + document.getElementById('settings_max_year').value;
-    document.cookie = "map_settings_checkbox_unknown=" + document.getElementById('settings_checkbox_unknown').checked;
-
-    location.reload();
-}
-
 /**
  * Loads the data for the map
  */
 function load_data() {
 
-    //Clear country data
+    //Clear country data incase this method gets reused
     countries.forEach(country => country.clear());
 
+    //Adding data to d3 map
     d3.queue()
         .defer(d3.json, "../Data/world_map.geojson")
         .defer(d3.csv, "../Data/complete_data.csv", function (row) {
@@ -156,28 +156,6 @@ function load_data() {
             }
         })
         .await(ready);
-}
-
-function setup_slider() {
-    $(function () {
-        $("#slider-range").slider({
-            range: true,
-            min: 1830,
-            max: 2020,
-            values: [1830, 2020],
-            change: function (event, ui) {
-                load_data();
-            },
-            slide: function (event, ui) {
-                $("#amount").val(ui.values[0] + " - " + ui.values[1]);
-            }
-
-        });
-
-        $("#amount").val($("#slider-range").slider("values", 0) +
-            " - " + $("#slider-range").slider("values", 1));
-
-    });
 }
 
 //Help Functions
