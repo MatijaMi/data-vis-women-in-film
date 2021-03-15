@@ -18,6 +18,12 @@ class Country {
         this.country_long = long;
         this.country_lat = lat;
     }
+
+    clear(){
+        this.country_connected_countries.length = 0
+        this.country_pioneers.length = 0
+        this.country_jobs.length = 0
+    }
 }
 
 class Pioneer {
@@ -39,7 +45,7 @@ class Pioneer {
 
 //Functions
 function createAllCountries() {
-    let countries = [];
+    var countries = [];
     countries.push(new Country("Great Britain", "GBR", "955", "360"));
     countries.push(new Country("United States", "USA", "550", "450"));
     countries.push(new Country("Argentina", "ARG", "690", "780"));
@@ -67,7 +73,7 @@ function createAllCountries() {
     countries.push(new Country("Mexico", "MEX", "520", "520"));
     countries.push(new Country("Peru", "PER", "635", "655"));
     countries.push(new Country("Poland", "POL", "1040", "360"));
-    countries.push(new Country("Russia and former Soviet Union", "RUS", "1170", "300"));
+    countries.push(new Country("Russia / former Soviet Union", "RUS", "1170", "300"));
     countries.push(new Country("Spain", "ESP", "940", "430"));
     countries.push(new Country("The Netherlands", "NLD", "985", "360"));
     countries.push(new Country("The Philippines", "PHL", "1485", "580"));
@@ -85,6 +91,94 @@ function settings_button_onclick() {
     location.reload();
 }
 
+/**
+ * Loads the data for the map
+ */
+function load_data() {
+
+    //Clear country data
+    countries.forEach(country => country.clear());
+
+    d3.queue()
+        .defer(d3.json, "../Data/world_map.geojson")
+        .defer(d3.csv, "../Data/complete_data.csv", function (row) {
+
+            //Calculations for each row
+            //Use settings
+            if (!document.getElementById('settings_checkbox_unknown').checked) {
+                if (row.YOB.length == 0 || row.YOD.length == 0) return;
+            }
+
+            if (row.YOB < $("#slider-range").slider("values", 0)) return;
+            if (row.YOD > $("#slider-range").slider("values", 1)) return;
+
+            //Population
+            var curr_countries_names = row.worked_in.split("|");
+            for (i = 0; i < curr_countries_names.length; i++) {
+                var curr_country_name = curr_countries_names[i];
+                var curr_country = findObjectByKey(countries, "country_name", curr_country_name);
+
+                if (curr_country != null) {
+                    var row_worked_as = row.worked_as.split("|");
+                    row_worked_as.forEach(function (part, index) {
+                        this[index] = this[index].split(">").pop();
+                    }, row_worked_as);
+
+                    curr_country.country_pioneers.push(new Pioneer(row.name, row.image_url, row.link, curr_countries_names, row_worked_as));
+
+                    //Connections
+                    for (j = 0; j < curr_countries_names.length; j++) {
+                        var connection_name = curr_countries_names[j];
+                        if (curr_country_name !== connection_name) {
+                            if (curr_country.country_connected_countries.findIndex(x => x == connection_name) === -1) {
+                                curr_country.country_connected_countries.push(connection_name);
+                            }
+
+                        }
+                    }
+                }
+            }
+
+            //Different Jobs
+            for (i = 0; i < countries.length; i++) {
+                var curr_country = countries[i];
+                var jobs = []
+                for (j = 0; j < curr_country.country_pioneers.length; j++) {
+                    var curr_pioneer = curr_country.country_pioneers[j];
+                    for (u = 0; u < curr_country.country_pioneers.length; u++) {
+                        var curr_job = curr_pioneer.pioneer_worked_as[u]
+                        if (typeof curr_job !== "undefined") {
+                            jobs.push(curr_job);
+                        }
+                    }
+                }
+                curr_country.country_jobs = uniq(jobs);
+            }
+        })
+        .await(ready);
+}
+
+function setup_slider() {
+    $(function () {
+        $("#slider-range").slider({
+            range: true,
+            min: 1830,
+            max: 2020,
+            values: [1830, 2020],
+            change: function (event, ui) {
+                load_data();
+            },
+            slide: function (event, ui) {
+                $("#amount").val(ui.values[0] + " - " + ui.values[1]);
+            }
+
+        });
+
+        $("#amount").val($("#slider-range").slider("values", 0) +
+            " - " + $("#slider-range").slider("values", 1));
+
+    });
+}
 
 //Help Functions
 function findObjectByKey(array, key, value) {

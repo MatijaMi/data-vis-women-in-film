@@ -32,8 +32,8 @@
 }
 
 .sidepanel_image { 
-    margin: 0 15px 0 0;
-    width:180px;
+    margin-left: auto;
+    margin-right: auto;
     height:180px;
     background-repeat:no-repeat;
     background-size:cover;
@@ -95,3 +95,9 @@
 .map_body {
     margin-left: 9%;
 } 
+
+.slider-holder{
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+}

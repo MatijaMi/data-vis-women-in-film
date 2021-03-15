@@ -8,11 +8,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../CSS/baseStyle.css">
     <link rel="stylesheet" href="../CSS/map.css">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
     <script src="https://d3js.org/d3.v4.js"></script>
     <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
     <script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
     <script src="https://github.com/typeiii/jquery-csv"></script>
-    <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>    
+    <script src="../JS/map.js"></script>
 
 </head>
 
@@ -82,12 +87,29 @@
     </div>
 
 
+
+
     <!-- Map Object -->
     <div class="map_body" id="map_body"></div>
 
-    <!-- Map -->
-    <script src="../JS/map.js"></script>
+    <p>
+        <input type="text" id="amount" readonly
+            style="border:0; color:#1fb9f6; font-weight:bold; text-align: center; font-size: 20px;">
+    </p>
+
+    <div class="slider-holder">
+        <div id="slider-range"></div>
+    </div>
+
+
+    <!-- Map -->    
     <script>
+        
+        //Slider
+        setup_slider();
+
+        //List of all countries
+        var countries = createAllCountries();
 
         //Read cookies
         var temp_min_year = getCookie("map_settings_min_year");
@@ -110,9 +132,6 @@
         var width = window.innerWidth;
         var height = window.innerHeight;
 
-        //List of all countries
-        let countries = createAllCountries();
-
         // Append the svg object to the body of the page
         var svg = d3.select("#map_body")
             .append("svg")
@@ -133,62 +152,7 @@
             .range(d3.schemeBlues[6]);
 
         // Load external data and boot
-        d3.queue()
-            .defer(d3.json, "../Data/world_map.geojson")
-            .defer(d3.csv, "../Data/complete_data.csv", function (row) {
-
-                //Calculations for each row
-                //Use settings
-                if (!document.getElementById('settings_checkbox_unknown').checked) {
-                    if (row.YOB.length == 0 || row.YOD.length == 0) return;
-                }
-                if (row.YOB < document.getElementById('settings_min_year').value) return;
-                if (row.YOD > document.getElementById('settings_max_year').value) return;
-
-                //Population
-                var curr_countries_names = row.worked_in.split("|");
-                for (i = 0; i < curr_countries_names.length; i++) {
-                    var curr_country_name = curr_countries_names[i];
-                    var curr_country = findObjectByKey(countries, "country_name", curr_country_name);
-
-                    if (curr_country != null) {
-                        var row_worked_as = row.worked_as.split("|");
-                        row_worked_as.forEach(function (part, index) {
-                            this[index] = this[index].split(">").pop();
-                        }, row_worked_as);
-
-                        curr_country.country_pioneers.push(new Pioneer(row.name, row.image_url, row.link, curr_countries_names, row_worked_as));
-
-                        //Connections
-                        for (j = 0; j < curr_countries_names.length; j++) {
-                            var connection_name = curr_countries_names[j];
-                            if (curr_country_name !== connection_name) {
-                                if (curr_country.country_connected_countries.findIndex(x => x == connection_name) === -1) {
-                                    curr_country.country_connected_countries.push(connection_name);
-                                }
-
-                            }
-                        }
-                    }
-                }
-
-                //Different Jobs
-                for (i = 0; i < countries.length; i++) {
-                    var curr_country = countries[i];
-                    var jobs = []
-                    for (j = 0; j < curr_country.country_pioneers.length; j++) {
-                        var curr_pioneer = curr_country.country_pioneers[j];
-                        for (u = 0; u < curr_country.country_pioneers.length; u++) {
-                            var curr_job = curr_pioneer.pioneer_worked_as[u]
-                            if (typeof curr_job !== "undefined") {
-                                jobs.push(curr_job);
-                            }
-                        }
-                    }
-                    curr_country.country_jobs = uniq(jobs);
-                }
-            })
-            .await(ready);
+        load_data();
 
         function ready(error, map_data, complete_data) {
 
