@@ -21,7 +21,7 @@ class Country {
         this.country_lat = lat;
     }
 
-    clear(){
+    clear() {
         this.country_connected_countries.length = 0
         this.country_pioneers.length = 0
         this.country_jobs.length = 0
@@ -158,7 +158,85 @@ function load_data() {
         .await(ready);
 }
 
-//Help Functions
+/**
+ * Display a random example to the sidepanel
+ */
+function show_example_pioneer(pioneers) {
+
+    document.getElementById('pioneers_next_button').hidden = pioneers.length == 1;
+
+    var example_pioneer = pioneers[Math.floor(Math.random() * pioneers.length)];
+
+    document.getElementById('pioneers_ex_name').innerHTML = example_pioneer.pioneer_name;
+    document.getElementById('pioneers_ex_image').src = "";
+    document.getElementById('pioneers_ex_image').src = example_pioneer.pioneer_image;
+    document.getElementById('pioneers_read_more_button').onclick = function () { window.open(example_pioneer.pioneer_link) };
+    document.getElementById('pioneers_next_button').onclick = function () {
+        var filtered = pioneers.filter(function (value, index, arr) {
+            return value !== example_pioneer;
+        });
+        show_example_pioneer(filtered)
+    };
+}
+
+/**
+ * Display connections between all countries
+ */
+function show_all_connections(countries) {
+
+    //Calculate connections
+    var link = []
+    for (var i = 0; i < countries.length; i++) {
+
+        var curr_country = countries[i];
+
+        for (var j = 0; j < curr_country.country_connected_countries.length; j++) {
+            var connected_country = findObjectByKey(countries, "country_name", curr_country.country_connected_countries[j]);
+
+            source = [curr_country.country_long, curr_country.country_lat]
+            target = [connected_country.country_long, connected_country.country_lat]
+            topush = { type: "LineString", coordinates: [source, target] }
+            link.push(topush)
+        }
+    }
+
+     // Add the path
+     svg.selectAll("myPath")
+     .data(link)
+     .enter()
+     .append("path")
+     .attr("d", function (d) { return path(d) })
+     .attr("class", function (d) { return "Link" })
+     .style("pointer-events", "none")
+     .style("fill", "none")
+     .style("stroke", "#00d4db")
+     .style("stroke-width", 4)
+     .style("opacity", 0)
+     .transition()
+     .duration(500)
+     .style("opacity", 1)
+}
+
+function change_color(){
+    document.getElementById('pioneers_read_more_button').checked = !document.getElementById('pioneers_read_more_button').checked;
+    load_data();
+}
+
+function get_color_scale(){
+    
+    var colorScale1 = d3.scaleThreshold()
+        .domain([1, 2, 5, 15, 50, 100])
+        .range(d3.schemeBlues[6]);
+
+    var colorScale2 = d3.scaleThreshold()
+        .domain([0, 1, 5, 10, 10, 15, 25, 50, 75])
+        .range(d3.schemeRdBu[10]);
+
+    if(document.getElementById('pioneers_read_more_button').checked) return colorScale2;
+    else return colorScale1;
+}
+
+
 function findObjectByKey(array, key, value) {
     for (var i = 0; i < array.length; i++) {
         if (array[i][key] === value) {
