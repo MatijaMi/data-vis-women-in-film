@@ -69,9 +69,12 @@
 
         </div>
         <div class="text_long" id="sidepanel_empty_text" hidden="true">
-            There are no known pioneers registered between the selected Years. <br><br>
-            If you know some, please contact us.
+            There are no pioneers registered to the WFFP between the selected Years. <br><br>
+            If you want to contribute to the project please click the button below.
+            <br><br>            
         </div>
+
+        <button class="round_button" onclick="window.open('https://wfpp.columbia.edu/contribute/')" id="pioneers_contribute_button" hidden="true">Contribute</button>
     </div>
 
     <!-- Settings -->
@@ -204,11 +207,13 @@
                     document.getElementById('country_name_label').innerHTML = d.properties.name;
                     document.getElementById('sidepanel_holder').hidden = true;
                     document.getElementById('sidepanel_empty_text').hidden = false;
+                    document.getElementById('pioneers_contribute_button').hidden = false;
                     svg.selectAll(".Link").remove();
                     return;
                 }
                 else {
                     document.getElementById('sidepanel_empty_text').hidden = true;
+                    document.getElementById('pioneers_contribute_button').hidden = true;
                 }
 
                 //Remove old links
