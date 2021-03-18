@@ -28,14 +28,14 @@ csv("/Website/Data/complete_data.csv").then(data => {
         try {
             const img_url = new URL(element.image_url)
             document.getElementById("pioneer_of_the_day").src = img_url
-            document.getElementById("pod_title").innerText = "Pioneer of the day: " + element.name
+            document.getElementById("pod_title").innerText = "Birthday: " + element.name
             document.getElementById("lived").innerText = "Lived:\n" + element.DOB + ", " + element.YOB + " - " + element.DOD + ", " + element.YOD
             var aka = String(element.aka)
             aka = aka.split("|").join(", ")
             document.getElementById("aka").innerText = "Also known as:\n" + aka
         } catch (error) {
             console.log("No image found for todays pioneer")
-            document.getElementById("pod_title").innerText = "Pioneer of the day: " + element.name
+            document.getElementById("pod_title").innerText = "Birthday: " + element.name
         }
         var btn = document.createElement("BUTTON")
         btn.innerText = "Discover"
