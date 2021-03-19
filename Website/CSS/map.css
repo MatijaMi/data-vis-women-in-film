@@ -119,6 +119,11 @@
     user-select: none; 
 }
 
+input.largerCheckbox { 
+    width: 20px; 
+    height: 20px; 
+} 
+
 .footer{
     position: fixed;
     bottom: 0px; 
