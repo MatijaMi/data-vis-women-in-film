@@ -6,7 +6,7 @@ const width = +svg.attr("width");
 const height = +svg.attr("height");
 
 const render = data => {
-    const xValue = d => d.YOB;
+    const xStart = d => d.YOB;
     const xEnd = d => d.YOD;
     const yValue = d => d.name;
     const margin = { top: 40, right: 40, bottom: 50, left: 150 };
@@ -15,13 +15,18 @@ const render = data => {
 
 
     const xScale = scaleLinear()
-        .domain([1841, max(data, xEnd)])
+        .domain([min(data, xStart), max(data, xEnd)])
         .range([0, innerWidth]);
 
     const yScale = scaleBand()
         .domain(data.map(yValue))
         .range([0, innerHeight])
         .padding(0.1);
+
+    const xOffset = d => {
+        const min = data[0].YOB;
+        return innerWidth / (d.YOB - min);
+    };
 
     const g = svg.append("g")
         .attr("transform", `translate(${margin.left}, ${margin.top})`);
@@ -32,24 +37,24 @@ const render = data => {
     g.selectAll("rect").data(data)
         .enter()
         .append("rect")
-            .attr("y", d => yScale(yValue(d)))
-            .attr("width", d => xScale(xValue(d)))
-            .attr("height", yScale.bandwidth());
+        .attr("y", d => yScale(yValue(d)))
+        .attr("width", d => xScale(xEnd(d)))
+        .attr("x", d => xOffset(d))
+        .attr("height", yScale.bandwidth());
 
 };
 
 csv("/Website/Data/complete_data.csv").then(data => {
-    data = data.map(d => {
-        return {
-            ...d,
-            start: +d.YOB,
-            end: +d.YOD
-        };
-    }).sort((a,b) => a.YOB - b.YOB);
+    data = data.sort((a, b) => a.YOB - b.YOB);
+    var temp = []
     data.forEach(d => {
+        if (d.YOB == "" || d.YOD == "") {
+            return;
+        };
         d.YOB = +d.YOB;
         d.YOD = +d.YOD;
+        temp.push(d)
     });
-    console.log(data);
-    render(data);
+    console.log(temp);
+    render(temp);
 })

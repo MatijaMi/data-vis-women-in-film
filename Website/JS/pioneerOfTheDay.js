@@ -29,7 +29,12 @@ csv("/Website/Data/complete_data.csv").then(data => {
             const img_url = new URL(element.image_url)
             document.getElementById("pioneer_of_the_day").src = img_url
             document.getElementById("pod_title").innerText = "Birthday: " + element.name
+            document.getElementById("description").remove()
+            document.getElementById("address").remove()
             document.getElementById("lived").innerText = "Lived:\n" + element.DOB + ", " + element.YOB + " - " + element.DOD + ", " + element.YOD
+            var worked = String(element.worked_in)
+            worked = worked.split("|").join(", ")
+            document.getElementById("worked").innerText = "Worked in:\n" + worked
             var aka = String(element.aka)
             aka = aka.split("|").join(", ")
             document.getElementById("aka").innerText = "Also known as:\n" + aka
