@@ -109,8 +109,8 @@ function load_data() {
                 if (row.YOB.length == 0 || row.YOD.length == 0) return;
             }
 
-            if (row.YOB < $("#slider-range").slider("values", 0)) return;
-            if (row.YOD > $("#slider-range").slider("values", 1)) return;
+            if (row.YOB > $("#slider-range").slider("values", 2)) return;
+            if (row.YOD < $("#slider-range").slider("values", 0)) return;
 
             //Population
             var curr_countries_names = row.worked_in.split("|");
@@ -210,32 +210,13 @@ function show_all_connections(countries) {
      .style("pointer-events", "none")
      .style("fill", "none")
      .style("stroke", "#00d4db")
-     .style("stroke-width", 4)
+     .style("stroke-dasharray", ("2, 4"))
+     .style("stroke-width", 3)
      .style("opacity", 0)
      .transition()
      .duration(500)
      .style("opacity", 1)
 }
-
-function change_color(){
-    document.getElementById('pioneers_read_more_button').checked = !document.getElementById('pioneers_read_more_button').checked;
-    load_data();
-}
-
-function get_color_scale(){
-    
-    var colorScale1 = d3.scaleThreshold()
-        .domain([1, 2, 5, 15, 50, 100])
-        .range(d3.schemeBlues[6]);
-
-    var colorScale2 = d3.scaleThreshold()
-        .domain([0, 1, 5, 10, 10, 15, 25, 50, 75])
-        .range(d3.schemeRdBu[10]);
-
-    if(document.getElementById('pioneers_read_more_button').checked) return colorScale2;
-    else return colorScale1;
-}
-
 
 function findObjectByKey(array, key, value) {
     for (var i = 0; i < array.length; i++) {
