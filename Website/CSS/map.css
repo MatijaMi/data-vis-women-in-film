@@ -1,22 +1,24 @@
 :root {
-    --panel_background_color:rgb(88, 88, 88);
-    --panel_border_color:rgb(66, 66, 66);
-    --text_color:rgb(250, 250, 250);
+    --panel_background_color: rgb(88, 88, 88);
+    --panel_border_color: rgb(66, 66, 66);
+    --text_color: rgb(250, 250, 250);
     --text_font: 'Times New Roman', serif;
+    --grid-cols: 1;
+    --grid-rows: 1;
 }
 
 .header {
     position: fixed;
     width: 100%;
     height: 40px;
-    text-align: left;    
+    text-align: left;
     background-color: #eee;
 }
 
 .headline {
     font-size: 27px;
     font-weight: bold;
-    font-family: var(--text_font);    
+    font-family: var(--text_font);
     color: var(--text_color);
 }
 
@@ -33,25 +35,25 @@
     z-index: 100;
 }
 
-.sidepanel_image { 
+.sidepanel_image {
     margin-left: auto;
     margin-right: auto;
-    height:180px;
-    background-repeat:no-repeat;
-    background-size:cover;
+    height: 180px;
+    background-repeat: no-repeat;
+    background-size: cover;
     pointer-events: none;
 }
 
 .round_button {
     width: 40%;
-    padding: 0.5em 1.7em;    
-    border-radius: 2em;   
+    padding: 0.5em 1.7em;
+    border-radius: 2em;
     font-weight: 300;
     color: #000;
     text-shadow: 0 0.04em 0.04em rgba(255, 255, 255, 0.253);
     font-size: 17px;
     border: 0.16em solid var(--panel_border_color);
-    outline:none;
+    outline: none;
     box-shadow: none;
     font-family: var(--text_font);
 }
@@ -93,40 +95,56 @@
     color: var(--text_color);
     text-align: left;
 }
-.map_holder{
-    top:40px;
+
+.map_holder {
+    top: 40px;
     margin-left: 9%;
-    position: fixed;    
+    position: fixed;
 }
 
-.slider-holder{
-    bottom: 6%; 
+.slider-holder {
+    bottom: 6%;
     margin-left: 35%;
     width: 50%;
-    position: fixed;        
+    position: fixed;
 }
 
-.slider-text-holder{
-    bottom: 8%; 
+.slider-text-holder {
+    bottom: 8%;
     margin-left: 35%;
     width: 50%;
-    position: fixed;   
+    position: fixed;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
-    user-select: none; 
+    user-select: none;
 }
 
-input.largerCheckbox { 
-    width: 20px; 
-    height: 20px; 
-} 
+input.largerCheckbox {
+    width: 20px;
+    height: 20px;
+}
 
-.footer{
+#photos {
+    line-height: 0;
+    -webkit-column-count: 5;
+    -webkit-column-gap: 0px;
+    -moz-column-count: 5;
+    -moz-column-gap: 0px;
+    column-count: 5;
+    column-gap: 0px;
+}
+
+#photos img {
+    width: 100% !important;
+    height: auto !important;
+}
+
+.footer {
     position: fixed;
-    bottom: 0px; 
+    bottom: 0px;
     width: 100%;
     height: 40px;
     text-align: left;

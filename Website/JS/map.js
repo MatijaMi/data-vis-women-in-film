@@ -1,3 +1,6 @@
+//Global Variables
+var photo_grid = null;
+
 /**
  * Class representing a Country
  */
@@ -101,7 +104,7 @@ function load_data() {
     //Adding data to d3 map
     d3.queue()
         .defer(d3.json, "../Data/world_map.geojson")
-        .defer(d3.csv, "../Data/complete_data.csv", function (row) {
+        .defer(d3.csv, "../Data/complete_data.csv", function(row) {
 
             //Calculations for each row
             //Use settings
@@ -120,7 +123,7 @@ function load_data() {
 
                 if (curr_country != null) {
                     var row_worked_as = row.worked_as.split("|");
-                    row_worked_as.forEach(function (part, index) {
+                    row_worked_as.forEach(function(part, index) {
                         this[index] = this[index].split(">").pop();
                     }, row_worked_as);
 
@@ -170,9 +173,9 @@ function show_example_pioneer(pioneers) {
     document.getElementById('pioneers_ex_name').innerHTML = example_pioneer.pioneer_name;
     document.getElementById('pioneers_ex_image').src = "";
     document.getElementById('pioneers_ex_image').src = example_pioneer.pioneer_image;
-    document.getElementById('pioneers_read_more_button').onclick = function () { window.open(example_pioneer.pioneer_link) };
-    document.getElementById('pioneers_next_button').onclick = function () {
-        var filtered = pioneers.filter(function (value, index, arr) {
+    document.getElementById('pioneers_read_more_button').onclick = function() { window.open(example_pioneer.pioneer_link) };
+    document.getElementById('pioneers_next_button').onclick = function() {
+        var filtered = pioneers.filter(function(value, index, arr) {
             return value !== example_pioneer;
         });
         show_example_pioneer(filtered)
@@ -200,22 +203,22 @@ function show_all_connections(countries) {
         }
     }
 
-     // Add the path
-     svg.selectAll("myPath")
-     .data(link)
-     .enter()
-     .append("path")
-     .attr("d", function (d) { return path(d) })
-     .attr("class", function (d) { return "Link" })
-     .style("pointer-events", "none")
-     .style("fill", "none")
-     .style("stroke", "#00d4db")
-     .style("stroke-dasharray", ("2, 4"))
-     .style("stroke-width", 3)
-     .style("opacity", 0)
-     .transition()
-     .duration(500)
-     .style("opacity", 1)
+    // Add the path
+    svg.selectAll("myPath")
+        .data(link)
+        .enter()
+        .append("path")
+        .attr("d", function(d) { return path(d) })
+        .attr("class", function(d) { return "Link" })
+        .style("pointer-events", "none")
+        .style("fill", "none")
+        .style("stroke", "#00d4db")
+        .style("stroke-dasharray", ("2, 4"))
+        .style("stroke-width", 3)
+        .style("opacity", 0)
+        .transition()
+        .duration(500)
+        .style("opacity", 1)
 }
 
 function findObjectByKey(array, key, value) {
@@ -227,9 +230,22 @@ function findObjectByKey(array, key, value) {
     return null;
 }
 
-function image_load_error() {
-    document.getElementById('pioneers_ex_image').src = "../Images/Pioneer-Placeholder.png";
+function image_load_error(id) {
+    document.getElementById(id).src = "../Images/Pioneer-Placeholder.png";
 }
+
+//Grid
+function makeGrid(pioneers) {
+
+    var allImages = "";
+    var symbol = "'";
+
+    for (var i = 0; i < pioneers.length; i++) {
+        allImages += '<img id="pioneers_grid_img_' + i + '" src="' + pioneers[i].pioneer_image + '" onclick="window.open(' + symbol + pioneers[i].pioneer_link + symbol + ')" alt="' + pioneers[i].pioneer_name + '" onerror="image_load_error(' + symbol + 'pioneers_grid_img_' + i + '' + symbol + ')">';
+    }
+
+    $('#photos').html(allImages);
+};
 
 function getCookie(cname) {
     var name = cname + "=";
@@ -248,13 +264,29 @@ function getCookie(cname) {
 }
 
 function uniq(a) {
-    var prims = { "boolean": {}, "number": {}, "string": {} }, objs = [];
+    var prims = { "boolean": {}, "number": {}, "string": {} },
+        objs = [];
 
-    return a.filter(function (item) {
+    return a.filter(function(item) {
         var type = typeof item;
         if (type in prims)
             return prims[type].hasOwnProperty(item) ? false : (prims[type][item] = true);
         else
             return objs.indexOf(item) >= 0 ? false : objs.push(item);
     });
+}
+
+function imageExists(image_url) {
+
+    fetch(image_url, { method: 'HEAD' })
+        .then(res => {
+            if (res.ok) {
+                console.log('Image exists.');
+                return true;
+            } else {
+                console.log('Image does not exist.');
+                return false;
+            }
+        }).catch(err => console.log('Error:', err));
+
 }
