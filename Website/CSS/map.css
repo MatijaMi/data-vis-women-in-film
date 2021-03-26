@@ -142,6 +142,17 @@ input.largerCheckbox {
     height: auto !important;
 }
 
+.info_icon{
+    position: absolute;
+    right: 24px;
+    top: 16px;
+}
+
+.info_icon_slider{
+    position: absolute;
+    right:38%;
+}
+
 .footer {
     position: fixed;
     bottom: 0px;

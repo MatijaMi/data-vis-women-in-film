@@ -231,7 +231,7 @@ function findObjectByKey(array, key, value) {
 }
 
 function image_load_error(id) {
-    document.getElementById(id).src = "../Images/Pioneer-Placeholder.png";
+    if(document.getElementById(id) != null) document.getElementById(id).src = "../Images/Pioneer-Placeholder.png";
 }
 
 //Grid
@@ -289,4 +289,41 @@ function imageExists(image_url) {
             }
         }).catch(err => console.log('Error:', err));
 
+}
+
+function sidepanel_info_onclick(){
+    var dialog_text =   "In this sidepanel you can see an overview of the pioneers registered between the selected years. " +
+                        "You can also see how many different jobs those women had in total and in how many countries they worked. " +
+                        "Those countries are therefore called 'connected' and displayed with blue dotted lines. " +
+                        "Note that this data does not only count international collaboration of film studios but rather international working of individual persons. " +
+                        "<br/><br/>" +
+                        "Besides that, there is also an example pioneer given who was working in the selected country in this time period.";
+
+    open_dialog(dialog_text);
+}
+
+function settingspanel_info_onclick(){
+    var dialog_text =   "In the settings panel, you can use additional functions to specify the data displayed. " +
+                        "<br/><br/>" +
+                        "The 'Include Unknown Dates' checkbox allows you to include pioneers which have unknown birth of death dates. " +
+                        "<br/>" +
+                        "The 'Show all connections' button allows you to see all international working between all countries in the selected time period. ";
+
+    open_dialog(dialog_text);
+}
+
+function slider_info_onclick(){
+    var dialog_text =   "This slider can be used to specify the time period the data is selected from. " +
+                        "The pioneers you will see, are those who were alive in the selected time period. " +
+                        "To be exact, you see those which were born before the date of the right handle and died after the date of the left handle. " +
+                        "You can use this selection to see which time periods have missing data.";
+
+    open_dialog(dialog_text);
+}
+
+function open_dialog(dialog_text){
+    $( "#dialog" ).html("<p>" + dialog_text + "</p>");
+    $( "#dialog" ).dialog({
+        width: "50%"
+      });
 }

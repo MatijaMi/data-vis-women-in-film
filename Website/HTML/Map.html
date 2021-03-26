@@ -36,11 +36,13 @@
     <!-- Sidepanel -->
     <div class="sidepanel_panel">
 
-        <label class="headline" id="country_name_label"></label>
+        <label class="headline" id="country_name_label"></label>       
 
         <br><br>
 
-        <div id="sidepanel_holder" hidden="true">
+        <div id="sidepanel_holder" hidden=true>
+
+            <input type="image" class="info_icon" src="../Images/question_mark.png" onclick="sidepanel_info_onclick()" />
 
             <label class="text_short">Pioneers: </label>
             <label class="text_short" id="pioneers_count_label"></label><br>
@@ -74,8 +76,10 @@
     </div>
 
     <!-- Settings -->
-    <div class="settings_panel" hidden=t rue>
+    <div class="settings_panel">
         <label class="headline">Settings</label>
+
+        <input type="image" class="info_icon" src="../Images/question_mark.png" onclick="settingspanel_info_onclick()" />
 
         <br><br>
 
@@ -84,11 +88,16 @@
 
         <br><br>
 
-        <button class="round_button" id="all_connections_button">Show all Connections</button>
+        <button class="round_button" id="all_connections_button">Show all connections</button>
     </div>
 
-    <div class="settings_panel">
+    <div class="settings_panel"  hidden=true>
         <section id="photos"></section>
+    </div>
+
+    <!-- Dialog -->
+    <div id="dialog" title="Information" hidden="true">
+        <p>This is the default dialog which is useful for displaying information. The dialog window can be moved, resized and closed with the &apos;x&apos; icon.</p>
     </div>
 
     <!-- Map Object -->
@@ -98,6 +107,7 @@
 
     <!-- Slider -->
     <div class="slider-text-holder">
+        <input type="image" class="info_icon_slider" src="../Images/question_mark.png" onclick="slider_info_onclick()" />
         <input type="text" id="slider_span" readonly style="border:0; color:#1fb9f6; font-weight:bold; text-align: center; font-size: 24px; pointer-events: none; width:150px"></input>
     </div>
 
@@ -120,7 +130,7 @@
         myS.slider({
             min: sMin,
             max: sMax,
-            values: [1880, 1900, 1920],
+            values: [1900, 1915, 1930],
             steps: 1,
             change: function(event, ui) {
                 load_data();
@@ -196,7 +206,7 @@
         }).css('background', 'rgba(00,136,255,0.8)');
 
         //Slider UI on initialization
-        $("#slider_span").val(1880 + " - " + 1920);
+        $("#slider_span").val(1900 + " - " + 1930);
 
         //List of all countries
         var countries = createAllCountries();
