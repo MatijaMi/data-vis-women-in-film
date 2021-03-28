@@ -25,17 +25,16 @@
     </div>
 
     <!-- Dendrogram Object -->
-    <div class="dendrogram_object">
+    <div class="switches">
         <form>
             <label><input type="radio" name="mode" value="cluster" checked> Dendrogram</label>
             <label><input type="radio" name="mode" value="tree"> Tree</label>
         </form>
-
-        <svg width="960" height="2400"></svg>
-
     </div>
 
-    <!-- Script -->    
+    <svg class="dendrogram_object" width="960" height="2400"></svg>
+
+    <!-- Script -->
     <script>
 
         var svg = d3.select("svg"),
@@ -141,15 +140,27 @@
         stroke-width: 1.5px;
     }
 
-    form {
+    label {
+        display: block;
+    }
+
+    .switches {
         font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
         position: absolute;
         text-align: left;
         left: 10px;
         top: 50px;
+    }  
+
+    .header {
+        position: fixed;
+        width: 100%;
+        height: 40px;
+        text-align: left;
+        background-color: #eee;
     }
 
-    label {
-        display: block;
+    .dendrogram_object{
+        margin-top: 40px;
     }
 </style>
