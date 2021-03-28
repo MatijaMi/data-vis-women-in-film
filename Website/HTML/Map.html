@@ -91,7 +91,7 @@
         <button class="round_button" id="all_connections_button">Show all connections</button>
     </div>
 
-    <div class="settings_panel"  hidden=true>
+    <div class="settings_panel" hidden=true>
         <section id="photos"></section>
     </div>
 
@@ -101,8 +101,7 @@
     </div>
 
     <!-- Map Object -->
-    <div class="map_holder">
-        <div class="map_body" id="map_body"></div>
+    <div class="map_holder" id="map_body">
     </div>
 
     <!-- Slider -->
@@ -212,19 +211,23 @@
         var countries = createAllCountries();
 
         // Dimensions
-        var width = window.innerWidth;
-        var height = window.innerHeight;
+        var width = document.getElementById('map_body').offsetWidth;
+        var height = document.getElementById('map_body').offsetHeight;
+
+        //Scale - This map was developed on a 1920/1080 display
+        var scale = 230;    //Standard scale to fit everything nicely
+        var ratio = height; //1000
+
 
         // Append the svg object to the body of the page
         var svg = d3.select("#map_body")
             .append("svg")
-            .attr("width", width / 1.11)
-            .attr("height", height / 1.01)
+            .attr("width", "100%")      
 
         // Map and projection
         var path = d3.geoPath();
         var projection = d3.geoMercator()
-            .scale(245)
+            .scale(230)
             .center([0, 0])
             .translate([width / 2, height / 1.5]);
 

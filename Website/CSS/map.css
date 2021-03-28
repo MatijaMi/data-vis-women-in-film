@@ -98,8 +98,15 @@
 
 .map_holder {
     top: 40px;
-    margin-left: 9%;
+    bottom: 40px;
+    margin-left: 19%;
+    width:80%;
     position: fixed;
+    display:flex;
+}
+
+.map_body {
+    bottom: 40px;
 }
 
 .slider-holder {
