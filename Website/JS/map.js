@@ -293,11 +293,12 @@ function imageExists(image_url) {
 
 function sidepanel_info_onclick(){
     var dialog_text =   "In this sidepanel you can see an overview of the pioneers registered between the selected years. " +
-                        "You can also see how many different jobs those women had in total and in how many countries they worked. " +
+                        "You can also see how many different jobs these women had in total and in how many countries they worked. " +
                         "Those countries are therefore called 'connected' and displayed with blue dotted lines. " +
-                        "Note that this data does not only count international collaboration of film studios but rather international working of individual persons. " +
+                        "Note that this data does not primarily include international collaboration of film studios but rather international working of individual persons. " +
                         "<br/><br/>" +
-                        "Besides that, there is also an example pioneer given who was working in the selected country in this time period.";
+                        "Besides that, there is also an example pioneer given who was working in the selected country in this time period. " +
+                        "If you want to know more about the example pioneer you can click on the 'Read more' button to visit her WFPP biography.";
 
     open_dialog(dialog_text);
 }
@@ -305,9 +306,10 @@ function sidepanel_info_onclick(){
 function settingspanel_info_onclick(){
     var dialog_text =   "In the settings panel, you can use additional functions to specify the data displayed. " +
                         "<br/><br/>" +
-                        "The 'Include Unknown Dates' checkbox allows you to include pioneers which have unknown birth of death dates. " +
+                        "The 'Include Unknown Dates' checkbox allows you to include pioneers which have unknown birth or death dates. " +
                         "<br/>" +
-                        "The 'Show all connections' button allows you to see all international working between all countries in the selected time period. ";
+                        "The 'Show all connections' button allows you to see all international working between all countries in the selected time period. " +
+                        "Note that this data does not primarily include international collaboration of film studios but rather international working of individual persons.";
 
     open_dialog(dialog_text);
 }
