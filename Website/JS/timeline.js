@@ -39,7 +39,7 @@ const render = data => {
         .append("rect")
         .attr("y", d => yScale(yValue(d)))
         .attr("width", d => xScale(xEnd(d)))
-        .attr("x", d => xOffset(d))
+        //.attr("x", d => xOffset(d))
         .attr("height", yScale.bandwidth());
 
 };

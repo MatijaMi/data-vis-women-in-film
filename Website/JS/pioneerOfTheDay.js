@@ -17,7 +17,7 @@ csv("/Website/Data/complete_data.csv").then(data => {
         const today = "" + month + " " + day // Format String the same as it is in the data
         const debug_today = "February 10" // For showcasing if there is no Pioneer born on day of presentation
 
-        if (dob == debug_today){
+        if (dob == today){
             pods.push(element)
         }
     });
@@ -28,9 +28,8 @@ csv("/Website/Data/complete_data.csv").then(data => {
         try {
             const img_url = new URL(element.image_url)
             document.getElementById("pioneer_of_the_day").src = img_url
-            document.getElementById("pod_title").innerText = "Birthday: " + element.name
-            document.getElementById("description").remove()
-            document.getElementById("address").remove()
+            document.getElementById("pod_title").innerText = "Happy Birthday: " + element.name
+            document.getElementById("description").hidden = true
             document.getElementById("lived").innerText = "Lived:\n" + element.DOB + ", " + element.YOB + " - " + element.DOD + ", " + element.YOD
             var worked = String(element.worked_in)
             worked = worked.split("|").join(", ")
