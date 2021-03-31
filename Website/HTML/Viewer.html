@@ -8,7 +8,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../CSS/baseStyle.css">
     <script type="module" src="../JS/generalBehaviour.js"></script>
-    <script type="module" src="../JS/jobCluser.js"></script>
     <script src="https://d3js.org/d3.v4.js"></script>
     <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
     <script type="text/javascript" src="../../Material/Data/WFPP.json"></script>
@@ -18,42 +17,14 @@
   
   <!-- Header -->
   <div class="header" id="header">
-    <a href="/../index.html">Home</a>
+    <a href="/index.html">Home</a>
     <a href="Map.html">Map</a>
     <a href="Viewer.html">Viewer</a>
-    <a href="">Extra</a>
+    <a href="Dendrogram.html">Dendrogram</a>
     <a href="">Gallery</a>
     <a href="">About</a>
-  </div>
-
-  <!-- Sidepanel -->
-    <div id="mySidepanel" class="sidepanel">
-        <a href="javascript:void(0)" class="closebtn"  id="sidePanelClose">&times;</a>
-   
-        <label>Settings</label>
-
-        <br><br>
-
-        <label for="FromYear">From:</label>
-        <input type="number" id="from" name="from" min="1800" max="2020">
-        <label for="ToYear">To:</label>
-        <input type="number" id="to" name="to" min="1800" max="2020">
-
-        <br><br>
-
-        <input type="checkbox" id="checkbox1" name="checkbox1" value="checkbox1Checked">
-        <label for="checkbox1">Only display top 10</label><br>
-
-        <br>   
-
-        <input type="checkbox" id="checkbox2" name="checkbox2" value="checkbox2Checked">
-        <label for="checkbox2">Show Connections</label><br>
-    </div>
-
-    <button id="sidepanel_button" class="openbtn">&#9776;</button>
-
-     <!-- Clusterpanel -->
-    <div class="my_dataviz" id="my_dataviz"></div>
+</div>
+ 
 
   <div class="footer">
 
