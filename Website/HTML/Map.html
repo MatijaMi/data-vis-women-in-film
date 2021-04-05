@@ -21,7 +21,7 @@
 
 </head>
 
-<body>
+<body onresize="resizeMap()">
 
     <!-- Header -->
     <div class="header" id="header">
@@ -36,13 +36,14 @@
     <!-- Sidepanel -->
     <div class="sidepanel_panel">
 
-        <label class="headline" id="country_name_label"></label>       
+        <label class="headline" id="country_name_label"></label>
 
         <br><br>
 
         <div id="sidepanel_holder" hidden=true>
 
-            <input type="image" class="info_icon" src="../Images/question_mark.png" onclick="sidepanel_info_onclick()" />
+            <input type="image" class="info_icon" src="../Images/question_mark.png"
+                onclick="sidepanel_info_onclick()" />
 
             <label class="text_short">Pioneers: </label>
             <label class="text_short" id="pioneers_count_label"></label><br>
@@ -60,7 +61,9 @@
 
             <br><br>
 
-            <img class="sidepanel_image" id="pioneers_ex_image" src="https://wfpp.columbia.edu/wp-content/uploads/2018/05/adaalineurban.jpg" onerror="image_load_error('pioneers_ex_image')">
+            <img class="sidepanel_image" id="pioneers_ex_image"
+                src="https://wfpp.columbia.edu/wp-content/uploads/2018/05/adaalineurban.jpg"
+                onerror="image_load_error('pioneers_ex_image')">
             <br><br>
 
             <button class="round_button" id="pioneers_read_more_button">Read more</button>
@@ -68,18 +71,21 @@
 
         </div>
         <div class="text_long" id="sidepanel_empty_text" hidden="true">
-            There are no pioneers registered to the WFFP between the selected Years. <br><br> If you want to contribute to the project please click the button below.
+            There are no pioneers registered to the WFFP between the selected Years. <br><br> If you want to contribute
+            to the project please click the button below.
             <br><br>
         </div>
 
-        <button class="round_button" onclick="window.open('https://wfpp.columbia.edu/contribute/')" id="pioneers_contribute_button" hidden="true">Contribute</button>
+        <button class="round_button" onclick="window.open('https://wfpp.columbia.edu/contribute/')"
+            id="pioneers_contribute_button" hidden="true">Contribute</button>
     </div>
 
     <!-- Settings -->
     <div class="settings_panel">
         <label class="headline">Settings</label>
 
-        <input type="image" class="info_icon" src="../Images/question_mark.png" onclick="settingspanel_info_onclick()" />
+        <input type="image" class="info_icon" src="../Images/question_mark.png"
+            onclick="settingspanel_info_onclick()" />
 
         <br><br>
 
@@ -101,7 +107,8 @@
 
     <!-- Dialog -->
     <div id="dialog" title="Information" hidden="true">
-        <p>This is the default dialog which is useful for displaying information. The dialog window can be moved, resized and closed with the &apos;x&apos; icon.</p>
+        <p>This is the default dialog which is useful for displaying information. The dialog window can be moved,
+            resized and closed with the &apos;x&apos; icon.</p>
     </div>
 
     <!-- Map Object -->
@@ -110,8 +117,10 @@
 
     <!-- Slider -->
     <div class="slider-text-holder">
-        <input type="image" class="info_icon_slider" src="../Images/question_mark.png" onclick="slider_info_onclick()" />
-        <input type="text" id="slider_span" readonly style="border:0; color:#1fb9f6; font-weight:bold; text-align: center; font-size: 24px; pointer-events: none; width:150px"></input>
+        <input type="image" class="info_icon_slider" src="../Images/question_mark.png"
+            onclick="slider_info_onclick()" />
+        <input type="text" id="slider_span" readonly
+            style="border:0; color:#1fb9f6; font-weight:bold; text-align: center; font-size: 24px; pointer-events: none; width:150px"></input>
     </div>
 
     <div class="slider-holder">
@@ -123,6 +132,7 @@
 
     <!-- Map -->
     <script>
+
         //Slider
         var sliderWasUsed = false;
         var lastCountry = null;
@@ -135,11 +145,11 @@
             max: sMax,
             values: [1900, 1915, 1930],
             steps: 1,
-            change: function(event, ui) {
+            change: function (event, ui) {
                 load_data();
                 sliderWasUsed = true;
             },
-            slide: function(event, ui) {
+            slide: function (event, ui) {
                 //Min handler
                 if (ui.handleIndex === 0) {
                     if ((myS.slider("values", 1) - ui.value) < (minSpace + 1)) {
@@ -218,20 +228,23 @@
         var width = document.getElementById('map_body').offsetWidth;
         var height = document.getElementById('map_body').offsetHeight;
 
-        //Scale - This map was developed on a 1920/1080 display
-        var scale = 230;    //Standard scale to fit everything nicely
-        var ratio = height; //1000
+        console.log(width + "   " + height);
 
+        //Scale - This map was developed on a 1920/1080 display        
+        var ratioHeight = height / 1000;
+        var ratioWidth = width / 1550;
+        var minRatio = Math.min(ratioHeight, ratioWidth);
+        var scale = 230 * minRatio;
 
         // Append the svg object to the body of the page
         var svg = d3.select("#map_body")
             .append("svg")
-            .attr("width", "100%")      
+            .attr("width", "100%")
 
         // Map and projection
         var path = d3.geoPath();
         var projection = d3.geoMercator()
-            .scale(230)
+            .scale(scale)
             .center([0, 0])
             .translate([width / 2, height / 1.5]);
 
@@ -244,12 +257,12 @@
 
         function ready(error, map_data, complete_data) {
 
-            document.getElementById('all_connections_button').onclick = function() {
+            document.getElementById('all_connections_button').onclick = function () {
                 show_all_connections(countries)
             };
 
             //Mouse Over
-            let mouseOver = function(d) {
+            let mouseOver = function (d) {
 
                 //Mouser Over Animation               
                 d3.select(this)
@@ -259,7 +272,7 @@
 
             }
 
-            let mouseLeave = function(d) {
+            let mouseLeave = function (d) {
 
                 //Mouser Leave Animation
                 d3.select(this)
@@ -268,7 +281,7 @@
                     .style("stroke", "transparent")
             }
 
-            let mouseClick = function(d) {
+            let mouseClick = function (d) {
 
                 //Set last country if slider will be used
                 lastCountry = d;
@@ -310,8 +323,11 @@
                 for (var i = 0; i < curr_country.country_connected_countries.length; i++) {
                     var connected_country = findObjectByKey(countries, "country_name", curr_country.country_connected_countries[i]);
 
-                    source = [curr_country.country_long, curr_country.country_lat]
-                    target = [connected_country.country_long, connected_country.country_lat]
+                    var xOffset = minRatio * 0.94;
+                    var yOffset = minRatio * 1.04;
+
+                    source = [curr_country.country_long * xOffset, curr_country.country_lat * yOffset]
+                    target = [connected_country.country_long * xOffset, connected_country.country_lat * yOffset]
                     topush = {
                         type: "LineString",
                         coordinates: [source, target]
@@ -324,10 +340,10 @@
                     .data(link)
                     .enter()
                     .append("path")
-                    .attr("d", function(d) {
+                    .attr("d", function (d) {
                         return path(d)
                     })
-                    .attr("class", function(d) {
+                    .attr("class", function (d) {
                         return "Link"
                     })
                     .style("pointer-events", "none")
@@ -351,12 +367,12 @@
                 .enter()
                 .append("path")
 
-            //Draw each country
-            .attr("d", d3.geoPath()
-                .projection(projection)
-            )
+                //Draw each country
+                .attr("d", d3.geoPath()
+                    .projection(projection)
+                )
 
-            .attr("class", function(d) {
+                .attr("class", function (d) {
                     return "Country"
                 })
                 .on("mouseover", mouseOver)
@@ -364,24 +380,25 @@
                 .on("click", mouseClick)
 
 
-            //Set the color of each country
-            .attr("fill", function(d) {
+                //Set the color of each country
+                .attr("fill", function (d) {
 
-                var colorScale = d3.scaleThreshold()
-                    .domain([1, 2, 5, 15, 50, 100])
-                    .range(d3.schemeBlues[6]);
+                    var colorScale = d3.scaleThreshold()
+                        .domain([1, 2, 5, 15, 50, 100])
+                        .range(d3.schemeBlues[6]);
 
-                if (findObjectByKey(countries, "country_code", d.id) != null) {
-                    return colorScale(findObjectByKey(countries, "country_code", d.id).country_pioneers.length);
-                } else return colorScale(0);
+                    if (findObjectByKey(countries, "country_code", d.id) != null) {
+                        return colorScale(findObjectByKey(countries, "country_code", d.id).country_pioneers.length);
+                    } else return colorScale(0);
 
-            });
+                });
 
             //Reset UI
             if (sliderWasUsed && lastCountry !== null) {
                 mouseClick(lastCountry);
             }
         }
+
     </script>
 
 </body>

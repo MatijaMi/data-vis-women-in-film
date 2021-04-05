@@ -94,6 +94,14 @@ function createAllCountries() {
 }
 
 /**
+ * Resize event
+ */
+function resizeMap(){
+    
+}
+
+
+/**
  * Loads the data for the map
  */
 function load_data() {
