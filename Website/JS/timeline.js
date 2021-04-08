@@ -1,60 +1,79 @@
-import { select, csv, scaleLinear, max, min, scaleBand, axisLeft, axisTop } from "d3";
+import { select, csv, scaleLinear, max, min, scaleBand, axisLeft, axisTop, range, format } from "d3";
 
 const svg = select("svg");
 
-const width = +svg.attr("width");
-const height = +svg.attr("height");
+async function parseData() {
+    return csv("/Website/Data/complete_data.csv");
+}
 
-const render = data => {
-    const xStart = d => d.YOB;
-    const xEnd = d => d.YOD;
-    const yValue = d => d.name;
-    const margin = { top: 40, right: 40, bottom: 50, left: 150 };
-    const innerWidth = width - margin.left - margin.right;
-    const innerHeight = height - margin.top - margin.bottom;
+async function render() {
+    const H = 3500;
+    const W = 1280;
+    const M = 20;
 
+    let data = await parseData();
+    data.sort((a, b) => a.YOB - b.YOB);
 
-    const xScale = scaleLinear()
-        .domain([min(data, xStart), max(data, xEnd)])
-        .range([0, innerWidth]);
-
-    const yScale = scaleBand()
-        .domain(data.map(yValue))
-        .range([0, innerHeight])
-        .padding(0.1);
-
-    const xOffset = d => {
-        const min = data[0].YOB;
-        return innerWidth / (d.YOB - min);
-    };
-
-    const g = svg.append("g")
-        .attr("transform", `translate(${margin.left}, ${margin.top})`);
-
-    g.append("g").call(axisLeft(yScale));
-    g.append("g").call(axisTop(xScale));
-
-    g.selectAll("rect").data(data)
-        .enter()
-        .append("rect")
-        .attr("y", d => yScale(yValue(d)))
-        .attr("width", d => xScale(xEnd(d)))
-        //.attr("x", d => xOffset(d))
-        .attr("height", yScale.bandwidth());
-
-};
-
-csv("/Website/Data/complete_data.csv").then(data => {
-    data = data.sort((a, b) => a.YOB - b.YOB);
-    var temp = []
+    var naiveData = [];
     data.forEach(d => {
         if (d.YOB == "" || d.YOD == "") {
             return;
         };
         d.YOB = +d.YOB;
         d.YOD = +d.YOD;
-        temp.push(d)
+        naiveData.push(d)
     });
-    console.log(temp);
-    render(temp);
-})
+
+    naiveData = naiveData.slice().map((e, i) => ({ ...e, yIndex: i }));
+
+    console.log(naiveData);
+
+    const xScale = scaleLinear()
+        .domain([min(naiveData, d => d.YOB), max(naiveData, d => d.YOD)])
+        .range([0, W]);
+
+    const yScale = scaleBand()
+        .domain(naiveData.map(d => d.name))
+        .range([M, H - M])
+        .paddingInner(0.2);
+
+
+    const g = svg.append('g')
+        .attr('transform', `translate(0, 20)`);
+
+    g.append('g')
+        .call(axisTop(xScale)
+            .tickFormat(format(".0f"))
+            .tickSize(-(H - M))
+            .ticks(34));
+
+    const e = g
+        .selectAll("g.name")
+        .data(naiveData)
+        .join('g')
+        .attr('class', 'name')
+        .attr('transform', d => `translate(${xScale(d.YOB)}, ${yScale(d.name)})`);
+
+    e.append('rect')
+        .attr(
+            "width",
+            d =>
+            (d.YOB >= d.YOD
+                ? 3
+                : xScale(d.YOD) - xScale(d.YOB))
+        )
+        .attr('height', yScale.bandwidth())
+        .attr('fill', 'rgb(0,255,0)')
+        .attr('fill-opacity', 1);
+
+    e.append('text')
+        .attr('y', yScale.bandwidth() - 1)
+        .attr('x', d => (xScale(d.YOD) - xScale(d.YOB)) / 2)
+        .text(d => d.name)
+        .style('font-size', '10px')
+        .style('font-weight', 'bold')
+        .style('opacity', '1')
+        .style('fill', 'black');
+
+}
+render();
