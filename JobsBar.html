@@ -1,0 +1,112 @@
+<html>
+
+<head>
+  <script src="https://cdn.anychart.com/releases/v8/js/anychart-base.min.js"></script>
+  <script src="https://cdn.anychart.com/releases/v8/js/anychart-ui.min.js"></script>
+  <script src="https://cdn.anychart.com/releases/v8/js/anychart-exports.min.js"></script>
+  <script src="https://cdn.anychart.com/releases/v8/themes/light_provence.min.js"></script>
+  <link href="https://cdn.anychart.com/releases/v8/css/anychart-ui.min.css" type="text/css" rel="stylesheet">
+  <link href="https://cdn.anychart.com/releases/v8/fonts/css/anychart-font.min.css" type="text/css" rel="stylesheet">
+  <style type="text/css">
+    html,
+    body,
+    #container {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="container"></div>
+
+
+  <script>
+
+    anychart.onDocumentReady(function () {
+      // set chart theme
+      anychart.theme('lightProvence');
+      // create bar chart
+      var chart = anychart.bar();
+
+      chart.animation(true);
+
+      chart.padding([10, 40, 5, 20]);
+
+      chart.title("Amount of women per job they worked in\n(during their entire lifetime)");
+
+      // create bar series with passed data
+      var series = chart.bar([
+        ["accountant", "5"],
+        ["actress", "160"],
+        ["adapter", "35"],
+        ["art director", "6"],
+        ["business partner", "11"],
+        ["censor", "6"],
+        ["cinematographer", "19"],
+        ["co-founder", "8"],
+        ["comedienne", "7"],
+        ["company director", "13"],
+        ["consultant", "6"],
+        ["continuity", "9"],
+        ["critic", "22"],
+        ["designer", "11"],
+        ["director", "136"],
+        ["distributor", "13"],
+        ["dressmaker", "15"],
+        ["editor", "69"],
+        ["educator", "10"],
+        ["entrepreneur", "9"],
+        ["exhibitor", "7"],
+        ["extra", "10"],
+        ["film company founding partner", "11"],
+        ["film company owner", "31"],
+        ["filmmaker", "20"],
+        ["lecturer", "8"],
+        ["manager", "13"],
+        ["musician", "20"],
+        ["producer", "117"],
+        ["reader", "7"],
+        ["scenarist", "7"],
+        ["scholar", "5"],
+        ["secretary", "9"],
+        ["stunt person", "6"],
+        ["visual artist", "15"],
+        ["writer", "211"]
+      ]);
+
+      // set tooltip settings
+      series
+        .tooltip()
+        .position('right')
+        .anchor('left-center')
+        .offsetX(5)
+        .offsetY(0)
+        .titleFormat('{%X}')
+        .format('{%Value}');
+
+      // set yAxis labels formatter
+      chart.yAxis().labels().format('{%Value}{groupsSeparator: }');
+
+      // set titles for axises
+      chart.xAxis().title('Jobs');
+      chart.yAxis().title('Amount');
+      chart.interactivity().hoverMode('by-x');
+      chart.tooltip().positionMode('point');
+      // set scale minimum
+      chart.yScale().minimum(0);
+
+      // set container id for the chart
+      chart.container('container');
+      // initiate chart drawing
+      chart.draw();
+    });
+
+  </script>
+</body>
+
+</html>
+//https://www.anychart.com/products/anychart/gallery/Bar_Charts/Bar_Chart.php?theme=lightProvence
