@@ -1,55 +1,59 @@
-var jobData= new Map();
-for(var i = 0; i <wfpp.entries.length; i++){
-    for(var j =0; j< wfpp.entries[i].worked_as.length; j++){
-        var entry=wfpp.entries[i].worked_as[j];
-        if(entry.includes(">")){
-            entry= entry.substr(entry.indexOf(">")+1);
-            if(jobData.has(entry)){
-                var value = jobData.get(entry)+1;
-                jobData.set(entry,value);
-            }else{
-                jobData.set(entry,1);
-            }        
-        } 
+import {showJobD3}  from './singleJobCluster.js';
+
+function showProfessions(){
+    if(document.getElementById("my_dataviz").firstChild!=null){
+        document.getElementById("my_dataviz").removeChild(document.getElementById("my_dataviz").firstChild);
     }
-} 
-console.log(wfpp.entries)
-var data = "job,count\r\n";
+    var jobData= new Map();
+    for(var i = 0; i <wfpp.entries.length; i++){
+        for(var j =0; j< wfpp.entries[i].worked_as.length; j++){
+            var entry=wfpp.entries[i].worked_as[j];
+            if(entry.includes(">")){
+                entry= entry.substr(entry.indexOf(">")+1);
+                if(jobData.has(entry)){
+                    var value = jobData.get(entry)+1;
+                    jobData.set(entry,value);
+                }else{
+                    jobData.set(entry,1);
+                }        
+            } 
+        }
+    } 
+    //console.log(wfpp.entries)
+    var data = "job,count\r\n";
 
-jobData.forEach((values,keys)=>{ 
-      data+= keys + "," + values + "\r\n"
-    });
+    jobData.forEach((values,keys)=>{ 
+          data+= keys + "," + values + "\r\n"
+        });
 
+    data = d3.csvParse(data);
 
-console.log(data);
-data = d3.csvParse(data);
-
-// set the dimensions and margins of the graph
-var width = window.innerWidth;
-var height = window.innerHeight - 50;
-
-// append the svg object to the body of the page
-var svg = d3.select("#my_dataviz")
-      .append("svg")
-      .attr("width", width)
-      .attr("height", height)
-
-      // Size scale for countries
-  var size = d3.scaleLinear()
-    .domain([0, 300])
-    .range([7, 55])  // circle will be between 7 and 55 px wide
+    // set the dimensions and margins of the graph
+    var width = window.innerWidth;
+    var height = window.innerHeight - 50;
+    
+    // append the svg object to the body of the page
+    var svg = d3.select("#my_dataviz")
+    .append("svg")
+    .attr("width", width)
+    .attr("height", height)
+    
+    // Size scale for countries
+    var size = d3.scaleLinear()
+            .domain([0, 300])
+            .range([7, 55])  // circle will be between 7 and 55 px wide
   
       // create a tooltip
-  var Tooltip = d3.select("body")
-    .append("div")
-    .style("opacity", 0)
-    .attr("class", "tooltip")
-    .style("background-color", "white")
-    .style("border", "solid")
-    .style("border-width", "1px")
-    .style("border-radius", "5px")
-    .style("padding", "5px")
-    .style("position", "absolute")
+    var Tooltip = d3.select("body")
+        .append("div")
+        .style("opacity", 0)
+        .attr("class", "tooltip")
+        .style("background-color", "white")
+        .style("border", "solid")
+        .style("border-width", "1px")
+        .style("border-radius", "5px")
+        .style("padding", "5px")
+        .style("position", "absolute")
 
       // Three function that change the tooltip when user hover / move / leave a cell
   var mouseover = function (d) {
@@ -66,19 +70,35 @@ var svg = d3.select("#my_dataviz")
         Tooltip
           .style("opacity", 0)
       }
-
-  svg.append("pattern")
+  var freq = new Set();
+    jobData.forEach((values,keys)=>{
+            if(values>15){
+                freq.add(values)
+            }
+        });
+    freq = Array.from(freq)
+    freq.push(15)
+  
+for(var i =0; i <freq.length; i++){
+    svg.append("pattern")
+     .data(data)
      .attr("x", 0)
      .attr("y", 0)
-     .attr("width", 20)
-	 .attr("height", 20)
-     .attr("id", "bg")
+     .attr("width", 10)
+	 .attr("height", 10)
+     .attr("id", function (d) { return "bg" +freq[i]})
      .append("image")
        .attr("x", 0)
        .attr("y", 0)
-   			.attr("width", 30)
-			.attr("height", 30)
-   .attr("xlink:href", "../JS/testsvg.svg");
+   			.attr("width", function (d) { return 2 * freq[i]})
+			.attr("height", function (d) { return 2 *freq[i]})
+   .attr("xlink:href", "../JS/testsvg.svg");  
+}
+    
+   var showJob = function (d) { 
+       showJobD3(d.job)
+       Tooltip.style("opacity", 0)
+    }
   
       // Initialize the circle: all located at the center of the svg area
   var node = svg.append("g")
@@ -91,17 +111,18 @@ var svg = d3.select("#my_dataviz")
         .attr("cx",0)
         .attr("cy", 0)
         .attr("fill", function(d) {
-		return "url(#bg)";
+		      return "url(#bg" + Math.max(15,d.count)+")";
         })
         .attr("stroke", "black")
         .style("stroke-width", 0.8)
         .on("mouseover", mouseover) // What to do when hovered
         .on("mousemove", mousemove)
         .on("mouseleave", mouseleave)
-        .call(d3.drag() // call specific function when circle is dragged
-          .on("start", dragstarted)
-          .on("drag", dragged)
-          .on("end", dragended));
+        .on("click", function (d) {showJob(d) })
+        //.call(d3.drag() // call specific function when circle is dragged
+          //.on("start", dragstarted)
+          //.on("drag", dragged)
+          //.on("end", dragended));
 
 
 
@@ -135,3 +156,6 @@ var svg = d3.select("#my_dataviz")
         d.fx = null;
         d.fy = null;
       }
+}
+
+export {showProfessions}

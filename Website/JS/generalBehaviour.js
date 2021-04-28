@@ -1,5 +1,4 @@
 window.onscroll = function() {makeSticky()};
-
 function makeSticky() {
     var navbar = document.getElementById("header");
     var sticky = navbar.offsetTop;
@@ -20,6 +19,5 @@ function closeNav() {
     document.getElementById("mySidepanel").style.width = "0";
     document.getElementById("sidepanel_button").hidden = false;
 }
-
 document.getElementById("sidepanel_button").addEventListener("click", openNav,false)
 document.getElementById("sidePanelClose").addEventListener("click", closeNav,false)
