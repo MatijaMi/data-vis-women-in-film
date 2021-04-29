@@ -1,7 +1,8 @@
-var states = [];
+var states = ["All"];
+
 import{showAll} from './allPioneers.js';
 import{groupByCountry} from './groupByCountries.js';
-import{groupByProfession} from './groupByProfession.js';
+import{showProfessions} from './jobCluser.js';
 
 function updateState(newState){
     if(newState!=states[states.length-1]){
@@ -72,7 +73,7 @@ function handleResize(){
             groupByCountry("resize");
             break;
         case 'Professions':
-            groupByProfession("resize");
+            showProfessions();
             break;
         default: showAll();
     }
@@ -89,123 +90,5 @@ function determineCy(index, width){
     return Math.floor(index/(Math.floor(width/70)))*70+80;
 }
 
-function addGroupPolygons(grouping,mode){
-    d3.selectAll("polyline").style("display", "none");
-    var data = "groupName,amount,index,indexOfFirst\r\n";
-    var indexOfFirst=0;
-    for(var i =0; i < grouping.length;i++){
-        var amount = 0;
-        for(var j =0; j < wfpp.entries.length; j++){
-            if(mode=="countries"){
-                if(wfpp.entries[j].worked_in[0]==grouping[i]){
-                    amount++;
-                }
-            }else{
-                if(wfpp.entries[j].worked_as[0]==grouping[i]){
-                    amount++;
-                }
-            }
-        }
-        data+= grouping[i] + "," + amount +"," + i +"," +indexOfFirst +"\r\n";
-        indexOfFirst+=amount;
-    }
-    
-    data = d3.csvParse(data);
-    var svg =d3.select("svg");
-    svg.selectAll("g")
-        .data(data)
-        .enter()
-        .append("polyline")
-        .attr("points", function(d){return determinePolylineCoords(data,d.index)})
-        .style("stroke", "purple")
-        .style("fill","block")
-        .style("fill-opacity", 0.2)
-        .style("stroke-width", 3); 
-}
 
-
-function determinePolylineCoords(data,index){
-    var width = window.innerWidth;
-    var firstIndex =0;
-    var amount =data[index].amount;
-    for(var i =0; i <data.length; i++){
-        if(data[i].index==index){
-            firstIndex = data[i].indexOfFirst;
-        }
-    }
-    var r =35;
-    var cx = determineCx(firstIndex,width);
-    var cy = determineCy(firstIndex,width);
-    if(amount==1){
-        return (cx-r) + "," + (cy-r) + " " + (cx+r) + "," + (cy-r) + " " + (cx+r) + "," + (cy+r)  + " " + (cx-r)  +"," + (cy+r) + " " + (cx-r) + "," + (cy-r);
-    }else{
-        if(fitsInOneLIne(firstIndex,amount,width)){
-            return (cx-r) + "," + (cy-r) + " " + (cx-r+2*r*amount) + "," + (cy-r) + " " + (cx-r+2*r*amount) + "," + (cy+r)  + " " + (cx-r)  +"," + (cy+r) + " " + (cx-r) + "," + (cy-r);
-        }else{
-            if(overlaps(firstIndex,amount,width)){
-                return (cx-r) + "," + (cy-r) + " " + (cx-r)  +"," + (cy+r) + " " + (cx+r) + "," + (cy+r);
-            }else{
-                return (cx-r) + "," + (cy-r) + " " + (cx-r)  +"," + (cy+r) + " " + (cx+r) + "," + (cy+r);
-            }
-        }
-        
-    }
-}
-    
-
-function fitsInOneLIne(firstElem, amount, width){
-    var maxAmount = Math.floor(width/70);
-    var firstPos = Math.floor(firstElem % maxAmount);
-    amount= parseInt(amount);
-    return (firstPos+amount)<=maxAmount;    
-}
-
-function overlaps(firstElem, amount, width){
-    var maxAmount = Math.floor(width/70);
-    var firstPos = Math.floor(firstElem % maxAmount);
-    amount= parseInt(amount);
-    return (amount-(maxAmount-firstPos)>firstPos);
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-export {determineColor,determineCx,determineCy,handleResize, findNewIndex, updateState, getStates,addGroupPolygons}
+export {determineColor,determineCx,determineCy,handleResize,findNewIndex,updateState,getStates}

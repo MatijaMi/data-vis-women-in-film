@@ -1,5 +1,6 @@
-import {determineColor,determineCx,determineCy,handleResize,findNewIndex,updateState,addGroupPolygons} from './groupingUtil.js';
-import {getProfessionData, getPreviousData} from './dataProcessing.js';
+import  {determineColor,determineCx,determineCy,handleResize,findNewIndex,updateState} from './groupingUtil.js';
+import{getProfessionData, getPreviousData} from './dataProcessing.js';
+
 function groupByProfession(mode){
 
     // set the dimensions and margins of the graph

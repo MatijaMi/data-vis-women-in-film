@@ -4,8 +4,6 @@ import{getStates} from './groupingUtil.js';
 function getPreviousData(){
     var states = getStates();
     var oldState = states[states.length-1];
-    console.log(states)
-    console.log(oldState)
     switch (oldState){
         case 'All':
             var data = getAllData();

@@ -1,5 +1,6 @@
-import {determineColor,determineCx,determineCy,handleResize,findNewIndex,updateState,addGroupPolygons} from './groupingUtil.js';
+import {determineColor,determineCx,determineCy,handleResize,findNewIndex,updateState} from './groupingUtil.js';
 import {getCountryData, getPreviousData} from './dataProcessing.js';
+
 function groupByCountry(mode){
     
     var width = window.innerWidth;

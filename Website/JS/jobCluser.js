@@ -1,9 +1,11 @@
-import {showJobD3}  from './singleJobCluster.js';
+import{showJobD3}  from './singleJobCluster.js';
+import{updateState} from './groupingUtil.js';
 
 function showProfessions(){
     if(document.getElementById("my_dataviz").firstChild!=null){
         document.getElementById("my_dataviz").removeChild(document.getElementById("my_dataviz").firstChild);
     }
+    
     var jobData= new Map();
     for(var i = 0; i <wfpp.entries.length; i++){
         for(var j =0; j< wfpp.entries[i].worked_as.length; j++){
@@ -22,8 +24,8 @@ function showProfessions(){
     //console.log(wfpp.entries)
     var data = "job,count\r\n";
 
-    jobData.forEach((values,keys)=>{ 
-          data+= keys + "," + values + "\r\n"
+    jobData.forEach((value,key)=>{ 
+          data+= key + "," + value + "\r\n"
         });
 
     data = d3.csvParse(data);
@@ -37,11 +39,6 @@ function showProfessions(){
     .append("svg")
     .attr("width", width)
     .attr("height", height)
-    
-    // Size scale for countries
-    var size = d3.scaleLinear()
-            .domain([0, 300])
-            .range([7, 55])  // circle will be between 7 and 55 px wide
   
       // create a tooltip
     var Tooltip = d3.select("body")
@@ -70,30 +67,23 @@ function showProfessions(){
         Tooltip
           .style("opacity", 0)
       }
-  var freq = new Set();
-    jobData.forEach((values,keys)=>{
-            if(values>15){
-                freq.add(values)
-            }
-        });
-    freq = Array.from(freq)
-    freq.push(15)
   
-for(var i =0; i <freq.length; i++){
+  var freq = new Set();
+    jobData.forEach((value,key)=>{
     svg.append("pattern")
-     .data(data)
      .attr("x", 0)
      .attr("y", 0)
      .attr("width", 10)
 	 .attr("height", 10)
-     .attr("id", function (d) { return "bg" +freq[i]})
+     .attr("id", function (d) { return "bg" +key.split(' ').join('-')})
      .append("image")
        .attr("x", 0)
        .attr("y", 0)
-   			.attr("width", function (d) { return 2 * freq[i]})
-			.attr("height", function (d) { return 2 *freq[i]})
-   .attr("xlink:href", "../JS/testsvg.svg");  
-}
+   			.attr("width", function (d) { return 2 * Math.max(30,value)})
+			.attr("height", function (d) { return 2 * Math.max(30,value)})
+   .attr("xlink:href", findProfessionPicture(key,value));
+        console.log(findProfessionPicture(key,value));
+});
     
    var showJob = function (d) { 
        showJobD3(d.job)
@@ -107,18 +97,18 @@ for(var i =0; i <freq.length; i++){
         .enter()
         .append("circle")
         .attr("class", "node")
-        .attr("r", function (d) { return Math.max(15,d.count)})
+        .attr("r", function (d) { return Math.max(30,d.count)})
         .attr("cx",0)
         .attr("cy", 0)
         .attr("fill", function(d) {
-		      return "url(#bg" + Math.max(15,d.count)+")";
+		      return "url(#bg" + d.job.split(' ').join('-')+")";
         })
         .attr("stroke", "black")
-        .style("stroke-width", 0.8)
+        .style("stroke-width", 2)
         .on("mouseover", mouseover) // What to do when hovered
         .on("mousemove", mousemove)
         .on("mouseleave", mouseleave)
-        .on("click", function (d) {showJob(d) })
+        .on("click", function (d) {showJob(d)})
         //.call(d3.drag() // call specific function when circle is dragged
           //.on("start", dragstarted)
           //.on("drag", dragged)
@@ -130,7 +120,7 @@ for(var i =0; i <freq.length; i++){
   var simulation = d3.forceSimulation()
       .force("center", d3.forceCenter().x(width / 2).y(height / 2)) // Attraction to the center of the svg area
       .force("charge", d3.forceManyBody().strength(-2)) // Nodes are attracted one each other of value is > 0
-      .force("collide", d3.forceCollide().strength(.2).radius(function (d) { return Math.max(15,d.count)+3}).iterations(1)) // Force that avoids circle overlapping
+      .force("collide", d3.forceCollide().strength(.2).radius(function (d) { return Math.max(30,d.count)+3}).iterations(1)) // Force that avoids circle overlapping
 
   //
       simulation
@@ -156,6 +146,43 @@ for(var i =0; i <freq.length; i++){
         d.fx = null;
         d.fy = null;
       }
+    updateState("Professions");
 }
+
+
+
+function findProfessionPicture(job,count){
+    var rand = count;
+    if(rand>1){
+        rand =Math.floor((Math.random() * count) + 1);
+    }
+    for(var i = 0; i <wfpp.entries.length; i++){
+        for(var j =0; j< wfpp.entries[i].worked_as.length; j++){
+            var entry=wfpp.entries[i].worked_as[j];
+            if(entry.includes(job)){
+                if(rand==1){
+                    if(wfpp.entries[i].image_url.length!=0){
+                        if(count>50){
+                            return '../Images/WFPP-Pictures-Fullsize/' + wfpp.entries[i].name.split(' ').join('%20') +'.jpg';
+                        }else{
+                           return '../Images/WFPP-Pictures/' + wfpp.entries[i].name.split(' ').join('%20') +'.jpg'; 
+                        }
+                        
+                    }else{
+                        if(count>50){
+                            return '../Images/WFPP-Pictures-Fullsize/Unknown.webp';;
+                        }else{
+                           return '../Images/WFPP-Pictures/Unknown.jpg'; 
+                        }
+                        
+                    }
+                }else{
+                    rand--;
+                }
+            }
+        }
+    }
+}
+
 
 export {showProfessions}

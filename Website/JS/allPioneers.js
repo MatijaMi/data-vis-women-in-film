@@ -1,7 +1,8 @@
 import {determineColor,determineCx,determineCy,handleResize,updateState} from './groupingUtil.js';
 import {getAllData, getPreviousData} from './dataProcessing.js';
 import {groupByCountry} from './groupByCountries.js';
-import {groupByProfession} from './groupByProfession.js';
+import {showProfessions} from './jobCluser.js';
+
 
 function showAll(){
     if(document.getElementById("my_dataviz").firstChild!=null){
@@ -57,9 +58,27 @@ function showAll(){
       if(!zoomedIn){
           zoomIn(d,data,svg)
       }
-     }
-      
+  }
+
+  var mouseover = function (d) {
+        Tooltip
+          .style("opacity", 1)
+      }
+   var mousemove = function (d) {
+        Tooltip
+          .html('<u>' + d.name + '</u>')
+          .style("left", (d3.mouse(this)[0] + 20) + "px")
+          .style("top", (d3.mouse(this)[1]) + "px")
+      }
+   
+   var mouseleave = function (d) {
+        Tooltip
+          .style("opacity", 0)
+      }
+   
    var mouseClick = function (d) {
+       Tooltip
+          .style("opacity", 0)
        zoomedIn=true;
        d3.selectAll("path").style("opacity", 0);
        if(zoomedIn){
@@ -141,11 +160,12 @@ function showAll(){
         .style("stroke-width", 0.8)
         .on("click", mouseClick)
         .on("mouseenter", mouseenter)
+        .on("mouseover", mouseover) // What to do when hovered
+        .on("mousemove", mousemove)
+        .on("mouseleave", mouseleave)
   
   
-  
-  
-  updateState("All");
+    
    var closeTooltip = function(d){
        d3.selectAll("path").style("opacity", 0);
        document.getElementById("SlideTooltip").style.opacity = 0;
@@ -156,12 +176,12 @@ function showAll(){
        zoomOut(d,data)
        window.zoomedIn=false;
     } 
-    
+   
 }
 
-
-
 showAll();
+
+
 function removeTooltip(){
     //document.getElementById("tooltip").style.opacity=0;
 }
@@ -170,7 +190,7 @@ document.getElementById("my_dataviz").addEventListener("click",removeTooltip);
 window.addEventListener("resize", handleResize);
 document.getElementById("show-all-button").addEventListener("click",showAll);
 document.getElementById("groupBy-country").addEventListener("click", groupByCountry);
-document.getElementById("groupBy-profession").addEventListener("click", groupByProfession);
+document.getElementById("groupBy-profession").addEventListener("click", showProfessions);
 
 
 

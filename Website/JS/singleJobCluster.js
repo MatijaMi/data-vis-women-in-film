@@ -1,4 +1,4 @@
-import { showProfessions} from './jobCluser.js';
+import {showProfessions} from './jobCluser.js';
 
 function showJobD3(profession){
     if(document.getElementById("my_dataviz").firstChild!=null){
@@ -67,8 +67,8 @@ function showJobD3(profession){
         .html("<button> Back </button>")
 
     function goBack(){
-        document.getElementById("back").remove()
         showProfessions();
+        document.getElementById("back").remove()
     }
     
 document.getElementById("back").addEventListener("click", goBack)
@@ -151,10 +151,6 @@ document.getElementById("back").addEventListener("click", goBack)
         .on("mouseover", mouseover) // What to do when hovered
         .on("mousemove", mousemove)
         .on("mouseleave", mouseleave)
-        //.call(d3.drag() // call specific function when circle is dragged
-          //.on("start", dragstarted)
-          //.on("drag", dragged)
-          //.on("end", dragended));
 
 
 
