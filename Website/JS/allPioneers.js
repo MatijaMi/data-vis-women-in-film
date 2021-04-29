@@ -9,7 +9,7 @@ function showAll(){
     }
     
     var data = getAllData()[0];
-
+    window.zoomedIn=false;
     // set the dimensions and margins of the graph
     var width = window.innerWidth;
     var height = window.innerHeight - 50;
@@ -34,92 +34,74 @@ function showAll(){
         .style("padding", "5px")
         .style("position", "absolute")
     
-     var SlideTooltip = d3.select("body")
+    if(document.getElementById("SlideTooltip")==null){
+        var SlideTooltip = d3.select("body")
         .append("div")
         .style("opacity", 0)
         .attr("class", "tooltip")
         .attr("id", "SlideTooltip")
-        .style("background-color", "black")
-        .style("color", "white")
+        .style("background-color", "#999")
+        .style("color", "black")
         .style("border", "solid black")
-        .style("border-width", "2px")
-        .style("border-radius", "5px")
+        .style("border-width", "3px")
+        .style("border-left-width", "0px")
         .style("padding", "5px")
         .style("position", "absolute")
-    
+    }else{
+        var SlideTooltip= d3.select("#SlideTooltip");
+    }
+     
 
       // Three function that change the tooltip when user hover / move / leave a cell
-  var mouseover = function (d) {
-        SlideTooltip
-          .style("opacity", 1)
-        var hoverID=d.id;
-        var hoverNum=d.number;
-       d3.select("#my_dataviz")
-        .selectAll("circle")
-        .data(data)
-        .transition()
-        .duration(30)
-        .attr("r", function(d)
-               {if(hoverID==d.id){
-                    return 90;
-               }else{
-                    return 30;
-                }})
-        .attr("cx", function(d){ return findZoomInCx(d.number, hoverNum, width)})
-        .attr("cy", function(d){ return findZoomInCy(d.number, hoverNum, width)})
-        .style("fill", function(d)
-               {if(hoverID==d.id){
-                    return "blue"}})
+  var mouseenter = function (d) {
+      if(!zoomedIn){
+          zoomIn(d,data,svg)
+      }
      }
-
-   var mousemove = function (d) {       
-      if(d.real="real"){
-          if(d.imgUrl.length<10){
-              Tooltip
-          .html('<u><b>' + d.name + '</b></u>' + "<br>" +
-                '<img src=../Images/WFPP-Pictures-Fullsize/Unknown.webp width=200px>'+
-               'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.<br>'+
-               '<a href=' + d.link + '> Read More </a>')
-          .style("width", "240px")
-          .style("left", (d3.mouse(this)[0] + 20) + "px")
-          .style("top", (d3.mouse(this)[1]) + "px")
-          }else{
-           Tooltip
-          .html('<u><b>' + d.name + '</b></u>' + "<br>" +
-                '<img src=../Images/WFPP-Pictures-Fullsize/'+ d.name.split(' ').join('%20') +'.jpg width=200px>'+
-               'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.<br>'+
-               '<a href=' + d.link + '> Read More </a>')
-          .style("width", "240px")
-          .style("left", (d3.mouse(this)[0] + 20) + "px")
-          .style("top", (d3.mouse(this)[1]) + "px")
-            }
-      }else{
-           Tooltip
-          .html('<u>' + d.name + '</u>' + "<br>" + d.name)
-          .style("left", (d3.mouse(this)[1] + 20) + "px")
-          .style("top", d3.mouse(this)[0] + "px")  
-      }
-      }
       
    var mouseClick = function (d) {
+       zoomedIn=true;
+       d3.selectAll("path").style("opacity", 0);
+       if(zoomedIn){
+            zoomIn(d,data,svg);
+        }
+      
+       
        SlideTooltip
-          .html('<u><b>' + d.name + '</b></u>' + "<br>" +
+          .html('<button id ="closeTooltipButton">X</button><u><b>' + d.name + '</b></u>' + "<br>" +
                'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.<br>'+
                '<a href=' + d.link + '> Read More </a>')
           .style("width", "360px")
-          .style("height", "150px")
-          .style("animation-duration", "3s")
-          .style("animation-name","slidein")
-          .style("padding-left", "60px")
-          .style("left", (determineCx(d.number, width)+35)+"px")
-          .style("top", determineCy(d.number, width)-45+"px")
+          .style("height", "167px")
+          .style("left", (determineCx(d.number, width)+93)+"px")
+          .style("top", determineCy(d.number, width)-53+"px")
+          .style("border", "solid black")
+          .style("border-width", "3px")
+          .style("border-left-width", "0px")
+          .style("padding", "5px")
+          .style("opacity", 1);
+       
+       document.getElementById("closeTooltipButton").onclick=closeTooltip;
+       var hoverNum=d.number;
+
+       svg.selectAll("g")
+        .data(data)
+        .enter()
+        .append("path")
+        .attr("d",function(d){
+           if(d.number==hoverNum){
+              return getHalfpipePath(d.number, width);
+           }else{
+              return "";
+           }
+           
+       })
+        .style("stroke", "black")
+        .style("fill","#999")
+        .style("fill-opacity", 1)
+        .style("stroke-width", "3px"); 
+       
       }
-   
-  var mouseleave = function (d) {
-      SlideTooltip.style("opacity", 0);
-        showAll();
-      }
-      // Initialize the circle: all located at the center of the svg area
   
   for(var i =0; i <data.length; i++){
       if(data[i].imgUrl.length!=0){
@@ -128,8 +110,8 @@ function showAll(){
           var link = '../Images/WFPP-Pictures/Unknown.jpg';
       }
       
+      
     svg.append("pattern")
-     .data(data)
      .attr("x", 0)
      .attr("y", 0)
      .attr("width", 10)
@@ -138,8 +120,8 @@ function showAll(){
      .append("image")
         .attr("x", 0)
         .attr("y", 0)
-   	    .attr("width", function (d) { return 60})
-        .attr("height", function (d) { return 60})
+   	    .attr("width", 60)
+        .attr("height", 60)
         .attr("xlink:href", link);  
 }
   
@@ -150,8 +132,6 @@ function showAll(){
         .append("circle")
         .attr("class", "node")
         .attr("r", 30)
-        .attr("x",function(d) {return determineCx(d.number, width)})
-        .attr("y",function(d) {return determineCy(d.number, width)})
         .attr("cx",function(d) {return determineCx(d.number, width)})
         .attr("cy",function(d) {return determineCy(d.number, width)})
         .attr("fill", function(d) {
@@ -159,15 +139,24 @@ function showAll(){
         })
         .attr("stroke", "black")
         .style("stroke-width", 0.8)
-        .on("mouseleave", mouseleave)
         .on("click", mouseClick)
-        .on("mouseover", mouseover)
-        .on("mouseleave", mouseleave)
+        .on("mouseenter", mouseenter)
   
   
   
   
   updateState("All");
+   var closeTooltip = function(d){
+       d3.selectAll("path").style("opacity", 0);
+       document.getElementById("SlideTooltip").style.opacity = 0;
+       document.getElementById("SlideTooltip").innerHTML = "";
+       document.getElementById("SlideTooltip").style.width = "0%";
+       document.getElementById("SlideTooltip").style.border = "none";
+       document.getElementById("SlideTooltip").style.padding = "0";
+       zoomOut(d,data)
+       window.zoomedIn=false;
+    } 
+    
 }
 
 
@@ -280,12 +269,77 @@ function findZoomInCy(elementNum, selectedNumber, width){
 }
 
 
+function getHalfpipePath(number, width){
+    var cx = determineCx(number,width);
+    var cy = determineCy(number,width);
+    return "m "+ (cx+95) + " " + (cy+90) + " h -95 a 45 45 0 0 0 0 -180.5 h 95"
+    
+    
+}
 
 
 
-
-
-
+function zoomIn(d,data,svg){
+    var hoverID=d.id;
+    var hoverNum=d.number;
+    var width = window.innerWidth;
+    
+    if(d.imgUrl.length!=0){
+        var link = '../Images/WFPP-Pictures-Midsize/' + d.name.split(' ').join('%20') +'.jpg';
+    }else{
+          var link = '../Images/WFPP-Pictures-Midsize/Unknown.jpg';
+    }
+      
+      svg.append("pattern")
+        .attr("x", 0)
+        .attr("y", 0)
+        .attr("width", 10)
+ 	    .attr("height", 10)
+        .attr("id", hoverID+"m")
+        .append("image")
+        .attr("x", 0)
+        .attr("y", 0)
+   	    .attr("width", "180")
+        .attr("height", "180")
+        .attr("xlink:href", link); 
+    
+       d3.select("#my_dataviz")
+        .selectAll("circle")
+        .data(data)
+        .transition()
+        .duration(30)
+        .attr("r", function(d)
+               {if(hoverID==d.id){
+                    return 90;
+               }else{
+                    return 30;
+                }})
+        .attr("cx", function(d){ return findZoomInCx(d.number, hoverNum, width)})
+        .attr("cy", function(d){ return findZoomInCy(d.number, hoverNum, width)})
+        .style("fill", function(d)
+               {if(hoverID==d.id){
+                    return "url(#"+d.id +"m)"}})  
+        .style("stroke-width", function(d)
+               {if(hoverID==d.id){
+                    return "3px"}})  
+}
+function zoomOut(d,data){
+    var hoverID=d.id;
+    var hoverNum=d.number;
+    var width = window.innerWidth;
+ 
+    d3.select("#my_dataviz")
+        .selectAll("circle")
+        .data(data)
+        .transition()
+        .duration(30)
+        .attr("r", 30)
+        .attr("cx", function(d){ return determineCx(d.number, width)})
+        .attr("cy", function(d){ return determineCy(d.number, width)})
+        .style("fill", function(d)
+               {if(hoverID==d.id){
+                    return "url(#"+d.id +")"}})     
+}
 
 
 
