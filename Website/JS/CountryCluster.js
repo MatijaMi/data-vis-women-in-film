@@ -1,30 +1,28 @@
-import{showJobD3}  from './singleJobCluster.js';
 import{updateState} from './groupingUtil.js';
+import{showCountryD3} from './singleCountryCluster.js';
 
-function showProfessions(){
+function showCountries(){
+    
     if(document.getElementById("my_dataviz").firstChild!=null){
         document.getElementById("my_dataviz").removeChild(document.getElementById("my_dataviz").firstChild);
     }
     
-    var jobData= new Map();
+    var countryData= new Map();
     for(var i = 0; i <wfpp.entries.length; i++){
-        for(var j =0; j< wfpp.entries[i].worked_as.length; j++){
-            var entry=wfpp.entries[i].worked_as[j];
-            if(entry.includes(">")){
-                entry= entry.substr(entry.indexOf(">")+1);
-                if(jobData.has(entry)){
-                    var value = jobData.get(entry)+1;
-                    jobData.set(entry,value);
+        for(var j =0; j< wfpp.entries[i].worked_in.length; j++){
+            var entry=wfpp.entries[i].worked_in[j];
+                if(countryData.has(entry)){
+                    var value = countryData.get(entry)+1;
+                    countryData.set(entry,value);
                 }else{
-                    jobData.set(entry,1);
+                    countryData.set(entry,1);
                 }        
             } 
-        }
-    } 
+        } 
     //console.log(wfpp.entries)
-    var data = "job,count\r\n";
+    var data = "country,count\r\n";
 
-    jobData.forEach((value,key)=>{ 
+    countryData.forEach((value,key)=>{ 
           data+= key + "," + value + "\r\n"
         });
 
@@ -54,7 +52,7 @@ function showProfessions(){
 
       // Three function that change the tooltip when user hover / move / leave a cell
   var mouseover = function (d) {
-        Tooltip
+       Tooltip
           .style("opacity", 1)
           .style("width","auto")
           .style("border","solid")
@@ -62,7 +60,7 @@ function showProfessions(){
       }
   var mousemove = function (d) {
         Tooltip
-          .html('<u>' + d.job + '</u>' + "<br>" + d.count)
+          .html('<u>' + d.country + '</u>' + "<br>" + d.count)
           .style("left", (d3.mouse(this)[0] + 20) + "px")
           .style("top", (d3.mouse(this)[1]) + "px")
       }
@@ -74,9 +72,8 @@ function showProfessions(){
           .style("padding", 0)
           .html("");
       }
-  
   var freq = new Set();
-    jobData.forEach((value,key)=>{
+    countryData.forEach((value,key)=>{
     svg.append("pattern")
      .attr("x", 0)
      .attr("y", 0)
@@ -86,13 +83,13 @@ function showProfessions(){
      .append("image")
        .attr("x", 0)
        .attr("y", 0)
-   			.attr("width", function (d) { return 2 * determineJobSize(value)})
-			.attr("height", function (d) { return 2 * determineJobSize(value)})
-   .attr("xlink:href", findProfessionPicture(key,value));
+   			.attr("width", function (d) { return 2 * determineCountrySize(value)})
+			.attr("height", function (d) { return 2* determineCountrySize(value)})
+   .attr("xlink:href", findCountryPicture(key,value));
 });
     
-   var showJob = function (d) { 
-       showJobD3(d.job)
+   var showCountry = function (d) { 
+       showCountryD3(d.country)
        Tooltip.style("opacity", 0)
     }
   
@@ -103,18 +100,18 @@ function showProfessions(){
         .enter()
         .append("circle")
         .attr("class", "node")
-        .attr("r", function (d) { return determineJobSize(d.count)})
+        .attr("r", function (d) { return determineCountrySize(d.count)})
         .attr("cx",0)
         .attr("cy", 0)
         .attr("fill", function(d) {
-		      return "url(#bg" + d.job.split(' ').join('-')+")";
+		      return "url(#bg" + d.country.split(' ').join('-')+")";
         })
         .attr("stroke", "black")
         .style("stroke-width", 2)
         .on("mouseover", mouseover) // What to do when hovered
         .on("mousemove", mousemove)
         .on("mouseleave", mouseleave)
-        .on("click", function (d) {showJob(d)})
+        .on("click", function (d) {showCountry(d)})
         //.call(d3.drag() // call specific function when circle is dragged
           //.on("start", dragstarted)
           //.on("drag", dragged)
@@ -125,8 +122,8 @@ function showProfessions(){
       // Features of the forces applied to the nodes:
   var simulation = d3.forceSimulation()
       .force("center", d3.forceCenter().x(width / 2).y(height / 2)) // Attraction to the center of the svg area
-      .force("charge", d3.forceManyBody().strength(-3)) // Nodes are attracted one each other of value is > 0
-      .force("collide", d3.forceCollide().strength(.5).radius(function (d) { return determineJobSize(d.count)}).iterations(1)) // Force that avoids circle overlapping
+      .force("charge", d3.forceManyBody().strength(-2)) // Nodes are attracted one each other of value is > 0
+      .force("collide", d3.forceCollide().strength(.2).radius(function (d) { return determineCountrySize(d.count)}).iterations(1)) // Force that avoids circle overlapping
 
   //
       simulation
@@ -152,28 +149,29 @@ function showProfessions(){
         d.fx = null;
         d.fy = null;
       }
-    updateState("Professions");
+    updateState("Countries");
 }
 
 
 
-function findProfessionPicture(job,count){
+function findCountryPicture(country,count){
     var rand = count;
+    
     if(rand>1){
         rand =Math.floor((Math.random() * count) + 1);
     }
+    
     for(var i = 0; i <wfpp.entries.length; i++){
-        for(var j =0; j< wfpp.entries[i].worked_as.length; j++){
-            var entry=wfpp.entries[i].worked_as[j];
-            if(entry.includes(job)){
+        for(var j =0; j< wfpp.entries[i].worked_in.length; j++){
+            var entry=wfpp.entries[i].worked_in[j];
+            if(entry.includes(country)){
                 if(rand==1){
                     if(wfpp.entries[i].image_url.length!=0){
-                        if(count>50){
+                        if(count>20){
                             return '../Images/WFPP-Pictures-Fullsize/' + wfpp.entries[i].name.split(' ').join('%20') +'.jpg';
                         }else{
                            return '../Images/WFPP-Pictures/' + wfpp.entries[i].name.split(' ').join('%20') +'.jpg'; 
-                        }
-                        
+                        }  
                     }
                 }else{
                     rand--;
@@ -181,33 +179,29 @@ function findProfessionPicture(job,count){
             }
         }
     }
-    
-    if(count>50){
+    if(count>20){
         return '../Images/WFPP-Pictures-Fullsize/Unknown.webp';;
     }else{
         return '../Images/WFPP-Pictures/Unknown.jpg'; 
-    } 
+    }
 }
 
-
-
-function determineJobSize(count){
-    //return Math.max(30,count);
+function determineCountrySize(count){
+    
     if(count<10){
-        return 35;
+        return 45;
     }else{
         if(count<20 && count >=10){
-            return 45;
+            return 60;
         }else{
             if(count<50 && count >20){
-                return 60;
+                return 75;
             }else{
                 return count;
             }
         }
     }
-    
 }
 
 
-export {showProfessions}
+export {showCountries}

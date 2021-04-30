@@ -2,6 +2,7 @@ import {determineColor,determineCx,determineCy,handleResize,updateState} from '.
 import {getAllData, getPreviousData} from './dataProcessing.js';
 import {groupByCountry} from './groupByCountries.js';
 import {showProfessions} from './jobCluser.js';
+import {showCountries} from './CountryCluster.js';
 
 
 function showAll(){
@@ -189,7 +190,7 @@ function removeTooltip(){
 document.getElementById("my_dataviz").addEventListener("click",removeTooltip);
 window.addEventListener("resize", handleResize);
 document.getElementById("show-all-button").addEventListener("click",showAll);
-document.getElementById("groupBy-country").addEventListener("click", groupByCountry);
+document.getElementById("groupBy-country").addEventListener("click", showCountries);
 document.getElementById("groupBy-profession").addEventListener("click", showProfessions);
 
 

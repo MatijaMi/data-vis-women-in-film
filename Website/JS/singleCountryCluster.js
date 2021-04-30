@@ -1,24 +1,20 @@
-import {showProfessions} from './jobCluser.js';
+import {showCountries} from './CountryCluster.js';
 
-function showJobD3(profession){
+function showCountryD3(country){
     if(document.getElementById("my_dataviz").firstChild!=null){
         document.getElementById("my_dataviz").removeChild(document.getElementById("my_dataviz").firstChild);
     }
-    var data = "id,name,link,imgUrl,real,job,number\r\n";
+    var data = "id,name,link,imgUrl,real,country,number\r\n";
     for(var i = 0; i <wfpp.entries.length; i++){
-        for(var j =0; j< wfpp.entries[i].worked_as.length; j++){
-            var entry=wfpp.entries[i].worked_as[j];
-            if(entry.includes(">")){
-                entry= entry.substr(entry.indexOf(">")+1);
-                var link =  wfpp.entries[i].link;
-                var img_url = wfpp.entries[i].image_url;
-                var id = wfpp.entries[i].id;
-                var name = wfpp.entries[i].name;
-                if(entry == profession){
-                    data+= id + "," + name + "," +link + "," + img_url + "," + "real," + entry + "," + i +"\r\n"
+        for(var j =0; j< wfpp.entries[i].worked_in.length; j++){
+            var entry=wfpp.entries[i].worked_in[j];
+            var link =  wfpp.entries[i].link;
+            var img_url = wfpp.entries[i].image_url;
+            var id = wfpp.entries[i].id;
+            var name = wfpp.entries[i].name;
+            if(entry == country){
+                data+= id + "," + name + "," +link + "," + img_url + "," + "real," + entry + "," + i +"\r\n"
                 }
-                     
-            } 
         }
     }
 
@@ -72,8 +68,9 @@ function showJobD3(profession){
           .style("width",0)
           .style("border",0)
           .style("padding", 0)
+          .html("");
         document.getElementById("back").remove()
-        showProfessions();   
+        showCountries();    
     }
     
 document.getElementById("back").addEventListener("click", goBack)
@@ -85,6 +82,7 @@ document.getElementById("back").addEventListener("click", goBack)
           .style("border","solid")
           .style("padding", "5px")
       }
+  
    var mousemove = function (d) {
        var x  =d3.mouse(this)[0];
        var y = d3.mouse(this)[1];
@@ -198,4 +196,4 @@ document.getElementById("back").addEventListener("click", goBack)
       }
 }
 
-export {showJobD3}
+export {showCountryD3}

@@ -3,6 +3,7 @@ var states = ["All"];
 import{showAll} from './allPioneers.js';
 import{groupByCountry} from './groupByCountries.js';
 import{showProfessions} from './jobCluser.js';
+import{showCountries} from './CountryCluster.js';
 
 function updateState(newState){
     if(newState!=states[states.length-1]){
@@ -70,7 +71,7 @@ function handleResize(){
             showAll();
             break;
         case 'Countries':
-            groupByCountry("resize");
+            showCountries();
             break;
         case 'Professions':
             showProfessions();
@@ -91,4 +92,17 @@ function determineCy(index, width){
 }
 
 
-export {determineColor,determineCx,determineCy,handleResize,findNewIndex,updateState,getStates}
+function suckInPrevCircles(){
+    console.log("FART")
+    var width = window.innerWidth;
+    var height = window.innerHeight - 50;
+    d3.select("#my_dataviz")
+        .selectAll("circle")
+        .transition()
+        .duration(1250)
+        .attr("r", 0)
+        .attr("cx", width/2)
+        .attr("cy", height/2) 
+}
+
+export {determineColor,determineCx,determineCy,handleResize,findNewIndex,updateState,getStates,suckInPrevCircles}
