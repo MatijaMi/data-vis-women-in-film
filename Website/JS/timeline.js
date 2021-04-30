@@ -1,29 +1,70 @@
-import { select, csv, scaleLinear, max, min, scaleBand, axisLeft, axisTop, range, format } from "d3";
+import { select, csv, scaleLinear, max, min, scaleBand, axisTop, format, ascending, descending } from "d3";
 
-const svg = select("svg");
+var data;
+var naiveData = [];
+const svg = select(".timeline");
+const H = svg.node().getBoundingClientRect().height;
+const W = svg.node().getBoundingClientRect().width;
+const M = 20;
+let fill = 100;
+let asc = false;
+let name = true;
 
-async function parseData() {
-    return csv("/Website/Data/complete_data.csv");
+var yob_button = document.getElementById("yob-sort-button");
+yob_button.addEventListener("click", function (event) {
+    sorting(yob_button);
+});
+
+var name_button = document.getElementById("name-sort-button");
+name_button.addEventListener("click", function (event) {
+    sorting(name_button);
+})
+
+function sortYOB() {
+    if (asc) {
+        naiveData.sort((a, b) => ascending(a.YOB, b.YOB));
+        asc = false;
+    } else {
+        naiveData.sort((a, b) => descending(a.YOB, b.YOB));
+        asc = true;
+    }
 }
 
-async function render() {
-    const H = 3500;
-    const W = 1280;
-    const M = 20;
+function sortName() {
+    if (name) {
+        naiveData.sort((a, b) => ascending(a.name, b.name));
+        name = false;
+    } else {
+        naiveData.sort((a, b) => descending(a.name, b.name));
+        name = true;
+    }
+}
 
-    let data = await parseData();
-    data.sort((a, b) => a.YOB - b.YOB);
+function sortByYOB() {
+    sortYOB();
+    render();
+}
 
-    var naiveData = [];
-    data.forEach(d => {
-        if (d.YOB == "" || d.YOD == "") {
-            return;
-        };
-        d.YOB = +d.YOB;
-        d.YOD = +d.YOD;
-        naiveData.push(d)
-    });
+function sortByName() {
+    sortName();
+    render();
+}
 
+function sorting(button) {
+    svg.selectAll('rect').remove();
+    svg.selectAll('text').remove();
+    select("#xAxis").selectAll("svg").remove();
+    if (button.id == "yob-sort-button") {
+        sortByYOB();
+        return;
+    }
+    if (button.id == "name-sort-button") {
+        sortByName();
+        return;
+    }
+}
+
+function render() {
     naiveData = naiveData.slice().map((e, i) => ({ ...e, yIndex: i }));
 
     console.log(naiveData);
@@ -41,18 +82,25 @@ async function render() {
     const g = svg.append('g')
         .attr('transform', `translate(0, 20)`);
 
-    g.append('g')
+    select("#xAxis")
+        .append("svg")
+        .attr("width", W)
+        .attr("height", 20)
+        .append("g")
+        .attr("class", "axis")
+        .attr("transform", "translate(0, 15)")
         .call(axisTop(xScale)
             .tickFormat(format(".0f"))
             .tickSize(-(H - M))
             .ticks(34));
+
 
     const e = g
         .selectAll("g.name")
         .data(naiveData)
         .join('g')
         .attr('class', 'name')
-        .attr('transform', d => `translate(${xScale(d.YOB)}, ${yScale(d.name)})`);
+        .attr('transform', d => `translate(${xScale(d.YOB)}, ${yScale(d.name) - 30})`);
 
     e.append('rect')
         .attr(
@@ -63,17 +111,38 @@ async function render() {
                 : xScale(d.YOD) - xScale(d.YOB))
         )
         .attr('height', yScale.bandwidth())
-        .attr('fill', 'rgb(0,255,0)')
-        .attr('fill-opacity', 1);
+        .attr('fill', function () {
+            fill = fill + 1;
+            if (fill > 150) fill = 100;
+            return "rgb(0, " + (fill) + ", 0)";
+        })
+        .style('fill-opacity', 1);
 
     e.append('text')
-        .attr('y', yScale.bandwidth() - 1)
+        .attr('y', yScale.bandwidth() - 3)
         .attr('x', d => (xScale(d.YOD) - xScale(d.YOB)) / 2)
         .text(d => d.name)
         .style('font-size', '10px')
         .style('font-weight', 'bold')
         .style('opacity', '1')
-        .style('fill', 'black');
+        .style('fill', 'white');
 
 }
-render();
+
+function getData() {
+    csv("/Website/Data/complete_data.csv").then(d => {
+        data = d;
+        data.sort((a, b) => a.YOB - b.YOB);
+        data.forEach(d => {
+            if (d.YOB == "" || d.YOD == "") {
+                return;
+            };
+            d.YOB = +d.YOB;
+            d.YOD = +d.YOD;
+            naiveData.push(d)
+        });
+        render();
+    });
+}
+
+getData();

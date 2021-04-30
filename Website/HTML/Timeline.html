@@ -22,8 +22,14 @@
         <a href="">Gallery</a>
         <a href="">About</a>
     </div>
-
-    <svg width="1280" height="4000"></svg>
+    <div class="button-container" id="button-container">
+        <button class="sort-button" id="yob-sort-button">Sort by Year of Birth</button><br>
+        <button class="sort-button" id="name-sort-button">Sort by Name</button>
+    </div>
+    <div id="xAxis"></div>
+    <div class="svg-container" id="plot">
+        <svg class="timeline" id="timeline"></svg>
+    </div>
 </body>
 
 <style>
@@ -31,8 +37,24 @@
         margin: 0px;
         overflow: hidden;
     }
-    .rect {
-        fill: steelblue
+    .svg-container {
+        height: 92vh;
+        width: 1280px;
+        border: 2px solid #000;
+        margin: auto;
+        overflow-y: auto;
+        overflow-x: auto;
+    }
+    .timeline {
+        width: 1280px;
+        height: 5000px;
+    }
+    .button-container {
+        float: left;
+    }
+    .sort-button {
+        width: 180px;
+        font-weight: bold;
     }
 </style>
 
