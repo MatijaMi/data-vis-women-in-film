@@ -1,4 +1,7 @@
-import { select, csv, scaleLinear, max, min, scaleBand, axisTop, format, ascending, descending } from "d3";
+import { select, csv, scaleLinear, 
+            max, min, scaleBand, 
+                axisTop, format, ascending, 
+                    descending } from "d3";
 
 var data;
 var naiveData = [];
@@ -6,47 +9,44 @@ const svg = select(".timeline");
 const H = svg.node().getBoundingClientRect().height;
 const W = svg.node().getBoundingClientRect().width;
 const M = 20;
-let fill = 100;
-let asc = false;
-let name = true;
 
-var yob_button = document.getElementById("yob-sort-button");
-yob_button.addEventListener("click", function (event) {
-    sorting(yob_button);
+var yob_asc_button = document.getElementById("yob-sort-asc-button");
+yob_asc_button.addEventListener("click", function (event) {
+    sorting(yob_asc_button);
 });
 
-var name_button = document.getElementById("name-sort-button");
-name_button.addEventListener("click", function (event) {
-    sorting(name_button);
+var yob_desc_button = document.getElementById("yob-sort-desc-button");
+yob_desc_button.addEventListener("click", function (event) {
+    sorting(yob_desc_button);
+});
+
+var name_asc_button = document.getElementById("name-sort-asc-button");
+name_asc_button.addEventListener("click", function (event) {
+    sorting(name_asc_button);
 })
 
-function sortYOB() {
-    if (asc) {
-        naiveData.sort((a, b) => ascending(a.YOB, b.YOB));
-        asc = false;
-    } else {
-        naiveData.sort((a, b) => descending(a.YOB, b.YOB));
-        asc = true;
-    }
-}
+var name_desc_button = document.getElementById("name-sort-desc-button");
+name_desc_button.addEventListener("click", function (event) {
+    sorting(name_desc_button);
+})
 
-function sortName() {
-    if (name) {
-        naiveData.sort((a, b) => ascending(a.name, b.name));
-        name = false;
-    } else {
-        naiveData.sort((a, b) => descending(a.name, b.name));
-        name = true;
-    }
-}
-
-function sortByYOB() {
-    sortYOB();
+function sortByYOBAsc() {
+    naiveData.sort((a, b) => ascending(a.YOB, b.YOB));
     render();
 }
 
-function sortByName() {
-    sortName();
+function sortByYOBDesc() {
+    naiveData.sort((a, b) => descending(a.YOB, b.YOB));
+    render();
+}
+
+function sortByNameAsc() {
+    naiveData.sort((a, b) => ascending(a.name, b.name));
+    render();
+}
+
+function sortByNameDesc() {
+    naiveData.sort((a, b) => descending(a.name, b.name));
     render();
 }
 
@@ -54,12 +54,20 @@ function sorting(button) {
     svg.selectAll('rect').remove();
     svg.selectAll('text').remove();
     select("#xAxis").selectAll("svg").remove();
-    if (button.id == "yob-sort-button") {
-        sortByYOB();
+    if (button.id == "yob-sort-asc-button") {
+        sortByYOBAsc();
         return;
     }
-    if (button.id == "name-sort-button") {
-        sortByName();
+    if (button.id == "yob-sort-desc-button") {
+        sortByYOBDesc();
+        return;
+    }
+    if (button.id == "name-sort-asc-button") {
+        sortByNameAsc();
+        return;
+    }
+    if (button.id == "name-sort-desc-button") {
+        sortByNameDesc();
         return;
     }
 }
@@ -112,9 +120,7 @@ function render() {
         )
         .attr('height', yScale.bandwidth())
         .attr('fill', function () {
-            fill = fill + 1;
-            if (fill > 150) fill = 100;
-            return "rgb(0, " + (fill) + ", 0)";
+            return "rgb(0, 150, 0)";
         })
         .style('fill-opacity', 1);
 
