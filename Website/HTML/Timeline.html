@@ -32,6 +32,10 @@
                 <button class="sort-button" id="name-sort-desc-button">Name&#8642;</button>
             </div>
         </div>
+        <div class="event-container">
+            <input class="event-text" id ="event-text" placeholder="Beginning Year-Ending Year:Name"></textarea>
+            <button class="add-event-button" id="add-event-button">Add event</button>
+        </div>
         <div id="xAxis"></div>
         <div class="svg-container" id="plot">
             <svg class="timeline" id="timeline"></svg>
@@ -64,11 +68,29 @@
         height: 5000px;
     }
 
+    .event-container {
+        position: relative;
+        display: inline-block;
+    }
+
+    .add-event-button {
+        padding: 10px;
+        margin: 5px;
+        font-size: 16px;
+        border: none;
+    }
+
+    .event-text {
+        padding: 10px;
+        font-size: 16px;
+        border: none;
+    }
+
     /* Dropdown Button */
     .dropbtn {
         background-color: #009600;
         color: white;
-        padding: 16px;
+        padding: 10px;
         font-size: 16px;
         border: none;
     }
@@ -77,7 +99,7 @@
     .dropdown-container {
         position: relative;
         display: inline-block;
-        left:-610px;
+        left:-210px;
     }
 
     /* Dropdown Content (Hidden by Default) */

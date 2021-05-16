@@ -23,12 +23,18 @@ yob_desc_button.addEventListener("click", function (event) {
 var name_asc_button = document.getElementById("name-sort-asc-button");
 name_asc_button.addEventListener("click", function (event) {
     sorting(name_asc_button);
-})
+});
 
 var name_desc_button = document.getElementById("name-sort-desc-button");
 name_desc_button.addEventListener("click", function (event) {
     sorting(name_desc_button);
-})
+});
+
+var add_event_button = document.getElementById("add-event-button");
+add_event_button.addEventListener("click", function (event) {
+    const event_text = document.getElementById("event-text");
+    alert(event_text.value);
+});
 
 function sortByYOBAsc() {
     naiveData.sort((a, b) => ascending(a.YOB, b.YOB));
