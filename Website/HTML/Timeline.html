@@ -39,9 +39,9 @@
         <div id="xAxis"></div>
         <div class="svg-container" id="plot">
             <svg class="timeline" id="timeline"></svg>
+            <div class="tooltip"></div>
         </div>
     </div>
-    
 </body>
 
 <style>
@@ -61,6 +61,12 @@
         margin: auto;
         overflow-y: auto;
         overflow-x: auto;
+        position:relative;
+    }
+
+    .tooltip {
+        position: absolute;
+        opacity: 0;
     }
 
     .timeline {
