@@ -12,7 +12,6 @@ const M = 20;
 
 var data;
 var naiveData = [];
-var tooltip = select(".tooltip");
 
 const yob_asc_button = document.getElementById("yob-sort-asc-button");
 yob_asc_button.addEventListener("click", function (event) {
@@ -36,8 +35,9 @@ name_desc_button.addEventListener("click", function (event) {
 
 const add_event_button = document.getElementById("add-event-button");
 add_event_button.addEventListener("click", function (event) {
-    const event_text = document.getElementById("event-text");
-    alert(event_text.value);
+    var event_text = document.getElementById("event-text");
+    addEvent(event_text.value);
+    event_text.value = "";
 });
 
 function sortByYOBAsc() {
@@ -61,9 +61,7 @@ function sortByNameDesc() {
 }
 
 function sorting(button) {
-    svg.selectAll('rect').remove();
-    svg.selectAll('text').remove();
-    select("#xAxis").selectAll("svg").remove();
+    cleanUp();
     if (button.id == "yob-sort-asc-button") {
         sortByYOBAsc();
         return;
@@ -80,6 +78,31 @@ function sorting(button) {
         sortByNameDesc();
         return;
     }
+}
+
+function addEvent(input) {
+    cleanUp();
+    try {
+        let [name, dates] = input.split(":");
+        var [begin, end] = dates.split(" ");
+        console.log(name,begin,end);
+        var object = {
+            name: name,
+            YOB: begin,
+            YOD: end,
+        };
+        naiveData.push(object);
+        render();
+    } catch(error) {
+        render();
+        console.log(error + "\nUnable to create new event from given input");
+    }
+}
+
+function cleanUp() {
+    svg.selectAll('rect').remove();
+    svg.selectAll('text').remove();
+    select("#xAxis").selectAll("svg").remove();
 }
 
 function render() {
@@ -116,44 +139,7 @@ function render() {
         .data(naiveData)
         .join('g')
         .attr('class', 'name')
-        .attr('transform', d => `translate(${xScale(d.YOB)}, ${yScale(d.name) - 30})`)
-        .on("mouseenter", (e, d) => {
-            let [x, y] = pointer(e);
-            console.log("Mouse entered");
-            console.log(x, y);
-            tooltip
-                .style("height", "50px")
-                .style("width", "50px")
-                .style("left", `${x + 350}px`)
-                .style("top", `${y + 15}px`)
-                .style("opacity", 1)
-                .style("background-color", "black")
-            /*
-            selection
-            .append("rect")
-            .attr("id", "tooltip")
-            .attr("width", 50)
-            .attr("height", 50)
-            .attr('y', 0)
-            .attr('x', d => {
-                return selection.select("rect").attr("width") / 2;
-            })
-            .attr("fill", "white")
-            .style("fill-opacity", 1)
-            .append("text")
-                .text(d => {
-                    return d.name + "\n" + d.YOB + "-" + d.YOD;
-                })
-                .style('font-size', '15px')
-                .style('font-weight', 'bold')
-                .style('opacity', '1')
-                .style('fill', 'black');
-                */
-        })
-        .on("mouseleave", function () {
-            tooltip.style("opacity", 0);
-            console.log("Mouse left");
-        });
+        .attr('transform', d => `translate(${xScale(d.YOB)}, ${yScale(d.name) - 30})`);
 
     e.append('rect')
         .attr(
@@ -171,7 +157,7 @@ function render() {
 
     e.append('text')
         .attr('y', yScale.bandwidth() - 3)
-        .attr('x', d => (xScale(d.YOD) - xScale(d.YOB)) / 2)
+        .attr('x', d => ((xScale(d.YOD) - xScale(d.YOB)) / 2) - 10)
         .text(d => d.name)
         .style('font-size', '10px')
         .style('font-weight', 'bold')
