@@ -15,6 +15,7 @@
     <script type="module" src="../JS/groupByProfession.js"></script>
     <script type="module" src="../JS/groupingUtil.js"></script>
     <script type="module" src="../JS/dataProcessing.js"></script>
+    <script type="module" src="../JS/topLevel.js"></script>
     <script src="https://d3js.org/d3.v4.js"></script>
     <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
     <script type="text/javascript" src="../../Material/Data/WFPP.json"></script>
@@ -31,26 +32,12 @@
     <a href="">Gallery</a>
     <a href="">About</a>
   </div>
-
-  <!-- Sidepanel -->
-    <div id="mySidepanel" class="sidepanel">
-        <a href="javascript:void(0)" class="closebtn"  id="sidePanelClose">&times;</a>
-   
-        <label>Settings</label>
-
-        <br><br>
-
-        <button id="show-all-button"> All Pioneers</button>
-        <br>
-        <button id="groupBy-profession">Group by Professions</button>
-        <button id="groupBy-country"> Group by Country </button>
-        <br>   
-    </div>
-
-    <button id="sidepanel_button" class="openbtn">&#9776;</button>
+     <div id="locator">
+     
+     </div>
 
      <!-- Clusterpanel -->
-    <div class="my_dataviz" id="my_dataviz" onresize="handleResize()"> ></div>
+    <div class="my_dataviz" id="my_dataviz" onresize="handleResize()" onload="initializeState()"> ></div>
 
   <div class="footer">
 

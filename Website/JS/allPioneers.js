@@ -180,7 +180,6 @@ function showAll(){
    
 }
 
-showAll();
 
 
 function removeTooltip(){
@@ -189,9 +188,9 @@ function removeTooltip(){
 
 document.getElementById("my_dataviz").addEventListener("click",removeTooltip);
 window.addEventListener("resize", handleResize);
-document.getElementById("show-all-button").addEventListener("click",showAll);
-document.getElementById("groupBy-country").addEventListener("click", showCountries);
-document.getElementById("groupBy-profession").addEventListener("click", showProfessions);
+//document.getElementById("show-all-button").addEventListener("click",showAll);
+//document.getElementById("groupBy-country").addEventListener("click", showCountries);
+//document.getElementById("groupBy-profession").addEventListener("click", showProfessions);
 
 
 
@@ -294,8 +293,6 @@ function getHalfpipePath(number, width){
     var cx = determineCx(number,width);
     var cy = determineCy(number,width);
     return "m "+ (cx+95) + " " + (cy+90) + " h -95 a 45 45 0 0 0 0 -180.5 h 95"
-    
-    
 }
 
 
@@ -328,7 +325,7 @@ function zoomIn(d,data,svg){
         .selectAll("circle")
         .data(data)
         .transition()
-        .duration(30)
+        .duration(20)
         .attr("r", function(d)
                {if(hoverID==d.id){
                     return 90;
@@ -344,6 +341,7 @@ function zoomIn(d,data,svg){
                {if(hoverID==d.id){
                     return "3px"}})  
 }
+
 function zoomOut(d,data){
     var hoverID=d.id;
     var hoverNum=d.number;
@@ -353,7 +351,7 @@ function zoomOut(d,data){
         .selectAll("circle")
         .data(data)
         .transition()
-        .duration(30)
+        .duration(20)
         .attr("r", 30)
         .attr("cx", function(d){ return determineCx(d.number, width)})
         .attr("cy", function(d){ return determineCy(d.number, width)})
@@ -361,8 +359,5 @@ function zoomOut(d,data){
                {if(hoverID==d.id){
                     return "url(#"+d.id +")"}})     
 }
-
-
-
 
 export{showAll}

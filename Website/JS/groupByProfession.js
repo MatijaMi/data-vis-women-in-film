@@ -20,7 +20,7 @@ function groupByProfession(mode){
         var workedAs = newData[i].worked_as
         var link =  newData[i].link;
         var img_url = newData[i].image_url;
-        data+= id + "," + name + "," +link + "," + img_url + "," + workedAs[0] +  "," + "real," + i +"\r\n" 
+        data+= id + "," + name + "," +link + "," + img_url + "," + workedAs[5] +  "," + "real," + i +"\r\n" 
     }
     data = d3.csvParse(data);
     // append the svg object to the body of the page

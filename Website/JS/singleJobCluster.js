@@ -1,6 +1,7 @@
 import {showProfessions} from './jobCluser.js';
+import{updateState,updateLevel,getLevel,goBackState} from './groupingUtil.js';
 
-function showJobD3(profession){
+function showJobD3(profession,levels){
     if(document.getElementById("my_dataviz").firstChild!=null){
         document.getElementById("my_dataviz").removeChild(document.getElementById("my_dataviz").firstChild);
     }
@@ -8,19 +9,18 @@ function showJobD3(profession){
     for(var i = 0; i <wfpp.entries.length; i++){
         for(var j =0; j< wfpp.entries[i].worked_as.length; j++){
             var entry=wfpp.entries[i].worked_as[j];
-            if(entry.includes(">")){
-                entry= entry.substr(entry.indexOf(">")+1);
-                var link =  wfpp.entries[i].link;
-                var img_url = wfpp.entries[i].image_url;
-                var id = wfpp.entries[i].id;
-                var name = wfpp.entries[i].name;
-                if(entry == profession){
+               if(entry.includes(profession)){
+                    entry= entry.substr(entry.indexOf(">")+1);
+                    var link =  wfpp.entries[i].link;
+                    var img_url = wfpp.entries[i].image_url;
+                    var id = wfpp.entries[i].id;
+                    var name = wfpp.entries[i].name;
                     data+= id + "," + name + "," +link + "," + img_url + "," + "real," + entry + "," + i +"\r\n"
-                }
                      
-            } 
+                }
+            }    
         }
-    }
+    
 
     data = d3.csvParse(data);
 
@@ -50,34 +50,7 @@ function showJobD3(profession){
         .style("border-radius", "5px")
         .style("padding", "5px")
         .style("position", "absolute")
-    
-    var backButton = d3.select("body")
-        .append("div")
-        .style("opacity", 1)
-        .attr("class", "back")
-        .attr("id", "back")
-        .style("background-color", "white")
-        .style("border", "solid")
-        .style("border-width", "2px")
-        .style("border-radius", "5px")
-        .style("padding", "5px")
-        .style("position", "absolute")
-        .style("left", width -90 + "px")
-        .style("top", height -40 + "px")
-        .html("<button> Back </button>")
 
-    function goBack(){
-        Tooltip
-          .style("opacity", 0)
-          .style("width",0)
-          .style("border",0)
-          .style("padding", 0)
-        document.getElementById("back").remove()
-        showProfessions();   
-    }
-    
-document.getElementById("back").addEventListener("click", goBack)
-      // Three function that change the tooltip when user hover / move / leave a cell
   var mouseover = function (d) {
         Tooltip
           .style("opacity", 1)
@@ -168,7 +141,7 @@ document.getElementById("back").addEventListener("click", goBack)
 
       // Features of the forces applied to the nodes:
   var simulation = d3.forceSimulation()
-      .force("center", d3.forceCenter().x(width / 2).y(height / 2)) // Attraction to the center of the svg area
+      .force("center", d3.forceCenter().x(width / 3).y(height / 2)) // Attraction to the center of the svg area
       .force("charge", d3.forceManyBody().strength(-10)) // Nodes are attracted one each other of value is > 0
       // Force that avoids circle overlapping
 
@@ -180,22 +153,6 @@ document.getElementById("back").addEventListener("click", goBack)
             .attr("cx", function (d) { return d.x; })
             .attr("cy", function (d) { return d.y; })
         });
-
-      // What happens when a circle is dragged?
-  function dragstarted(d) {
-        if (!d3.event.active) simulation.alphaTarget(.03).restart();
-        d.fx = d.x;
-        d.fy = d.y;
-      }
-  function dragged(d) {
-        d.fx = d3.event.x;
-        d.fy = d3.event.y;
-      }
-  function dragended(d) {
-        if (!d3.event.active) simulation.alphaTarget(.03);
-        d.fx = null;
-        d.fy = null;
-      }
 }
 
 export {showJobD3}

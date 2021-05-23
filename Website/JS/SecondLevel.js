@@ -1,62 +1,72 @@
-import{showJobD3}  from './singleJobCluster.js';
-import{updateState,updateLevel,getLevels,getLevel} from './groupingUtil.js';
+import{updateState,updateLevel,getLevels,getLevel,removeTooltip,setLevel,setLocator,updateLocator} from './groupingUtil.js';
+import{drawFirstLevel} from './firstLevel.js';
+import{drawThirdLevel} from './ThirdLevel.js';
 
-function showProfessions(profession,level,group){
+function drawSecondLevel(profession){
     if(document.getElementById("my_dataviz").firstChild!=null){
         document.getElementById("my_dataviz").removeChild(document.getElementById("my_dataviz").firstChild);
     }
     
     var levels = getLevels();
-    var topLevel = levels[0];
     
+    
+    
+    //COLLECT PEOPLE
     var jobData= new Map();
-    
+    var persData = "id,name,link,imgUrl,real,job,number\r\n";
     for(var i = 0; i <wfpp.entries.length; i++){
-        var personsJobs = new Set();
+         var personsJobs = new Set();
         for(var j =0; j< wfpp.entries[i].worked_as.length; j++){
             var entry=wfpp.entries[i].worked_as[j];
+            var link =  wfpp.entries[i].link;
+            var img_url = wfpp.entries[i].image_url;
+            var id = wfpp.entries[i].id;
+            var name = wfpp.entries[i].name;
             if(entry.includes(">")){
-                var temp = entry.split(">");
-                if(temp.length>=level){
-                    if(level==2){
-                        console.log(temp);
-                    }
-                    entry= temp[level];
-                }
-                if(level>0){
-                    if(temp[level-1]==profession){
-                        personsJobs.add(entry);
+                entry=entry.substr(entry.indexOf(">")+1);
+                if(entry.includes(">")){
+                    var rest = entry.substr(entry.indexOf(">")+1);
+                    entry=entry.substr(0,entry.indexOf(">"));
+                    if(entry==profession){
+                       persData+= id + "," + name + "," +link + "," + img_url + "," + "real," + entry + "," + i +"\r\n";
+                        if(rest.includes(">")){
+                            rest=rest.substr(0,rest.indexOf(">"));
+                        }
+                        personsJobs.add(rest);
                     }
                 }else{
-                    personsJobs.add(entry);
+                   if(entry==profession){
+                      persData+= id + "," + name + "," +link + "," + img_url + "," + "real," + entry + "," + i +"\r\n"; 
+                   } 
                 }
             }else{
-                if(level==0){
-                    if(!levels[0].has(entry)){
-                        personsJobs.add("Other"); 
-                    }
-                }else{
-                    if(profession=="Other" && !topLevel.has(entry))
-                        personsJobs.add(entry);
+                if(levels[0].has(entry) && entry==profession){
+                    persData+= id + "," + name + "," +link + "," + img_url + "," + "real," + entry + "," + i +"\r\n"; 
                 }
+                if(!levels[0].has(entry)){
+                    if(entry==profession){
+                        persData+= id + "," + name + "," +link + "," + img_url + "," + "real," + entry + "," + i +"\r\n";
+                    }
+                }
+                
             }
-            
         }
         personsJobs.forEach((entry)=>{
-            if(jobData.has(entry)){
+                if(jobData.has(entry)){
                     var value = jobData.get(entry)+1;
                     jobData.set(entry,value);
                 }else{
                     jobData.set(entry,1);
                 }  
-        });
-    }    
+            });
+    }
     
+    var personalData = d3.csvParse(persData);
     var data = "job,count\r\n";
-
     jobData.forEach((value,key)=>{ 
           data+= key + "," + value + "\r\n"
         });
+    
     data = d3.csvParse(data);
 
     // set the dimensions and margins of the graph
@@ -113,13 +123,9 @@ function showProfessions(profession,level,group){
         .data(data)
         .style("opacity", 1)
         .style("stroke-width", 2);
-    
-      var paras = document.getElementsByClassName('tooltip2');
-
-      while(paras[0]) {
-        paras[0].parentNode.removeChild(paras[0]);
-        }
-      }
+      removeTooltip("tooltip2");
+      
+  }
   
     jobData.forEach((value,key)=>{
     svg.append("pattern")
@@ -137,6 +143,67 @@ function showProfessions(profession,level,group){
         
     
 });
+     
+ for(var i =0; i <personalData.length; i++){
+      if(personalData[i].imgUrl.length!=0){
+          var link = '../Images/WFPP-Pictures/' + personalData[i].name.split(' ').join('%20') +'.jpg';
+      }else{
+          var link = '../Images/WFPP-Pictures/Unknown.jpg';
+      }
+      
+    svg.append("pattern")
+     .data(personalData)
+     .attr("x", 0)
+     .attr("y", 0)
+     .attr("width", 10)
+	 .attr("height", 10)
+     .attr("id", personalData[i].id)
+     .append("image")
+        .attr("x", 0)
+        .attr("y", 0)
+   	    .attr("width", function (d) { return 60})
+        .attr("height", function (d) { return 60})
+        .attr("xlink:href", link);  
+}
+    
+    var personalNode = svg.append("g")
+        .selectAll("circle")
+        .data(personalData)
+        .enter()
+        .append("circle")
+        .attr("class", "node")
+        .attr("r", 30)
+        .attr("cx",0)
+        .attr("cy", 0)
+        .attr("fill", function(d) {
+		      return "url(#"+d.id +")";
+        })
+        .attr("stroke", "black")
+        .style("stroke-width", 0.8)
+        .on("mouseover", mouseover) // What to do when hovered
+        .on("mousemove", mousemove)
+        .on("mouseleave", mouseleave)
+
+
+
+      // Features of the forces applied to the nodes:
+    var clusPos= width/2;
+    if(data.length!=0){
+        clusPos=width/3;
+    }
+  var simulation = d3.forceSimulation()
+      .force("center", d3.forceCenter().x(clusPos).y(height / 2)) // Attraction to the center of the svg area
+      .force("charge", d3.forceManyBody().strength(-10)) // Nodes are attracted one each other of value is > 0
+      // Force that avoids circle overlapping
+
+  //
+      simulation
+        .nodes(personalData)
+        .on("tick", function (d) {
+          personalNode
+            .attr("cx", function (d) { return d.x; })
+            .attr("cy", function (d) { return d.y; })
+        });
     
    var showJob = function (d) {
        
@@ -147,8 +214,10 @@ function showProfessions(profession,level,group){
         }
        Tooltip.style("opacity", 0)
        
-       updateLevel(1);
-       showProfessions(d.job,getLevel(),levels)
+       setLevel(3);
+       updateState(d.job);
+       drawThirdLevel(d.job);
+       updateLocator(d.job,getLevel());
     }
   
       // Initialize the circle: all located at the center of the svg area
@@ -171,17 +240,13 @@ function showProfessions(profession,level,group){
         .on("mousemove", mousemove)
         .on("mouseenter", mouseenter)
         .on("mouseleave", mouseleave)
-        .on("click", function (d) {showJob(d)})
-        //.call(d3.drag() // call specific function when circle is dragged
-          //.on("start", dragstarted)
-          //.on("drag", dragged)
-          //.on("end", dragended));
+        .on("click", function (d) {showJob(d)});
 
 
 
       // Features of the forces applied to the nodes:
   var simulation = d3.forceSimulation()
-      .force("center", d3.forceCenter().x(width / 2).y(height / 2)) // Attraction to the center of the svg area
+      .force("center", d3.forceCenter().x(2*(width / 3)).y(height / 2)) // Attraction to the center of the svg area
       .force("charge", d3.forceManyBody().strength(-10)) // Nodes are attracted one each other of value is > 0
       .force("collide", d3.forceCollide().strength(.5).radius(function (d) { return determineJobSize(d.count)}).iterations(1))
       .force('y', d3.forceY().y(height/2).strength(0.012));
@@ -194,25 +259,7 @@ function showProfessions(profession,level,group){
             .attr("cx", function (d) { return d.x; })
             .attr("cy", function (d) { return d.y; })
         });
-
-      // What happens when a circle is dragged?
-  function dragstarted(d) {
-        if (!d3.event.active) simulation.alphaTarget(.03).restart();
-        d.fx = d.x;
-        d.fy = d.y;
-      }
-  function dragged(d) {
-        d.fx = d3.event.x;
-        d.fy = d3.event.y;
-      }
-  function dragended(d) {
-        if (!d3.event.active) simulation.alphaTarget(.03);
-        d.fx = null;
-        d.fy = null;
-      }
-    
-    updateState("Professions");
-    updateLevel(0);
+    setLevel(2);
 }
 
 
@@ -321,4 +368,4 @@ function createLines(job,data){
 }
 
 
-export {showProfessions}
+export {drawSecondLevel}

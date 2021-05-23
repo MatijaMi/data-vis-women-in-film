@@ -1,31 +1,54 @@
-import{updateState} from './groupingUtil.js';
-import{showCountryD3} from './singleCountryCluster.js';
+import{updateState,updateLevel,getLevels,getLevel,removeTooltip,setLevel,goBackState,setLocator,updateLocator} from './groupingUtil.js';
+import{drawTopLevel} from './topLevel.js';
+import{drawSecondLevel} from './SecondLevel.js';
+import{showJobD3} from './singleJobCluster.js';
 
-function showCountries(){
-    
+function drawFirstLevel(profession){
     if(document.getElementById("my_dataviz").firstChild!=null){
         document.getElementById("my_dataviz").removeChild(document.getElementById("my_dataviz").firstChild);
     }
     
-    var countryData= new Map();
+    var levels = getLevels();
+    var topLevel = levels[0];
+    
+    var jobData= new Map();
+    
     for(var i = 0; i <wfpp.entries.length; i++){
-        for(var j =0; j< wfpp.entries[i].worked_in.length; j++){
-            var entry=wfpp.entries[i].worked_in[j];
-                if(countryData.has(entry)){
-                    var value = countryData.get(entry)+1;
-                    countryData.set(entry,value);
+        var personsJobs = new Set();
+        for(var j =0; j< wfpp.entries[i].worked_as.length; j++){
+            var entry=wfpp.entries[i].worked_as[j];
+            if(entry.includes(">") && entry.substr(0,entry.indexOf(">"))==profession){
+                entry=entry.substr(entry.indexOf(">")+1);
+                if(entry.includes(">")){
+                    entry=entry.substr(0,entry.indexOf(">"));
+                }
+                personsJobs.add(entry);
+            }else{
+                if(profession=="Other" && !topLevel.has(entry) && !entry.includes(">")){
+                    personsJobs.add(entry);
+                }
+                if(topLevel.has(entry) && entry==profession){
+                    personsJobs.add(entry);
+                }
+            }
+            
+         
+        }
+            personsJobs.forEach((entry)=>{
+                if(jobData.has(entry)){
+                    var value = jobData.get(entry)+1;
+                    jobData.set(entry,value);
                 }else{
-                    countryData.set(entry,1);
-                }        
-            } 
-        } 
-    //console.log(wfpp.entries)
-    var data = "country,count\r\n";
-
-    countryData.forEach((value,key)=>{ 
+                    jobData.set(entry,1);
+                }  
+            });
+    }
+    
+    var data = "job,count\r\n";
+    jobData.forEach((value,key)=>{ 
           data+= key + "," + value + "\r\n"
         });
-
+    
     data = d3.csvParse(data);
 
     // set the dimensions and margins of the graph
@@ -37,8 +60,6 @@ function showCountries(){
     .append("svg")
     .attr("width", width)
     .attr("height", height)
-    
-    
   
       // create a tooltip
     var Tooltip = d3.select("body")
@@ -54,15 +75,20 @@ function showCountries(){
 
       // Three function that change the tooltip when user hover / move / leave a cell
   var mouseover = function (d) {
-       Tooltip
+        Tooltip
           .style("opacity", 1)
           .style("width","auto")
           .style("border","solid")
           .style("padding", "5px")
       }
+  
+    var mouseenter = function (d) {
+      createLines(d.job, data)
+      }
+    
   var mousemove = function (d) {
         Tooltip
-          .html('<u>' + d.country + '</u>' + "<br>" + d.count)
+          .html('<u>' + d.job + '</u>' + "<br>" + d.count)
           .style("left", (d3.mouse(this)[0] + 20) + "px")
           .style("top", (d3.mouse(this)[1]) + "px")
       }
@@ -74,44 +100,74 @@ function showCountries(){
           .style("padding", 0)
           .html("");
       
-        d3.select("#my_dataviz")
+     d3.select("#my_dataviz")
         .selectAll("circle")
         .data(data)
         .style("opacity", 1)
         .style("stroke-width", 2);
-      var paras = document.getElementsByClassName('tooltip2');
-
-      while(paras[0]) {
-        paras[0].parentNode.removeChild(paras[0]);
+      removeTooltip("tooltip2");
+      
+  }
+  function goBack(){
+        setLevel(getLevel()-1);
+        if(getLevel()==0){
+            document.getElementById("back").remove();
         }
-      }
-  var mouseenter = function (d) {
-        createLines(d.country, data)
-      }
+        goBackState();
+    }
+  if(document.getElementById("back")==null){
+      var backButton = d3.select("body")
+        .append("div")
+        .style("opacity", 1)
+        .attr("class", "back")
+        .attr("id", "back")
+        .style("background-color", "white")
+        .style("border", "solid")
+        .style("border-width", "2px")
+        .style("border-radius", "5px")
+        .style("padding", "5px")
+        .style("position", "absolute")
+        .style("left", width -90 + "px")
+        .style("top", height -40 + "px")
+        .html("<button> Back </button>");
+      document.getElementById("back").addEventListener("click", goBack)
+      // Three function that change the tooltip when user hover / move / leave a cell
+  }
+    
   
-    countryData.forEach((value,key)=>{
+    
+
+  
+    jobData.forEach((value,key)=>{
     svg.append("pattern")
      .attr("x", 0)
      .attr("y", 0)
      .attr("width", 10)
 	 .attr("height", 10)
-     .attr("id", function (d) { return "bg" +key.split(' ').join('-')})
+     .attr("id", function (d) {return "bg" +key.split(' ').join('-')})
      .append("image")
        .attr("x", 0)
        .attr("y", 0)
-   			.attr("width", function (d) { return 2 * determineCountrySize(value)})
-			.attr("height", function (d) { return 2* determineCountrySize(value)})
-   .attr("xlink:href", findCountryPicture(key,value));
+   			.attr("width", function (d) { return 2 * determineJobSize(value)})
+			.attr("height", function (d) { return 2 * determineJobSize(value)})
+   .attr("xlink:href", findProfessionPicture(key,value));
+        
+    
 });
     
-   var showCountry = function (d) { 
-       showCountryD3(d.country)
+   var showJob = function (d) {
+       
        var paras = document.getElementsByClassName('tooltip2');
 
         while(paras[0]) {
             paras[0].parentNode.removeChild(paras[0]);
         }
        Tooltip.style("opacity", 0)
+       
+       setLevel(2);
+       updateState(d.job);
+       drawSecondLevel(d.job);
+       updateLocator(d.job,getLevel());
     }
   
       // Initialize the circle: all located at the center of the svg area
@@ -121,12 +177,12 @@ function showCountries(){
         .enter()
         .append("circle")
         .attr("class", "node")
-        .attr("id", function(d){return d.country})
-        .attr("r", function (d) { return determineCountrySize(d.count)})
+        .attr("id", function (d) { return d.job})
+        .attr("r", function (d) { return determineJobSize(d.count)})
         .attr("cx",0)
         .attr("cy", 0)
         .attr("fill", function(d) {
-		      return "url(#bg" + d.country.split(' ').join('-')+")";
+		      return "url(#bg" + d.job.split(' ').join('-')+")";
         })
         .attr("stroke", "black")
         .style("stroke-width", 2)
@@ -134,7 +190,7 @@ function showCountries(){
         .on("mousemove", mousemove)
         .on("mouseenter", mouseenter)
         .on("mouseleave", mouseleave)
-        .on("click", function (d) {showCountry(d)})
+        .on("click", function (d) {showJob(d)})
         //.call(d3.drag() // call specific function when circle is dragged
           //.on("start", dragstarted)
           //.on("drag", dragged)
@@ -145,8 +201,9 @@ function showCountries(){
       // Features of the forces applied to the nodes:
   var simulation = d3.forceSimulation()
       .force("center", d3.forceCenter().x(width / 2).y(height / 2)) // Attraction to the center of the svg area
-      .force("charge", d3.forceManyBody().strength(-2)) // Nodes are attracted one each other of value is > 0
-      .force("collide", d3.forceCollide().strength(.2).radius(function (d) { return determineCountrySize(d.count)}).iterations(1)) // Force that avoids circle overlapping
+      .force("charge", d3.forceManyBody().strength(-10)) // Nodes are attracted one each other of value is > 0
+      .force("collide", d3.forceCollide().strength(.5).radius(function (d) { return determineJobSize(d.count)}).iterations(1))
+      .force('y', d3.forceY().y(height/2).strength(0.012));
 
   //
       simulation
@@ -172,29 +229,25 @@ function showCountries(){
         d.fx = null;
         d.fy = null;
       }
-    updateState("Countries");
 }
 
-
-
-function findCountryPicture(country,count){
+function findProfessionPicture(job,count){
     var rand = count;
-    
     if(rand>1){
         rand =Math.floor((Math.random() * count) + 1);
     }
-    
     for(var i = 0; i <wfpp.entries.length; i++){
-        for(var j =0; j< wfpp.entries[i].worked_in.length; j++){
-            var entry=wfpp.entries[i].worked_in[j];
-            if(entry.includes(country)){
+        for(var j =0; j< wfpp.entries[i].worked_as.length; j++){
+            var entry=wfpp.entries[i].worked_as[j];
+            if(entry.includes(job)){
                 if(rand==1){
                     if(wfpp.entries[i].image_url.length!=0){
-                        if(count>20){
+                        if(count>50){
                             return '../Images/WFPP-Pictures-Fullsize/' + wfpp.entries[i].name.split(' ').join('%20') +'.jpg';
                         }else{
                            return '../Images/WFPP-Pictures/' + wfpp.entries[i].name.split(' ').join('%20') +'.jpg'; 
-                        }  
+                        }
+                        
                     }
                 }else{
                     rand--;
@@ -202,46 +255,54 @@ function findCountryPicture(country,count){
             }
         }
     }
-    if(count>20){
+    
+    if(count>50){
         return '../Images/WFPP-Pictures-Fullsize/Unknown.webp';;
     }else{
         return '../Images/WFPP-Pictures/Unknown.jpg'; 
-    }
+    } 
 }
 
-function determineCountrySize(count){
-    
+
+
+function determineJobSize(count){
+    //return Math.max(30,count);
     if(count<10){
-        return 45;
+        return 60;
     }else{
         if(count<20 && count >=10){
-            return 60;
+            return 70;
         }else{
             if(count<50 && count >20){
-                return 75;
+                return 80;
             }else{
-                return count;
+                return 90;
             }
         }
     }
+    
 }
 
-function createLines(country,data){
-    var simCountries = new Set();
-    simCountries.add(country)
+
+function createLines(job,data){
+    var simJobs = new Set();
+    simJobs.add(job)
     for(var i = 0; i <wfpp.entries.length; i++){
-        for(var j =0; j< wfpp.entries[i].worked_in.length; j++){
-            var entry=wfpp.entries[i].worked_in[j];
-            if(entry.includes(country)){
-                for(var k =0; k< wfpp.entries[i].worked_in.length; k++){
-                    var entry=wfpp.entries[i].worked_in[k];
-                    simCountries.add(entry);
+        for(var j =0; j< wfpp.entries[i].worked_as.length; j++){
+            var entry=wfpp.entries[i].worked_as[j];
+            if(entry.includes(job)){
+                for(var k =0; k< wfpp.entries[i].worked_as.length; k++){
+                    var entry=wfpp.entries[i].worked_as[k];
+                    if(entry.includes(">")){
+                        entry= entry.substr(entry.indexOf(">")+1);        
+                    }
+                    simJobs.add(entry);
                 }
                 
             }
         }
     }
-    var arr = Array.from(simCountries);
+    var arr = Array.from(simJobs);
     d3.select("#my_dataviz")
         .selectAll("circle")
         .data(data)
@@ -250,8 +311,8 @@ function createLines(country,data){
         .style("stroke-width", function(){if(arr.includes(d3.select(this).attr('id'))){
         return "4px";}else{return 2;}})
     
-    simCountries.delete(country);
-    var arr = Array.from(simCountries);
+    simJobs.delete(job);
+    var arr = Array.from(simJobs);
     for(var i =0; i< arr.length;i++){
         if(document.getElementById(arr[i])!=null){
             var x = document.getElementById(arr[i]).cx.baseVal.value;
@@ -269,10 +330,10 @@ function createLines(country,data){
                 .style("padding", "5px")
                 .style("position", "absolute")
                 .style("left", x-arr[i].length*4 + "px")
-                .style("top", y-r+10 + "px")  
+                .style("top", y-r+10 + "px")   
         }
     }
 }
 
 
-export {showCountries}
+export {drawFirstLevel}
