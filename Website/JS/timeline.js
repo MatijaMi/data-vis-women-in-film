@@ -2,7 +2,7 @@ import {
     select, csv, scaleLinear,
     max, min, scaleBand,
     axisTop, format, ascending,
-    descending, pointer
+    descending, pointer, selectAll
 } from "d3";
 
 const svg = select(".timeline");
@@ -85,7 +85,7 @@ function addEvent(input) {
     try {
         let [name, dates] = input.split(":");
         var [begin, end] = dates.split(" ");
-        console.log(name,begin,end);
+        console.log(name, begin, end);
         var object = {
             name: name,
             YOB: begin,
@@ -93,7 +93,7 @@ function addEvent(input) {
         };
         naiveData.push(object);
         render();
-    } catch(error) {
+    } catch (error) {
         render();
         console.log(error + "\nUnable to create new event from given input");
     }
@@ -139,7 +139,47 @@ function render() {
         .data(naiveData)
         .join('g')
         .attr('class', 'name')
-        .attr('transform', d => `translate(${xScale(d.YOB)}, ${yScale(d.name) - 30})`);
+        .attr('transform', d => `translate(${xScale(d.YOB)}, ${yScale(d.name) - 30})`)
+        .on("mouseenter", function (e, d) {
+            select(this)
+                .append("g")
+                .attr("class", "tooltip")
+                .style("box-shadow", "0px 8px 16px 0px rgba(0, 0, 0, 0.2)")
+                .style("z-index", "1")
+                .append("rect")
+                .style("width", "15%")
+                .style("height", "50px")
+                .attr("x", pointer(e)[0])
+                .style("fill", "white")
+                .style("fill-opacity", "0.9");
+            selectAll(".tooltip")
+                .append("text")
+                .attr("x", pointer(e)[0])
+                .attr("y", 20)
+                .append("tspan")
+                    .attr("x", pointer(e)[0])
+                    .attr("y", 20)
+                    .text(d => {return d.name})
+                    .style('font-size', '20px')
+                    .style('font-weight', 'bold')
+                    .style('opacity', '1')
+                    .style('fill', 'black')
+                .append("tspan")
+                    .attr("x", pointer(e)[0])
+                    .attr("y", 40)
+                    .style("width", "15%")
+                    .style("height", "50px")
+                    .text(d => {return d.YOB+"-"+d.YOD})
+                    .style('font-size', '20px')
+                    .style('font-weight', 'bold')
+                    .style('opacity', '1')
+                    .style('fill', 'black');
+
+        })
+        .on("mouseleave", function (e, d) {
+            selectAll(".tooltip").remove();
+        });
+
 
     e.append('rect')
         .attr(
@@ -156,8 +196,8 @@ function render() {
         .style('fill-opacity', 1);
 
     e.append('text')
+        .attr('x', d => ((xScale(d.YOD) - xScale(d.YOB)) / 2) - 20)
         .attr('y', yScale.bandwidth() - 3)
-        .attr('x', d => ((xScale(d.YOD) - xScale(d.YOB)) / 2) - 10)
         .text(d => d.name)
         .style('font-size', '10px')
         .style('font-weight', 'bold')
