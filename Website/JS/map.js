@@ -18,10 +18,11 @@ class Country {
     country_jobs = [];
 
     constructor(name, code, long, lat) {
+
         this.country_name = name;
         this.country_code = code;
-        this.country_long = long;
-        this.country_lat = lat;
+        this.country_long = long - 325;
+        this.country_lat = lat - 130;
     }
 
     clear() {
@@ -60,7 +61,7 @@ function createAllCountries() {
     countries.push(new Country("United States", "USA", "550", "450"));
     countries.push(new Country("Argentina", "ARG", "690", "780"));
     countries.push(new Country("Australia", "AUS", "1600", "750"));
-    countries.push(new Country("New Zealand", "NZL", "1685", "835"));
+    countries.push(new Country("New Zealand", "NZL", "1700", "850"));
     countries.push(new Country("Austria", "AUT", "1025", "395"));
     countries.push(new Country("China", "CHN", "1400", "450"));
     countries.push(new Country("Germany", "DEU", "1010", "355"));
@@ -70,7 +71,7 @@ function createAllCountries() {
     countries.push(new Country("Italy", "ITA", "1010", "420"));
     countries.push(new Country("France", "FRA", "970", "400"));
     countries.push(new Country("Chile", "CHL", "645", "845"));
-    countries.push(new Country("Japan", "JPN", "1555", "455"));
+    countries.push(new Country("Japan", "JPN", "1565", "460"));
     countries.push(new Country("Colombia", "COL", "645", "615"));
     countries.push(new Country("Czechoslovakia", "CZE", "1025", "380"));
     countries.push(new Country("Denmark", "DNK", "1000", "330"));
@@ -83,7 +84,7 @@ function createAllCountries() {
     countries.push(new Country("Mexico", "MEX", "520", "520"));
     countries.push(new Country("Peru", "PER", "635", "655"));
     countries.push(new Country("Poland", "POL", "1040", "360"));
-    countries.push(new Country("Russia / former Soviet Union", "RUS", "1170", "300"));
+    countries.push(new Country("Russia", "RUS", "1170", "300"));
     countries.push(new Country("Spain", "ESP", "940", "430"));
     countries.push(new Country("The Netherlands", "NLD", "985", "360"));
     countries.push(new Country("The Philippines", "PHL", "1485", "580"));
@@ -92,14 +93,6 @@ function createAllCountries() {
 
     return countries;
 }
-
-/**
- * Resize event
- */
-function resizeMap(){
-    
-}
-
 
 /**
  * Loads the data for the map
@@ -112,7 +105,7 @@ function load_data() {
     //Adding data to d3 map
     d3.queue()
         .defer(d3.json, "../Data/world_map.geojson")
-        .defer(d3.csv, "../Data/complete_data.csv", function(row) {
+        .defer(d3.csv, "../Data/map_pioneer_data.csv", function(row) {
 
             //Calculations for each row
             //Use settings
@@ -356,4 +349,11 @@ function open_dialog(dialog_text){
 
 function histogram_button_onclick(){
     document.getElementById('histogram_holder').hidden  = !document.getElementById('histogram_holder').hidden;
+
+    //Set height of spacer
+    if(document.getElementById('histogram_holder').hidden) document.getElementById('bottom_wrapper').style.height =  "100px";
+    else{
+        document.getElementById('bottom_wrapper').style.height =  "380px";
+        window.scrollTo(0,document.body.scrollHeight);
+    }
 }

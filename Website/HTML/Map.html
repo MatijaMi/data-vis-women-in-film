@@ -21,7 +21,7 @@
 
 </head>
 
-<body onresize="resizeMap()">
+<body>
 
     <!-- Header -->
     <div class="header" id="header">
@@ -33,109 +33,129 @@
         <a href="">About</a>
     </div>
 
-    <!-- Sidepanel -->
-    <div class="sidepanel_panel">
+    <!-- Header-Spacer -->
+    <svg height="50" width="100%"></svg>
 
-        <label class="headline" id="country_name_label"></label>
+    <!-- Dialog Holder - Will display Dialog text of info buttons-->
+    <div id="dialog" title="Information" hidden="true"></div>
 
-        <br><br>
+    <!-- Main Body (Panels + Map)-->
+    <div class="main_wrapper">
 
-        <div id="sidepanel_holder" hidden=true>
+        <!-- Panels-->
+        <div class="panels">
 
-            <input type="image" class="info_icon" src="../Images/question_mark.png"
-                onclick="sidepanel_info_onclick()" />
+            <!-- Sidepanel -->
+            <div class="sidepanel_panel">
 
-            <label class="text_short_big">Pioneers: </label>
-            <label class="text_short_big" id="pioneers_count_label"></label><br>
+                <input type="image" class="sidepanel_info_icon" src="../Images/question_mark.png"
+                    onclick="sidepanel_info_onclick()" />
 
-            <label class="text_short">Different Jobs: </label>
-            <label class="text_short" id="pioneers_jobs_label"></label><br>
+                <label class="sidepanel_headline" id="country_name_label"></label>
 
-            <label class="text_short">Connections: </label>
-            <label class="text_short" id="pioneers_connections_label"></label>
+                <br><br>
 
-            <br><br>
+                <div id="sidepanel_holder" hidden=true>
 
-            <label class="text_short">Example Pioneer: </label><br>
-            <label class="text_short" id="pioneers_ex_name"></label>
+                    <label class="sidepanel_text_big">Pioneers: </label>
+                    <label class="sidepanel_text_big" id="pioneers_count_label"></label><br>
 
-            <br><br>
+                    <label class="sidepanel_text_short">Different Jobs: </label>
+                    <label class="sidepanel_text_short" id="pioneers_jobs_label"></label><br>
 
-            <img class="sidepanel_image" id="pioneers_ex_image"
-                src="https://wfpp.columbia.edu/wp-content/uploads/2018/05/adaalineurban.jpg"
-                onerror="image_load_error('pioneers_ex_image')">
-            <br><br>
+                    <label class="sidepanel_text_short">Connections: </label>
+                    <label class="sidepanel_text_short" id="pioneers_connections_label"></label>
 
-            <button class="round_button" id="pioneers_read_more_button">Read more</button>
-            <button class="round_button" id="pioneers_next_button">Next</button>
+                    <br><br>
+
+                    <label class="sidepanel_text_short">Example Pioneer: </label><br>
+                    <label class="sidepanel_text_short" id="pioneers_ex_name"></label>
+
+                    <br><br>
+
+                    <img class="sidepanel_image" id="pioneers_ex_image"
+                        src="https://wfpp.columbia.edu/wp-content/uploads/2018/05/adaalineurban.jpg"
+                        onerror="image_load_error('pioneers_ex_image')">
+                    <br><br>
+
+                    <button class="sidepanel_button" id="pioneers_read_more_button">Read more</button>
+                    <button class="sidepanel_button" id="pioneers_next_button">Next</button>
+
+                </div>
+                <div class="sidepanel_text_long" id="sidepanel_empty_text" hidden="true">
+                    There are no pioneers registered to the WFFP between the selected Years. <br><br> If you want to
+                    contribute
+                    to the project please click the button below.
+                    <br><br>
+                </div>
+
+                <button class="sidepanel_button" onclick="window.open('https://wfpp.columbia.edu/contribute/')"
+                    id="pioneers_contribute_button" hidden="true">Contribute</button>
+            </div>
+
+
+
+            <!-- Settings -->
+            <div class="settings_panel">
+                <label class="settings_headline">Settings</label>
+
+                <input type="image" class="settings_info_icon" src="../Images/question_mark.png"
+                    onclick="settingspanel_info_onclick()"> </input>
+
+                <br><br>
+
+                <input type="checkbox" class="settings_checkbox" id="settings_checkbox_unknown" onclick="load_data()"
+                    checked>
+                <label class="settings_checkbox_text">Include Unknown Dates</label>
+
+                <br><br>
+
+                <button class="settings_button" id="all_connections_button">Show all connections</button>
+
+                <br><br>
+
+                <button class="settings_button" id="timeline_button">Show as timeline</button>
+            </div>
 
         </div>
-        <div class="text_long" id="sidepanel_empty_text" hidden="true">
-            There are no pioneers registered to the WFFP between the selected Years. <br><br> If you want to contribute
-            to the project please click the button below.
-            <br><br>
+
+        <!-- Map -->
+        <svg id="map_holder" class="map_holder" width="1400" height="750"></svg>
+
+    </div>
+
+    <!-- Bottom - (Slider + Histogram)-->
+    <div class="bottom_wrapper" id="bottom_wrapper">
+
+        <!-- Histogram-->
+        <div class="histogram_holder" id="histogram_holder" hidden=true>
+            <input type="image" onclick="histogram_button_onclick()" class="histogram_image"
+                src="../Images/map_histogram.png" />
         </div>
 
-        <button class="round_button" onclick="window.open('https://wfpp.columbia.edu/contribute/')"
-            id="pioneers_contribute_button" hidden="true">Contribute</button>
+        <!-- Slider Holder -->
+        <div class="slider_text_holder">
+
+            <input type="image" class="histo_icon" src="../Images/barchart_icon.png"
+                onclick="histogram_button_onclick()" />
+            <input type="text" id="slider_span" readonly
+                style="color:#1fb9f6; font-weight:bold; text-align: center; font-size: 24px; pointer-events: none; width:150px"></input>
+            <input type="image" class="slider_info_icon" src="../Images/question_mark.png"
+                onclick="slider_info_onclick()" />
+        </div>
+
+        <!-- Slider-->
+        <div class="slider_holder">
+            <div id="slider-range"></div>
+        </div>
+
     </div>
-
-    <!-- Settings -->
-    <div class="settings_panel">
-        <label class="headline">Settings</label>
-
-        <input type="image" class="info_icon" src="../Images/question_mark.png"
-            onclick="settingspanel_info_onclick()" />
-
-        <br><br>
-
-        <input type="checkbox" class="largerCheckbox" id="settings_checkbox_unknown" onclick="load_data()" checked>
-        <label class="text_long">Include Unknown Dates</label>
-
-        <br><br>
-
-        <button class="round_button" id="all_connections_button">Show all connections</button>
-
-        <br><br>
-
-        <button class="round_button" id="timeline_button">Show as timeline</button>
-    </div>
-
-    <div class="settings_panel" hidden=true>
-        <section id="photos"></section>
-    </div>
-
-    <!-- Dialog -->
-    <div id="dialog" title="Information" hidden="true">
-        <p></p>
-    </div>
-
-    <!-- Map Object -->
-    <div class="map_holder" id="map_body">
-    </div>
-
-    <!-- Slider -->
-    <div class="slider-text-holder">
-        <input type="image" class="info_icon_slider" src="../Images/question_mark.png"
-            onclick="slider_info_onclick()" />
-            <input type="image" class="histo_icon_slider" src="../Images/barchart_icon.png"
-            onclick="histogram_button_onclick()" />
-        <input type="text" id="slider_span" readonly
-            style="border:0; color:#1fb9f6; font-weight:bold; text-align: center; font-size: 24px; pointer-events: none; width:150px"></input>
-    </div>
-
-    <div class="slider-holder">
-        <div id="slider-range"></div>
-    </div>
-
-     <!-- Histogram-->
-     <div class="histogram_holder" id="histogram_holder">
-        <input type="image" onclick="histogram_button_onclick()" class="histogram_image" src="../Images/map_histogram.png" />
-     </div>
-    
 
     <!-- Footer -->
     <div class="footer"></div>
+
+    <!-- Footer Spacer -->
+    <svg height="50" width="100%"></svg>
 
     <!-- Map -->
     <script>
@@ -231,29 +251,17 @@
         //List of all countries
         var countries = createAllCountries();
 
-        // Dimensions
-        var width = document.getElementById('map_body').offsetWidth;
-        var height = document.getElementById('map_body').offsetHeight;
-
-        console.log(width + "   " + height);
-
-        //Scale - This map was developed on a 1920/1080 display        
-        var ratioHeight = height / 1000;
-        var ratioWidth = width / 1550;
-        var minRatio = Math.min(ratioHeight, ratioWidth);
-        var scale = 230 * minRatio;
-
         // Append the svg object to the body of the page
-        var svg = d3.select("#map_body")
-            .append("svg")
-            .attr("width", "100%")
+        var svg = d3.select("#map_holder"),
+            width = +svg.attr("width"),
+            height = +svg.attr("height");
 
         // Map and projection
         var path = d3.geoPath();
         var projection = d3.geoMercator()
-            .scale(scale)
+            .scale(250)
             .center([0, 0])
-            .translate([width / 2, height / 1.5]);
+            .translate([width / 2.2, height / 1.5]);
 
         // Data
         var data = d3.map();
@@ -261,7 +269,7 @@
         // Load external data and boot
         load_data();
 
-
+        //Creating map
         function ready(error, map_data, complete_data) {
 
             document.getElementById('all_connections_button').onclick = function () {
@@ -331,11 +339,8 @@
                 for (var i = 0; i < curr_country.country_connected_countries.length; i++) {
                     var connected_country = findObjectByKey(countries, "country_name", curr_country.country_connected_countries[i]);
 
-                    var xOffset = minRatio * 0.94;
-                    var yOffset = minRatio * 1.04;
-
-                    source = [curr_country.country_long * xOffset, curr_country.country_lat * yOffset]
-                    target = [connected_country.country_long * xOffset, connected_country.country_lat * yOffset]
+                    source = [curr_country.country_long, curr_country.country_lat]
+                    target = [connected_country.country_long, connected_country.country_lat]
                     topush = {
                         type: "LineString",
                         coordinates: [source, target]
