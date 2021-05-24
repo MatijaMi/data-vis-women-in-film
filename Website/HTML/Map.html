@@ -45,8 +45,8 @@
             <input type="image" class="info_icon" src="../Images/question_mark.png"
                 onclick="sidepanel_info_onclick()" />
 
-            <label class="text_short">Pioneers: </label>
-            <label class="text_short" id="pioneers_count_label"></label><br>
+            <label class="text_short_big">Pioneers: </label>
+            <label class="text_short_big" id="pioneers_count_label"></label><br>
 
             <label class="text_short">Different Jobs: </label>
             <label class="text_short" id="pioneers_jobs_label"></label><br>
@@ -107,8 +107,7 @@
 
     <!-- Dialog -->
     <div id="dialog" title="Information" hidden="true">
-        <p>This is the default dialog which is useful for displaying information. The dialog window can be moved,
-            resized and closed with the &apos;x&apos; icon.</p>
+        <p></p>
     </div>
 
     <!-- Map Object -->
@@ -314,7 +313,8 @@
                 document.getElementById('pioneers_jobs_label').innerHTML = curr_country.country_jobs.length;
                 document.getElementById('pioneers_connections_label').innerHTML = curr_country.country_connected_countries.length;
 
-                show_example_pioneer(curr_country.country_pioneers);
+                //Display random pioneer on sidepanel
+                show_example_pioneer(curr_country.country_pioneers, curr_country.country_pioneers);
 
                 document.getElementById('sidepanel_holder').hidden = false;
 

@@ -170,23 +170,39 @@ function load_data() {
 }
 
 /**
- * Display a random example to the sidepanel
+ * Displayes an example pioneer to the sidepanel
+ * @param {*} pioneers Pioneers that weren't displayed yet
+ * @param {*} all_pioneers A list of all pioneers of the country and time
+ * @param {*} last_pioneer The last pioneer that was shown
  */
-function show_example_pioneer(pioneers) {
+function show_example_pioneer(pioneers, all_pioneers, last_pioneer) {
 
-    document.getElementById('pioneers_next_button').hidden = pioneers.length == 1;
+    //All pioneers were shown once, therefore we reset the list
+    if(pioneers.length == 0) pioneers = all_pioneers;
 
+    //If there is only one pioneer we dont show the next button
+    document.getElementById('pioneers_next_button').hidden = all_pioneers.length == 1;
+   
+    //Get random pioneer
     var example_pioneer = pioneers[Math.floor(Math.random() * pioneers.length)];
 
+    //Make sure the random pioneer wasn't the last one shown before list reset
+    while(all_pioneers.length > 1 && example_pioneer == last_pioneer){
+        example_pioneer = pioneers[Math.floor(Math.random() * pioneers.length)];
+    }
+    
+    //Display values for the random pioneer
     document.getElementById('pioneers_ex_name').innerHTML = example_pioneer.pioneer_name;
     document.getElementById('pioneers_ex_image').src = "";
     document.getElementById('pioneers_ex_image').src = example_pioneer.pioneer_image;
     document.getElementById('pioneers_read_more_button').onclick = function() { window.open(example_pioneer.pioneer_link) };
+
+    //Set the onclick function for the next button
     document.getElementById('pioneers_next_button').onclick = function() {
         var filtered = pioneers.filter(function(value, index, arr) {
             return value !== example_pioneer;
         });
-        show_example_pioneer(filtered)
+        show_example_pioneer(filtered, all_pioneers, example_pioneer)
     };
 }
 

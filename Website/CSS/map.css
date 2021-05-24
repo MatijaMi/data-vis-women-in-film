@@ -75,6 +75,15 @@
     text-overflow: ellipsis;
 }
 
+.text_short_big {
+    font-size: 22px;
+    font-family: var(--text_font);
+    color: var(--text_color);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-weight: bold;
+}
+
 .settings_panel {
     width: 18%;
     height: 30%;
