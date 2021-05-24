@@ -1,8 +1,8 @@
-import {determineColor,determineCx,determineCy,handleResize,updateState} from './groupingUtil.js';
-import {getAllData, getPreviousData} from './dataProcessing.js';
-import {groupByCountry} from './groupByCountries.js';
-import {showProfessions} from './jobCluser.js';
-import {showCountries} from './CountryCluster.js';
+import {updateState} from '../Handlers/stateHandler.js';
+import {determineCx,determineCy,} from '../Util/groupingUtil.js';
+import {handleResize} from '../Handlers/resizeHandler.js';
+import {getAllData} from '../Util/dataProcessing.js';
+import {showCountries} from '../Levels/CountryCluster.js';
 
 
 function showAll(){
@@ -20,7 +20,7 @@ function showAll(){
     var svg = d3.select("#my_dataviz")
     .append("svg")
     .attr("width", width)
-    .attr("height", "2000px")
+    .attr("height", "1000px")
     .attr("overflow","hidden")
   
       // create a tooltip
@@ -188,10 +188,6 @@ function removeTooltip(){
 
 document.getElementById("my_dataviz").addEventListener("click",removeTooltip);
 window.addEventListener("resize", handleResize);
-//document.getElementById("show-all-button").addEventListener("click",showAll);
-//document.getElementById("groupBy-country").addEventListener("click", showCountries);
-//document.getElementById("groupBy-profession").addEventListener("click", showProfessions);
-
 
 
 function findZoomInCx(elementNum, selectedNumber, width){

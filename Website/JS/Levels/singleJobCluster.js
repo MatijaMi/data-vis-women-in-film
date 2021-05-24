@@ -1,7 +1,7 @@
-import {showProfessions} from './jobCluser.js';
-import{updateState,updateLevel,getLevel,goBackState} from './groupingUtil.js';
+import{updateState,goBackState} from '../Handlers/stateHandler.js';
+import{updateLevel,getLevel} from '../Handlers/levelHandler.js';
 
-function showJobD3(profession,levels){
+function showJobD3(profession){
     if(document.getElementById("my_dataviz").firstChild!=null){
         document.getElementById("my_dataviz").removeChild(document.getElementById("my_dataviz").firstChild);
     }

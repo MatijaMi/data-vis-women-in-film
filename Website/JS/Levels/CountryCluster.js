@@ -1,4 +1,4 @@
-import{updateState} from './groupingUtil.js';
+import{updateState} from '../Handlers/stateHandler.js';
 import{showCountryD3} from './singleCountryCluster.js';
 
 function showCountries(){
