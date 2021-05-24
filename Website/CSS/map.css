@@ -118,6 +118,17 @@
     bottom: 40px;
 }
 
+.histogram_holder{
+    bottom: 12%;
+    margin-left: 35%;
+    width: 50%;    
+    position: fixed;
+}
+
+.histogram_image{
+    width: 100%;    
+}
+
 .slider-holder {
     bottom: 6%;
     margin-left: 35%;
@@ -138,24 +149,10 @@
     user-select: none;
 }
 
+
 input.largerCheckbox {
     width: 20px;
     height: 20px;
-}
-
-#photos {
-    line-height: 0;
-    -webkit-column-count: 5;
-    -webkit-column-gap: 0px;
-    -moz-column-count: 5;
-    -moz-column-gap: 0px;
-    column-count: 5;
-    column-gap: 0px;
-}
-
-#photos img {
-    width: 100% !important;
-    height: auto !important;
 }
 
 .info_icon{
@@ -167,6 +164,11 @@ input.largerCheckbox {
 .info_icon_slider{
     position: absolute;
     right:38%;
+}
+
+.histo_icon_slider{
+    position: absolute;
+    left:38%;
 }
 
 .footer {

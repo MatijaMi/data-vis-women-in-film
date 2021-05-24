@@ -118,6 +118,8 @@
     <div class="slider-text-holder">
         <input type="image" class="info_icon_slider" src="../Images/question_mark.png"
             onclick="slider_info_onclick()" />
+            <input type="image" class="histo_icon_slider" src="../Images/barchart_icon.png"
+            onclick="histogram_button_onclick()" />
         <input type="text" id="slider_span" readonly
             style="border:0; color:#1fb9f6; font-weight:bold; text-align: center; font-size: 24px; pointer-events: none; width:150px"></input>
     </div>
@@ -125,6 +127,12 @@
     <div class="slider-holder">
         <div id="slider-range"></div>
     </div>
+
+     <!-- Histogram-->
+     <div class="histogram_holder" id="histogram_holder">
+        <input type="image" onclick="histogram_button_onclick()" class="histogram_image" src="../Images/map_histogram.png" />
+     </div>
+    
 
     <!-- Footer -->
     <div class="footer"></div>

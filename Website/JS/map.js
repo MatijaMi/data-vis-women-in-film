@@ -353,3 +353,7 @@ function open_dialog(dialog_text){
         width: "50%"
       });
 }
+
+function histogram_button_onclick(){
+    document.getElementById('histogram_holder').hidden  = !document.getElementById('histogram_holder').hidden;
+}
