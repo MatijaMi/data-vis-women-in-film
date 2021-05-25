@@ -224,7 +224,7 @@ body{
 } 
 
 .my_dataviz{
-    background:#888;
+    background:#004088;
     width:100%;
     height:100%;
 }
@@ -245,4 +245,8 @@ body{
 #locator button{
     text-decoration: none;
     
+}
+@keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
 }

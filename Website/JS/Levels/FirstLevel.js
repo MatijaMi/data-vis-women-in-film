@@ -1,7 +1,7 @@
 import{updateState,goBackState} from '../Handlers/stateHandler.js';
 import{mouseoverJob,mousemoveJob,mouseleaveJob} from '../Handlers/mouseHandler.js';
 import{getFirstLevelData} from '../Util/dataProcessing.js';
-import{removeTooltip,createTooltip} from '../Util/tooltips.js';
+import{removeTooltip,createTooltip,createTextOverlay,speedUpAnimation} from '../Util/tooltips.js';
 import{updateLevel,getLevels,getLevel,setLevel,goToNextLevel} from '../Handlers/levelHandler.js';
 import{setLocator, handleLocatorClick, removeLastLocButton,addButtonEvents,updateLocator} from '../Handlers/navigationHandler.js';
 import{findProfessionPicture,createLines,determineJobSize,clearPrevDataviz,addPatterns} from '../Util/bubbleUtil.js';
@@ -31,7 +31,7 @@ function drawFirstLevel(profession){
         .attr("cx",0)
         .attr("cy", 0)
         .attr("fill", function(d) {
-		      return "url(#bg" + d.job.split(' ').join('-')+")";
+		      return "url(#bg" + findProfessionPicture(d.job,d.count)+")";
         })
         .attr("stroke", "black")
         .style("stroke-width", 2)
@@ -56,7 +56,10 @@ function drawFirstLevel(profession){
           node
             .attr("cx", function (d) { return d.x; })
             .attr("cy", function (d) { return d.y; })
-        });
+        }).on('end', function () {
+            createTextOverlay(data);
+        });;
+        speedUpAnimation(simulation,2);
 }
 
 export {drawFirstLevel}

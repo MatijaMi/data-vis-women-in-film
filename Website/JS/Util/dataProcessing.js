@@ -51,8 +51,7 @@ function getTopLevelData(){
     jobData.forEach((value,key)=>{ 
           data+= key + "," + value + "\r\n"
         });
-    return d3.csvParse(data);
-    
+    return d3.csvParse(data); 
 }
 
 function getFirstLevelData(profession){

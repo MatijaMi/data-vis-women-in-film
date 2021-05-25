@@ -75,7 +75,7 @@ function drawThirdLevel(profession){
         .attr("cx",0)
         .attr("cy", 0)
         .attr("fill", function(d) {
-		      return "url(#bg" + d.job.split(' ').join('-')+")";
+		      return "url(#bg" + findProfessionPicture(d.job,d.count)+")";
         })
         .attr("stroke", "black")
         .style("stroke-width", 2)

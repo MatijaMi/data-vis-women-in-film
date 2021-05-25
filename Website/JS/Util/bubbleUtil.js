@@ -1,37 +1,3 @@
-function findProfessionPicture(job,count){
-    var rand = count;
-    if(rand>1){
-        rand =Math.floor((Math.random() * count) + 1);
-    }
-    for(var i = 0; i <wfpp.entries.length; i++){
-        for(var j =0; j< wfpp.entries[i].worked_as.length; j++){
-            var entry=wfpp.entries[i].worked_as[j];
-            if(entry.includes(job)){
-                if(rand==1){
-                    if(wfpp.entries[i].image_url.length!=0){
-                        if(count>50){
-                            return '../Images/WFPP-Pictures-Fullsize/' + wfpp.entries[i].name.split(' ').join('%20') +'.jpg';
-                        }else{
-                           return '../Images/WFPP-Pictures/' + wfpp.entries[i].name.split(' ').join('%20') +'.jpg'; 
-                        }
-                        
-                    }
-                }else{
-                    rand--;
-                }
-            }
-        }
-    }
-    
-    if(count>50){
-        return '../Images/WFPP-Pictures-Fullsize/Unknown.webp';;
-    }else{
-        return '../Images/WFPP-Pictures/Unknown.jpg'; 
-    } 
-}
-
-
-
 function determineJobSize(count){
     //return Math.max(30,count);
     if(count<10){
@@ -52,8 +18,8 @@ function determineJobSize(count){
 
 
 function createLines(job,data){
-    var simJobs = new Set();
-    simJobs.add(job)
+    var similarJobs = new Set();
+    similarJobs.add(job)
     for(var i = 0; i <wfpp.entries.length; i++){
         for(var j =0; j< wfpp.entries[i].worked_as.length; j++){
             var entry=wfpp.entries[i].worked_as[j];
@@ -63,13 +29,13 @@ function createLines(job,data){
                     if(entry.includes(">")){
                         entry= entry.substr(entry.indexOf(">")+1);        
                     }
-                    simJobs.add(entry);
+                    similarJobs.add(entry);
                 }
                 
             }
         }
     }
-    var arr = Array.from(simJobs);
+    var arr = Array.from(similarJobs);
     d3.select("#my_dataviz")
         .selectAll("circle")
         .data(data)
@@ -78,8 +44,8 @@ function createLines(job,data){
         .style("stroke-width", function(){if(arr.includes(d3.select(this).attr('id'))){
         return "4px";}else{return 2;}})
     
-    simJobs.delete(job);
-    var arr = Array.from(simJobs);
+    similarJobs.delete(job);
+    var arr = Array.from(similarJobs);
     for(var i =0; i< arr.length;i++){
         if(document.getElementById(arr[i])!=null){
             var x = document.getElementById(arr[i]).cx.baseVal.value;
@@ -101,6 +67,7 @@ function createLines(job,data){
         }
     }
 }
+
 function clearPrevDataviz(){
     if(document.getElementById("my_dataviz").firstChild!=null){
         document.getElementById("my_dataviz").removeChild(document.getElementById("my_dataviz").firstChild);
@@ -108,23 +75,60 @@ function clearPrevDataviz(){
 }
 
 function addPatterns(data,svg){
-    for(var i =0; i<data.length;i++){
-        var count = data[i].count;
-        var job = data[i].job;
-        svg.append("pattern")
-        .attr("x", 0)
-        .attr("y", 0)
-        .attr("width", 10)
-	   .attr("height", 10)
-        .attr("id", function (d) {return "bg" +job.split(' ').join('-')})
-        .append("image")
-       .attr("x", 0)
-       .attr("y", 0)
-   			.attr("width", function (d) { return 2 * determineJobSize(count)})
-			.attr("height", function (d) { return 2 * determineJobSize(count)})
-   .attr("xlink:href", findProfessionPicture(job,count));
-    }
+    
+    for(var i = 0; i <wfpp.entries.length; i++){
+        if(wfpp.entries[i].image_url.length!=0){
+          var link = '../Images/WFPP-Pictures/' + wfpp.entries[i].name.split(' ').join('%20') +'.jpg';
+      }else{
+          var link = '../Images/WFPP-Pictures/Unknown.jpg';
+      }
+         svg.append("pattern")
+            .attr("x", 0)
+            .attr("y", 0)
+            .attr("width", 10)
+	        .attr("height", 10)
+            .attr("id", function (d) {return "bg" + wfpp.entries[i].id})
+            .append("image")
+            .attr("x", 0)
+            .attr("y", 0)
+   			.attr("width", "180px")
+			.attr("height", "180px")
+            .attr("xlink:href", link);
+     }
 }
+
+function findProfessionPicture(job,count){
+    var hasPic=[];
+    for(var i = 0; i <wfpp.entries.length; i++){
+        for(var j =0; j< wfpp.entries[i].worked_as.length; j++){
+            var entry=wfpp.entries[i].worked_as[j];
+            if(wfpp.entries[i].image_url.length!=0){
+                if(job!="Other"){
+                    if(entry.includes(job) && wfpp.entries[i].image_url.length!=0){
+                        hasPic.push(wfpp.entries[i].id);
+                    }
+                }else{
+                    if(!entry.includes(">")){
+                        hasPic.push(wfpp.entries[i].id);
+                    }
+                }
+            }
+        }
+    }
+    var rand = hasPic.length;
+    if(rand>1){
+        rand =Math.floor((Math.random() * hasPic.length));
+         return hasPic[rand];
+    }else{
+        if(rand==1){
+            return hasPic[0];
+        }else{
+            return "1704";
+        }
+    }
+   
+    
+} 
 
 function addPersonPatterns(personalData,svg){
     for(var i =0; i <personalData.length; i++){

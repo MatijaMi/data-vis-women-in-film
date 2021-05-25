@@ -62,6 +62,7 @@ function getLevels(){
 
 function goBack(){
     setLevel(getLevel()-1);
+    removeTooltip("textOverlay");
         if(getLevel()==0){
             document.getElementById("back").remove();
         }
@@ -93,6 +94,7 @@ function addBackButton(){
 function goToNextLevel(profession){
     removeTooltip("tooltip2");
     removeTooltip("tooltip")
+    removeTooltip("textOverlay")
     updateLevel(1);
     updateState(profession);
     updateLocator(profession,getLevel());

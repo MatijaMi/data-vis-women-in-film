@@ -1,4 +1,5 @@
 import{removeTooltip} from '../Util/tooltips.js'
+
 function mouseoverJob(Tooltip){
         Tooltip
           .style("opacity", 1)
