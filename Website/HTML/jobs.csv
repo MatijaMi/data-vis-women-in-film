@@ -18,10 +18,10 @@ jobs.Art Director,7
 jobs.Booking Clerk,1
 jobs.Business Owner,1
 jobs.Business Partner,12
-jobs.Business Partner.business-co-founder,1
-jobs.Business Partner.business-co-owner,3
-jobs.Business Partner.family-business-partner,8
-jobs.Business Partner.family-business-partner.family-film-business-partner,5
+jobs.Business Partner.Business Co Founder,1
+jobs.Business Partner.Business Co Owner,3
+jobs.Business Partner.Family Business Partner,8
+jobs.Business Partner.Family Business Partner.Family Film Business Partner,5
 jobs.Camera Operator,8
 jobs.Camera Operator.Amateur Camera Operator,1
 jobs.Carpenter,1
@@ -47,7 +47,8 @@ jobs.Company Executive,1
 jobs.Consultant,5
 jobs.Consultant.Artistic Consultant,1
 jobs.Consultant.Artistic Council Member,2
-jobs.Continuity,10
+jobs.Continuity,9
+jobs.Continuity Girl,1
 jobs.Costume Designer,13
 jobs.Costume Designer.Wardrobe Consultant,1
 jobs.Costume Designer.Wardrobe Mistress,1
@@ -64,7 +65,7 @@ jobs.Director.Co-Director,38
 jobs.Director.Second Assistant Director,1
 jobs.Director.Theatre Director,8
 jobs.Distributor,17
-jobs.Distributor.Dstribution-company-founder,2
+jobs.Distributor.Dstribution Company Founder,2
 jobs.Distributor.Distribution Company Managing Director,1
 jobs.Distributor.Distribution Company Owner,1
 jobs.Distributor.Dilm Dealer,1
@@ -73,9 +74,9 @@ jobs.Dramaturge,1
 jobs.Dressmaker,1
 jobs.Editor,59
 jobs.Editor.Co-Editor,2
-jobs.Editor.film-cutter,11
-jobs.Editor.scenario-editor,15
-jobs.Editor.scenario-editor.chief-scenario-editor,3
+jobs.Editor.Film Cutter,11
+jobs.Editor.Scenario Editor,15
+jobs.Editor.Scenario Editor.Chief Scenario Editor,3
 jobs.Editorial Director,1
 jobs.Educator,10
 jobs.Educator.Acting Teacher,8
