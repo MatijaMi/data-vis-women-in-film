@@ -49,22 +49,22 @@ add_event_button.addEventListener("click", function (event) {
 });
 
 function sortByYOBAsc() {
-    naiveData.sort((a, b) => ascending(a.YOB, b.YOB));
+    naiveData.sort((a, b) => d3.ascending(a.YOB, b.YOB));
     render();
 }
 
 function sortByYOBDesc() {
-    naiveData.sort((a, b) => descending(a.YOB, b.YOB));
+    naiveData.sort((a, b) => d3.descending(a.YOB, b.YOB));
     render();
 }
 
 function sortByNameAsc() {
-    naiveData.sort((a, b) => ascending(a.name, b.name));
+    naiveData.sort((a, b) => d3.ascending(a.name, b.name));
     render();
 }
 
 function sortByNameDesc() {
-    naiveData.sort((a, b) => descending(a.name, b.name));
+    naiveData.sort((a, b) => d3.descending(a.name, b.name));
     render();
 }
 
