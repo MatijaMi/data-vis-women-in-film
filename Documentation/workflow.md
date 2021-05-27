@@ -9,3 +9,8 @@
   * allows realtime viewing of website changes
 * npm run build
   * build the project with all bundled dependencies when it's production ready
+
+# Usefull Keybindings
+
+* Format html 
+  * Shift + Alt + F
