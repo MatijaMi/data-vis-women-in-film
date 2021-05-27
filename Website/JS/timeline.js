@@ -9,6 +9,8 @@ const svg = select(".timeline");
 const H = svg.node().getBoundingClientRect().height;
 const W = svg.node().getBoundingClientRect().width;
 const M = 20;
+const defaultFill = "#009600";
+const hoverFill = "#005600";
 
 var data;
 var naiveData = [];
@@ -131,57 +133,14 @@ function render() {
             .tickSize(-(H - M))
             .ticks(34));
 
-    const g = svg.append('g')
-        .attr('transform', `translate(0, 20)`);
 
-    const e = g
-        .selectAll("g.name")
+    var g = svg.selectAll("g")
         .data(naiveData)
-        .join('g')
-        .attr('class', 'name')
-        .attr('transform', d => `translate(${xScale(d.YOB)}, ${yScale(d.name) - 30})`)
-        .on("mouseenter", function (e, d) {
-            select(this)
-                .append("g")
-                .attr("class", "tooltip")
-                .style("box-shadow", "0px 8px 16px 0px rgba(0, 0, 0, 0.2)")
-                .style("z-index", "1")
-                .append("rect")
-                .style("width", "15%")
-                .style("height", "50px")
-                .attr("x", pointer(e)[0])
-                .style("fill", "white")
-                .style("fill-opacity", "0.9");
-            selectAll(".tooltip")
-                .append("text")
-                .attr("x", pointer(e)[0])
-                .attr("y", 20)
-                .append("tspan")
-                    .attr("x", pointer(e)[0])
-                    .attr("y", 20)
-                    .text(d => {return d.name})
-                    .style('font-size', '20px')
-                    .style('font-weight', 'bold')
-                    .style('opacity', '1')
-                    .style('fill', 'black')
-                .append("tspan")
-                    .attr("x", pointer(e)[0])
-                    .attr("y", 40)
-                    .style("width", "15%")
-                    .style("height", "50px")
-                    .text(d => {return d.YOB+"-"+d.YOD})
-                    .style('font-size', '20px')
-                    .style('font-weight', 'bold')
-                    .style('opacity', '1')
-                    .style('fill', 'black');
+        .enter()
+        .append("g")
 
-        })
-        .on("mouseleave", function (e, d) {
-            selectAll(".tooltip").remove();
-        });
-
-
-    e.append('rect')
+    g.append("rect")
+        .attr("transform", d => `translate(${xScale(d.YOB)}, ${yScale(d.name)})`)
         .attr(
             "width",
             d =>
@@ -189,20 +148,66 @@ function render() {
                 ? 3
                 : xScale(d.YOD) - xScale(d.YOB))
         )
-        .attr('height', yScale.bandwidth())
-        .attr('fill', function () {
-            return "rgb(0, 150, 0)";
-        })
-        .style('fill-opacity', 1);
+        .attr("height", yScale.bandwidth())
+        .style("fill", defaultFill)
+        .style("fill-opacity", 1);
 
-    e.append('text')
-        .attr('x', d => ((xScale(d.YOD) - xScale(d.YOB)) / 2) - 20)
-        .attr('y', yScale.bandwidth() - 3)
+    g.append("text")
+        .attr('transform', d => `translate(${xScale(d.YOB)}, ${yScale(d.name)})`)
         .text(d => d.name)
-        .style('font-size', '10px')
-        .style('font-weight', 'bold')
-        .style('opacity', '1')
-        .style('fill', 'white');
+        .attr('x', d => ((xScale(d.YOD) - xScale(d.YOB)) / 2))
+        .attr('y', yScale.bandwidth() - 3)
+        .style("text-anchor", "middle")
+        .style("font-family", "sans-serif")
+        .style("font-size", "10px")
+        .style("font-weight", "bold")
+        .style("fill", "white")
+        .style("opacity", "1");
+
+    g.on("mouseenter", function (e, d) {
+        select(this)
+            .select("rect")
+            .style("fill", `${hoverFill}`);/*
+            .append("g")
+            .attr("class", "tooltip")
+            .style("box-shadow", "0px 8px 16px 0px rgba(0, 0, 0, 0.2)")
+            .style("z-index", "1")
+            .append("rect")
+            .style("width", "15%")
+            .style("height", "50px")
+            .attr("x", pointer(e)[0])
+            .style("fill", "white")
+            .style("fill-opacity", "0.9");
+        selectAll(".tooltip")
+            .append("text")
+            .attr("x", pointer(e)[0])
+            .attr("y", 20)
+            .append("tspan")
+            .attr("x", pointer(e)[0])
+            .attr("y", 20)
+            .text(d => { return d.name })
+            .style('font-size', '20px')
+            .style('font-weight', 'bold')
+            .style('opacity', '1')
+            .style('fill', 'black')
+            .append("tspan")
+            .attr("x", pointer(e)[0])
+            .attr("y", 40)
+            .style("width", "15%")
+            .style("height", "50px")
+            .text(d => { return d.YOB + "-" + d.YOD })
+            .style('font-size', '20px')
+            .style('font-weight', 'bold')
+            .style('opacity', '1')
+            .style('fill', 'black');*/
+
+    })
+        .on("mouseleave", function (e, d) {
+            select(this)
+                .select("rect")
+                .style("fill", `${defaultFill}`);
+            selectAll(".tooltip").remove();
+        });
 }
 
 function getData() {
