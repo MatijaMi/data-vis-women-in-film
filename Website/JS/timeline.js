@@ -138,7 +138,6 @@ function render() {
             .tickSize(-(H - M))
             .ticks(34));
 
-
     var g = svg.selectAll("g")
         .data(naiveData)
         .enter()
@@ -179,11 +178,14 @@ function render() {
                 `<div style="text-align: center;"><div>${d.name}</div><div">${d.YOB} - ${d.YOD}</div><div"><i>Left click to visit Map</i></div></div>`
             )
             .style("visibility", "visible");
-    })
-        .on('mousemove', function (e, d) {
+        })
+        .on("mousemove", function (e, d) {
             tooltip
-                .style('left', e.pageX + 10 + 'px')
-                .style('top', e.pageY - 50 + 'px');
+                .style("left", e.pageX + 10 + "px")
+                .style("top", e.pageY - 50 + "px");
+        })
+        .on("click", function(e, d) {
+            window.open("../HTML/Map.html", "_self")
         })
         .on("mouseleave", function (e, d) {
             d3.select(this)
