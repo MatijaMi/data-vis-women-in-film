@@ -1,5 +1,3 @@
-import { csv } from "d3";
-
 function getRandomInt(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
@@ -7,7 +5,7 @@ function getRandomInt(min, max) {
 }
 
 function render() {
-    csv("/Website/Data/data_modified.csv").then(data => {
+    d3.csv("/Website/Data/data_modified.csv").then(data => {
         var pioneers = []
         data.forEach(element => {
             const dob = String(element.DOB) // Get the Day of Birth for the current pioneer
