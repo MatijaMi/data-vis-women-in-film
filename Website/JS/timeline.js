@@ -102,8 +102,7 @@ function addEvent(input) {
 }
 
 function cleanUp() {
-    svg.selectAll('rect').remove();
-    svg.selectAll('text').remove();
+    svg.selectAll("g").remove();
     select("#xAxis").selectAll("svg").remove();
 }
 
