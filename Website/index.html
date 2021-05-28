@@ -6,8 +6,8 @@
     <title>WFPP</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="Website/CSS/baseStyle.css">
-    <link rel="icon" type="image/png" href="/Website/Images/WFPP-Logo.png"/>
+    <link rel="stylesheet" href="./CSS/baseStyle.css">
+    <link rel="icon" type="image/png" href="./Images/WFPP-Logo.png"/>
     <script src="https://d3js.org/d3.v6.min.js"></script>
 </head>
 
@@ -16,12 +16,11 @@
     <!-- Header -->
     <div class="header" id="header">
         <a href="index.html">Home</a>
-        <a href="Website/HTML/Map.html">Map</a>
-        <a href="Website/HTML/Viewer.html">Viewer</a>
-        <a href="Website/HTML/Timeline.html">Timeline</a>
-        <a href="Website/HTML/Dendrogram.html">Dendrogram</a>
-        <a href="">Gallery</a>
-        <a href="">About</a>
+        <a href="./HTML/Map.html">Map</a>
+        <a href="./HTML/Cluster.html">Cluster</a>
+        <a href="./HTML/Timeline.html">Timeline</a>
+        <a href="./HTML/Dendrogram.html">Dendrogram</a>
+        <a href="./HTML/About.html">About</a>
     </div>
 
     <!-- Carousel -->
@@ -42,7 +41,7 @@
     <div class="content" id="content">
 
         <div class="content_panel" id="pod_panel">
-            <img class="content_image_left" id="birthday_pic" src="Website/Images/Pioneer-Placeholder.png">
+            <img class="content_image_left" id="birthday_pic" src="./Images/Pioneer-Placeholder.png">
             <div class="content_headline" id="birthday_title">Birthday</div>
             <div class="content_text" id="pod_text">
                 <p id="lived"></p>
@@ -61,14 +60,14 @@
         </div>
 
         <div class="content_panel">
-            <img class="content_image_left" id="pioneers_ex_image" src="Website/Images/Map_Image.png">
+            <img class="content_image_left" id="pioneers_ex_image" src="./Images/Map_Image.png">
             <div class="content_headline"> Map</div>
             <div class="content_text">
                 Women film pioneers were working in countries all around the world.
                 Furthermore, many of the the pioneers, had jobs in multiple countries.
                 To get an interactive overview of this subject, click the button below.
             </div>
-            <button class="content_button" onclick="window.open('Website/HTML/Map.html','_self')">Discover</button>
+            <button class="content_button" onclick="window.open('./HTML/Map.html','_self')">Discover</button>
 
         </div>
 
@@ -76,8 +75,8 @@
 
         </div>
     </div>
-    <script type="module" src="Website/JS/indexBehaviour.js"></script>
-    <script type="module" src="Website/JS/pioneerOfTheDay.js"></script>
+    <script type="module" src="./JS/indexBehaviour.js"></script>
+    <script type="module" src="./JS/pioneerOfTheDay.js"></script>
 </body>
 
 <style>

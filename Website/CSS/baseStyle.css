@@ -254,7 +254,7 @@ body{
 
 @font-face{
  font-family:'blacksword';
- src: url('Blacksword.otf');
+ src: url('../Fonts/Blacksword.otf');
 }
 #sideishButtons{
     position: absolute;

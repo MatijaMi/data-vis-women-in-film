@@ -195,7 +195,7 @@ function render() {
         });
 }
 
-d3.csv("/Website/Data/complete_data.csv").then(d => {
+d3.csv("../Data/timeline_data.csv").then(d => {
     data = d;
     data.sort((a, b) => a.YOB - b.YOB);
     data.forEach(d => {

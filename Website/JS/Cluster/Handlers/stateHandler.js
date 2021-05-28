@@ -1,5 +1,5 @@
-import{removeLastLocButton} from '../Handlers/navigationHandler.js';
-import{getLevel} from '../Handlers/levelHandler.js';
+import{removeLastLocButton} from './navigationHandler.js';
+import{getLevel} from './levelHandler.js';
 import{drawTopLevel} from '../Levels/topLevel.js';
 import{drawFirstLevel} from '../Levels/FirstLevel.js';
 import{drawSecondLevel} from '../Levels/SecondLevel.js';

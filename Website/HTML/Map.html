@@ -23,14 +23,14 @@
 
 <body>
 
-    <!-- Header -->
-    <div class="header" id="header">
-        <a href="/index.html">Home</a>
-        <a href="Map.html">Map</a>
-        <a href="Viewer.html">Viewer</a>
-        <a href="Dendrogram.html">Dendrogram</a>
-        <a href="">Gallery</a>
-        <a href="">About</a>
+       <!-- Header -->
+       <div class="header" id="header">
+        <a href="../index.html">Home</a>
+        <a href="./Map.html">Map</a>
+        <a href="./Cluster.html">Cluster</a>
+        <a href="./Timeline.html">Timeline</a>
+        <a href="./Dendrogram.html">Dendrogram</a>
+        <a href="./About.html">About</a>
     </div>
 
     <!-- Header-Spacer -->
@@ -160,6 +160,14 @@
     <!-- Map -->
     <script>
 
+
+        //TODO: 
+        var payload = "";
+        if(window.location.href.includes("?")){
+            payload = window.location.href.substr(window.location.href.indexOf("?") + 1);
+            alert(payload);
+        }
+        
         //Slider
         var sliderWasUsed = false;
         var lastCountry = null;

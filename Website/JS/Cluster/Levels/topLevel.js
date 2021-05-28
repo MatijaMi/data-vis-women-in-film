@@ -13,7 +13,7 @@ function drawTopLevel(){
     document.getElementById("countryButton").addEventListener("click",switchToCountries);
     document.getElementById("allPioneersButton").addEventListener("click",switchToAll);
     document.getElementById("professionsButton").addEventListener("click",switchToProfessions);
-    var extra= window.location.href.substr(window.location.href.indexOf("Viewer.html")+11);
+    var extra= window.location.href.substr(window.location.href.indexOf("Cluster.html")+11);
     if(extra.length>0){
         console.log(extra);
     }

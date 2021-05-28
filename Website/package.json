@@ -1,7 +1,7 @@
 {
-  "name": "data-vis-women-in-film",
-  "version": "0.1.0",
-  "description": "Web application describing the influence of women on the film and movie industry",
+  "name": "website",
+  "version": "1.0.0",
+  "description": "",
   "main": "index.html",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -10,7 +10,7 @@
   },
   "author": "",
   "license": "ISC",
-  "devDependencies": {
+  "dependencies": {
     "snowpack": "^3.5.2"
   }
 }

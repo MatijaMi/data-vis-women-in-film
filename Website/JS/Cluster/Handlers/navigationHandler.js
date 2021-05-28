@@ -2,7 +2,7 @@ import{drawTopLevel} from '../Levels/topLevel.js';
 import{drawFirstLevel} from '../Levels/FirstLevel.js';
 import{drawSecondLevel} from '../Levels/SecondLevel.js';
 import{drawThirdLevel} from '../Levels/ThirdLevel.js';
-import{setLevel} from '../Handlers/levelHandler.js'
+import{setLevel} from './levelHandler.js'
 import{removeTooltip} from '../Util/tooltips.js'
 
 function setLocator(state){

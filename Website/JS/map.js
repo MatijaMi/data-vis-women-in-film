@@ -1,6 +1,3 @@
-//Global Variables
-var photo_grid = null;
-
 /**
  * Class representing a Country
  */

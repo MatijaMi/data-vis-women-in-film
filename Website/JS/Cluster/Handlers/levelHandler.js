@@ -1,6 +1,6 @@
 import{removeTooltip,createTooltip} from '../Util/tooltips.js';
-import{updateState,goBackState} from '../Handlers/stateHandler.js';
-import{updateLocator} from '../Handlers/navigationHandler.js';
+import{updateState,goBackState} from './stateHandler.js';
+import{updateLocator} from './navigationHandler.js';
 import{drawTopLevel} from '../Levels/topLevel.js';
 import{drawFirstLevel} from '../Levels/FirstLevel.js';
 import{drawSecondLevel} from '../Levels/SecondLevel.js';
