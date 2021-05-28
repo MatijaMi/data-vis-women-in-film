@@ -5,7 +5,7 @@ import{removeTooltip,createTooltip} from '../Util/tooltips.js';
 import{updateLevel,getLevels,getLevel,setLevel,goToNextLevel} from '../Handlers/levelHandler.js';
 import{setLocator, handleLocatorClick, removeLastLocButton,addButtonEvents,updateLocator} from '../Handlers/navigationHandler.js';
 import{findProfessionPicture,createLines,determineJobSize,clearPrevDataviz,addPatterns,addPersonPatterns} from '../Util/bubbleUtil.js';
-import{drawFirstLevel} from '../Levels/firstLevel.js';
+import{drawFirstLevel} from '../Levels/FirstLevel.js';
 import{showJobD3}  from '../Levels/singleJobCluster.js';
 
 function drawThirdLevel(profession){
