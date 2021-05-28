@@ -8,7 +8,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../CSS/baseStyle.css">
     <link rel="sidepanel_css" href="../CSS/map_sidepanel.css">
-    <script type="module" src="../JS/generalBehaviour.js"></script>
     <script src="//d3js.org/d3.v4.min.js"></script>
 </head>
 
@@ -16,12 +15,12 @@
 
     <!-- Header -->
     <div class="header" id="header">
-        <a href="/index.html">Home</a>
-        <a href="Map.html">Map</a>
-        <a href="Viewer.html">Viewer</a>
-        <a href="Dendrogram.html">Dendrogram</a>
-        <a href="">Gallery</a>
-        <a href="">About</a>
+        <a href="../index.html">Home</a>
+        <a href="./Map.html">Map</a>
+        <a href="./Cluster.html">Cluster</a>
+        <a href="./Timeline.html">Timeline</a>
+        <a href="./Dendrogram.html">Dendrogram</a>
+        <a href="./About.html">About</a>
     </div>
 
     <!-- Dendrogram Object -->
@@ -46,12 +45,12 @@
             .size([height - 400, width - 160]);
 
         var cluster = d3.cluster()
-            .size([height, width - 160]);
+            .size([height, width - 320]);
 
         var stratify = d3.stratify()
             .parentId(function (d) { return d.id.substring(0, d.id.lastIndexOf(".")); });
 
-        d3.csv("jobs.csv", function (error, data) {
+        d3.csv("../Data/jobs.csv", function (error, data) {
             if (error) throw error;
 
             var root = stratify(data)
