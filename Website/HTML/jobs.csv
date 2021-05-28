@@ -1,0 +1,243 @@
+id, value
+jobs,
+jobs.Accountant,5
+jobs.Accountant.Chief Accountant,1
+jobs.Actress,224
+jobs.Actress.Film Actress,147
+jobs.Actress.Musical Comedy Actress,5
+jobs.Actress.Theatre Actress,72
+jobs.Adapter,35
+jobs.Agent,5
+jobs.Agent.Talent Agent,1
+jobs.Agent.Talent Manager,2
+jobs.Amateur Filmmakingclub Cofounder,2
+jobs.Animal Trainer,2
+jobs.Animator,4
+jobs.Anthropologist,1
+jobs.Art Director,7
+jobs.Booking Clerk,1
+jobs.Business Owner,1
+jobs.Business Partner,12
+jobs.Business Partner.business-co-founder,1
+jobs.Business Partner.business-co-owner,3
+jobs.Business Partner.family-business-partner,8
+jobs.Business Partner.family-business-partner.family-film-business-partner,5
+jobs.Camera Operator,8
+jobs.Camera Operator.Amateur Camera Operator,1
+jobs.Carpenter,1
+jobs.Casting Director,4
+jobs.Catalog Editor,1
+jobs.Censor,6
+jobs.Censor.Assistant,1
+jobs.Censor.Censorship Representative,1
+jobs.Censor.Film Censor,3
+jobs.Censor.Film Censorship Board Member,1
+jobs.Chorus-Girl,2
+jobs.Cinema Proprietor,4
+jobs.Cinematographer,12
+jobs.Cinematographer.Camerawoman,1
+jobs.Cinematographer.Camerawoman.Newsreel Camerawoman,1
+jobs.Cinematographer.Experimental Cinematographer,3
+jobs.Cinematographer.Special Effects,2
+jobs.Cinematographer.War Cinematographer,1
+jobs.Comedienne,7
+jobs.Company Director,13
+jobs.Company Director.Company Co-Director,4
+jobs.Company Executive,1
+jobs.Consultant,5
+jobs.Consultant.Artistic Consultant,1
+jobs.Consultant.Artistic Council Member,2
+jobs.Continuity,10
+jobs.Costume Designer,13
+jobs.Costume Designer.Wardrobe Consultant,1
+jobs.Costume Designer.Wardrobe Mistress,1
+jobs.Critic,25
+jobs.Critic.Art Critic,1
+jobs.Critic.Film Critic,19
+jobs.Critic.Theatre Critic,5
+jobs.Dancer,2
+jobs.Dialogue Director,1
+jobs.Dialogue Writer,1
+jobs.Director,132
+jobs.Director.Assistant Director,14
+jobs.Director.Co-Director,38
+jobs.Director.Second Assistant Director,1
+jobs.Director.Theatre Director,8
+jobs.Distributor,17
+jobs.Distributor.Dstribution-company-founder,2
+jobs.Distributor.Distribution Company Managing Director,1
+jobs.Distributor.Distribution Company Owner,1
+jobs.Distributor.Dilm Dealer,1
+jobs.Distributor.Dilm Renter,1
+jobs.Dramaturge,1
+jobs.Dressmaker,1
+jobs.Editor,59
+jobs.Editor.Co-Editor,2
+jobs.Editor.film-cutter,11
+jobs.Editor.scenario-editor,15
+jobs.Editor.scenario-editor.chief-scenario-editor,3
+jobs.Editorial Director,1
+jobs.Educator,10
+jobs.Educator.Acting Teacher,8
+jobs.Educator.Directing Teacher,1
+jobs.Educator.Screenwriting Teacher,1
+jobs.Entrepreneur,9
+jobs.Entrepreneur.Theatrical Entrepreneur,8
+jobs.Equipment Sales,2
+jobs.Executive,1
+jobs.Exhibitor,9
+jobs.Exhibitor.Independent Exhibitor,1
+jobs.Exhibitor.Motion Picture Exhibitor,5
+jobs.Exhibitor.Traveling Exhibitor,1
+jobs.Extra,10
+jobs.Film Colorist,4
+jobs.Film Company Worker,50
+jobs.Film Company Worker.Board Member,1
+jobs.Film Company Worker.Department Head,1
+jobs.Film Company Worker.Founding Partner,11
+jobs.Film Company Worker.Managing Director,1
+jobs.Film Company Worker.Owner,32
+jobs.Film Company Worker.Shareholder,1
+jobs.Film Company Worker.Vice President,1
+jobs.Film Curator,2
+jobs.Film Printing Company Managing Director,1
+jobs.Film Society Co-Founder,4
+jobs.Film Society Co-Founder.Ciné Club Co-Founder,1
+jobs.Filmmaker,23
+jobs.Filmmaker.Amateur Filmmaker,2
+jobs.Filmmaker.Documentary Maker,12
+jobs.Filmmaker.Ethnographic Filmmaker,6
+jobs.Filmmaker.Nonfiction Filmmaker,1
+jobs.Filmmaker.Travelogue Filmmaker,2
+jobs.Forewoman,1
+jobs.Government Department Head,4
+jobs.Government Department Head.Government Official,2
+jobs.Government Department Head.Government Official.Clerk,1
+jobs.Government Department Head.Government Official.Inspector,1
+jobs.Guild Co Founder,3
+jobs.Guild Shareholder,1
+jobs.Head of Production,1
+jobs.Head Of Studio Research Department,1
+jobs.International Women's Organizations Film Correspondent,1
+jobs.Inventor,1
+jobs.Investor,2
+jobs.Laboratory Worker,4
+jobs.Lecturer,8
+jobs.Lighting Technology Engineer,1
+jobs.Literary Advisor,1
+jobs.Location Scout,2
+jobs.Make-Up Supervisor,2
+jobs.Manager,5
+jobs.Manager.Assistant Manager,1
+jobs.Manager.Publicity Manager,1
+jobs.Manager.Theatre Manager,1
+jobs.Metalworker,1
+jobs.Miscellaneous Crew,1
+jobs.Movie Theatre Ticket Cashier,1
+jobs.Music Hall Performer,4
+jobs.Musician,17
+jobs.Musician.Composer,5
+jobs.Musician.Conductor,1
+jobs.Musician.Film Accompanist,4
+jobs.Musician.Recording Artist,1
+jobs.Musician.Singer,4
+jobs.Musician.Singer.Opera Singer,1
+jobs.Office Manager,1
+jobs.Painter,2
+jobs.Pantomime,1
+jobs.Personal Assistant,2
+jobs.Play Broker,1
+jobs.play Reader,2
+jobs.Preservationist,4
+jobs.Preservationist.Archivist,1
+jobs.Producer,113
+jobs.Producer.Assistant Producer,1
+jobs.Producer.Co-Producer,10
+jobs.Producer.Executive Producer,3
+jobs.Production Assistant,3
+jobs.production Coordinator,1
+jobs.production Designer,1
+jobs.production Editor,2
+jobs.production Supervisor,3
+jobs.Projectionist,3
+jobs.Projectionist.Operator,1
+jobs.Publicist,6
+jobs.Publicist.Motion Picture Press Agent,1
+jobs.Publicist.Motion Picture Publicity Department Director,1
+jobs.Publicist.Publicity Manager,1
+jobs.Publisher,1
+jobs.Publisher.Trade Journal Publisher,1
+jobs.Reader,5
+jobs.Recording Engineer,1
+jobs.Researcher,2
+jobs.Sales Manager,1
+jobs.Sales Manager.Assistant Sales Manager,1
+jobs.Scenarist,7
+jobs.Scholar,6
+jobs.Scholar.Film Scholar,3
+jobs.Scholar.Film Scholar.Film Theorist,2
+jobs.Scholar.Historian,3
+jobs.Scholar.Historian.Art Historian,1
+jobs.Scholar.Historian.Film Historian,1
+jobs.Script Assistant,1
+jobs.Script Consultant,1
+jobs.Script Editor,1
+jobs.Script Girl,1
+jobs.Script Reader,1
+jobs.Script Supervisor,1
+jobs.Seamstress,2
+jobs.Secretary,8
+jobs.Secretary Treasurer,2
+jobs.Secretary.Executive Secretary,1
+jobs.Secretary.Film Society Secretary,2
+jobs.Secretary.Production Secretary,1
+jobs.Set Decorator,4
+jobs.Set Designer,6
+jobs.Society Matron,1
+jobs.Sound Editor,1
+jobs.Special Effects Designer,1
+jobs.Speech Coach,1
+jobs.Stage Manager,1
+jobs.Stage Manager.Assistant Stage Manager,1
+jobs.Stenographer,2
+jobs.Studio Head,1
+jobs.Studio Librarian,1
+jobs.Stunt Designer,2
+jobs.Stunt Person,6
+jobs.Technician,2
+jobs.Theatrical Manager,2
+jobs.Title Designer,1
+jobs.Title Writer,17
+jobs.Treasurer,1
+jobs.Treasurer.Film Company Treasurer,1
+jobs.Typist,1
+jobs.Visual Artist,15
+jobs.Visual Artist.Illustrator,1
+jobs.Visual Artist.Photographer,12
+jobs.Visual Artist.Photographer.War Photographer,1
+jobs.Visual Artist.Sculptor,2
+jobs.Weaver,1
+jobs.Writer,339
+jobs.Writer.Co-Writer,1
+jobs.Writer.Journalist,45
+jobs.Writer.Journalist.Celebrity Interviewer,1
+jobs.Writer.Journalist.Fan Magazine Writer,1
+jobs.Writer.Journalist.Film Magazine Writer,1
+jobs.Writer.Journalist.Gossip Columnist,1
+jobs.Writer.Journalist.Magazine Editor,6
+jobs.Writer.Journalist.Magazine Editor.Arts Magazine Editor,1
+jobs.Writer.Journalist.Magazine Editor.Fan Magazine Editor,1
+jobs.Writer.Journalist.Magazine Editor.Film Magazine Editor,2
+jobs.Writer.Journalist.Magazine Editor.Trade Journal Editor,2
+jobs.Writer.Journalist.Newspaper Editor,1
+jobs.Writer.Novelist,23
+jobs.Writer.Novelist.Short Story Writer,1
+jobs.Writer.Playwright,29
+jobs.Writer.Poet,3
+jobs.Writer.Scenario Writer,34
+jobs.Writer.Scenario Writer.Chief Scenario Writer,1
+jobs.Writer.Scenario Writer.Scenario Department Head,1
+jobs.Writer.Screenwriter,168
+jobs.Writer.Screenwriter.Co-Screenwriter,32
+jobs.Writer.Source Author,27
+jobs.Writer.Source Author.Original Story Writer,2
