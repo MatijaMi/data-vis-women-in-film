@@ -125,7 +125,7 @@ function showJobD3(profession){
         .enter()
         .append("circle")
         .attr("class", "node")
-        .attr("r", 30)
+        .attr("r", 90)
         .attr("cx",0)
         .attr("cy", 0)
         .attr("fill", function(d) {

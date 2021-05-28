@@ -1,17 +1,44 @@
-function determineJobSize(count){
+function determineJobSize(count,data,level){
     //return Math.max(30,count);
-    if(count<10){
-        return 60;
-    }else{
-        if(count<20 && count >=10){
-            return 70;
+    if(level==0){
+        if(count<10){
+            return 60;
         }else{
-            if(count<50 && count >20){
-                return 80;
+            if(count<20 && count >=10){
+                return 70;
             }else{
-                return 90;
+                if(count<50 && count >20){
+                    return 80;
+                }else{
+                    return 90;
+                }
             }
+            }
+    }
+    
+    if(level==1){
+        if(data.length<20){
+            return 90;
+        }else{
+            return 45;
         }
+    
+    }
+    if(level==2){
+        if(data.length<20){
+            return 60;
+        }else{
+            return 30;
+        }
+    }
+    
+    if(level==3){
+        if(data.length<20){
+            return 60;
+        }else{
+            return 45;
+        }
+        
     }
     
 }
@@ -148,10 +175,42 @@ function addPersonPatterns(personalData,svg){
      .append("image")
         .attr("x", 0)
         .attr("y", 0)
-   	    .attr("width", function (d) { return 60})
-        .attr("height", function (d) { return 60})
+   	    .attr("width", function (d) { return 180})
+        .attr("height", function (d) { return 180})
         .attr("xlink:href", link);  
     }
 }
 
-export{findProfessionPicture,createLines,determineJobSize,clearPrevDataviz,addPatterns,addPersonPatterns}
+function createElipse(data,svg){
+    var centerX = window.innerWidth/2;
+    var centerY = (window.innerHeight - 50)/2;
+    
+    var maxX=0;
+    var maxXR;
+    var maxY=0;
+    var maxYR=0;
+    
+    for(var i =0; i <data.length; i++){
+        var x = document.getElementById(data[i].job).cx.baseVal.value;
+        var y = document.getElementById(data[i].job).cy.baseVal.value;
+        var r = document.getElementById(data[i].job).r.baseVal.value;
+       if(Math.abs(centerX-x)>maxX){
+           maxX=Math.abs(centerX-x);
+           maxXR=r;
+       }
+        if(Math.abs(centerY-y)>maxY){
+            maxY=Math.abs(centerY-y);
+            maxYR=r;
+        }
+    }
+    svg.append("ellipse")
+        .attr("cx",centerX)
+        .attr("cy", centerY)
+        .attr("rx", maxX+r*(Math.sign(centerX-maxX))+10)
+        .attr("ry", maxY+r*(Math.sign(centerY-maxY))+30)
+        .style("stroke", "black")
+        .style("stroke-width","5px")
+        .style("fill","none");
+}
+
+export{findProfessionPicture,createLines,determineJobSize,clearPrevDataviz,addPatterns,addPersonPatterns,createElipse}

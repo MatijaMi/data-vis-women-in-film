@@ -1,5 +1,5 @@
 import{updateState,goBackState} from '../Handlers/stateHandler.js';
-import{mouseoverJob,mousemoveJob,mouseleaveJob} from '../Handlers/mouseHandler.js';
+import{mouseoverJob,mousemoveJob,mouseleaveJob,mouseoverPersonal,mousemovePersonal,mouseleavePersonal} from '../Handlers/mouseHandler.js';
 import{getSecondLevelData} from '../Util/dataProcessing.js';
 import{removeTooltip,createTooltip} from '../Util/tooltips.js';
 import{updateLevel,getLevels,getLevel,setLevel,goToNextLevel} from '../Handlers/levelHandler.js';
@@ -19,6 +19,7 @@ function drawSecondLevel(profession){
     var svg = d3.select("#my_dataviz").append("svg").attr("width", width).attr("height", height);
   
     var Tooltip = createTooltip();
+    var personalTooltip = createTooltip();
     addPatterns(data,svg);
     addPersonPatterns(personalData,svg);
  
@@ -36,9 +37,9 @@ function drawSecondLevel(profession){
         })
         .attr("stroke", "black")
         .style("stroke-width", 0.8)
-        //.on("mouseover", mouseover) // What to do when hovered
-        //.on("mousemove", mousemove)
-        //.on("mouseleave", mouseleave)
+        .on("mouseover",function (d){ mouseoverPersonal(personalTooltip)}) // What to do when hovered
+        .on("mousemove", function (d) {mousemovePersonal(personalTooltip,d,this)})
+        .on("mouseleave", function(){mouseleavePersonal(personalTooltip)})
 
 
     var clusPos= width/2;
@@ -48,7 +49,8 @@ function drawSecondLevel(profession){
   var simulation = d3.forceSimulation()
       .force("center", d3.forceCenter().x(clusPos).y(height / 2)) // Attraction to the center of the svg area
       .force("charge", d3.forceManyBody().strength(-10)) // Nodes are attracted one each other of 
-  
+        .force("collide", d3.forceCollide().strength(.5).radius(30))
+        .force('y', d3.forceY().y(height/2).strength(0.006));
       simulation
         .nodes(personalData)
         .on("tick", function (d) {
@@ -64,7 +66,7 @@ function drawSecondLevel(profession){
         .append("circle")
         .attr("class", "node")
         .attr("id", function (d) { return d.job})
-        .attr("r", function (d) { return determineJobSize(d.count)})
+        .attr("r", function (d) { return determineJobSize(d.count,data,2)})
         .attr("cx",0)
         .attr("cy", 0)
         .attr("fill", function(d) {
@@ -74,14 +76,14 @@ function drawSecondLevel(profession){
         .style("stroke-width", 2)
         .on("mouseover", function (d) {mouseoverJob(Tooltip);}) 
         .on("mousemove", function (d) {mousemoveJob(Tooltip,d, this)})
-        .on("mouseenter", function (d) {createLines(d.job, data)})
+        //.on("mouseenter", function (d) {createLines(d.job, data)})
         .on("mouseleave", function (d) {mouseleaveJob(Tooltip,data)})
         .on("click", function (d) {goToNextLevel(d.job)});
 
   var simulation = d3.forceSimulation()
       .force("center", d3.forceCenter().x(2*(width / 3)).y(height / 2)) // Attraction to the center of the svg area
       .force("charge", d3.forceManyBody().strength(-10)) // Nodes are attracted one each other of value is > 0
-      .force("collide", d3.forceCollide().strength(.5).radius(function (d) { return determineJobSize(d.count)}).iterations(1))
+      .force("collide", d3.forceCollide().strength(.5).radius(function (d) { return determineJobSize(d.count,data,2)}).iterations(1))
       .force('y', d3.forceY().y(height/2).strength(0.012));
 
   //

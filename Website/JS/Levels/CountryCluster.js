@@ -1,5 +1,7 @@
 import{updateState} from '../Handlers/stateHandler.js';
 import{showCountryD3} from './singleCountryCluster.js';
+import {setLevel} from '../Handlers/levelHandler.js';
+import {removeTooltip} from '../Util/tooltips.js';
 
 function showCountries(){
     

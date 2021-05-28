@@ -1,14 +1,16 @@
 import {updateState} from '../Handlers/stateHandler.js';
 import {determineCx,determineCy,} from '../Util/groupingUtil.js';
 import {handleResize} from '../Handlers/resizeHandler.js';
+import {setLevel} from '../Handlers/levelHandler.js';
 import {getAllData} from '../Util/dataProcessing.js';
+import {removeTooltip} from '../Util/tooltips.js';
 import {showCountries} from '../Levels/CountryCluster.js';
 
 
 function showAll(){
     if(document.getElementById("my_dataviz").firstChild!=null){
         document.getElementById("my_dataviz").removeChild(document.getElementById("my_dataviz").firstChild);
-    }
+    }    
     
     var data = getAllData()[0];
     window.zoomedIn=false;
@@ -180,13 +182,6 @@ function showAll(){
    
 }
 
-
-
-function removeTooltip(){
-    //document.getElementById("tooltip").style.opacity=0;
-}
-
-document.getElementById("my_dataviz").addEventListener("click",removeTooltip);
 window.addEventListener("resize", handleResize);
 
 

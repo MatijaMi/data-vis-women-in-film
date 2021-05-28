@@ -34,11 +34,27 @@ function createTextOverlay(data){
         }
         var xShift;
         var yShift;
-        var calculatedFont;
+        var calculatedFont =r/2+"px";
+        var lineHeight = r/2 +4 + "px";
+        if(text.length==1){
+            yShift=0;
+            if(data[i].job.length>9){
+                calculatedFont="auto";
+                lineHeight = "auto";
+            }
+        }else{
+            if(text.length==2){
+                calculatedFont=r/3+"px";
+                lineHeight = r/3 +4 + "px";
+            }else{
+                calculatedFont=r/4+"px";
+                lineHeight = r/4 +4 + "px";
+            }
+        }
         
         var Tooltip = d3.select("body")
                 .append("div")
-                .html('<b>' +inHtml + '</b>')
+                .html(inHtml)//+ "\n" +data[i].count
                 .style("opacity", 1)
                 .attr("class", "textOverlay")
                 .style("background-color", "none")
@@ -48,14 +64,15 @@ function createTextOverlay(data){
                 .style("padding", "0px")
                 .style("margin", "0px")
                 .style("text-align", "center")
-                .style("font-family", " 'Times New Roman', serif")
-                .style("font-size","20px")
+                .style("font-family", " blacksword")
+                .style("line-height", lineHeight)
+                .style("font-size",calculatedFont)
                 .style("color","#fff")
-                .style("text-shadow", "1px 0 0 #000, 0 -1px 0 #000, 0 1px 0 #000, -1px 0 0 #000")
+                .style("text-shadow", "2px 0 0 #000, 0 -2px 0 #000, 0 2px 0 #000, -2px 0 0 #000")
                 .style("position", "absolute")
                 .style("left", x-r +"px")
-                .style("top", y+r/2+ "px")   
-                .style("width", 2*r +"px")   
+                .style("top", y+yShift + "px")   
+                .style("width", 2*r +"px") 
                 .style("animation","fadein 1.5s")   
     }
 }

@@ -3,6 +3,7 @@ import{drawFirstLevel} from '../Levels/FirstLevel.js';
 import{drawSecondLevel} from '../Levels/SecondLevel.js';
 import{drawThirdLevel} from '../Levels/ThirdLevel.js';
 import{setLevel} from '../Handlers/levelHandler.js'
+import{removeTooltip} from '../Util/tooltips.js'
 
 function setLocator(state){
     document.getElementById("locator").innerHTML="<button class='locButtons' id='topLevel'>"+ state+ "</button>";
@@ -11,6 +12,16 @@ function setLocator(state){
 }
 
 function updateLocator(state,level){
+    var text = state.split(" ");
+    var inHtml ="";
+        for(var j=0; j<text.length;j++){
+            if(j==0){
+                inHtml=inHtml +text[j].charAt(0).toUpperCase()+ text[j].slice(1);  
+            }else{
+                inHtml=inHtml + " " +text[j].charAt(0).toUpperCase()+ text[j].slice(1);  
+            }  
+        }
+    state=inHtml;
     document.getElementById("locator").innerHTML=document.getElementById("locator").innerHTML +"<button class='locButtons' id='" +level+"level'>"+ state+ "</button>";
    addButtonEvents();
         
@@ -18,10 +29,23 @@ function updateLocator(state,level){
 
 function handleLocatorClick(id){
     var name = document.getElementById(id).innerHTML;
+    removeTooltip("textOverlay");
+    var text = name.split(" ");
+    var inHtml ="";
+        for(var j=0; j<text.length;j++){
+            if(j==0){
+                inHtml=inHtml +text[j].charAt(0).toLowerCase()+ text[j].slice(1,text[j].length);   
+            }else{
+                inHtml=inHtml + " " +text[j].charAt(0).toLowerCase()+text[j].slice(1,text[j].length);   
+            }    
+    }
+    name=inHtml;
+    console.log(name);
     var size;
     switch(id){
         case "topLevel":
-            document.getElementById("back").remove();
+            if(document.getElementById("back")!=null){
+                document.getElementById("back").remove();}
             drawTopLevel();
             size=1;
             break;

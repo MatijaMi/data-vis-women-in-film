@@ -1,4 +1,5 @@
 import {showCountries} from './CountryCluster.js';
+import{speedUpAnimation} from '../Util/tooltips.js';
 
 function showCountryD3(country){
     if(document.getElementById("my_dataviz").firstChild!=null){
@@ -99,8 +100,7 @@ document.getElementById("back").addEventListener("click", goBack)
           }else{
            Tooltip
           .html('<u><b>' + d.name + '</b></u>' + "<br>" +
-                '<img src=../Images/WFPP-Pictures-Fullsize/'+ d.name.split(' ').join('%20') +'.jpg width=200px>'+
-               '<button> Other Professions </button>')
+                '<img src=../Images/WFPP-Pictures-Fullsize/'+ d.name.split(' ').join('%20') +'.jpg width=200px>')
           .style("width", "240px")
           .style("left", (d3.mouse(this)[0] + 20) + "px")
           .style("top", (d3.mouse(this)[1]) + "px")
@@ -120,12 +120,16 @@ document.getElementById("back").addEventListener("click", goBack)
           .style("padding", 0)
           .html("");
       }
-  
+  var radiusofGroup=determineCountryGroupSize(data);
+  var extra="-Fullsize";
+    if(data.length>100){
+        extra=""
+    }
  for(var i =0; i <data.length; i++){
       if(data[i].imgUrl.length!=0){
-          var link = '../Images/WFPP-Pictures/' + data[i].name.split(' ').join('%20') +'.jpg';
+          var link = '../Images/WFPP-Pictures'+extra+"/" + data[i].name.split(' ').join('%20') +'.jpg';
       }else{
-          var link = '../Images/WFPP-Pictures/Unknown.jpg';
+          var link = '../Images/WFPP-Pictures-Fullsize/Unknown.jpg';
       }
       
     svg.append("pattern")
@@ -133,13 +137,13 @@ document.getElementById("back").addEventListener("click", goBack)
      .attr("x", 0)
      .attr("y", 0)
      .attr("width", 10)
-	 .attr("height", 10)
+     .attr("height", 10)
      .attr("id", data[i].id)
      .append("image")
         .attr("x", 0)
         .attr("y", 0)
-   	    .attr("width", function (d) { return 60})
-        .attr("height", function (d) { return 60})
+   	    .attr("width", function (d) { return 2*radiusofGroup})
+        .attr("height", function (d) { return 2*radiusofGroup})
         .attr("xlink:href", link);  
 }
   
@@ -150,7 +154,7 @@ document.getElementById("back").addEventListener("click", goBack)
         .enter()
         .append("circle")
         .attr("class", "node")
-        .attr("r", 30)
+        .attr("r", radiusofGroup)
         .attr("cx",0)
         .attr("cy", 0)
         .attr("fill", function(d) {
@@ -166,8 +170,10 @@ document.getElementById("back").addEventListener("click", goBack)
 
       // Features of the forces applied to the nodes:
   var simulation = d3.forceSimulation()
-      .force("center", d3.forceCenter().x(width / 2).y(height / 2)) // Attraction to the center of the svg area
-      .force("charge", d3.forceManyBody().strength(-10)) // Nodes are attracted one each other of value is > 0
+        .force("center", d3.forceCenter().x(width / 2).y(height / 2)) // Attraction to the center of the svg area
+        .force("charge", d3.forceManyBody().strength(-10)) // Nodes are attracted one each other of 
+        .force('y', d3.forceY().y(height/2).strength(0.010))
+        .force("collide", d3.forceCollide().strength(.5).radius(radiusofGroup).iterations(1))
       // Force that avoids circle overlapping
 
   //
@@ -179,21 +185,19 @@ document.getElementById("back").addEventListener("click", goBack)
             .attr("cy", function (d) { return d.y; })
         });
 
-      // What happens when a circle is dragged?
-  function dragstarted(d) {
-        if (!d3.event.active) simulation.alphaTarget(.03).restart();
-        d.fx = d.x;
-        d.fy = d.y;
-      }
-  function dragged(d) {
-        d.fx = d3.event.x;
-        d.fy = d3.event.y;
-      }
-  function dragended(d) {
-        if (!d3.event.active) simulation.alphaTarget(.03);
-        d.fx = null;
-        d.fy = null;
-      }
+    speedUpAnimation(simulation,2);
+
+    function determineCountryGroupSize(){
+        if(data.length>40){
+            return 30;
+        }
+        if(data.length>10 && data.length<40){
+            return 60;
+        }
+        if(data.length<10){
+            return 80;
+        }
+    }
 }
 
 export {showCountryD3}
