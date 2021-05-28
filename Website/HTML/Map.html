@@ -7,122 +7,421 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../CSS/baseStyle.css">
-    <link rel="sidepanel_css" href="../CSS/map_sidepanel.css">
-    <script type="module" src="../JS/generalBehaviour.js"></script>
+    <link rel="stylesheet" href="../CSS/map.css">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
     <script src="https://d3js.org/d3.v4.js"></script>
     <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
     <script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
+    <script src="https://github.com/typeiii/jquery-csv"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="../JS/map.js"></script>
 
 </head>
 
 <body>
 
-    <!-- Header -->
-    <div class="header" id="header">
-        <a href="/index.html">Home</a>
-        <a href="Map.html">Map</a>
-        <a href="Viewer.html">Viewer</a>
-        <a href="">Extra</a>
-        <a href="">Gallery</a>
-        <a href="">About</a>
+       <!-- Header -->
+       <div class="header" id="header">
+        <a href="../index.html">Home</a>
+        <a href="./Map.html">Map</a>
+        <a href="./Cluster.html">Cluster</a>
+        <a href="./Timeline.html">Timeline</a>
+        <a href="./Dendrogram.html">Dendrogram</a>
+        <a href="./About.html">About</a>
     </div>
 
-    <!-- Sidepanel -->
-    <div id="mySidepanel" class="sidepanel">
-        <a href="javascript:void(0)" class="closebtn" id="sidePanelClose">&times;</a>
-   
-        <label>Settings</label>
+    <!-- Header-Spacer -->
+    <svg height="50" width="100%"></svg>
 
-        <br><br>
+    <!-- Dialog Holder - Will display Dialog text of info buttons-->
+    <div id="dialog" title="Information" hidden="true"></div>
 
-        <label for="FromYear">From:</label>
-        <input type="number" id="from" name="from" min="1800" max="2020">
-        <label for="ToYear">To:</label>
-        <input type="number" id="to" name="to" min="1800" max="2020">
+    <!-- Main Body (Panels + Map)-->
+    <div class="main_wrapper">
 
-        <br><br>
+        <!-- Panels-->
+        <div class="panels">
 
-        <input type="checkbox" id="checkbox1" name="checkbox1" value="checkbox1Checked">
-        <label for="checkbox1">Only display top 10</label><br>
+            <!-- Sidepanel -->
+            <div class="sidepanel_panel">
 
-        <br>   
+                <input type="image" class="sidepanel_info_icon" src="../Images/question_mark.png"
+                    onclick="sidepanel_info_onclick()" />
 
-        <input type="checkbox" id="checkbox2" name="checkbox2" value="checkbox2Checked">
-        <label for="checkbox2">Show Connections</label><br>
+                <label class="sidepanel_headline" id="country_name_label"></label>
+
+                <br><br>
+
+                <div id="sidepanel_holder" hidden=true>
+
+                    <label class="sidepanel_text_big">Pioneers: </label>
+                    <label class="sidepanel_text_big" id="pioneers_count_label"></label><br>
+
+                    <label class="sidepanel_text_short">Different Jobs: </label>
+                    <label class="sidepanel_text_short" id="pioneers_jobs_label"></label><br>
+
+                    <label class="sidepanel_text_short">Connections: </label>
+                    <label class="sidepanel_text_short" id="pioneers_connections_label"></label>
+
+                    <br><br>
+
+                    <label class="sidepanel_text_short">Example Pioneer: </label><br>
+                    <label class="sidepanel_text_short" id="pioneers_ex_name"></label>
+
+                    <br><br>
+
+                    <img class="sidepanel_image" id="pioneers_ex_image"
+                        src="https://wfpp.columbia.edu/wp-content/uploads/2018/05/adaalineurban.jpg"
+                        onerror="image_load_error('pioneers_ex_image')">
+                    <br><br>
+
+                    <button class="sidepanel_button" id="pioneers_read_more_button">Read more</button>
+                    <button class="sidepanel_button" id="pioneers_next_button">Next</button>
+
+                </div>
+                <div class="sidepanel_text_long" id="sidepanel_empty_text" hidden="true">
+                    There are no pioneers registered to the WFFP between the selected Years. <br><br> If you want to
+                    contribute
+                    to the project please click the button below.
+                    <br><br>
+                </div>
+
+                <button class="sidepanel_button" onclick="window.open('https://wfpp.columbia.edu/contribute/')"
+                    id="pioneers_contribute_button" hidden="true">Contribute</button>
+            </div>
+
+
+
+            <!-- Settings -->
+            <div class="settings_panel">
+                <label class="settings_headline">Settings</label>
+
+                <input type="image" class="settings_info_icon" src="../Images/question_mark.png"
+                    onclick="settingspanel_info_onclick()"> </input>
+
+                <br><br>
+
+                <input type="checkbox" class="settings_checkbox" id="settings_checkbox_unknown" onclick="load_data()"
+                    checked>
+                <label class="settings_checkbox_text">Include Unknown Dates</label>
+
+                <br><br>
+
+                <button class="settings_button" id="all_connections_button">Show all connections</button>
+
+                <br><br>
+
+                <button class="settings_button" id="timeline_button">Show as timeline</button>
+            </div>
+
+        </div>
+
+        <!-- Map -->
+        <svg id="map_holder" class="map_holder" width="1400" height="750"></svg>
+
     </div>
 
-    <button id="sidepanel_button" class="openbtn">&#9776;</button>
+    <!-- Bottom - (Slider + Histogram)-->
+    <div class="bottom_wrapper" id="bottom_wrapper">
 
-    <!-- Map Object -->
-    <div id = "map_panel"></div>
+        <!-- Histogram-->
+        <div class="histogram_holder" id="histogram_holder" hidden=true>
+            <input type="image" onclick="histogram_button_onclick()" class="histogram_image"
+                src="../Images/map_histogram.png" />
+        </div>
+
+        <!-- Slider Holder -->
+        <div class="slider_text_holder">
+
+            <input type="image" class="histo_icon" src="../Images/barchart_icon.png"
+                onclick="histogram_button_onclick()" />
+            <input type="text" id="slider_span" readonly
+                style="color:#1fb9f6; font-weight:bold; text-align: center; font-size: 24px; pointer-events: none; width:150px"></input>
+            <input type="image" class="slider_info_icon" src="../Images/question_mark.png"
+                onclick="slider_info_onclick()" />
+        </div>
+
+        <!-- Slider-->
+        <div class="slider_holder">
+            <div id="slider-range"></div>
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="footer"></div>
+
+    <!-- Footer Spacer -->
+    <svg height="50" width="100%"></svg>
 
     <!-- Map -->
     <script>
 
-        // Dimensions
-        var width = window.innerWidth;
-        var height = window.innerHeight;
 
-        // append the svg object to the body of the page
-        var svg = d3.select("#map_panel")
-            .append("svg")
-            .attr("width", width)
-            .attr("height", height)
+        //TODO: 
+        var payload = "";
+        if(window.location.href.includes("?")){
+            payload = window.location.href.substr(window.location.href.indexOf("?") + 1);
+            alert(payload);
+        }
+        
+        //Slider
+        var sliderWasUsed = false;
+        var lastCountry = null;
+        var myS = $("#slider-range");
+        var minSpace = 5;
+        var sMin = 1830;
+        var sMax = 2000;
+        myS.slider({
+            min: sMin,
+            max: sMax,
+            values: [1900, 1915, 1930],
+            steps: 1,
+            change: function (event, ui) {
+                load_data();
+                sliderWasUsed = true;
+            },
+            slide: function (event, ui) {
+                //Min handler
+                if (ui.handleIndex === 0) {
+                    if ((myS.slider("values", 1) - ui.value) < (minSpace + 1)) {
+                        if ((ui.value + 2 * minSpace) > sMax) {
+                            return false;
+                        }
+                        if ((myS.slider("values", 1) - myS.slider("values", 0)) < (minSpace + 1)) {
+                            myS.slider("values", 1, myS.slider("values", 0) + (minSpace + 1));
+                        }
+                        if ((myS.slider("values", 2) - myS.slider("values", 1)) < (minSpace + 1)) {
+                            myS.slider("values", 2, myS.slider("values", 1) + minSpace);
+                        }
+                    }
+                }
+
+                //Max handler
+                if (ui.handleIndex === 2) {
+                    if ((ui.value - myS.slider("values", 1)) < (minSpace + 1)) {
+                        if ((ui.value - 2 * minSpace) < sMin) {
+                            return false;
+                        }
+                        if ((myS.slider("values", 2) - myS.slider("values", 1)) < (minSpace + 1)) {
+                            myS.slider("values", 1, myS.slider("values", 2) - (minSpace + 1));
+                        }
+                        if ((myS.slider("values", 1) - myS.slider("values", 0)) < (minSpace + 1)) {
+                            myS.slider("values", 0, myS.slider("values", 1) - minSpace);
+                        }
+                    }
+                }
+
+                //Mid handler
+                if (ui.handleIndex === 1) {
+                    if ((ui.value + minSpace) > sMax) {
+                        return false;
+                    }
+                    if ((ui.value - minSpace) < sMin) {
+                        return false;
+                    }
+
+                    var min_dist = myS.slider("values", 1) - myS.slider("values", 0);
+                    var max_dist = myS.slider("values", 2) - myS.slider("values", 1);
+                    myS.slider("values", 2, Math.min(ui.value + max_dist, 2000));
+                    myS.slider("values", 0, Math.max(ui.value - min_dist, 1830));
+                }
+
+                //Change inputs
+                if (ui.handleIndex === 0) {
+                    minVal = ui.value;
+                    maxVal = myS.slider("values", 2);
+                }
+                if (ui.handleIndex === 1) {
+                    minVal = myS.slider("values", 0);
+                    maxVal = myS.slider("values", 2);
+                }
+                if (ui.handleIndex === 2) {
+                    minVal = myS.slider("values", 0);
+                    maxVal = ui.value;
+                }
+                $("#min").val(minVal);
+                $("#max").val(maxVal);
+
+                //UI
+                $("#slider_span").val(minVal + " - " + maxVal);
+
+            }
+
+        }).css('background', 'rgba(00,136,255,0.8)');
+
+        //Slider UI on initialization
+        $("#slider_span").val(1900 + " - " + 1930);
+
+        //List of all countries
+        var countries = createAllCountries();
+
+        // Append the svg object to the body of the page
+        var svg = d3.select("#map_holder"),
+            width = +svg.attr("width"),
+            height = +svg.attr("height");
 
         // Map and projection
         var path = d3.geoPath();
         var projection = d3.geoMercator()
-            .scale(70 * 3.5)
+            .scale(250)
             .center([0, 0])
-            .translate([width / 2, height / 1.5]);
+            .translate([width / 2.2, height / 1.5]);
 
-        // Data and color scale
+        // Data
         var data = d3.map();
-        var colorScale = d3.scaleThreshold()
-            .domain([100000, 1000000, 10000000, 30000000, 100000000, 500000000])
-            .range(d3.schemeBlues[7]);
 
         // Load external data and boot
-        d3.queue()
-            .defer(d3.json, "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson")
-            .defer(d3.csv, "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world_population.csv", function (d) { data.set(d.code, +d.pop); })
-            .await(ready);
+        load_data();
 
-        function ready(error, topo) {
+        //Creating map
+        function ready(error, map_data, complete_data) {
 
-            // Draw the map
+            document.getElementById('all_connections_button').onclick = function () {
+                show_all_connections(countries)
+            };
+
+            //Mouse Over
+            let mouseOver = function (d) {
+
+                //Mouser Over Animation               
+                d3.select(this)
+                    .transition()
+                    .duration(200)
+                    .style("stroke", "black");
+
+            }
+
+            let mouseLeave = function (d) {
+
+                //Mouser Leave Animation
+                d3.select(this)
+                    .transition()
+                    .duration(0)
+                    .style("stroke", "transparent")
+            }
+
+            let mouseClick = function (d) {
+
+                //Set last country if slider will be used
+                lastCountry = d;
+
+                //Get current country
+                var curr_country = findObjectByKey(countries, "country_code", d.id);
+
+                //Check if country is used   
+                if (findObjectByKey(countries, "country_code", d.id) == null || findObjectByKey(countries, "country_code", d.id).country_pioneers.length == 0) {
+                    document.getElementById('country_name_label').innerHTML = d.properties.name;
+                    document.getElementById('sidepanel_holder').hidden = true;
+                    document.getElementById('sidepanel_empty_text').hidden = false;
+                    document.getElementById('pioneers_contribute_button').hidden = false;
+                    svg.selectAll(".Link").remove();
+                    return;
+                } else {
+                    document.getElementById('sidepanel_empty_text').hidden = true;
+                    document.getElementById('pioneers_contribute_button').hidden = true;
+
+                    makeGrid(curr_country.country_pioneers);
+                }
+
+                //Remove old links
+                svg.selectAll(".Link").remove();
+
+
+                //Sidebar                
+                document.getElementById('country_name_label').innerHTML = curr_country.country_name;
+                document.getElementById('pioneers_count_label').innerHTML = curr_country.country_pioneers.length;
+                document.getElementById('pioneers_jobs_label').innerHTML = curr_country.country_jobs.length;
+                document.getElementById('pioneers_connections_label').innerHTML = curr_country.country_connected_countries.length;
+
+                //Display random pioneer on sidepanel
+                show_example_pioneer(curr_country.country_pioneers, curr_country.country_pioneers);
+
+                document.getElementById('sidepanel_holder').hidden = false;
+
+                //Calculate connections
+                var link = []
+                for (var i = 0; i < curr_country.country_connected_countries.length; i++) {
+                    var connected_country = findObjectByKey(countries, "country_name", curr_country.country_connected_countries[i]);
+
+                    source = [curr_country.country_long, curr_country.country_lat]
+                    target = [connected_country.country_long, connected_country.country_lat]
+                    topush = {
+                        type: "LineString",
+                        coordinates: [source, target]
+                    }
+                    link.push(topush)
+                }
+
+                // Add the path
+                svg.selectAll("myPath")
+                    .data(link)
+                    .enter()
+                    .append("path")
+                    .attr("d", function (d) {
+                        return path(d)
+                    })
+                    .attr("class", function (d) {
+                        return "Link"
+                    })
+                    .style("pointer-events", "none")
+                    .style("fill", "none")
+                    .style("stroke-dasharray", ("5, 3"))
+                    .style("stroke", "#00d4db")
+                    .style("stroke-width", 3)
+                    .style("opacity", 0)
+                    .transition()
+                    .duration(500)
+                    .style("opacity", 1)
+
+            }
+
+            //Draw the map
+            svg.selectAll("path").remove();
+
             svg.append("g")
                 .selectAll("path")
-                .data(topo.features)
+                .data(map_data.features)
                 .enter()
                 .append("path")
 
-                // draw each country
+                //Draw each country
                 .attr("d", d3.geoPath()
                     .projection(projection)
                 )
 
-                // set the color of each country
+                .attr("class", function (d) {
+                    return "Country"
+                })
+                .on("mouseover", mouseOver)
+                .on("mouseleave", mouseLeave)
+                .on("click", mouseClick)
+
+
+                //Set the color of each country
                 .attr("fill", function (d) {
-                    d.total = data.get(d.id) || 0;
-                    return colorScale(d.total);
+
+                    var colorScale = d3.scaleThreshold()
+                        .domain([1, 2, 5, 15, 50, 100])
+                        .range(d3.schemeBlues[6]);
+
+                    if (findObjectByKey(countries, "country_code", d.id) != null) {
+                        return colorScale(findObjectByKey(countries, "country_code", d.id).country_pioneers.length);
+                    } else return colorScale(0);
+
                 });
+
+            //Reset UI
+            if (sliderWasUsed && lastCountry !== null) {
+                mouseClick(lastCountry);
+            }
         }
 
     </script>
 
-    <!-- Footer -->
-    <div class="footer">
-
-    </div>
-
 </body>
 
 </html>
-
-<style>
-    .country {
-        fill: #ccc;
-        stroke: #999;
-    }
-</style>
