@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+
+<html lang="en" style="height: 100%">
+
+<head>
+    <title>WFPP</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../CSS/baseStyle.css">
+    <link rel="icon" type="image/png" href="../Images/WFPP-Logo.png" />
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <script type="module" src="../JS/timeline.js" defer></script>
+</head>
+
+<body>
+      <!-- Header -->
+      <div class="header" id="header">
+        <a href="../index.html">Home</a>
+        <a href="./Map.html">Map</a>
+        <a href="./Cluster.html">Cluster</a>
+        <a href="./Timeline.html">Timeline</a>
+        <a href="./Dendrogram.html">Dendrogram</a>
+        <a href="./About.html">About</a>
+    </div>
+
+    <div class="content-container">
+        <div class="dropdown-container">
+            <button class="dropbtn">Sort</button>
+            <div class="dropdown-content">
+                <button class="sort-button" id="yob-sort-asc-button">Year of birth&#8638;</button>
+                <button class="sort-button" id="yob-sort-desc-button">Year of birth&#8642;</button>
+                <button class="sort-button" id="name-sort-asc-button">Name&#8638;</button>
+                <button class="sort-button" id="name-sort-desc-button">Name&#8642;</button>
+            </div>
+        </div>
+        <div class="event-container">
+            <input class="event-text" id ="event-text" placeholder="Name:Start End"></textarea>
+            <button class="add-event-button" id="add-event-button">Add event</button>
+        </div>
+        <div id="xAxis"></div>
+        <div class="svg-container" id="plot">
+            <svg class="timeline" id="timeline"></svg>
+        </div>
+    </div>
+</body>
+
+<style>
+    .body {
+        margin: 0px;
+        overflow: hidden;
+    }
+
+    .content-container {
+        position:relative;
+    }
+
+    .svg-container {
+        height: 92vh;
+        width: 1280px;
+        border: 2px solid #000;
+        margin: auto;
+        overflow-y: auto;
+        overflow-x: auto;
+        position:relative;
+    }
+
+    .timeline {
+        width: 1200px;
+        height: 5000px;
+    }
+
+    .event-container {
+        position: relative;
+        display: inline-block;
+    }
+
+    .add-event-button {
+        padding: 10px;
+        margin: 5px;
+        font-size: 16px;
+        border: none;
+    }
+
+    .event-text {
+        padding: 10px;
+        font-size: 16px;
+        border: none;
+    }
+
+    /* Dropdown Button */
+    .dropbtn {
+        background-color: #009600;
+        color: white;
+        padding: 10px;
+        font-size: 16px;
+        border: none;
+    }
+
+    /* The container <div> - needed to position the dropdown content */
+    .dropdown-container {
+        position: relative;
+        display: inline-block;
+    }
+
+    /* Dropdown Content (Hidden by Default) */
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f1f1f1;
+        min-width: 140px;
+        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+        z-index: 1;
+    }
+
+    /* Links inside the dropdown */
+    .dropdown-content a {
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+    }
+
+    .sort-button {
+        min-width: 138px;
+    }
+
+    /* Change color of dropdown links on hover */
+    .dropdown-content a:hover {
+        background-color: #ddd;
+    }
+
+    /* Show the dropdown menu on hover */
+    .dropdown-container:hover .dropdown-content {
+        display: block;
+    }
+
+    /* Change the background color of the dropdown button when the dropdown content is shown */
+    .dropdown-container:hover .dropbtn {
+        background-color: #007f00;
+    }
+</style>
+
+</html>
