@@ -1,0 +1,60 @@
+<html>
+    <head>
+      <script src="https://cdn.anychart.com/releases/v8/js/anychart-base.min.js"></script>
+      <script src="https://cdn.anychart.com/releases/v8/js/anychart-ui.min.js"></script>
+      <script src="https://cdn.anychart.com/releases/v8/js/anychart-exports.min.js"></script>
+      <script src="https://cdn.anychart.com/releases/v8/themes/light_provence.min.js"></script>
+      <link href="https://cdn.anychart.com/releases/v8/css/anychart-ui.min.css" type="text/css" rel="stylesheet">
+      <link href="https://cdn.anychart.com/releases/v8/fonts/css/anychart-font.min.css" type="text/css" rel="stylesheet">
+      <style type="text/css">
+    
+        html,
+        body,
+        #container {
+          width: 100%;
+          height: 100%;
+          margin: 0;
+          padding: 0;
+        }
+      
+    </style>
+    </head>
+    <body>
+      
+      <div id="container"></div>
+      
+    
+      <script>
+    
+        anychart.onDocumentReady(function () {
+        // set chart theme
+    anychart.theme('lightProvence');
+          // create pie chart with passed data
+          var chart = anychart.pie([
+            ['Writer', 211],
+            ['Actress', 160],
+            ['Director', 136],
+            ['Producer', 117],
+            ['Editor', 69],
+            ['Other Jobs', 479]
+          ]);
+    
+          // set chart title text settings
+          chart
+            .title('Top 5 Jobs')
+            // set chart radius
+            .radius('43%')
+            // create empty area in pie chart
+            .innerRadius('30%');
+    
+          // set container id for the chart
+          chart.container('container');
+          // initiate chart drawing
+          chart.draw();
+        });
+      
+    </script>
+    </body>
+    </html>
+    //https://www.anychart.com/products/anychart/gallery/Pie_and_Donut_Charts/Donut_Chart.php?theme=lightProvence
+                    
