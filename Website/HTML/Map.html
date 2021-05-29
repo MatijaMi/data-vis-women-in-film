@@ -18,13 +18,14 @@
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src="../JS/map.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/4.5.0/papaparse.min.js"></script>
 
 </head>
 
 <body>
 
-       <!-- Header -->
-       <div class="header" id="header">
+    <!-- Header -->
+    <div class="header" id="header">
         <a href="../index.html">Home</a>
         <a href="./Map.html">Map</a>
         <a href="./Cluster.html">Cluster</a>
@@ -160,14 +161,38 @@
     <!-- Map -->
     <script>
 
-
-        //TODO: 
+        //Payload
         var payload = "";
-        if(window.location.href.includes("?")){
-            payload = window.location.href.substr(window.location.href.indexOf("?") + 1);
-            alert(payload);
+        if(window.location.href.includes("?")) payload = window.location.href.substr(window.location.href.indexOf("?") + 1);
+
+        //Slider values
+        var minSliderValue = 1900;
+        var maxSliderValue = 1930;
+
+        //Set Slider to payload
+        if (window.location.href.includes("id=")) {
+            var payload_id = payload.substr("id=".length);
+
+            $.ajax({
+                async: false,
+                type: "GET",
+                url: "../Data/map_pioneer_data.csv",
+                success: function (data) {
+                    var rows = data.split("\n");
+                    for (var i = 0; i < rows.length; i++) {
+                        var columns = rows[i].split(",");
+                        if (columns[0] == payload_id) {
+                            if (columns[8].trim().length == 4 && columns[10].trim().length == 4) {
+                                minSliderValue = columns[8];
+                                maxSliderValue = columns[10];
+                            }
+                            break;
+                        }
+                    }
+                }
+            });
         }
-        
+
         //Slider
         var sliderWasUsed = false;
         var lastCountry = null;
@@ -175,16 +200,21 @@
         var minSpace = 5;
         var sMin = 1830;
         var sMax = 2000;
+        var midSliderValue = parseInt(minSliderValue) + (maxSliderValue - minSliderValue) / 2;
         myS.slider({
             min: sMin,
             max: sMax,
-            values: [1900, 1915, 1930],
+            values: [minSliderValue, midSliderValue, maxSliderValue],
             steps: 1,
             change: function (event, ui) {
                 load_data();
                 sliderWasUsed = true;
             },
             slide: function (event, ui) {
+
+                //Move Mid handler to mid
+                myS.slider("values", 1,  parseInt( myS.slider("values", 0)) + ( myS.slider("values", 2) -  myS.slider("values", 0)) / 2);
+
                 //Min handler
                 if (ui.handleIndex === 0) {
                     if ((myS.slider("values", 1) - ui.value) < (minSpace + 1)) {
@@ -195,7 +225,7 @@
                             myS.slider("values", 1, myS.slider("values", 0) + (minSpace + 1));
                         }
                         if ((myS.slider("values", 2) - myS.slider("values", 1)) < (minSpace + 1)) {
-                            myS.slider("values", 2, myS.slider("values", 1) + minSpace);
+                            myS.slider("values", 2, myS.slider("values", 1) + minSpace);                            
                         }
                     }
                 }
@@ -254,7 +284,10 @@
         }).css('background', 'rgba(00,136,255,0.8)');
 
         //Slider UI on initialization
-        $("#slider_span").val(1900 + " - " + 1930);
+        $("#slider_span").val(minSliderValue + " - " + maxSliderValue);
+
+
+
 
         //List of all countries
         var countries = createAllCountries();
