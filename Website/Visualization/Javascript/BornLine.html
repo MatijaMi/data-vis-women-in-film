@@ -1,0 +1,147 @@
+<html>
+
+<head>
+  <script src="https://cdn.anychart.com/releases/v8/js/anychart-base.min.js"></script>
+  <script src="https://cdn.anychart.com/releases/v8/js/anychart-ui.min.js"></script>
+  <script src="https://cdn.anychart.com/releases/v8/js/anychart-exports.min.js"></script>
+  <script src="https://cdn.anychart.com/releases/v8/js/anychart-cartesian-3d.min.js"></script>
+  <script src="https://cdn.anychart.com/releases/v8/themes/light_provence.min.js"></script>
+  <link href="https://cdn.anychart.com/releases/v8/css/anychart-ui.min.css" type="text/css" rel="stylesheet">
+  <link href="https://cdn.anychart.com/releases/v8/fonts/css/anychart-font.min.css" type="text/css" rel="stylesheet">
+  <style type="text/css">
+    html,
+    body,
+    #container {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="container"></div>
+
+
+  <script>
+
+    anychart.onDocumentReady(function () {
+      // set chart theme
+      anychart.theme('lightProvence');
+      // create area chart
+      var chart = anychart.line3d();
+
+      // turn on chart animation
+      chart.animation(true);
+
+      // set chart title text settings
+      chart
+        .title()
+        .enabled(true)
+        .useHtml(true)
+        .text(
+          'Amount of women per year they borned<br/>' +
+          '<span style="color:#212121; font-size: 13px;">' +
+          '</span>'
+        );
+        
+
+      chart.yAxis().title('Number of Born');
+
+      // create area series on passed data
+      var series = chart.line();
+      series.data(getData());
+      series.name('Number of Born');
+
+      // set series data labels settings
+      series.labels().enabled(true).fontColor('#212121');
+
+      // set series data markers settings
+      series.markers(true);
+
+      // set tooltip settings
+      chart
+        .tooltip()
+        .positionMode('point')
+        .anchor('left-top')
+        .offsetX(5)
+        .offsetY(5);
+
+      // set interactivity settings
+      chart.interactivity().hoverMode('by-x');
+
+      // set container for the chart
+      chart.container('container');
+
+      // initiate chart drawing
+      chart.draw();
+    });
+
+    function getData() {
+      return [
+        [1841, 2],
+        [1844, 1],
+        [1848, 1],
+        [1853, 2],
+        [1856, 1],
+        [1858, 2],
+        [1859, 1],
+        [1862, 3],
+        [1863, 1],
+        [1864, 4],
+        [1865, 2],
+        [1867, 2],
+        [1868, 6],
+        [1869, 1],
+        [1871, 4],
+        [1872, 5],
+        [1873, 6],
+        [1874, 6],
+        [1875, 7],
+        [1876, 4],
+        [1877, 3],
+        [1878, 4],
+        [1879, 7],
+        [1880, 3],
+        [1881, 9],
+        [1882, 7],
+        [1883, 5],
+        [1884, 7],
+        [1885, 9],
+        [1886, 8],
+        [1887, 6],
+        [1888, 13],
+        [1889, 10],
+        [1890, 9],
+        [1891, 6],
+        [1892, 10],
+        [1893, 7],
+        [1894, 15],
+        [1895, 9],
+        [1896, 10],
+        [1897, 8],
+        [1898, 10],
+        [1899, 9],
+        [1900, 7],
+        [1901, 5],
+        [1902, 6],
+        [1903, 2],
+        [1904, 9],
+        [1905, 3],
+        [1906, 3],
+        [1908, 2],
+        [1909, 2],
+        [1910, 1],
+        [1911, 1],
+        [1914, 2]
+      ];
+    }
+
+  </script>
+</body>
+
+</html>
+
+//https://www.anychart.com/products/anychart/gallery/3D_Line_Charts/Single-Series_3D_Line_Chart.php?theme=lightProvence
