@@ -1,9 +1,11 @@
 const svg = d3.select(".timeline");
+const events = d3.select(".event-timeline")
 const H = svg.node().getBoundingClientRect().height;
 const W = svg.node().getBoundingClientRect().width;
 const M = 20;
-const defaultFill = "#009600";
-const hoverFill = "#005600";
+const DEFAULTFILL = "#009600";
+const HOVERFILL = "#005600";
+const EVENTFILL = "#aa0000";
 
 var tooltip = d3.select("body")
     .append("div")
@@ -20,6 +22,7 @@ var tooltip = d3.select("body")
 
 var data;
 var naiveData = [];
+var event_list = [];
 
 const yob_asc_button = document.getElementById("yob-sort-asc-button");
 yob_asc_button.addEventListener("click", function (event) {
@@ -43,9 +46,22 @@ name_desc_button.addEventListener("click", function (event) {
 
 const add_event_button = document.getElementById("add-event-button");
 add_event_button.addEventListener("click", function (event) {
-    var event_text = document.getElementById("event-text");
-    addEvent(event_text.value);
-    event_text.value = "";
+    let event_name = document.getElementById("event-name").value;
+    let event_start = document.getElementById("event-start").value;
+    let event_end = document.getElementById("event-end").value;
+    for (let char of event_start) {
+        if (!isNumberKey(char)) {
+            alert(`${event_start} is not a valid starting year`);
+            return;
+        }
+    }
+    for (let char of event_end) {
+        if (!isNumberKey(char)) {
+            alert(`${event_end} is not a valid ending year`);
+            return;
+        }
+    }
+    addEvent(event_name, +event_start, +event_end);
 });
 
 function sortByYOBAsc() {
@@ -88,19 +104,35 @@ function sorting(button) {
     }
 }
 
-function addEvent(input) {
-    cleanUp();
+function addEvent(name, start, end) {
     try {
-        let [name, dates] = input.split(":");
-        var [begin, end] = dates.split(" ");
-        console.log(name, begin, end);
+        if (start > d3.max(naiveData, d => d.YOD)) {
+            alert(`${start} is too big to be a starting year`);
+            return;
+        }
+        if (end < d3.min(naiveData, d => d.YOB)) {
+            alert(`${end} is too small to be an ending year`);
+            return;
+        }
+        if (start < d3.min(naiveData, d => d.YOB)) {
+            start = d3.min(naiveData, d => d.YOB)
+        }
+        if (end > d3.max(naiveData, d => d.YOD)) {
+            end = d3.max(naiveData, d => d.YOD)
+        }
         var object = {
             name: name,
-            YOB: begin,
+            aka: "event",
+            YOB: start,
             YOD: end,
         };
+        cleanUp();
+        console.log("Adding " + name + " " + start + " " + end + " to events");
         naiveData.push(object);
         render();
+        document.getElementById("event-name").value = "";
+        document.getElementById("event-start").value = "";
+        document.getElementById("event-end").value = "";
     } catch (error) {
         render();
         console.log(error + "\nUnable to create new event from given input");
@@ -112,10 +144,16 @@ function cleanUp() {
     d3.select("#xAxis").selectAll("svg").remove();
 }
 
+function isNumberKey(char){
+    const charCode = char.charCodeAt(0);
+    if (charCode >= 48 && charCode <= 57){
+        return true;
+    }
+    return false;
+}
+
 function render() {
     naiveData = naiveData.slice().map((e, i) => ({ ...e, yIndex: i }));
-
-    console.log(naiveData);
 
     const xScale = d3.scaleLinear()
         .domain([d3.min(naiveData, d => d.YOB), d3.max(naiveData, d => d.YOD)])
@@ -153,7 +191,13 @@ function render() {
                 : xScale(d.YOD) - xScale(d.YOB))
         )
         .attr("height", yScale.bandwidth())
-        .style("fill", defaultFill)
+        .style("fill", d => {
+            if (d.aka == "event") {
+                return `${EVENTFILL}`
+            } else {
+                return `${DEFAULTFILL}`
+            }
+        })
         .style("fill-opacity", 1);
 
     g.append("text")
@@ -171,7 +215,7 @@ function render() {
     g.on("mouseenter", function (e, d) {
         d3.select(this)
             .select("rect")
-            .style("fill", `${hoverFill}`);
+            .style("fill", `${HOVERFILL}`);
 
         tooltip
             .html(
@@ -190,7 +234,7 @@ function render() {
         .on("mouseleave", function (e, d) {
             d3.select(this)
                 .select("rect")
-                .style("fill", `${defaultFill}`);
+                .style("fill", `${DEFAULTFILL}`);
             tooltip.html(``).style('visibility', 'hidden');
         });
 }
@@ -207,4 +251,5 @@ d3.csv("../Data/timeline_data.csv").then(d => {
         naiveData.push(d)
     });
     render();
+    //renderEvents();
 });

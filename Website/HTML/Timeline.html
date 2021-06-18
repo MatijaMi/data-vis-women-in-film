@@ -34,11 +34,14 @@
             </div>
         </div>
         <div class="event-container">
-            <input class="event-text" id ="event-text" placeholder="Name:Start End"></textarea>
-            <button class="add-event-button" id="add-event-button">Add event</button>
+            <input class="event-input" id ="event-name" placeholder="Event Name"></textarea>
+            <input class="event-input" id ="event-start" placeholder="Event Start"></textarea>
+            <input class="event-input" id ="event-end" placeholder="Event End"></textarea>
+            <button class="add-event-button" id="add-event-button">Add Event</button>
         </div>
         <div id="xAxis"></div>
         <div class="svg-container" id="plot">
+            <svg class="event-timeline"></svg>
             <svg class="timeline" id="timeline"></svg>
         </div>
     </div>
@@ -64,6 +67,11 @@
         position:relative;
     }
 
+    .event-timeline {
+        width: 1200px;
+        height:fit-content
+    }
+
     .timeline {
         width: 1200px;
         height: 5000px;
@@ -79,9 +87,11 @@
         margin: 5px;
         font-size: 16px;
         border: none;
+        color: white;
+        background-color: #009600;
     }
 
-    .event-text {
+    .event-input {
         padding: 10px;
         font-size: 16px;
         border: none;
