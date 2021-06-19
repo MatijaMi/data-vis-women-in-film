@@ -40,7 +40,7 @@ function mousemovePersonal(Tooltip,d,env){
           if(d.imgUrl.length<10){
               Tooltip
           .html('<u><b>' + d.name + '</b></u>' + "<br>" +
-                '<img src=../Images/WFPP-Pictures-Fullsize/Unknown.webp width=200px>'+
+                '<img src=../Images/WFPP-Pictures-Squares/Unknown.jpg width=200px>'+
                'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.<br>'+
                '<a href=' + d.link + '> Read More </a>')
           .style("width", "240px")
@@ -49,7 +49,7 @@ function mousemovePersonal(Tooltip,d,env){
           }else{
            Tooltip
           .html('<u><b>' + d.name + '</b></u>' + "<br>" +
-                '<img src=../Images/WFPP-Pictures-Fullsize/'+ d.name.split(' ').join('%20') +'.jpg width=200px>'+
+                '<img src=../Images/WFPP-Pictures-Squares/'+ d.name.split(' ').join('%20') +'.jpg width=200px>'+
                '<button> Other Professions </button>')
           .style("width", "240px")
           .style("left", (d3.mouse(env)[0] + 20) + "px")

@@ -16,18 +16,25 @@ function createTooltip(){
         .style("border-width", "1px")
         .style("border-radius", "5px")
         .style("padding", "5px")
+        .style("z-index", "5")
         .style("position", "absolute")
    return Tooltip;
 }
 
 
-function createTextOverlay(data){
-    
+function createTextOverlay(data,mode){
     for(var i =0; i <data.length; i++){
-        var x = document.getElementById(data[i].job).cx.baseVal.value;
-        var y = document.getElementById(data[i].job).cy.baseVal.value;
-        var r = document.getElementById(data[i].job).r.baseVal.value;
-        var text = data[i].job.split(" ");
+        if(mode=="Professions"){
+            var x = document.getElementById(data[i].job).cx.baseVal.value;
+            var y = document.getElementById(data[i].job).cy.baseVal.value;
+            var r = document.getElementById(data[i].job).r.baseVal.value;
+            var text = data[i].job.split(" ");
+        }else{
+            var x = document.getElementById(data[i].country).cx.baseVal.value;
+            var y = document.getElementById(data[i].country).cy.baseVal.value;
+            var r = document.getElementById(data[i].country).r.baseVal.value;
+            var text = data[i].country.split(" ");
+        }
         var inHtml ="";
         for(var j=0; j<text.length;j++){
             inHtml=inHtml +text[j].charAt(0).toUpperCase()+ text[j].slice(1) +"<br>";   
@@ -38,7 +45,7 @@ function createTextOverlay(data){
         var lineHeight = r/2 +4 + "px";
         if(text.length==1){
             yShift=0;
-            if(data[i].job.length>9){
+            if(inHtml.length>9){
                 calculatedFont="auto";
                 lineHeight = "auto";
             }
@@ -57,23 +64,11 @@ function createTextOverlay(data){
                 .html(inHtml)//+ "\n" +data[i].count
                 .style("opacity", 1)
                 .attr("class", "textOverlay")
-                .style("background-color", "none")
-                .style("border", "none")
-                .style("border-width", "1px")
-                .style("border-radius", "5px")
-                .style("padding", "0px")
-                .style("margin", "0px")
-                .style("text-align", "center")
-                .style("font-family", " blacksword")
                 .style("line-height", lineHeight)
                 .style("font-size",calculatedFont)
-                .style("color","#fff")
-                .style("text-shadow", "2px 0 0 #000, 0 -2px 0 #000, 0 2px 0 #000, -2px 0 0 #000")
-                .style("position", "absolute")
                 .style("left", x-r +"px")
                 .style("top", y+yShift + "px")   
                 .style("width", 2*r +"px") 
-                .style("animation","fadein 1.5s")   
     }
 }
 

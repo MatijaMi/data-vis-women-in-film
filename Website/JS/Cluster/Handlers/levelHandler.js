@@ -1,12 +1,10 @@
 import{removeTooltip,createTooltip} from '../Util/tooltips.js';
 import{updateState,goBackState} from './stateHandler.js';
-import{updateLocator} from './navigationHandler.js';
-import{drawTopLevel} from '../Levels/topLevel.js';
-import{drawFirstLevel} from '../Levels/FirstLevel.js';
-import{drawSecondLevel} from '../Levels/SecondLevel.js';
-import{drawThirdLevel} from '../Levels/ThirdLevel.js';
-import{showJobD3} from '../Levels/singleJobCluster.js';
+import{updateLocator,removeLastLocButton} from './navigationHandler.js';
+import{drawTopLevel,resetTimeout,patternTimeout} from '../Levels/topLevel.js';
+import{drawLowerLevel} from '../Levels/lowerLevels.js';
 var level = 0;
+
 function updateLevel(newLevel){
     level += newLevel;
 }
@@ -66,12 +64,13 @@ function goBack(){
         if(getLevel()==0){
             document.getElementById("back").remove();
         }
+        removeLastLocButton();
         goBackState();
 }
 
 function addBackButton(){ 
-    var width = window.innerWidth;
-    var height = window.innerHeight - 50;
+    var width =document.getElementById("my_dataviz").clientWidth;
+    var height = document.getElementById("my_dataviz").clientHeight;
   if(document.getElementById("back")==null){
       var backButton = d3.select("body")
         .append("div")
@@ -99,19 +98,9 @@ function goToNextLevel(profession){
     updateState(profession);
     updateLocator(profession,getLevel());
     addBackButton();
-    switch(getLevel()){
-        case 1:
-           drawFirstLevel(profession);
-            break;
-        case 2:
-            drawSecondLevel(profession);
-            break;
-        case 3: 
-            drawThirdLevel(profession);
-            break;
-        case 4: 
-            showJobD3(profession);
-    }  
+    clearTimeout(resetTimeout);
+    clearTimeout(patternTimeout);
+    drawLowerLevel(profession,getLevel());
 }
 
 export {updateLevel,setLevel,getLevel,getLevels,goToNextLevel}

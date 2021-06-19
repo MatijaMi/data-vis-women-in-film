@@ -1,7 +1,8 @@
 import {showCountries} from './CountryCluster.js';
 import{speedUpAnimation} from '../Util/tooltips.js';
+import{goBackState} from '../Handlers/stateHandler.js';
 
-function showCountryD3(country){
+function showCountryD3(country,timespan){
     if(document.getElementById("my_dataviz").firstChild!=null){
         document.getElementById("my_dataviz").removeChild(document.getElementById("my_dataviz").firstChild);
     }
@@ -13,17 +14,25 @@ function showCountryD3(country){
             var img_url = wfpp.entries[i].image_url;
             var id = wfpp.entries[i].id;
             var name = wfpp.entries[i].name;
+            var diedIn = wfpp.entries[i].YOD;
+            var start = timespan.substr(0,4);
+            if(timespan!=""){
+                if(entry == country && Number.parseInt(diedIn)>start){
+                data+= id + "," + name + "," +link + "," + img_url + "," + "real," + entry + "," + i +"\r\n"
+                }
+            }else{
             if(entry == country){
                 data+= id + "," + name + "," +link + "," + img_url + "," + "real," + entry + "," + i +"\r\n"
                 }
+            }
         }
     }
 
     data = d3.csvParse(data);
 
     // set the dimensions and margins of the graph
-    var width = window.innerWidth;
-    var height = window.innerHeight - 50;
+    var width =document.getElementById("my_dataviz").clientWidth;
+    var height = document.getElementById("my_dataviz").clientHeight;
     
     // append the svg object to the body of the page
     var svg = d3.select("#my_dataviz")
@@ -70,8 +79,9 @@ function showCountryD3(country){
           .style("border",0)
           .style("padding", 0)
           .html("");
-        document.getElementById("back").remove()
-        showCountries();    
+        document.getElementById("back").remove();
+        goBackState();
+        showCountries("");    
     }
     
 document.getElementById("back").addEventListener("click", goBack)
@@ -91,7 +101,7 @@ document.getElementById("back").addEventListener("click", goBack)
           if(d.imgUrl.length<10){
               Tooltip
           .html('<u><b>' + d.name + '</b></u>' + "<br>" +
-                '<img src=../Images/WFPP-Pictures-Fullsize/Unknown.webp width=200px>'+
+                '<img src=../Images/WFPP-Pictures-Squares/Unknown.jpg width=200px>'+
                'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.<br>'+
                '<a href=' + d.link + '> Read More </a>')
           .style("width", "240px")
@@ -100,7 +110,7 @@ document.getElementById("back").addEventListener("click", goBack)
           }else{
            Tooltip
           .html('<u><b>' + d.name + '</b></u>' + "<br>" +
-                '<img src=../Images/WFPP-Pictures-Fullsize/'+ d.name.split(' ').join('%20') +'.jpg width=200px>')
+                '<img src=../Images/WFPP-Pictures-Squares/'+ d.name.split(' ').join('%20') +'.jpg width=200px>')
           .style("width", "240px")
           .style("left", (d3.mouse(this)[0] + 20) + "px")
           .style("top", (d3.mouse(this)[1]) + "px")
@@ -127,9 +137,9 @@ document.getElementById("back").addEventListener("click", goBack)
     }
  for(var i =0; i <data.length; i++){
       if(data[i].imgUrl.length!=0){
-          var link = '../Images/WFPP-Pictures'+extra+"/" + data[i].name.split(' ').join('%20') +'.jpg';
+          var link = '../Images/WFPP-Pictures-Squares/' + data[i].name.split(' ').join('%20') +'.jpg';
       }else{
-          var link = '../Images/WFPP-Pictures-Fullsize/Unknown.jpg';
+          var link = '../Images/WFPP-Pictures-Squares/Unknown.jpg';
       }
       
     svg.append("pattern")

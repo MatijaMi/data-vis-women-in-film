@@ -1,12 +1,10 @@
 import{drawTopLevel} from '../Levels/topLevel.js';
-import{drawFirstLevel} from '../Levels/FirstLevel.js';
-import{drawSecondLevel} from '../Levels/SecondLevel.js';
-import{drawThirdLevel} from '../Levels/ThirdLevel.js';
+import{drawLowerLevel} from '../Levels/lowerLevels.js';
 import{setLevel} from './levelHandler.js'
 import{removeTooltip} from '../Util/tooltips.js'
 
 function setLocator(state){
-    document.getElementById("locator").innerHTML="<button class='locButtons' id='topLevel'>"+ state+ "</button>";
+    document.getElementById("locator").innerHTML="<button class='locButtons' id='0level'>"+ state+ "</button>";
     addButtonEvents();
     
 }
@@ -22,6 +20,7 @@ function updateLocator(state,level){
             }  
         }
     state=inHtml;
+    document.getElementById(level-1+"level").innerHTML+=": "
     document.getElementById("locator").innerHTML=document.getElementById("locator").innerHTML +"<button class='locButtons' id='" +level+"level'>"+ state+ "</button>";
    addButtonEvents();
         
@@ -29,6 +28,7 @@ function updateLocator(state,level){
 
 function handleLocatorClick(id){
     var name = document.getElementById(id).innerHTML;
+    name=name.replace(": ","");
     removeTooltip("textOverlay");
     var text = name.split(" ");
     var inHtml ="";
@@ -40,17 +40,16 @@ function handleLocatorClick(id){
             }    
     }
     name=inHtml;
-    console.log(name);
     var size;
     switch(id){
-        case "topLevel":
+        case "0level":
             if(document.getElementById("back")!=null){
                 document.getElementById("back").remove();}
             drawTopLevel();
             size=1;
             break;
         case "1level":
-            drawFirstLevel(name);
+            drawLowerLevel(name,1);
             size=2;
             break;
         case "2level":
@@ -69,7 +68,8 @@ function handleLocatorClick(id){
     setLevel(size-1);
     var paras = document.getElementsByClassName("locButtons");
     var s = paras.length-size;
-    
+    var level =size-1;
+    document.getElementById(level+"level").innerHTML=document.getElementById(level+"level").innerHTML.replace(": ","");
     for(var i =0; i <s;i++){
         removeLastLocButton();
     }
@@ -77,22 +77,17 @@ function handleLocatorClick(id){
 
 function removeLastLocButton(){
     var paras = document.getElementsByClassName("locButtons");
-    paras[paras.length-1].parentNode.removeChild(paras[paras.length-1]);  
+    paras[paras.length-1].parentNode.removeChild(paras[paras.length-1]);
+    if(paras.length>2){
+        paras[paras.length-1].innerHTML=paras[paras.length-2].innerHTML.replace(": ","");
+    }
 }
 
 function addButtonEvents(){
     var params =document.getElementsByClassName("locButtons");
     for(var i = 0; i<params.length;i++){
-        if(i==0){
-            document.getElementById("topLevel").addEventListener("click", function(){
-                                                         handleLocatorClick(this.id);
-                                                         });
-        }else{
-        document.getElementById(i+"level").addEventListener("click", function(){
-                                                         handleLocatorClick(this.id);
-                                                         });}
+        document.getElementById(i+"level").addEventListener("click", function(){handleLocatorClick(this.id)});
     }
-    
 }
 
 export {setLocator, handleLocatorClick, removeLastLocButton,addButtonEvents,updateLocator}

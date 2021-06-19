@@ -1,9 +1,13 @@
-import{updateState} from '../Handlers/stateHandler.js';
+import{updateState, getStates} from '../Handlers/stateHandler.js';
 import{showCountryD3} from './singleCountryCluster.js';
 import {setLevel} from '../Handlers/levelHandler.js';
-import {removeTooltip} from '../Util/tooltips.js';
+import {removeTooltip,createTextOverlay} from '../Util/tooltips.js';
+import {addPatterns} from '../Util/bubbleUtil.js';
 
-function showCountries(){
+var patternTimeout;
+var resetTimeout;
+
+function showCountries(timespan){
     
     if(document.getElementById("my_dataviz").firstChild!=null){
         document.getElementById("my_dataviz").removeChild(document.getElementById("my_dataviz").firstChild);
@@ -13,26 +17,34 @@ function showCountries(){
     for(var i = 0; i <wfpp.entries.length; i++){
         for(var j =0; j< wfpp.entries[i].worked_in.length; j++){
             var entry=wfpp.entries[i].worked_in[j];
+            if(entry.length>0){
+                var diedIn = wfpp.entries[i].YOD;
+                if(timespan!=""){
+                    var start = timespan.substr(0,4);
+                    if(Number.parseInt(diedIn)<start){
+                        continue;
+                    }   
+                }
                 if(countryData.has(entry)){
                     var value = countryData.get(entry)+1;
                     countryData.set(entry,value);
                 }else{
-                    countryData.set(entry,1);
-                }        
-            } 
+                    countryData.set(entry,1); 
+                }
+            }
         } 
+    } 
     //console.log(wfpp.entries)
     var data = "country,count\r\n";
 
     countryData.forEach((value,key)=>{ 
-          data+= key + "," + value + "\r\n"
+          data+= key + "," + value + "\r\n";
         });
 
     data = d3.csvParse(data);
-
     // set the dimensions and margins of the graph
-    var width = window.innerWidth;
-    var height = window.innerHeight - 50;
+    var width =document.getElementById("my_dataviz").clientWidth;
+    var height = document.getElementById("my_dataviz").clientHeight;
     
     // append the svg object to the body of the page
     var svg = d3.select("#my_dataviz")
@@ -90,24 +102,11 @@ function showCountries(){
   var mouseenter = function (d) {
         createLines(d.country, data)
       }
-  
-    countryData.forEach((value,key)=>{
-    svg.append("pattern")
-     .attr("x", 0)
-     .attr("y", 0)
-     .attr("width", 10)
-	 .attr("height", 10)
-     .attr("id", function (d) { return "bg" +key.split(' ').join('-')})
-     .append("image")
-       .attr("x", 0)
-       .attr("y", 0)
-   			.attr("width", function (d) { return 2 * determineCountrySize(value)})
-			.attr("height", function (d) { return 2* determineCountrySize(value)})
-   .attr("xlink:href", findCountryPicture(key,value));
-});
+    addPatterns(countryData,svg);
     
    var showCountry = function (d) { 
-       showCountryD3(d.country)
+       updateState(d.country);
+       showCountryD3(d.country,"")
        var paras = document.getElementsByClassName('tooltip2');
 
         while(paras[0]) {
@@ -128,15 +127,15 @@ function showCountries(){
         .attr("cx",0)
         .attr("cy", 0)
         .attr("fill", function(d) {
-		      return "url(#bg" + d.country.split(' ').join('-')+")";
+		      return "url(#bg" + findCountryPicture(d.country,d.count) +")";
         })
         .attr("stroke", "black")
-        .style("stroke-width", 2)
+        .style("stroke-width", 3)
         .on("mouseover", mouseover) // What to do when hovered
         .on("mousemove", mousemove)
         .on("mouseenter", mouseenter)
         .on("mouseleave", mouseleave)
-        .on("click", function (d) {showCountry(d)})
+        .on("click", function (d) {removeTooltip("textOverlay");showCountry(d)})
         //.call(d3.drag() // call specific function when circle is dragged
           //.on("start", dragstarted)
           //.on("drag", dragged)
@@ -146,9 +145,10 @@ function showCountries(){
 
       // Features of the forces applied to the nodes:
   var simulation = d3.forceSimulation()
-      .force("center", d3.forceCenter().x(width / 2).y(height / 2)) // Attraction to the center of the svg area
+      .force("center", d3.forceCenter().x(width / 2).y(height / 2 -50)) // Attraction to the center of the svg area
       .force("charge", d3.forceManyBody().strength(-2)) // Nodes are attracted one each other of value is > 0
-      .force("collide", d3.forceCollide().strength(.2).radius(function (d) { return determineCountrySize(d.count)}).iterations(1)) // Force that avoids circle overlapping
+      .force("collide", d3.forceCollide().strength(.2).radius(function (d) { return determineCountrySize(d.count)}).iterations(1))
+        .force('y', d3.forceY().y(height/2).strength(0.02));// Force that avoids circle overlapping
 
   //
       simulation
@@ -157,7 +157,9 @@ function showCountries(){
           node
             .attr("cx", function (d) { return d.x; })
             .attr("cy", function (d) { return d.y; })
-        });
+        }).on('end', function () {
+            createTextOverlay(data,"Countries");}
+        );
 
       // What happens when a circle is dragged?
   function dragstarted(d) {
@@ -170,59 +172,83 @@ function showCountries(){
         d.fy = d3.event.y;
       }
   function dragended(d) {
-        if (!d3.event.active) simulation.alphaTarget(.03);
+        if (!d3.event.active) simulation.alphaTarget(.035);
         d.fx = null;
         d.fy = null;
       }
+     
+    function changePattern(){
+        if(getStates()[getStates().length-1]=="Countries"){
+            d3.selectAll("circle").attr("fill", function(d) {
+		      return "url(#bg" + findCountryPicture(d.country,d.count)+")";
+            });
+            d3.selectAll("circle").transition().duration(1000).attr("fill-opacity","1.0");
+           patternTimeout = setTimeout(resetTimer,5000);
+        }
+    }
+       
+    function resetTimer(){
+        if(getStates()[getStates().length-1]=="Countries"){
+            d3.selectAll("circle").transition().duration(1000).attr("fill-opacity","0.33");
+               resetTimeout = setTimeout(changePattern,1000);
+        }
+    }
+    
+    //Temp function just to fix a bug that occurs due to unexplained reasons
+    function temp(){
+        if(getStates()[getStates().length-1]=="Countries"){
+            d3.selectAll("circle").transition().duration(0).attr("fill-opacity","0.33");
+            d3.selectAll("circle").transition().duration(0).attr("fill-opacity","1");
+            setTimeout(resetTimer,10);
+        }
+    }
+    
+    setTimeout(temp,10000);
     updateState("Countries");
 }
 
 
 
 function findCountryPicture(country,count){
-    var rand = count;
-    
-    if(rand>1){
-        rand =Math.floor((Math.random() * count) + 1);
-    }
+    var hasPic=[];
     
     for(var i = 0; i <wfpp.entries.length; i++){
         for(var j =0; j< wfpp.entries[i].worked_in.length; j++){
             var entry=wfpp.entries[i].worked_in[j];
-            if(entry.includes(country)){
-                if(rand==1){
-                    if(wfpp.entries[i].image_url.length!=0){
-                        if(count>20){
-                            return '../Images/WFPP-Pictures-Fullsize/' + wfpp.entries[i].name.split(' ').join('%20') +'.jpg';
-                        }else{
-                           return '../Images/WFPP-Pictures/' + wfpp.entries[i].name.split(' ').join('%20') +'.jpg'; 
-                        }  
-                    }
-                }else{
-                    rand--;
+            if(wfpp.entries[i].image_url.length!=0){
+                if(entry.includes(country)){
+                    hasPic.push(wfpp.entries[i].id);
                 }
             }
         }
     }
-    if(count>20){
-        return '../Images/WFPP-Pictures-Fullsize/Unknown.webp';;
+    
+    var rand = hasPic.length;
+    if(rand>1){
+        rand =Math.floor((Math.random() * hasPic.length));
+         return hasPic[rand];
     }else{
-        return '../Images/WFPP-Pictures/Unknown.jpg'; 
+        if(rand==1){
+            return hasPic[0];
+        }else{
+            return "1704";
+        }
     }
 }
 
 function determineCountrySize(count){
-    
+    var width = document.getElementById("my_dataviz").clientWidth;
+    var height = document.getElementById("my_dataviz").clientHeight;
     if(count<10){
-        return 45;
+        return width/30;
     }else{
         if(count<20 && count >=10){
-            return 60;
+            return width/20;
         }else{
             if(count<50 && count >20){
-                return 75;
+                return width/17;
             }else{
-                return count;
+                return width/13;
             }
         }
     }

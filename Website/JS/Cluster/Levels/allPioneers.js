@@ -15,8 +15,8 @@ function showAll(){
     var data = getAllData()[0];
     window.zoomedIn=false;
     // set the dimensions and margins of the graph
-    var width = window.innerWidth;
-    var height = window.innerHeight - 50;
+    var width =document.getElementById("my_dataviz").clientWidth;
+    var height = document.getElementById("my_dataviz").clientHeight;
     
     // append the svg object to the body of the page
     var svg = d3.select("#my_dataviz")
@@ -127,9 +127,9 @@ function showAll(){
   
   for(var i =0; i <data.length; i++){
       if(data[i].imgUrl.length!=0){
-          var link = '../Images/WFPP-Pictures/' + data[i].name.split(' ').join('%20') +'.jpg';
+          var link = '../Images/WFPP-Pictures-Squares/' + data[i].name.split(' ').join('%20') +'.jpg';
       }else{
-          var link = '../Images/WFPP-Pictures/Unknown.jpg';
+          var link = '../Images/WFPP-Pictures-Squares/Unknown.jpg';
       }
       
       
@@ -291,12 +291,12 @@ function getHalfpipePath(number, width){
 function zoomIn(d,data,svg){
     var hoverID=d.id;
     var hoverNum=d.number;
-    var width = window.innerWidth;
+    var width =document.getElementById("my_dataviz").clientWidth;
     
     if(d.imgUrl.length!=0){
-        var link = '../Images/WFPP-Pictures-Midsize/' + d.name.split(' ').join('%20') +'.jpg';
+        var link = '../Images/WFPP-Pictures-Squares/' + d.name.split(' ').join('%20') +'.jpg';
     }else{
-          var link = '../Images/WFPP-Pictures-Midsize/Unknown.jpg';
+          var link = '../Images/WFPP-Pictures-Squares/Unknown.jpg';
     }
       
       svg.append("pattern")
@@ -336,7 +336,7 @@ function zoomIn(d,data,svg){
 function zoomOut(d,data){
     var hoverID=d.id;
     var hoverNum=d.number;
-    var width = window.innerWidth;
+    var width =document.getElementById("my_dataviz").clientWidth;
  
     d3.select("#my_dataviz")
         .selectAll("circle")

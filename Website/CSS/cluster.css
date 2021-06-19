@@ -1,0 +1,184 @@
+body{
+	background: #ddd;
+	font-family:Arial,sans-serif;
+	padding-top: 0px;
+	margin: 0px;
+	text-align: center;
+    width:100%;
+    height:100%;
+    overflow: hidden;
+}
+
+
+.header{
+	position: relative;
+	width: 100%;
+ 	text-align: left;
+	background-color: #eee;
+	margin-top: 0px;
+}
+
+.header a{
+    font-size: 18px;
+    width:10%;
+	display: inline-block;
+	padding-top:9px;
+	padding-bottom:9px;
+	text-decoration: none;
+    text-align: center;
+	color: black;
+}
+.header a:hover{
+	background-color: #bbb;
+}
+
+@keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+@font-face{
+ font-family:'blacksword';
+ src: url('../Fonts/Blacksword.otf');
+}
+.my_dataviz{
+    background:#665545;
+    width:100%;
+    height:100%;
+}
+
+#closeTooltipButton{
+    position: absolute;
+    top:0;
+    right: 0;
+}
+
+#locator{
+    z-index: 1;
+    width: 100%;
+    text-align: center;
+    position: absolute;
+    margin-top: 5px;
+}
+#locator button{
+    display: inline-block;
+    font-size: 45px;
+    font-family: 'blacksword';
+    background: none;
+    color: #fff;
+    text-shadow:2px 0 0 #000, 0 -2px 0 #000, 0 2px 0 #000, -2px 0 0 #000;
+    outline: none;
+    border: none;
+    text-decoration:underline;
+}
+
+#locator button:hover{
+    cursor: pointer;
+}
+
+#sideishButtons{
+    border:none;
+    background: transparent;
+    position: absolute;
+    top:4.5%;
+    z-index: 2;
+}
+#countryButton{
+    z-index: 2;
+    display: inline-block;
+    width: 65px;
+    height: 60px;
+    border-radius: 10px;
+    border-radius: 10px;
+}
+
+#allPioneersButton{
+    z-index: 2;
+    display: inline-block;
+    width: 65px;
+    height: 60px;
+    border-radius: 10px;
+    border-radius: 10px;
+    
+}
+#professionsButton{
+    z-index: 2;
+    display: inline-block;
+    width: 65px;
+    height: 60px;
+    border-radius: 10px;
+    border-radius: 10px;
+    
+}
+
+#countryButton img, #allPioneersButton img,#professionsButton img{
+    width: 95%;
+    height: 90%;
+}
+
+#countryButton img:hover, #allPioneersButton img:hover, #professionsButton:hover{
+    cursor: pointer;
+}
+
+.node:hover {
+      stroke-width: 4px !important;
+      opacity: 1 !important;
+}
+
+.textOverlay{
+    background-color: none;
+    display: block;
+    border: none;
+    border-width: 1px;
+    border-radius: 5px;
+    padding: 0px;
+    margin: 0px;
+    text-align: center;
+    font-family: "blacksword";
+    color: #fff;
+    text-shadow:2px 0 0 #000, 0 -2px 0 #000, 0 2px 0 #000, -2px 0 0 #000;
+    animation: fadein 1.5s;
+    position: absolute; 
+}
+
+
+#subGroupOpen{
+    display: none;
+    color:black;
+    background-color: white;
+    position: absolute;
+    font-size: 30px;
+    border:none;
+    top:12%;
+    left:0%;
+}
+
+#subGroupOpen:hover{
+    cursor: pointer;
+}
+
+#subGroupPanel{
+    width:0px;
+    overflow: hidden;
+    z-index: 3;
+    background-color: gray;
+    position: absolute;
+    top:12%;
+    height: 87%;
+    transition: 0.5s;
+    padding-top: 10px;
+    font-size: 30px;
+    text-decoration: underline;
+}
+
+#closeGroupPanel{
+    position: absolute;
+    top: 2px;
+    right: 10px;
+    font-size: 36px;
+    margin-left: 50px;
+    text-decoration: none;
+    color: #000;
+    display: block;
+    transition: 0.3s;
+}
