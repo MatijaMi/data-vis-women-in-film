@@ -64,7 +64,6 @@ function handleLoad(){
                         for(var i =0; i <jobs.length;i++){
                             updateState(jobs[i]);
                         }
-                        console.log(level);
                         switch(level){
                             case "1":
                                 updateLocator(jobs[0],1);
@@ -73,20 +72,20 @@ function handleLoad(){
                             case "2":
                                 updateLocator(jobs[0],1);
                                 updateLocator(jobs[1],2);
-                                drawSecondLevel(jobs[1]);
+                                drawLowerLevel(jobs[1],2);
                                 break;
                             case "3":
                                 updateLocator(jobs[0],1);
                                 updateLocator(jobs[1],2);
                                 updateLocator(jobs[2],3);
-                                drawThirdLevel(jobs[2]);
+                                drawLowerLevel(jobs[2],3);
                                 break;
                             case "4":
                                 updateLocator(jobs[0],1);
                                 updateLocator(jobs[1],2);
                                 updateLocator(jobs[2],3);
                                 updateLocator(jobs[3],4);
-                                showJobD3(jobs[jobs.length-1]);
+                                drawLowerLevel(jobs[jobs.length-1],4);
                                 break;
                         }
                         setLevel(Number.parseInt(level));
@@ -142,11 +141,15 @@ function switchToProfessions(){
     drawTopLevel();
 }
 function openSubgroupPanel() {
-    document.getElementById("subGroupPanel").style.width = "250px";
+    document.getElementById("subGroupPanel").style.width = "200px";
+    document.getElementById("subGroupPanel").style.border = "5px solid black";
+    document.getElementById("subGroupPanel").style.borderLeft = "none";
+   
 }
 
 function closeSubgroupPanel() {
     document.getElementById("subGroupPanel").style.width = "0";
+    document.getElementById("subGroupPanel").style.border = "none";
 } 
 
 handleLoad();

@@ -8,6 +8,7 @@ import{setLocator, handleLocatorClick, removeLastLocButton,addButtonEvents,updat
 import{drawLowerLevel} from '../Levels/lowerLevels.js';
 import{showCountries} from '../Levels/CountryCluster.js';
 import{showAll} from '../Levels/allPioneers.js';
+import{closeSubgroupPanel} from '../Handlers/connectivityHandler.js';
 
 var patternTimeout;
 var resetTimeout;
@@ -21,7 +22,6 @@ function drawTopLevel(){
     
     var data = getTopLevelData();
     var svg = d3.select("#my_dataviz").append("svg").attr("width", width).attr("height", height)
-    addPatterns(data,svg);
     
     var Tooltip = createTooltip();
 
@@ -33,17 +33,16 @@ function drawTopLevel(){
         .append("circle")
         .attr("class", "node")
         .attr("id", function (d) { return d.job})
-        .attr("r", function (d) { return determineJobSize(d.count,d,0)})
+        .attr("r", function (d) { return determineJobSize(d.count)})
         .attr("cx",0)
         .attr("cy", 0)
         .attr("fill", function(d) {
-		      return "url(#bg" + findProfessionPicture(d.job,d.count)+")";
+		      return "url(#bg" + findProfessionPicture(d,data,svg,"top")+")";
         })
         .attr("stroke", "black")
         .style("stroke-width", 2)
         .on("mouseover", function (d) {mouseoverJob(Tooltip);}) 
         //.on("mousemove", function (d) {mousemoveJob(Tooltip,d, this)})
-        //.on("mouseenter", function (d) {createLines(d.job, data)})
         .on("mouseleave", function (d) {mouseleaveJob(Tooltip,data)})
         .on("click", function (d) {goToNextLevel(d.job)});
 
@@ -64,7 +63,7 @@ function drawTopLevel(){
         })
     .on('end', function () {
         if(getLevel()==0){
-            createTextOverlay(data,"Professions");
+            createTextOverlay(data,"Professions","body");
         }
     });
     speedUpAnimation(simulation,2);
@@ -73,7 +72,7 @@ function drawTopLevel(){
     function changePattern(){
         if(getLevel()==0){
             d3.selectAll("circle").attr("fill", function(d) {
-		      return "url(#bg" + findProfessionPicture(d.job,d.count)+")";
+		      return "url(#bg" + findProfessionPicture(d,data,svg,"top")+")";
             });
             d3.selectAll("circle").transition().duration(1000).attr("fill-opacity","1.0");
            patternTimeout = setTimeout(resetTimer,5000);
@@ -99,6 +98,7 @@ function drawTopLevel(){
     updateState("Professions");
     setLocator("Professions");
     document.getElementById("subGroupOpen").style.display="none";
+    closeSubgroupPanel();
 }
 
 

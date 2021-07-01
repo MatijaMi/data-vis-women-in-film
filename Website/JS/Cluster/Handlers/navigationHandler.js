@@ -49,22 +49,23 @@ function handleLocatorClick(id){
             size=1;
             break;
         case "1level":
-            drawLowerLevel(name,1);
             size=2;
+            drawLowerLevel(name,size-1);
             break;
         case "2level":
-            drawSecondLevel(name);
             size =3;
+            drawLowerLevel(name,size-1);
             break;
         case "3level":
-            drawThirdLevel(name);
             size=4;
+            drawLowerLevel(name,size-1);
             break;
         case "4level":
-            showJobD3(name);
             size=5;
+            drawLowerLevel(name,size-1);
             break;
     }
+    
     setLevel(size-1);
     var paras = document.getElementsByClassName("locButtons");
     var s = paras.length-size;
@@ -78,8 +79,8 @@ function handleLocatorClick(id){
 function removeLastLocButton(){
     var paras = document.getElementsByClassName("locButtons");
     paras[paras.length-1].parentNode.removeChild(paras[paras.length-1]);
-    if(paras.length>2){
-        paras[paras.length-1].innerHTML=paras[paras.length-2].innerHTML.replace(": ","");
+    if(paras.length>=2){
+        paras[paras.length-1].innerHTML=paras[paras.length-1].innerHTML.replace(": ","");
     }
 }
 

@@ -80,7 +80,6 @@ function showCountryD3(country,timespan){
           .style("padding", 0)
           .html("");
         document.getElementById("back").remove();
-        goBackState();
         showCountries("");    
     }
     

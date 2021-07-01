@@ -158,7 +158,7 @@ function showCountries(timespan){
             .attr("cx", function (d) { return d.x; })
             .attr("cy", function (d) { return d.y; })
         }).on('end', function () {
-            createTextOverlay(data,"Countries");}
+            createTextOverlay(data,"Countries","body");}
         );
 
       // What happens when a circle is dragged?

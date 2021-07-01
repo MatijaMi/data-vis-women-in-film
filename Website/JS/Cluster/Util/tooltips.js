@@ -22,7 +22,7 @@ function createTooltip(){
 }
 
 
-function createTextOverlay(data,mode){
+function createTextOverlay(data,mode,container){
     for(var i =0; i <data.length; i++){
         if(mode=="Professions"){
             var x = document.getElementById(data[i].job).cx.baseVal.value;
@@ -39,8 +39,8 @@ function createTextOverlay(data,mode){
         for(var j=0; j<text.length;j++){
             inHtml=inHtml +text[j].charAt(0).toUpperCase()+ text[j].slice(1) +"<br>";   
         }
-        var xShift;
-        var yShift;
+        var xShift=0;
+        var yShift=0;
         var calculatedFont =r/2+"px";
         var lineHeight = r/2 +4 + "px";
         if(text.length==1){
@@ -58,14 +58,14 @@ function createTextOverlay(data,mode){
                 lineHeight = r/4 +4 + "px";
             }
         }
-        
-        var Tooltip = d3.select("body")
+        var Tooltip = d3.select("#"+container)
                 .append("div")
                 .html(inHtml)//+ "\n" +data[i].count
                 .style("opacity", 1)
                 .attr("class", "textOverlay")
                 .style("line-height", lineHeight)
                 .style("font-size",calculatedFont)
+                .style("z-index", 5)
                 .style("left", x-r +"px")
                 .style("top", y+yShift + "px")   
                 .style("width", 2*r +"px") 

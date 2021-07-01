@@ -125,6 +125,11 @@ body{
       opacity: 1 !important;
 }
 
+.subgroupNodes:hover{
+    stroke-width: 5px !important;
+    opacity: 1 !important;
+}
+
 .textOverlay{
     background-color: none;
     display: block;
@@ -139,6 +144,11 @@ body{
     text-shadow:2px 0 0 #000, 0 -2px 0 #000, 0 2px 0 #000, -2px 0 0 #000;
     animation: fadein 1.5s;
     position: absolute; 
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 
@@ -159,9 +169,12 @@ body{
 
 #subGroupPanel{
     width:0px;
+    text-align: left;
     overflow: hidden;
     z-index: 3;
     background-color: gray;
+    border-bottom-right-radius: 5px;
+    border-top-right-radius: 5px;
     position: absolute;
     top:12%;
     height: 87%;

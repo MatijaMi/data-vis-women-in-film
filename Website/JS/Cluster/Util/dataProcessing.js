@@ -74,12 +74,7 @@ function getFirstLevelData(profession){
                 if(profession=="Other" && !topLevel.has(entry) && !entry.includes(">")){
                     personsJobs.add(entry);
                 }
-                if(topLevel.has(entry) && entry==profession){
-                    personsJobs.add(entry);
-                }
-            }
-            
-         
+            }  
         }
             personsJobs.forEach((entry)=>{
                 if(jobData.has(entry)){
@@ -114,7 +109,9 @@ function getSecondLevelData(profession){
                         if(rest.includes(">")){
                             rest=rest.substr(0,rest.indexOf(">"));
                         }
-                        personsJobs.add(rest);
+                        if(rest.length>0){
+                            personsJobs.add(rest);
+                        }
                     }
                 }
             }
@@ -164,7 +161,7 @@ function getThirdLevelData(profession){
             });
     }
     var data =sortJobData(jobData);
-    return data;
+    return d3.csvParse(data);
 }
 
 
