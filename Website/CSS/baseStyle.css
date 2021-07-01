@@ -57,7 +57,7 @@ nav{
 .header a:hover{
 	background-color: #bbb;
 }
-
+/* xa */
 .caruText{
   
   /* xa */
@@ -80,6 +80,7 @@ nav{
 
 }
 
+/* xa */
 .caruText-child{
   width: 100%;
   display: flex;
@@ -192,19 +193,54 @@ nav{
 }
 
 .content{
-	position: relative;
-	background: #F2E7DC;
-	width:100%;
-	padding-top: 10px;
+	/* position: relative; */
+  margin: 0 auto;
+	/* background: #F2E7DC; */
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-around;
+  /* align-items: flex-start; */
+  
+	width:80%;
+	padding: 4rem;
+  border: 4px red solid;
 }
 
+.content_panel{
+  border: 5px yellow solid;
+  background-color: #F2DAC4;
+  margin: 1rem auto;
+  padding: 2rem;
+  width: 77%;
+  height: 25rem;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: center;
+  
+}
+
+.content_image_left{
+  width:33.33%;
+}
+
+
+
 .contentPanel{
-    height: 300px;
+  border: 4px green solid;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+
+
+
+
+    /* height: 300px; */
     margin-left: 10%;
     margin-right: 10%;
     margin-top: 1%;
     margin-bottom: 1%;
-    background-color: #ddd
+    background-color: #ddd;
 }
 
 .footer{
