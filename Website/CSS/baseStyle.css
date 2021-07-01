@@ -192,20 +192,17 @@ nav{
   }
 }
 
-.content{
-	/* position: relative; */
+/* .content{
   margin: 0 auto;
-	/* background: #F2E7DC; */
   display: flex;
-  flex-flow: column nowrap;
-  justify-content: space-around;
-  /* align-items: flex-start; */
+  flex-flow: column wrap;
+  justify-content: space-between;
   
 	width:80%;
 	padding: 4rem;
   border: 4px red solid;
-}
-
+} */
+/*  
 .content_panel{
   border: 5px yellow solid;
   background-color: #F2DAC4;
@@ -222,12 +219,89 @@ nav{
 
 .content_image_left{
   width:33.33%;
+  height: 300px;
 }
 
+.content_headline{
+  font-size: 25px;
+}
 
+.content_text {
+  width: 25%;
+}
+
+.content_button {
+  display: inline-block;
+  padding: 0.5em 1.7em;
+  margin: 0 0.1em 0.1em 0;
+  position: absolute;
+  bottom: 10%;
+  left: 65%;
+  border: 0.16em solid rgb(255, 255, 255);
+  border-radius: 2em;
+  box-sizing: border-box;
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+  color: #000;
+  text-shadow: 0 0.04em 0.04em rgba(255, 255, 255, 0.253);
+  text-align: center;
+} */
+.content_panel {
+  /* border: 3px red solid; */
+  position: relative;
+  width: 85rem;
+  height: 20rem;
+  margin:  2% auto ;
+  background-color: #A6998F;
+  margin-bottom: 20px;
+}
+
+.content_image_left {
+  height: 100%;
+  width: 33%;
+  margin: 0 15px 0 0;
+  float: left;
+}
+
+.content_headline {
+  /* border: 3px black dashed; */
+  top: 30px;
+  padding: 2rem 2rem;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 800px;
+  font-size: 25px;
+  letter-spacing: 1px;
+  color: #180f0f;
+}
+
+.content_text {
+  /* border: 3px blue dashed; */
+  font-weight: 500px;
+  font-size: 20px;
+  color: #180f0f;
+  text-align: left;
+  padding: 1rem 1rem;
+}
+
+.content_button {
+  display: inline-block;
+  padding: 0.5em 1.7em;
+  margin: 0 0.1em 0.1em 0;
+  position: absolute;
+  bottom: 10%;
+  left: 65%;
+  border: 0.16em solid rgb(255, 255, 255);
+  border-radius: 2em;
+  box-sizing: border-box;
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+  color: #000;
+  text-shadow: 0 0.04em 0.04em rgba(255, 255, 255, 0.253);
+  text-align: center;
+}
 
 .contentPanel{
-  border: 4px green solid;
+  /* border: 4px green solid; */
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -235,7 +309,6 @@ nav{
 
 
 
-    /* height: 300px; */
     margin-left: 10%;
     margin-right: 10%;
     margin-top: 1%;
@@ -399,4 +472,11 @@ nav{
 .node:hover {
       stroke-width: 4px !important;
       opacity: 1 !important;
+    }
+
+    footer {
+      margin: 30px;
+      width: 20px;
+      height: 20px;
+      /* border: 2px red solid; */
     }
