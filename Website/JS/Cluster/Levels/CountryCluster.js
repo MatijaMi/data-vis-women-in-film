@@ -2,10 +2,8 @@ import{updateState, getStates} from '../Handlers/stateHandler.js';
 import{showCountryD3} from './singleCountryCluster.js';
 import {setLevel} from '../Handlers/levelHandler.js';
 import {removeTooltip,createTextOverlay} from '../Util/tooltips.js';
-import {addPatterns} from '../Util/bubbleUtil.js';
-
-var patternTimeout;
-var resetTimeout;
+import {addPatterns,determineCountrySize,findCountryPicture} from '../Util/bubbleUtil.js';
+import{clearAllTimeouts,timeouts} from '../Handlers/connectivityHandler.js';
 
 function showCountries(timespan){
     
@@ -102,7 +100,6 @@ function showCountries(timespan){
   var mouseenter = function (d) {
         createLines(d.country, data)
       }
-    addPatterns(countryData,svg);
     
    var showCountry = function (d) { 
        updateState(d.country);
@@ -127,7 +124,7 @@ function showCountries(timespan){
         .attr("cx",0)
         .attr("cy", 0)
         .attr("fill", function(d) {
-		      return "url(#bg" + findCountryPicture(d.country,d.count) +")";
+		      return "url(#bg" + findCountryPicture(d.country,d.count,svg) +")";
         })
         .attr("stroke", "black")
         .style("stroke-width", 3)
@@ -160,37 +157,21 @@ function showCountries(timespan){
         }).on('end', function () {
             createTextOverlay(data,"Countries","body");}
         );
-
-      // What happens when a circle is dragged?
-  function dragstarted(d) {
-        if (!d3.event.active) simulation.alphaTarget(.03).restart();
-        d.fx = d.x;
-        d.fy = d.y;
-      }
-  function dragged(d) {
-        d.fx = d3.event.x;
-        d.fy = d3.event.y;
-      }
-  function dragended(d) {
-        if (!d3.event.active) simulation.alphaTarget(.035);
-        d.fx = null;
-        d.fy = null;
-      }
-     
+    
     function changePattern(){
         if(getStates()[getStates().length-1]=="Countries"){
             d3.selectAll("circle").attr("fill", function(d) {
-		      return "url(#bg" + findCountryPicture(d.country,d.count)+")";
+		      return "url(#bg" + findCountryPicture(d.country,d.count,svg)+")";
             });
             d3.selectAll("circle").transition().duration(1000).attr("fill-opacity","1.0");
-           patternTimeout = setTimeout(resetTimer,5000);
+           timeouts.push(setTimeout(resetTimer,5000));
         }
     }
        
     function resetTimer(){
         if(getStates()[getStates().length-1]=="Countries"){
             d3.selectAll("circle").transition().duration(1000).attr("fill-opacity","0.33");
-               resetTimeout = setTimeout(changePattern,1000);
+               timeouts.push(setTimeout(changePattern,1000));
         }
     }
     
@@ -199,61 +180,15 @@ function showCountries(timespan){
         if(getStates()[getStates().length-1]=="Countries"){
             d3.selectAll("circle").transition().duration(0).attr("fill-opacity","0.33");
             d3.selectAll("circle").transition().duration(0).attr("fill-opacity","1");
-            setTimeout(resetTimer,10);
+            timeouts.push(setTimeout(resetTimer,10));
         }
     }
     
-    setTimeout(temp,10000);
+    timeouts.push(setTimeout(temp,10000));
     updateState("Countries");
 }
 
-
-
-function findCountryPicture(country,count){
-    var hasPic=[];
-    
-    for(var i = 0; i <wfpp.entries.length; i++){
-        for(var j =0; j< wfpp.entries[i].worked_in.length; j++){
-            var entry=wfpp.entries[i].worked_in[j];
-            if(wfpp.entries[i].image_url.length!=0){
-                if(entry.includes(country)){
-                    hasPic.push(wfpp.entries[i].id);
-                }
-            }
-        }
-    }
-    
-    var rand = hasPic.length;
-    if(rand>1){
-        rand =Math.floor((Math.random() * hasPic.length));
-         return hasPic[rand];
-    }else{
-        if(rand==1){
-            return hasPic[0];
-        }else{
-            return "1704";
-        }
-    }
-}
-
-function determineCountrySize(count){
-    var width = document.getElementById("my_dataviz").clientWidth;
-    var height = document.getElementById("my_dataviz").clientHeight;
-    if(count<10){
-        return width/30;
-    }else{
-        if(count<20 && count >=10){
-            return width/20;
-        }else{
-            if(count<50 && count >20){
-                return width/17;
-            }else{
-                return width/13;
-            }
-        }
-    }
-}
-
+/////////////////////////////////////////////////////////////////
 function createLines(country,data){
     var simCountries = new Set();
     simCountries.add(country)

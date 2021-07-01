@@ -8,10 +8,7 @@ import{setLocator, handleLocatorClick, removeLastLocButton,addButtonEvents,updat
 import{drawLowerLevel} from '../Levels/lowerLevels.js';
 import{showCountries} from '../Levels/CountryCluster.js';
 import{showAll} from '../Levels/allPioneers.js';
-import{closeSubgroupPanel} from '../Handlers/connectivityHandler.js';
-
-var patternTimeout;
-var resetTimeout;
+import{closeSubgroupPanel,timeouts} from '../Handlers/connectivityHandler.js';
 
 function drawTopLevel(){
 //Preparation
@@ -40,7 +37,7 @@ function drawTopLevel(){
 		      return "url(#bg" + findProfessionPicture(d,data,svg,"top")+")";
         })
         .attr("stroke", "black")
-        .style("stroke-width", 2)
+        .style("stroke-width", 3)
         .on("mouseover", function (d) {mouseoverJob(Tooltip);}) 
         //.on("mousemove", function (d) {mousemoveJob(Tooltip,d, this)})
         .on("mouseleave", function (d) {mouseleaveJob(Tooltip,data)})
@@ -62,7 +59,7 @@ function drawTopLevel(){
             .attr("cy", function (d) { return d.y; })
         })
     .on('end', function () {
-        if(getLevel()==0){
+        if(getLevel()==0 && true){
             createTextOverlay(data,"Professions","body");
         }
     });
@@ -75,14 +72,14 @@ function drawTopLevel(){
 		      return "url(#bg" + findProfessionPicture(d,data,svg,"top")+")";
             });
             d3.selectAll("circle").transition().duration(1000).attr("fill-opacity","1.0");
-           patternTimeout = setTimeout(resetTimer,5000);
+          timeouts.push(setTimeout(function(){resetTimer()},5000));
         }
     }
        
     function resetTimer(){
         if(getLevel()==0){
         d3.selectAll("circle").transition().duration(1000).attr("fill-opacity","0.33");
-           resetTimeout = setTimeout(changePattern,1000);
+           timeouts.push(setTimeout(function(){changePattern()},1000));
         }   
     }
     
@@ -90,10 +87,11 @@ function drawTopLevel(){
     function temp(){
         d3.selectAll("circle").transition().duration(0).attr("fill-opacity","0.33");
         d3.selectAll("circle").transition().duration(0).attr("fill-opacity","1");
-        setTimeout(resetTimer,10);
+        
+        timeouts.push(setTimeout(resetTimer,10));
     }
     
-    setTimeout(temp,10000);
+    timeouts.push(setTimeout(temp,10000));
     setLevel(0);
     updateState("Professions");
     setLocator("Professions");
@@ -102,4 +100,4 @@ function drawTopLevel(){
 }
 
 
-export {drawTopLevel, resetTimeout, patternTimeout}
+export {drawTopLevel}

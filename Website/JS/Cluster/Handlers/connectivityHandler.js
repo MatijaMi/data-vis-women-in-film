@@ -10,6 +10,7 @@ import{showAll} from '../Levels/allPioneers.js';
 import{showCountries} from '../Levels/CountryCluster.js';
 import{showCountryD3} from '../Levels/singleCountryCluster.js';
 
+var timeouts=[];
 
 function handleLoad(){
     
@@ -97,7 +98,6 @@ function handleLoad(){
         }
     }else{
         switchToProfessions();
-        drawTopLevel();
     }  
 }
 
@@ -152,6 +152,12 @@ function closeSubgroupPanel() {
     document.getElementById("subGroupPanel").style.border = "none";
 } 
 
+function clearAllTimeouts(){
+    for(var i =0; i<timeouts.length;i++){
+        clearTimeout(timeouts[i]);
+    }
+    timeouts=[];
+}
 handleLoad();
 
-export{closeSubgroupPanel,openSubgroupPanel};
+export{closeSubgroupPanel,openSubgroupPanel,timeouts,clearAllTimeouts};

@@ -134,6 +134,7 @@ function findProfessionPicture(profession,data,svg,mode){
         }
     }
     svg.append("pattern")
+            .attr("class", "bubblePattern")
             .attr("x", 0)
             .attr("y", 0)
             .attr("width", 10)
@@ -146,6 +147,51 @@ function findProfessionPicture(profession,data,svg,mode){
 			.attr("height", r*2+"px")
             .attr("xlink:href", link);
     return patternID+"_" +r;
+}
+
+function findCountryPicture(country,count,svg){
+    var hasPic=[];
+    for(var i = 0; i <wfpp.entries.length; i++){
+        for(var j =0; j< wfpp.entries[i].worked_in.length; j++){
+            var entry=wfpp.entries[i].worked_in[j];
+            if(wfpp.entries[i].image_url.length!=0){
+                if(entry.includes(country)){
+                    hasPic.push(wfpp.entries[i]);
+                }    
+            }
+        }
+    }
+    var rand = hasPic.length;
+    var patternID= "1704" ;
+    var link = '../Images/WFPP-Pictures-Squares/Unknown.jpg';
+    var r=determineCountrySize(count);
+    
+    if(rand>1){
+        rand =Math.floor((Math.random() * hasPic.length));
+        patternID =hasPic[rand].id;
+        link = '../Images/WFPP-Pictures-Squares/' + hasPic[rand].name.split(' ').join('%20') +'.jpg';
+    }else{
+        if(rand==1){
+            patternID =hasPic[0].id;
+            link = '../Images/WFPP-Pictures-Squares/' + hasPic[0].name.split(' ').join('%20') +'.jpg';
+        }
+    }
+    
+    svg.append("pattern")
+            .attr("class", "bubblePattern")
+            .attr("x", 0)
+            .attr("y", 0)
+            .attr("width", 10)
+	        .attr("height", 10)
+            .attr("id", function (d) {return "bg" + patternID+"_"+r})
+            .append("image")
+            .attr("x", 0)
+            .attr("y", 0)
+   			.attr("width", r*2+"px")
+			.attr("height", r*2+"px")
+            .attr("xlink:href", link);
+    
+    return patternID+"_"+r;
 }
 
 function findPersonPicture(id,data,svg){
@@ -189,5 +235,22 @@ function determineSubgroupY(job,count,data){
     return xOffset;
 }
 
+function determineCountrySize(count){
+    var width = document.getElementById("my_dataviz").clientWidth;
+    var height = document.getElementById("my_dataviz").clientHeight;
+    if(count<10){
+        return width/30;
+    }else{
+        if(count<20 && count >=10){
+            return width/20;
+        }else{
+            if(count<50 && count >20){
+                return width/17;
+            }else{
+                return width/13;
+            }
+        }
+    }
+}
 
-export{findProfessionPicture,createLines,determineJobSize,clearPrevDataviz,addPatterns,determinePersonSize,determineSubgroupY,determineSubGroupSize,findPersonPicture}
+export{findProfessionPicture,createLines,determineJobSize,clearPrevDataviz,addPatterns,determinePersonSize,determineSubgroupY,determineSubGroupSize,findPersonPicture,determineCountrySize,findCountryPicture}

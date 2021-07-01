@@ -121,7 +121,7 @@ body{
 }
 
 .node:hover {
-      stroke-width: 4px !important;
+      stroke-width: 5px !important;
       opacity: 1 !important;
 }
 
@@ -149,6 +149,7 @@ body{
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+    pointer-events: none;
 }
 
 

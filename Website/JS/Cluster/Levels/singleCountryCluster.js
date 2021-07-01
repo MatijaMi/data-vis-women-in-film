@@ -170,7 +170,7 @@ document.getElementById("back").addEventListener("click", goBack)
 		      return "url(#"+d.id +")";
         })
         .attr("stroke", "black")
-        .style("stroke-width", 0.8)
+        .style("stroke-width", 3)
         .on("mouseover", mouseover) // What to do when hovered
         .on("mousemove", mousemove)
         .on("mouseleave", mouseleave)

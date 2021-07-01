@@ -48,9 +48,10 @@ function createTextOverlay(data,mode,container){
         
         if(text.length==1){
             var pureText=text[0].charAt(0).toUpperCase()+ text[0].slice(1);
-                yShift=0;
+                yShift=r/5;
                 if(pureText.length>8){
                     inHtml=pureText.substr(0,Math.ceil(pureText.length/2)) +"-<br>" + pureText.substr(Math.ceil(pureText.length/2));
+                    yShift=0;
                 }
                 if(container!="body"){
                     yShift=r/3;
@@ -61,17 +62,21 @@ function createTextOverlay(data,mode,container){
         }else{
             if(text.length==2){
                 if(container=="body"){
-                    calculatedFont=r/3+"px";
-                    lineHeight = r/3 +4 + "px";
+                    calculatedFont=r/2+"px";
+                    lineHeight = r/2 +4 + "px";
                 }else{
                     yShift=r/8;
+                    calculatedFont=r/3+"px";
+                    lineHeight = r/3 +4 + "px";
                 }
             }else{
                 if(container=="body"){
-                    calculatedFont=r/4+"px";
-                    lineHeight = r/4 +4 + "px";
+                    calculatedFont=r/3+"px";
+                    lineHeight = r/3 +4 + "px";
                 }else{
                     yShift=-r/4;
+                    calculatedFont=r/3+"px";
+                    lineHeight = r/3 +4 + "px";
                 }
             }
         }

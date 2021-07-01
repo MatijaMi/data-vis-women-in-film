@@ -1,7 +1,8 @@
 import{removeTooltip,createTooltip} from '../Util/tooltips.js';
 import{updateState,goBackState} from './stateHandler.js';
 import{updateLocator,removeLastLocButton} from './navigationHandler.js';
-import{drawTopLevel,resetTimeout,patternTimeout} from '../Levels/topLevel.js';
+import{clearAllTimeouts,timeouts} from './connectivityHandler.js';
+import{drawTopLevel} from '../Levels/topLevel.js';
 import{drawLowerLevel} from '../Levels/lowerLevels.js';
 var level = 0;
 
@@ -98,8 +99,7 @@ function goToNextLevel(profession){
     updateState(profession);
     updateLocator(profession,getLevel());
     addBackButton();
-    clearTimeout(resetTimeout);
-    clearTimeout(patternTimeout);
+    clearAllTimeouts();
     drawLowerLevel(profession,getLevel());
 }
 

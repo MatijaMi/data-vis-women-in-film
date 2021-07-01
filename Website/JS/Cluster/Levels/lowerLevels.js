@@ -32,7 +32,7 @@ function drawLowerLevel(profession,level){
 		      return "url(#bg" + findPersonPicture(d.id,data,svg)+")";
         })
         .attr("stroke", "black")
-        .style("stroke-width", 2)
+        .style("stroke-width", 3)
         .on("mouseover", function (d) {mouseoverPersonal(Tooltip);}) 
         .on("mousemove", function (d) {mousemovePersonal(Tooltip,d, this)})
         //.on("mouseenter", function (d) {createLines(d.job, data)})
@@ -89,7 +89,7 @@ function drawLowerLevel(profession,level){
 		          return "url(#bg" + findProfessionPicture(d,furtherSubgroups,svg,"sub")+")";
             })
         .attr("stroke", "black")
-        .style("stroke-width", 2)
+        .style("stroke-width",3)
         .on("mouseover", function (d) {
             createLines(d.job,data);
             mouseoverJob(Tooltip);}) 
@@ -101,7 +101,7 @@ function drawLowerLevel(profession,level){
                 .selectAll("circle")
                 .data(data)
                 .style("opacity","1")
-                .style("stroke-width", "2");
+                .style("stroke-width", "3");
         });
         createTextOverlay(furtherSubgroups,"Professions","subGroupPanel");
     }else{
