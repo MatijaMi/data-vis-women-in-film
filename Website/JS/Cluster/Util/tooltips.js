@@ -36,26 +36,43 @@ function createTextOverlay(data,mode,container){
             var text = data[i].country.split(" ");
         }
         var inHtml ="";
+        var pureText=""
         for(var j=0; j<text.length;j++){
             inHtml=inHtml +text[j].charAt(0).toUpperCase()+ text[j].slice(1) +"<br>";   
+            pureText=pureText +text[j].charAt(0).toUpperCase()+ text[j].slice(1);   
         }
         var xShift=0;
         var yShift=0;
         var calculatedFont =r/2+"px";
         var lineHeight = r/2 +4 + "px";
+        
         if(text.length==1){
-            yShift=0;
-            if(inHtml.length>9){
-                calculatedFont="auto";
-                lineHeight = "auto";
-            }
+            var pureText=text[0].charAt(0).toUpperCase()+ text[0].slice(1);
+                yShift=0;
+                if(pureText.length>8){
+                    inHtml=pureText.substr(0,Math.ceil(pureText.length/2)) +"-<br>" + pureText.substr(Math.ceil(pureText.length/2));
+                }
+                if(container!="body"){
+                    yShift=r/3;
+                    if(pureText.length<8){
+                        yShift=r/2;
+                    }
+                } 
         }else{
             if(text.length==2){
-                calculatedFont=r/3+"px";
-                lineHeight = r/3 +4 + "px";
+                if(container=="body"){
+                    calculatedFont=r/3+"px";
+                    lineHeight = r/3 +4 + "px";
+                }else{
+                    yShift=r/8;
+                }
             }else{
-                calculatedFont=r/4+"px";
-                lineHeight = r/4 +4 + "px";
+                if(container=="body"){
+                    calculatedFont=r/4+"px";
+                    lineHeight = r/4 +4 + "px";
+                }else{
+                    yShift=-r/4;
+                }
             }
         }
         var Tooltip = d3.select("#"+container)

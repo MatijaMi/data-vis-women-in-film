@@ -21,6 +21,6 @@ function handleResize(){
     }
 }
 
-export{ handleResize};
+export{handleResize};
 
 
