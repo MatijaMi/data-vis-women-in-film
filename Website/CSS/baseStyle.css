@@ -1,5 +1,5 @@
 body{
-	background: #ddd;
+	background: #F2E7DC;
 	font-family:Arial,sans-serif;
 	padding-top: 0px;
 	margin: 0px;
@@ -7,7 +7,34 @@ body{
     width:auto;
     height: auto;
 }
+/* nav start */
+nav{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  min-height: 8vh;
+  background-color: #A6998F;
+  /* font-family: 'Poppins', sans-serif; */
+}
 
+.nav-links{
+  display: flex;
+  justify-content: space-around;
+  width: 85%;
+}
+
+.nav-links a{
+  text-decoration: none;
+  letter-spacing: 2px;
+  font-weight: 600px;
+  font-size: 18px;
+  color: #180f0f;
+}
+
+.nav-links li{
+  list-style: none;
+}
+/* nav end */
 
 .header{
 	position: relative;
@@ -30,14 +57,41 @@ body{
 .header a:hover{
 	background-color: #bbb;
 }
-
+/* xa */
 .caruText{
-    width:30%;
-    padding-left: 5%;
-    color: white;
-    padding-top: 5%;
-    font-size: 18px;
+  
+  /* xa */
+  display:flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: stretch;
+  /* background-color: red; */
+  align-content: space-evenly;
+  background-color: rgba(0, 0, 0, 0.07);
+
+
+
+  width:35%;
+  margin: 0 0;
+  padding: 18px;
+  margin-right: 10%;
+  color: whitesmoke;
+  font-size: 18px;
+
 }
+
+/* xa */
+.caruText-child{
+  width: 100%;
+  display: flex;
+  margin:0 auto;
+  justify-content: left;
+  align-items: left;
+  /* background-color: red; */
+  padding-left: 30%;
+}
+
+
 
 .caruText button{
   display: inline-block;
@@ -62,6 +116,12 @@ body{
 }
 
 .carousel{
+  /* xa */
+  display: flex;
+  justify-content: left;
+
+
+
     text-align: left;
     margin-top: 0px;
     padding-top: 0px;
@@ -132,20 +192,128 @@ body{
   }
 }
 
-.content{
-	position: relative;
-	background: #eee;
-	width:100%;
-	padding-top: 10px;
+/* .content{
+  margin: 0 auto;
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: space-between;
+  
+	width:80%;
+	padding: 4rem;
+  border: 4px red solid;
+} */
+/*  
+.content_panel{
+  border: 5px yellow solid;
+  background-color: #F2DAC4;
+  margin: 1rem auto;
+  padding: 2rem;
+  width: 77%;
+  height: 25rem;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: center;
+  
+}
+
+.content_image_left{
+  width:33.33%;
+  height: 300px;
+}
+
+.content_headline{
+  font-size: 25px;
+}
+
+.content_text {
+  width: 25%;
+}
+
+.content_button {
+  display: inline-block;
+  padding: 0.5em 1.7em;
+  margin: 0 0.1em 0.1em 0;
+  position: absolute;
+  bottom: 10%;
+  left: 65%;
+  border: 0.16em solid rgb(255, 255, 255);
+  border-radius: 2em;
+  box-sizing: border-box;
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+  color: #000;
+  text-shadow: 0 0.04em 0.04em rgba(255, 255, 255, 0.253);
+  text-align: center;
+} */
+.content_panel {
+  /* border: 3px red solid; */
+  position: relative;
+  width: 85rem;
+  height: 20rem;
+  margin:  2% auto ;
+  background-color: #A6998F;
+  margin-bottom: 20px;
+}
+
+.content_image_left {
+  height: 100%;
+  width: 33%;
+  margin: 0 15px 0 0;
+  float: left;
+}
+
+.content_headline {
+  /* border: 3px black dashed; */
+  top: 30px;
+  padding: 2rem 2rem;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 800px;
+  font-size: 25px;
+  letter-spacing: 1px;
+  color: #180f0f;
+}
+
+.content_text {
+  /* border: 3px blue dashed; */
+  font-weight: 500px;
+  font-size: 20px;
+  color: #180f0f;
+  text-align: left;
+  padding: 1rem 1rem;
+}
+
+.content_button {
+  display: inline-block;
+  padding: 0.5em 1.7em;
+  margin: 0 0.1em 0.1em 0;
+  position: absolute;
+  bottom: 10%;
+  left: 65%;
+  border: 0.16em solid rgb(255, 255, 255);
+  border-radius: 2em;
+  box-sizing: border-box;
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+  color: #000;
+  text-shadow: 0 0.04em 0.04em rgba(255, 255, 255, 0.253);
+  text-align: center;
 }
 
 .contentPanel{
-    height: 300px;
+  /* border: 4px green solid; */
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+
+
+
+
     margin-left: 10%;
     margin-right: 10%;
     margin-top: 1%;
     margin-bottom: 1%;
-    background-color: #ddd
+    background-color: #ddd;
 }
 
 .footer{
@@ -304,4 +472,11 @@ body{
 .node:hover {
       stroke-width: 4px !important;
       opacity: 1 !important;
+    }
+
+    footer {
+      margin: 30px;
+      width: 20px;
+      height: 20px;
+      /* border: 2px red solid; */
     }
