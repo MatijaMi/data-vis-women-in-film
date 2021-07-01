@@ -1,5 +1,5 @@
 body{
-	background: #ddd;
+	background: #F2E7DC;
 	font-family:Arial,sans-serif;
 	padding-top: 0px;
 	margin: 0px;
@@ -7,7 +7,34 @@ body{
     width:auto;
     height: auto;
 }
+/* nav start */
+nav{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  min-height: 8vh;
+  background-color: #A6998F;
+  /* font-family: 'Poppins', sans-serif; */
+}
 
+.nav-links{
+  display: flex;
+  justify-content: space-around;
+  width: 85%;
+}
+
+.nav-links a{
+  text-decoration: none;
+  letter-spacing: 2px;
+  font-weight: 600px;
+  font-size: 18px;
+  color: #180f0f;
+}
+
+.nav-links li{
+  list-style: none;
+}
+/* nav end */
 
 .header{
 	position: relative;
@@ -32,12 +59,38 @@ body{
 }
 
 .caruText{
-    width:30%;
-    padding-left: 5%;
-    color: white;
-    padding-top: 5%;
-    font-size: 18px;
+  
+  /* xa */
+  display:flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: stretch;
+  /* background-color: red; */
+  align-content: space-evenly;
+  background-color: rgba(0, 0, 0, 0.07);
+
+
+
+  width:35%;
+  margin: 0 0;
+  padding: 18px;
+  margin-right: 10%;
+  color: whitesmoke;
+  font-size: 18px;
+
 }
+
+.caruText-child{
+  width: 100%;
+  display: flex;
+  margin:0 auto;
+  justify-content: left;
+  align-items: left;
+  /* background-color: red; */
+  padding-left: 30%;
+}
+
+
 
 .caruText button{
   display: inline-block;
@@ -62,6 +115,12 @@ body{
 }
 
 .carousel{
+  /* xa */
+  display: flex;
+  justify-content: left;
+
+
+
     text-align: left;
     margin-top: 0px;
     padding-top: 0px;
@@ -134,7 +193,7 @@ body{
 
 .content{
 	position: relative;
-	background: #eee;
+	background: #F2E7DC;
 	width:100%;
 	padding-top: 10px;
 }

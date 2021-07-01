@@ -6,6 +6,10 @@
     <title>WFPP</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com"> 
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> 
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="./CSS/baseStyle.css">
     <link rel="icon" type="image/png" href="./Images/WFPP-Logo.png"/>
     <script src="https://d3js.org/d3.v6.min.js"></script>
@@ -14,26 +18,62 @@
 <body>
 
     <!-- Header -->
-    <div class="header" id="header">
+    
+        <nav>
+        <ul class="nav-links">
+            <li>
+                <a href="index.html">Home</a>
+            </li>
+            <li>
+                <a href="./HTML/Map.html">Map</a>
+            </li>
+            <li>
+                <a href="./HTML/Cluster.html">Cluster</a>
+            </li>
+            <li>
+                <a href="./HTML/Timeline.html">Timeline</a> 
+            </li>
+            <li>
+                <a href="./HTML/Dendrogram.html">Dendrogram</a>          
+            </li>
+            <li>
+                <a href="./HTML/About.html">About</a> 
+            </li>
+            
+        </ul>
+    </nav> 
+
+
+
+
+    <!-- <div class="header" id="header">
         <a href="index.html">Home</a>
         <a href="./HTML/Map.html">Map</a>
         <a href="./HTML/Cluster.html">Cluster</a>
         <a href="./HTML/Timeline.html">Timeline</a>
         <a href="./HTML/Dendrogram.html">Dendrogram</a>
         <a href="./HTML/About.html">About</a>
-    </div>
+    </div> -->
 
     <!-- Carousel -->
     <div class="carousel">
         <div class="caruText">
-            <h3> Learn about the female Pioneers of Cinema</h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-                dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
-                deserunt mollit anim id est laborum.
-            </p>
-            <button id="discoverButton">Discover</button>
+            <div class="caruText-child">
+                <h3> Learn about the female Pioneers of Cinema</h3>
+            </div>
+            <div class="caruText-child">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+                    fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
+                    deserunt mollit anim id est laborum.
+                </p>
+            </div>
+            <div class="caruText-child">
+                <button id="discoverButton">Discover</button>
+            </div>
+            
+            
         </div>
     </div>
 
