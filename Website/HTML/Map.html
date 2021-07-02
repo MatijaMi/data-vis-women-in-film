@@ -107,17 +107,15 @@
 
                     <br><br>
 
-                    <input type="checkbox" class="settings_checkbox" id="settings_checkbox_unknown"
-                        onclick="load_data()" checked>
-                    <label class="settings_checkbox_text">Include Unknown Dates</label>
-
-                    <br><br>
-
                     <button class="settings_button" id="all_connections_button">Show all connections</button>
 
                     <br><br>
 
                     <button class="settings_button" id="timeline_button">Show as timeline</button>
+
+                    <br><br>
+
+                    <button class="settings_button" id="cluster_button">Show as cluster</button>
                 </div>
 
             </div>
@@ -360,8 +358,6 @@
                     } else {
                         document.getElementById('sidepanel_empty_text').hidden = true;
                         document.getElementById('pioneers_contribute_button').hidden = true;
-
-                        makeGrid(curr_country.country_pioneers);
                     }
 
                     //Remove old links
@@ -373,6 +369,18 @@
                     document.getElementById('pioneers_count_label').innerHTML = curr_country.country_pioneers.length;
                     document.getElementById('pioneers_jobs_label').innerHTML = curr_country.country_jobs.length;
                     document.getElementById('pioneers_connections_label').innerHTML = curr_country.country_connected_countries.length;
+
+                    //Button timeline
+                    document.getElementById('timeline_button').onclick = function () {
+                        var timeline_link = "./Timeline.html?&timespan=" + $("#slider-range").slider("values", 0) + "-" + $("#slider-range").slider("values", 2);
+                        window.open(timeline_link)
+                    };
+
+                    //Button cluster
+                    document.getElementById('cluster_button').onclick = function () {
+                        var cluster_link = "./Cluster.html?mode=countries&country=" + curr_country.country_name + "&timespan=" + $("#slider-range").slider("values", 0) + "-" + $("#slider-range").slider("values", 2);
+                        window.open(cluster_link)
+                    };
 
                     //Display random pioneer on sidepanel
                     show_example_pioneer(curr_country.country_pioneers, curr_country.country_pioneers);

@@ -106,10 +106,6 @@ function load_data() {
 
             //Calculations for each row
             //Use settings
-            if (!document.getElementById('settings_checkbox_unknown').checked) {
-                if (row.YOB.length == 0 || row.YOD.length == 0) return;
-            }
-
             if (row.YOB > $("#slider-range").slider("values", 2)) return;
             if (row.YOD < $("#slider-range").slider("values", 0)) return;
 
@@ -248,35 +244,6 @@ function image_load_error(id) {
     if(document.getElementById(id) != null) document.getElementById(id).src = "../Images/Pioneer-Placeholder.png";
 }
 
-//Grid
-function makeGrid(pioneers) {
-
-    var allImages = "";
-    var symbol = "'";
-
-    for (var i = 0; i < pioneers.length; i++) {
-        allImages += '<img id="pioneers_grid_img_' + i + '" src="' + pioneers[i].pioneer_image + '" onclick="window.open(' + symbol + pioneers[i].pioneer_link + symbol + ')" alt="' + pioneers[i].pioneer_name + '" onerror="image_load_error(' + symbol + 'pioneers_grid_img_' + i + '' + symbol + ')">';
-    }
-
-    $('#photos').html(allImages);
-};
-
-function getCookie(cname) {
-    var name = cname + "=";
-    var decodedCookie = decodeURIComponent(document.cookie);
-    var ca = decodedCookie.split(';');
-    for (var i = 0; i < ca.length; i++) {
-        var c = ca[i];
-        while (c.charAt(0) == ' ') {
-            c = c.substring(1);
-        }
-        if (c.indexOf(name) == 0) {
-            return c.substring(name.length, c.length);
-        }
-    }
-    return "";
-}
-
 function uniq(a) {
     var prims = { "boolean": {}, "number": {}, "string": {} },
         objs = [];
@@ -288,21 +255,6 @@ function uniq(a) {
         else
             return objs.indexOf(item) >= 0 ? false : objs.push(item);
     });
-}
-
-function imageExists(image_url) {
-
-    fetch(image_url, { method: 'HEAD' })
-        .then(res => {
-            if (res.ok) {
-                console.log('Image exists.');
-                return true;
-            } else {
-                console.log('Image does not exist.');
-                return false;
-            }
-        }).catch(err => console.log('Error:', err));
-
 }
 
 function sidepanel_info_onclick(){
