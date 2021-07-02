@@ -2,459 +2,464 @@
 
 <html lang="en" style="height: 100%">
 
-<head>
-    <title>WFPP</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../CSS/baseStyle.css">
-    <link rel="stylesheet" href="../CSS/map.css">
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
-    <script src="https://d3js.org/d3.v4.js"></script>
-    <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
-    <script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
-    <script src="https://github.com/typeiii/jquery-csv"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <script src="../JS/map.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/4.5.0/papaparse.min.js"></script>
+<div class="divWrap">
 
-</head>
+    <head>
+        <title>WFPP</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="../CSS/baseStyle.css">
+        <link rel="stylesheet" href="../CSS/map.css">
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+        <script src="https://d3js.org/d3.v4.js"></script>
+        <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+        <script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
+        <script src="https://github.com/typeiii/jquery-csv"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <script src="../JS/map.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/4.5.0/papaparse.min.js"></script>
 
-<body>
+    </head>
 
-    <!-- Header -->
-    <div class="header" id="header">
-        <a href="../index.html">Home</a>
-        <a href="./Map.html">Map</a>
-        <a href="./Cluster.html">Cluster</a>
-        <a href="./Timeline.html">Timeline</a>
-        <a href="./Dendrogram.html">Dendrogram</a>
-        <a href="./About.html">About</a>
-    </div>
+    <body>
 
-    <!-- Header-Spacer -->
-    <svg height="50" width="100%"></svg>
+        <!-- Header -->
+        <div class="header" id="header">
+            <a href="../index.html">Home</a>
+            <a href="./Map.html">Map</a>
+            <a href="./Cluster.html">Cluster</a>
+            <a href="./Timeline.html">Timeline</a>
+            <a href="./Dendrogram.html">Dendrogram</a>
+            <a href="./About.html">About</a>
+        </div>
 
-    <!-- Dialog Holder - Will display Dialog text of info buttons-->
-    <div id="dialog" title="Information" hidden="true"></div>
+        <!-- Header-Spacer -->
+        <svg height="50" width="100%"></svg>
 
-    <!-- Main Body (Panels + Map)-->
-    <div class="main_wrapper">
+        <!-- Dialog Holder - Will display Dialog text of info buttons-->
+        <div id="dialog" title="Information" hidden="true"></div>
 
-        <!-- Panels-->
-        <div class="panels">
+        <!-- Main Body (Panels + Map)-->
+        <div class="main_wrapper">
 
-            <!-- Sidepanel -->
-            <div class="sidepanel_panel">
+            <!-- Panels-->
+            <div class="panels">
 
-                <input type="image" class="sidepanel_info_icon" src="../Images/question_mark.png"
-                    onclick="sidepanel_info_onclick()" />
+                <!-- Sidepanel -->
+                <div class="sidepanel_panel">
 
-                <label class="sidepanel_headline" id="country_name_label"></label>
+                    <input type="image" class="sidepanel_info_icon" src="../Images/question_mark.png"
+                        onclick="sidepanel_info_onclick()" />
 
-                <br><br>
-
-                <div id="sidepanel_holder" hidden=true>
-
-                    <label class="sidepanel_text_big">Pioneers: </label>
-                    <label class="sidepanel_text_big" id="pioneers_count_label"></label><br>
-
-                    <label class="sidepanel_text_short">Different Jobs: </label>
-                    <label class="sidepanel_text_short" id="pioneers_jobs_label"></label><br>
-
-                    <label class="sidepanel_text_short">Connections: </label>
-                    <label class="sidepanel_text_short" id="pioneers_connections_label"></label>
+                    <label class="sidepanel_headline" id="country_name_label"></label>
 
                     <br><br>
 
-                    <label class="sidepanel_text_short">Example Pioneer: </label><br>
-                    <label class="sidepanel_text_short" id="pioneers_ex_name"></label>
+                    <div id="sidepanel_holder" hidden=true>
 
-                    <br><br>
+                        <label class="sidepanel_text_big">Pioneers: </label>
+                        <label class="sidepanel_text_big" id="pioneers_count_label"></label><br>
 
-                    <img class="sidepanel_image" id="pioneers_ex_image"
-                        src="https://wfpp.columbia.edu/wp-content/uploads/2018/05/adaalineurban.jpg"
-                        onerror="image_load_error('pioneers_ex_image')">
-                    <br><br>
+                        <label class="sidepanel_text_short">Different Jobs: </label>
+                        <label class="sidepanel_text_short" id="pioneers_jobs_label"></label><br>
 
-                    <button class="sidepanel_button" id="pioneers_read_more_button">Read more</button>
-                    <button class="sidepanel_button" id="pioneers_next_button">Next</button>
+                        <label class="sidepanel_text_short">Connections: </label>
+                        <label class="sidepanel_text_short" id="pioneers_connections_label"></label>
 
+                        <br><br>
+
+                        <label class="sidepanel_text_short">Example Pioneer: </label><br>
+                        <label class="sidepanel_text_short" id="pioneers_ex_name"></label>
+
+                        <br><br>
+
+                        <img class="sidepanel_image" id="pioneers_ex_image"
+                            src="https://wfpp.columbia.edu/wp-content/uploads/2018/05/adaalineurban.jpg"
+                            onerror="image_load_error('pioneers_ex_image')">
+                        <br><br>
+
+                        <button class="sidepanel_button" id="pioneers_read_more_button">Read more</button>
+                        <button class="sidepanel_button" id="pioneers_next_button">Next</button>
+
+                    </div>
+                    <div class="sidepanel_text_long" id="sidepanel_empty_text" hidden="true">
+                        There are no pioneers registered to the WFFP between the selected Years. <br><br> If you want to
+                        contribute
+                        to the project please click the button below.
+                        <br><br>
+                    </div>
+
+                    <button class="sidepanel_button" onclick="window.open('https://wfpp.columbia.edu/contribute/')"
+                        id="pioneers_contribute_button" hidden="true">Contribute</button>
                 </div>
-                <div class="sidepanel_text_long" id="sidepanel_empty_text" hidden="true">
-                    There are no pioneers registered to the WFFP between the selected Years. <br><br> If you want to
-                    contribute
-                    to the project please click the button below.
+
+
+
+                <!-- Settings -->
+                <div class="settings_panel">
+                    <label class="settings_headline">Settings</label>
+
+                    <input type="image" class="settings_info_icon" src="../Images/question_mark.png"
+                        onclick="settingspanel_info_onclick()"> </input>
+
                     <br><br>
+
+                    <input type="checkbox" class="settings_checkbox" id="settings_checkbox_unknown"
+                        onclick="load_data()" checked>
+                    <label class="settings_checkbox_text">Include Unknown Dates</label>
+
+                    <br><br>
+
+                    <button class="settings_button" id="all_connections_button">Show all connections</button>
+
+                    <br><br>
+
+                    <button class="settings_button" id="timeline_button">Show as timeline</button>
                 </div>
 
-                <button class="sidepanel_button" onclick="window.open('https://wfpp.columbia.edu/contribute/')"
-                    id="pioneers_contribute_button" hidden="true">Contribute</button>
             </div>
 
+            <!-- Map -->
+            <svg id="map_holder" class="map_holder" width="1400" height="750"></svg>
 
+        </div>
 
-            <!-- Settings -->
-            <div class="settings_panel">
-                <label class="settings_headline">Settings</label>
+        <!-- Bottom - (Slider + Histogram)-->
+        <div class="bottom_wrapper" id="bottom_wrapper">
 
-                <input type="image" class="settings_info_icon" src="../Images/question_mark.png"
-                    onclick="settingspanel_info_onclick()"> </input>
+            <!-- Histogram-->
+            <div class="histogram_holder" id="histogram_holder" hidden=true>
+                <input type="image" onclick="histogram_button_onclick()" class="histogram_image"
+                    src="../Images/map_histogram.png" />
+            </div>
 
-                <br><br>
+            <!-- Slider Holder -->
+            <div class="slider_text_holder">
 
-                <input type="checkbox" class="settings_checkbox" id="settings_checkbox_unknown" onclick="load_data()"
-                    checked>
-                <label class="settings_checkbox_text">Include Unknown Dates</label>
+                <input type="image" class="histo_icon" src="../Images/barchart_icon.png"
+                    onclick="histogram_button_onclick()" />
+                <input type="text" id="slider_span" readonly
+                    style="color:#1fb9f6; font-weight:bold; text-align: center; font-size: 24px; pointer-events: none; width:150px"></input>
+                <input type="image" class="slider_info_icon" src="../Images/question_mark.png"
+                    onclick="slider_info_onclick()" />
+            </div>
 
-                <br><br>
-
-                <button class="settings_button" id="all_connections_button">Show all connections</button>
-
-                <br><br>
-
-                <button class="settings_button" id="timeline_button">Show as timeline</button>
+            <!-- Slider-->
+            <div class="slider_holder">
+                <div id="slider-range"></div>
             </div>
 
         </div>
+
+        <!-- Footer -->
+        <div class="footer"></div>
+
+        <!-- Footer Spacer -->
+        <svg height="50" width="100%"></svg>
 
         <!-- Map -->
-        <svg id="map_holder" class="map_holder" width="1400" height="750"></svg>
+        <script>
 
-    </div>
+            //Resize
+            CheckSizeZoom()
+            $('#divWrap').css('visibility', 'visible');
+            $(window).resize(CheckSizeZoom)
 
-    <!-- Bottom - (Slider + Histogram)-->
-    <div class="bottom_wrapper" id="bottom_wrapper">
+            //Payload
+            var payload = "";
+            if (window.location.href.includes("?")) payload = window.location.href.substr(window.location.href.indexOf("?") + 1);
 
-        <!-- Histogram-->
-        <div class="histogram_holder" id="histogram_holder" hidden=true>
-            <input type="image" onclick="histogram_button_onclick()" class="histogram_image"
-                src="../Images/map_histogram.png" />
-        </div>
+            //Slider values
+            var minSliderValue = 1900;
+            var maxSliderValue = 1930;
 
-        <!-- Slider Holder -->
-        <div class="slider_text_holder">
+            //Set Slider to payload
+            if (window.location.href.includes("id=")) {
+                var payload_id = payload.substr("id=".length);
 
-            <input type="image" class="histo_icon" src="../Images/barchart_icon.png"
-                onclick="histogram_button_onclick()" />
-            <input type="text" id="slider_span" readonly
-                style="color:#1fb9f6; font-weight:bold; text-align: center; font-size: 24px; pointer-events: none; width:150px"></input>
-            <input type="image" class="slider_info_icon" src="../Images/question_mark.png"
-                onclick="slider_info_onclick()" />
-        </div>
-
-        <!-- Slider-->
-        <div class="slider_holder">
-            <div id="slider-range"></div>
-        </div>
-
-    </div>
-
-    <!-- Footer -->
-    <div class="footer"></div>
-
-    <!-- Footer Spacer -->
-    <svg height="50" width="100%"></svg>
-
-    <!-- Map -->
-    <script>
-
-        //Payload
-        var payload = "";
-        if(window.location.href.includes("?")) payload = window.location.href.substr(window.location.href.indexOf("?") + 1);
-
-        //Slider values
-        var minSliderValue = 1900;
-        var maxSliderValue = 1930;
-
-        //Set Slider to payload
-        if (window.location.href.includes("id=")) {
-            var payload_id = payload.substr("id=".length);
-
-            $.ajax({
-                async: false,
-                type: "GET",
-                url: "../Data/map_pioneer_data.csv",
-                success: function (data) {
-                    var rows = data.split("\n");
-                    for (var i = 0; i < rows.length; i++) {
-                        var columns = rows[i].split(",");
-                        if (columns[0] == payload_id) {
-                            if (columns[8].trim().length == 4 && columns[10].trim().length == 4) {
-                                minSliderValue = columns[8];
-                                maxSliderValue = columns[10];
+                $.ajax({
+                    async: false,
+                    type: "GET",
+                    url: "../Data/map_pioneer_data.csv",
+                    success: function (data) {
+                        var rows = data.split("\n");
+                        for (var i = 0; i < rows.length; i++) {
+                            var columns = rows[i].split(",");
+                            if (columns[0] == payload_id) {
+                                if (columns[8].trim().length == 4 && columns[10].trim().length == 4) {
+                                    minSliderValue = columns[8];
+                                    maxSliderValue = columns[10];
+                                }
+                                break;
                             }
-                            break;
                         }
                     }
-                }
-            });
-        }
+                });
+            }
 
-        //Slider
-        var sliderWasUsed = false;
-        var lastCountry = null;
-        var myS = $("#slider-range");
-        var minSpace = 5;
-        var sMin = 1830;
-        var sMax = 2000;
-        var midSliderValue = parseInt(minSliderValue) + (maxSliderValue - minSliderValue) / 2;
-        myS.slider({
-            min: sMin,
-            max: sMax,
-            values: [minSliderValue, midSliderValue, maxSliderValue],
-            steps: 1,
-            change: function (event, ui) {
-                load_data();
-                sliderWasUsed = true;
-            },
-            slide: function (event, ui) {
+            //Slider
+            var sliderWasUsed = false;
+            var lastCountry = null;
+            var myS = $("#slider-range");
+            var minSpace = 5;
+            var sMin = 1830;
+            var sMax = 2000;
+            var midSliderValue = parseInt(minSliderValue) + (maxSliderValue - minSliderValue) / 2;
+            myS.slider({
+                min: sMin,
+                max: sMax,
+                values: [minSliderValue, midSliderValue, maxSliderValue],
+                steps: 1,
+                change: function (event, ui) {
+                    load_data();
+                    sliderWasUsed = true;
+                },
+                slide: function (event, ui) {
 
-                //Move Mid handler to mid
-                myS.slider("values", 1,  parseInt( myS.slider("values", 0)) + ( myS.slider("values", 2) -  myS.slider("values", 0)) / 2);
+                    //Move Mid handler to mid
+                    myS.slider("values", 1, parseInt(myS.slider("values", 0)) + (myS.slider("values", 2) - myS.slider("values", 0)) / 2);
 
-                //Min handler
-                if (ui.handleIndex === 0) {
-                    if ((myS.slider("values", 1) - ui.value) < (minSpace + 1)) {
-                        if ((ui.value + 2 * minSpace) > sMax) {
+                    //Min handler
+                    if (ui.handleIndex === 0) {
+                        if ((myS.slider("values", 1) - ui.value) < (minSpace + 1)) {
+                            if ((ui.value + 2 * minSpace) > sMax) {
+                                return false;
+                            }
+                            if ((myS.slider("values", 1) - myS.slider("values", 0)) < (minSpace + 1)) {
+                                myS.slider("values", 1, myS.slider("values", 0) + (minSpace + 1));
+                            }
+                            if ((myS.slider("values", 2) - myS.slider("values", 1)) < (minSpace + 1)) {
+                                myS.slider("values", 2, myS.slider("values", 1) + minSpace);
+                            }
+                        }
+                    }
+
+                    //Max handler
+                    if (ui.handleIndex === 2) {
+                        if ((ui.value - myS.slider("values", 1)) < (minSpace + 1)) {
+                            if ((ui.value - 2 * minSpace) < sMin) {
+                                return false;
+                            }
+                            if ((myS.slider("values", 2) - myS.slider("values", 1)) < (minSpace + 1)) {
+                                myS.slider("values", 1, myS.slider("values", 2) - (minSpace + 1));
+                            }
+                            if ((myS.slider("values", 1) - myS.slider("values", 0)) < (minSpace + 1)) {
+                                myS.slider("values", 0, myS.slider("values", 1) - minSpace);
+                            }
+                        }
+                    }
+
+                    //Mid handler
+                    if (ui.handleIndex === 1) {
+                        if ((ui.value + minSpace) > sMax) {
                             return false;
                         }
-                        if ((myS.slider("values", 1) - myS.slider("values", 0)) < (minSpace + 1)) {
-                            myS.slider("values", 1, myS.slider("values", 0) + (minSpace + 1));
-                        }
-                        if ((myS.slider("values", 2) - myS.slider("values", 1)) < (minSpace + 1)) {
-                            myS.slider("values", 2, myS.slider("values", 1) + minSpace);                            
-                        }
-                    }
-                }
-
-                //Max handler
-                if (ui.handleIndex === 2) {
-                    if ((ui.value - myS.slider("values", 1)) < (minSpace + 1)) {
-                        if ((ui.value - 2 * minSpace) < sMin) {
+                        if ((ui.value - minSpace) < sMin) {
                             return false;
                         }
-                        if ((myS.slider("values", 2) - myS.slider("values", 1)) < (minSpace + 1)) {
-                            myS.slider("values", 1, myS.slider("values", 2) - (minSpace + 1));
-                        }
-                        if ((myS.slider("values", 1) - myS.slider("values", 0)) < (minSpace + 1)) {
-                            myS.slider("values", 0, myS.slider("values", 1) - minSpace);
-                        }
-                    }
-                }
 
-                //Mid handler
-                if (ui.handleIndex === 1) {
-                    if ((ui.value + minSpace) > sMax) {
-                        return false;
-                    }
-                    if ((ui.value - minSpace) < sMin) {
-                        return false;
+                        var min_dist = myS.slider("values", 1) - myS.slider("values", 0);
+                        var max_dist = myS.slider("values", 2) - myS.slider("values", 1);
+                        myS.slider("values", 2, Math.min(ui.value + max_dist, 2000));
+                        myS.slider("values", 0, Math.max(ui.value - min_dist, 1830));
                     }
 
-                    var min_dist = myS.slider("values", 1) - myS.slider("values", 0);
-                    var max_dist = myS.slider("values", 2) - myS.slider("values", 1);
-                    myS.slider("values", 2, Math.min(ui.value + max_dist, 2000));
-                    myS.slider("values", 0, Math.max(ui.value - min_dist, 1830));
+                    //Change inputs
+                    if (ui.handleIndex === 0) {
+                        minVal = ui.value;
+                        maxVal = myS.slider("values", 2);
+                    }
+                    if (ui.handleIndex === 1) {
+                        minVal = myS.slider("values", 0);
+                        maxVal = myS.slider("values", 2);
+                    }
+                    if (ui.handleIndex === 2) {
+                        minVal = myS.slider("values", 0);
+                        maxVal = ui.value;
+                    }
+                    $("#min").val(minVal);
+                    $("#max").val(maxVal);
+
+                    //UI
+                    $("#slider_span").val(minVal + " - " + maxVal);
+
                 }
 
-                //Change inputs
-                if (ui.handleIndex === 0) {
-                    minVal = ui.value;
-                    maxVal = myS.slider("values", 2);
+            }).css('background', 'rgba(00,136,255,0.8)');
+
+            //Slider UI on initialization
+            $("#slider_span").val(minSliderValue + " - " + maxSliderValue);
+
+            //List of all countries
+            var countries = createAllCountries();
+
+            // Append the svg object to the body of the page
+            var svg = d3.select("#map_holder"),
+                width = +svg.attr("width"),
+                height = +svg.attr("height");
+
+            // Map and projection
+            var path = d3.geoPath();
+            var projection = d3.geoMercator()
+                .scale(250)
+                .center([0, 0])
+                .translate([width / 2.2, height / 1.5]);
+
+            // Data
+            var data = d3.map();
+
+            // Load external data and boot
+            load_data();
+
+            //Creating map
+            function ready(error, map_data, complete_data) {
+
+                document.getElementById('all_connections_button').onclick = function () {
+                    show_all_connections(countries)
+                };
+
+                //Mouse Over
+                let mouseOver = function (d) {
+
+                    //Mouser Over Animation               
+                    d3.select(this)
+                        .transition()
+                        .duration(200)
+                        .style("stroke", "black");
+
                 }
-                if (ui.handleIndex === 1) {
-                    minVal = myS.slider("values", 0);
-                    maxVal = myS.slider("values", 2);
+
+                let mouseLeave = function (d) {
+
+                    //Mouser Leave Animation
+                    d3.select(this)
+                        .transition()
+                        .duration(0)
+                        .style("stroke", "transparent")
                 }
-                if (ui.handleIndex === 2) {
-                    minVal = myS.slider("values", 0);
-                    maxVal = ui.value;
-                }
-                $("#min").val(minVal);
-                $("#max").val(maxVal);
 
-                //UI
-                $("#slider_span").val(minVal + " - " + maxVal);
+                let mouseClick = function (d) {
 
-            }
+                    //Set last country if slider will be used
+                    lastCountry = d;
 
-        }).css('background', 'rgba(00,136,255,0.8)');
+                    //Get current country
+                    var curr_country = findObjectByKey(countries, "country_code", d.id);
 
-        //Slider UI on initialization
-        $("#slider_span").val(minSliderValue + " - " + maxSliderValue);
+                    //Check if country is used   
+                    if (findObjectByKey(countries, "country_code", d.id) == null || findObjectByKey(countries, "country_code", d.id).country_pioneers.length == 0) {
+                        document.getElementById('country_name_label').innerHTML = d.properties.name;
+                        document.getElementById('sidepanel_holder').hidden = true;
+                        document.getElementById('sidepanel_empty_text').hidden = false;
+                        document.getElementById('pioneers_contribute_button').hidden = false;
+                        svg.selectAll(".Link").remove();
+                        return;
+                    } else {
+                        document.getElementById('sidepanel_empty_text').hidden = true;
+                        document.getElementById('pioneers_contribute_button').hidden = true;
 
+                        makeGrid(curr_country.country_pioneers);
+                    }
 
-
-
-        //List of all countries
-        var countries = createAllCountries();
-
-        // Append the svg object to the body of the page
-        var svg = d3.select("#map_holder"),
-            width = +svg.attr("width"),
-            height = +svg.attr("height");
-
-        // Map and projection
-        var path = d3.geoPath();
-        var projection = d3.geoMercator()
-            .scale(250)
-            .center([0, 0])
-            .translate([width / 2.2, height / 1.5]);
-
-        // Data
-        var data = d3.map();
-
-        // Load external data and boot
-        load_data();
-
-        //Creating map
-        function ready(error, map_data, complete_data) {
-
-            document.getElementById('all_connections_button').onclick = function () {
-                show_all_connections(countries)
-            };
-
-            //Mouse Over
-            let mouseOver = function (d) {
-
-                //Mouser Over Animation               
-                d3.select(this)
-                    .transition()
-                    .duration(200)
-                    .style("stroke", "black");
-
-            }
-
-            let mouseLeave = function (d) {
-
-                //Mouser Leave Animation
-                d3.select(this)
-                    .transition()
-                    .duration(0)
-                    .style("stroke", "transparent")
-            }
-
-            let mouseClick = function (d) {
-
-                //Set last country if slider will be used
-                lastCountry = d;
-
-                //Get current country
-                var curr_country = findObjectByKey(countries, "country_code", d.id);
-
-                //Check if country is used   
-                if (findObjectByKey(countries, "country_code", d.id) == null || findObjectByKey(countries, "country_code", d.id).country_pioneers.length == 0) {
-                    document.getElementById('country_name_label').innerHTML = d.properties.name;
-                    document.getElementById('sidepanel_holder').hidden = true;
-                    document.getElementById('sidepanel_empty_text').hidden = false;
-                    document.getElementById('pioneers_contribute_button').hidden = false;
+                    //Remove old links
                     svg.selectAll(".Link").remove();
-                    return;
-                } else {
-                    document.getElementById('sidepanel_empty_text').hidden = true;
-                    document.getElementById('pioneers_contribute_button').hidden = true;
-
-                    makeGrid(curr_country.country_pioneers);
-                }
-
-                //Remove old links
-                svg.selectAll(".Link").remove();
 
 
-                //Sidebar                
-                document.getElementById('country_name_label').innerHTML = curr_country.country_name;
-                document.getElementById('pioneers_count_label').innerHTML = curr_country.country_pioneers.length;
-                document.getElementById('pioneers_jobs_label').innerHTML = curr_country.country_jobs.length;
-                document.getElementById('pioneers_connections_label').innerHTML = curr_country.country_connected_countries.length;
+                    //Sidebar                
+                    document.getElementById('country_name_label').innerHTML = curr_country.country_name;
+                    document.getElementById('pioneers_count_label').innerHTML = curr_country.country_pioneers.length;
+                    document.getElementById('pioneers_jobs_label').innerHTML = curr_country.country_jobs.length;
+                    document.getElementById('pioneers_connections_label').innerHTML = curr_country.country_connected_countries.length;
 
-                //Display random pioneer on sidepanel
-                show_example_pioneer(curr_country.country_pioneers, curr_country.country_pioneers);
+                    //Display random pioneer on sidepanel
+                    show_example_pioneer(curr_country.country_pioneers, curr_country.country_pioneers);
 
-                document.getElementById('sidepanel_holder').hidden = false;
+                    document.getElementById('sidepanel_holder').hidden = false;
 
-                //Calculate connections
-                var link = []
-                for (var i = 0; i < curr_country.country_connected_countries.length; i++) {
-                    var connected_country = findObjectByKey(countries, "country_name", curr_country.country_connected_countries[i]);
+                    //Calculate connections
+                    var link = []
+                    for (var i = 0; i < curr_country.country_connected_countries.length; i++) {
+                        var connected_country = findObjectByKey(countries, "country_name", curr_country.country_connected_countries[i]);
 
-                    source = [curr_country.country_long, curr_country.country_lat]
-                    target = [connected_country.country_long, connected_country.country_lat]
-                    topush = {
-                        type: "LineString",
-                        coordinates: [source, target]
+                        source = [curr_country.country_long, curr_country.country_lat]
+                        target = [connected_country.country_long, connected_country.country_lat]
+                        topush = {
+                            type: "LineString",
+                            coordinates: [source, target]
+                        }
+                        link.push(topush)
                     }
-                    link.push(topush)
+
+                    // Add the path
+                    svg.selectAll("myPath")
+                        .data(link)
+                        .enter()
+                        .append("path")
+                        .attr("d", function (d) {
+                            return path(d)
+                        })
+                        .attr("class", function (d) {
+                            return "Link"
+                        })
+                        .style("pointer-events", "none")
+                        .style("fill", "none")
+                        .style("stroke-dasharray", ("5, 3"))
+                        .style("stroke", "#00d4db")
+                        .style("stroke-width", 3)
+                        .style("opacity", 0)
+                        .transition()
+                        .duration(500)
+                        .style("opacity", 1)
+
                 }
 
-                // Add the path
-                svg.selectAll("myPath")
-                    .data(link)
+                //Draw the map
+                svg.selectAll("path").remove();
+
+                svg.append("g")
+                    .selectAll("path")
+                    .data(map_data.features)
                     .enter()
                     .append("path")
-                    .attr("d", function (d) {
-                        return path(d)
-                    })
+
+                    //Draw each country
+                    .attr("d", d3.geoPath()
+                        .projection(projection)
+                    )
+
                     .attr("class", function (d) {
-                        return "Link"
+                        return "Country"
                     })
-                    .style("pointer-events", "none")
-                    .style("fill", "none")
-                    .style("stroke-dasharray", ("5, 3"))
-                    .style("stroke", "#00d4db")
-                    .style("stroke-width", 3)
-                    .style("opacity", 0)
-                    .transition()
-                    .duration(500)
-                    .style("opacity", 1)
+                    .on("mouseover", mouseOver)
+                    .on("mouseleave", mouseLeave)
+                    .on("click", mouseClick)
 
+
+                    //Set the color of each country
+                    .attr("fill", function (d) {
+
+                        var colorScale = d3.scaleThreshold()
+                            .domain([1, 2, 5, 15, 50, 100])
+                            .range(d3.schemeBlues[6]);
+
+                        if (findObjectByKey(countries, "country_code", d.id) != null) {
+                            return colorScale(findObjectByKey(countries, "country_code", d.id).country_pioneers.length);
+                        } else return colorScale(0);
+
+                    });
+
+                //Reset UI
+                if (sliderWasUsed && lastCountry !== null) {
+                    mouseClick(lastCountry);
+                }
             }
 
-            //Draw the map
-            svg.selectAll("path").remove();
+        </script>
 
-            svg.append("g")
-                .selectAll("path")
-                .data(map_data.features)
-                .enter()
-                .append("path")
-
-                //Draw each country
-                .attr("d", d3.geoPath()
-                    .projection(projection)
-                )
-
-                .attr("class", function (d) {
-                    return "Country"
-                })
-                .on("mouseover", mouseOver)
-                .on("mouseleave", mouseLeave)
-                .on("click", mouseClick)
-
-
-                //Set the color of each country
-                .attr("fill", function (d) {
-
-                    var colorScale = d3.scaleThreshold()
-                        .domain([1, 2, 5, 15, 50, 100])
-                        .range(d3.schemeBlues[6]);
-
-                    if (findObjectByKey(countries, "country_code", d.id) != null) {
-                        return colorScale(findObjectByKey(countries, "country_code", d.id).country_pioneers.length);
-                    } else return colorScale(0);
-
-                });
-
-            //Reset UI
-            if (sliderWasUsed && lastCountry !== null) {
-                mouseClick(lastCountry);
-            }
-        }
-
-    </script>
-
-</body>
+    </body>
+</div>
 
 </html>
