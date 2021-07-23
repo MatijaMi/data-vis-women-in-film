@@ -100,7 +100,7 @@
 
                 <!-- Settings -->
                 <div class="settings_panel">
-                    <label class="settings_headline">Settings</label>
+                    <label class="settings_headline">Options</label>
 
                     <input type="image" class="settings_info_icon" src="../Images/question_mark.png"
                         onclick="settingspanel_info_onclick()"> </input>
@@ -111,11 +111,11 @@
 
                     <br><br>
 
-                    <button class="settings_button" id="timeline_button">Show as timeline</button>
+                    <button class="settings_button" id="timeline_button" disabled="true">Show as timeline</button>
 
                     <br><br>
 
-                    <button class="settings_button" id="cluster_button">Show as cluster</button>
+                    <button class="settings_button" id="cluster_button" disabled="true">Show as cluster</button>
                 </div>
 
             </div>
@@ -363,7 +363,6 @@
                     //Remove old links
                     svg.selectAll(".Link").remove();
 
-
                     //Sidebar                
                     document.getElementById('country_name_label').innerHTML = curr_country.country_name;
                     document.getElementById('pioneers_count_label').innerHTML = curr_country.country_pioneers.length;
@@ -375,12 +374,14 @@
                         var timeline_link = "./Timeline.html?&timespan=" + $("#slider-range").slider("values", 0) + "-" + $("#slider-range").slider("values", 2);
                         window.open(timeline_link)
                     };
+                    document.getElementById('timeline_button').disabled = false;
 
                     //Button cluster
                     document.getElementById('cluster_button').onclick = function () {
                         var cluster_link = "./Cluster.html?mode=countries&country=" + curr_country.country_name + "&timespan=" + $("#slider-range").slider("values", 0) + "-" + $("#slider-range").slider("values", 2);
                         window.open(cluster_link)
                     };
+                    document.getElementById('cluster_button').disabled = false;
 
                     //Display random pioneer on sidepanel
                     show_example_pioneer(curr_country.country_pioneers, curr_country.country_pioneers);

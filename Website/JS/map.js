@@ -102,7 +102,7 @@ function load_data() {
     //Adding data to d3 map
     d3.queue()
         .defer(d3.json, "../Data/world_map.geojson")
-        .defer(d3.csv, "../Data/map_pioneer_data.csv", function(row) {
+        .defer(d3.csv, "../Data/map_pioneer_data.csv", function (row) {
 
             //Calculations for each row
             //Use settings
@@ -117,7 +117,7 @@ function load_data() {
 
                 if (curr_country != null) {
                     var row_worked_as = row.worked_as.split("|");
-                    row_worked_as.forEach(function(part, index) {
+                    row_worked_as.forEach(function (part, index) {
                         this[index] = this[index].split(">").pop();
                     }, row_worked_as);
 
@@ -164,28 +164,28 @@ function load_data() {
 function show_example_pioneer(pioneers, all_pioneers, last_pioneer) {
 
     //All pioneers were shown once, therefore we reset the list
-    if(pioneers.length == 0) pioneers = all_pioneers;
+    if (pioneers.length == 0) pioneers = all_pioneers;
 
     //If there is only one pioneer we dont show the next button
     document.getElementById('pioneers_next_button').hidden = all_pioneers.length == 1;
-   
+
     //Get random pioneer
     var example_pioneer = pioneers[Math.floor(Math.random() * pioneers.length)];
 
     //Make sure the random pioneer wasn't the last one shown before list reset
-    while(all_pioneers.length > 1 && example_pioneer == last_pioneer){
+    while (all_pioneers.length > 1 && example_pioneer == last_pioneer) {
         example_pioneer = pioneers[Math.floor(Math.random() * pioneers.length)];
     }
-    
+
     //Display values for the random pioneer
     document.getElementById('pioneers_ex_name').innerHTML = example_pioneer.pioneer_name;
     document.getElementById('pioneers_ex_image').src = "";
     document.getElementById('pioneers_ex_image').src = example_pioneer.pioneer_image;
-    document.getElementById('pioneers_read_more_button').onclick = function() { window.open(example_pioneer.pioneer_link) };
+    document.getElementById('pioneers_read_more_button').onclick = function () { window.open(example_pioneer.pioneer_link) };
 
     //Set the onclick function for the next button
-    document.getElementById('pioneers_next_button').onclick = function() {
-        var filtered = pioneers.filter(function(value, index, arr) {
+    document.getElementById('pioneers_next_button').onclick = function () {
+        var filtered = pioneers.filter(function (value, index, arr) {
             return value !== example_pioneer;
         });
         show_example_pioneer(filtered, all_pioneers, example_pioneer)
@@ -218,8 +218,8 @@ function show_all_connections(countries) {
         .data(link)
         .enter()
         .append("path")
-        .attr("d", function(d) { return path(d) })
-        .attr("class", function(d) { return "Link" })
+        .attr("d", function (d) { return path(d) })
+        .attr("class", function (d) { return "Link" })
         .style("pointer-events", "none")
         .style("fill", "none")
         .style("stroke", "#00d4db")
@@ -241,14 +241,14 @@ function findObjectByKey(array, key, value) {
 }
 
 function image_load_error(id) {
-    if(document.getElementById(id) != null) document.getElementById(id).src = "../Images/Pioneer-Placeholder.png";
+    if (document.getElementById(id) != null) document.getElementById(id).src = "../Images/Pioneer-Placeholder.png";
 }
 
 function uniq(a) {
     var prims = { "boolean": {}, "number": {}, "string": {} },
         objs = [];
 
-    return a.filter(function(item) {
+    return a.filter(function (item) {
         var type = typeof item;
         if (type in prims)
             return prims[type].hasOwnProperty(item) ? false : (prims[type][item] = true);
@@ -257,57 +257,57 @@ function uniq(a) {
     });
 }
 
-function sidepanel_info_onclick(){
-    var dialog_text =   "In this sidepanel you can see an overview of the pioneers registered between the selected years. " +
-                        "You can also see how many different jobs these women had in total and in how many countries they worked. " +
-                        "Those countries are therefore called 'connected' and displayed with blue dotted lines. " +
-                        "Note that this data does not primarily include international collaboration of film studios but rather international working of individual persons. " +
-                        "<br/><br/>" +
-                        "Besides that, there is also an example pioneer given who was working in the selected country in this time period. " +
-                        "If you want to know more about the example pioneer you can click on the 'Read more' button to visit her WFPP biography.";
+function sidepanel_info_onclick() {
+    var dialog_text = "In this sidepanel you can see an overview of the pioneers registered between the selected years. " +
+        "You can also see how many different jobs these women had in total and in how many countries they worked. " +
+        "Those countries are therefore called 'connected' and displayed with blue dotted lines. " +
+        "Note that this data does not primarily include international collaboration of film studios but rather international working of individual persons. " +
+        "<br/><br/>" +
+        "Besides that, there is also an example pioneer given who was working in the selected country in this time period. " +
+        "If you want to know more about the example pioneer you can click on the 'Read more' button to visit her WFPP biography.";
 
     open_dialog(dialog_text);
 }
 
-function settingspanel_info_onclick(){
-    var dialog_text =   "In the settings panel, you can use additional functions to specify the data displayed. " +
-                        "<br/><br/>" +
-                        "The 'Include Unknown Dates' checkbox allows you to include pioneers which have unknown birth or death dates. " +
-                        "<br/>" +
-                        "The 'Show all connections' button allows you to see all international working between all countries in the selected time period. " +
-                        "Note that this data does not primarily include international collaboration of film studios but rather international working of individual persons.";
+function settingspanel_info_onclick() {
+    var dialog_text = "In this panel, you can use additional functions to to get a different view on the country-data. " +
+        "<br/><br/>" +
+        "The 'Show all connections' button allows you to see all international working between all countries in the selected time period. " +
+        "Note that this data does not primarily include international collaboration of film studios but rather international working of individual persons." + 
+        "<br/>" +
+        "The 'Show as timeline' and 'Show as cluster' buttons, can be used to switch to a different window, using the currently selected country.";
 
     open_dialog(dialog_text);
 }
 
-function slider_info_onclick(){
-    var dialog_text =   "This slider can be used to specify the time period the data is selected from. " +
-                        "The pioneers you will see, are those who were alive in the selected time period. " +
-                        "To be exact, you see those which were born before the date of the right handle and died after the date of the left handle. " +
-                        "You can use this selection to see which time periods have missing data.";
+function slider_info_onclick() {
+    var dialog_text = "This slider can be used to specify the time period the data is selected from. " +
+        "The pioneers you will see, are those who were alive in the selected time period. " +
+        "To be exact, you see those which were born before the date of the right handle and died after the date of the left handle. " +
+        "You can use this selection to see which time periods have missing data.";
 
     open_dialog(dialog_text);
 }
 
-function open_dialog(dialog_text){
-    $( "#dialog" ).html("<p>" + dialog_text + "</p>");
-    $( "#dialog" ).dialog({
+function open_dialog(dialog_text) {
+    $("#dialog").html("<p>" + dialog_text + "</p>");
+    $("#dialog").dialog({
         width: "50%"
-      });
+    });
 }
 
-function histogram_button_onclick(){
-    document.getElementById('histogram_holder').hidden  = !document.getElementById('histogram_holder').hidden;
+function histogram_button_onclick() {
+    document.getElementById('histogram_holder').hidden = !document.getElementById('histogram_holder').hidden;
 
     //Set height of spacer
-    if(document.getElementById('histogram_holder').hidden) document.getElementById('bottom_wrapper').style.height =  "100px";
-    else{
-        document.getElementById('bottom_wrapper').style.height =  "380px";
-        window.scrollTo(0,document.body.scrollHeight);
+    if (document.getElementById('histogram_holder').hidden) document.getElementById('bottom_wrapper').style.height = "100px";
+    else {
+        document.getElementById('bottom_wrapper').style.height = "380px";
+        window.scrollTo(0, document.body.scrollHeight);
     }
 }
 
-function CheckSizeZoom() {   
+function CheckSizeZoom() {
     var minW = 1800;
     if ($(window).width() < minW) {
         var zoomLev = $(window).width() / minW;
