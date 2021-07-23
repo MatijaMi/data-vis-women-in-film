@@ -1,5 +1,5 @@
 body{
-	background: #F2E7DC;
+	background: #444444;
 	font-family:Arial,sans-serif;
 	padding-top: 0px;
 	margin: 0px;
@@ -12,27 +12,39 @@ nav{
   display: flex;
   justify-content: space-around;
   align-items: center;
-  min-height: 8vh;
-  background-color: #A6998F;
+  min-height: 7vh;
+  background-color: #222222;
+    
   /* font-family: 'Poppins', sans-serif; */
 }
 
 .nav-links{
-  display: flex;
+  display: inline-block;
   justify-content: space-around;
-  width: 85%;
+  width: 100%;
+  height: 100%;
+    padding:none;
+    margin: none;
 }
+
+.nav-links a:hover{
+    color: #AAAAAA;
+}
+
 
 .nav-links a{
   text-decoration: none;
   letter-spacing: 2px;
   font-weight: 600px;
-  font-size: 18px;
-  color: #180f0f;
+  font-size: 20px;
+  color:white;
 }
 
 .nav-links li{
+  display: inline-block;
   list-style: none;
+  width: 14%;
+  height: 100%;
 }
 /* nav end */
 
@@ -252,7 +264,7 @@ nav{
   width: 85rem;
   height: 20rem;
   margin:  2% auto ;
-  background-color: #A6998F;
+  background-color: #0B0C17;
   margin-bottom: 20px;
 }
 
@@ -271,14 +283,14 @@ nav{
   font-weight: 800px;
   font-size: 25px;
   letter-spacing: 1px;
-  color: #180f0f;
+  color: #dddddd;
 }
 
 .content_text {
   /* border: 3px blue dashed; */
   font-weight: 500px;
   font-size: 20px;
-  color: #180f0f;
+  color: #dddddd;
   text-align: left;
   padding: 1rem 1rem;
 }
@@ -393,7 +405,7 @@ nav{
 } 
 
 .my_dataviz{
-    background:#665545;
+    background:#333333;
     width:100%;
     height:100%;
 }
