@@ -1,9 +1,11 @@
-const svg = d3.select(".timeline");
-const H = svg.node().getBoundingClientRect().height;
+const svg = d3.select("#data-timeline");
+const xAxis = d3.select("#xAxis");
+var H = svg.node().getBoundingClientRect().height;
 const W = svg.node().getBoundingClientRect().width;
-const M = 20;
-const defaultFill = "#009600";
-const hoverFill = "#005600";
+var M = 5;
+const DEFAULTFILL = "#009600";
+const HOVERFILL = "#005600";
+
 
 var tooltip = d3.select("body")
     .append("div")
@@ -20,6 +22,7 @@ var tooltip = d3.select("body")
 
 var data;
 var naiveData = [];
+var country_data = [];
 
 const yob_asc_button = document.getElementById("yob-sort-asc-button");
 yob_asc_button.addEventListener("click", function (event) {
@@ -39,13 +42,6 @@ name_asc_button.addEventListener("click", function (event) {
 const name_desc_button = document.getElementById("name-sort-desc-button");
 name_desc_button.addEventListener("click", function (event) {
     sorting(name_desc_button);
-});
-
-const add_event_button = document.getElementById("add-event-button");
-add_event_button.addEventListener("click", function (event) {
-    var event_text = document.getElementById("event-text");
-    addEvent(event_text.value);
-    event_text.value = "";
 });
 
 function sortByYOBAsc() {
@@ -88,34 +84,32 @@ function sorting(button) {
     }
 }
 
-function addEvent(input) {
-    cleanUp();
-    try {
-        let [name, dates] = input.split(":");
-        var [begin, end] = dates.split(" ");
-        console.log(name, begin, end);
-        var object = {
-            name: name,
-            YOB: begin,
-            YOD: end,
-        };
-        naiveData.push(object);
-        render();
-    } catch (error) {
-        render();
-        console.log(error + "\nUnable to create new event from given input");
-    }
-}
-
 function cleanUp() {
     svg.selectAll("g").remove();
     d3.select("#xAxis").selectAll("svg").remove();
 }
 
 function render() {
+    var url = window.location.href;
+    if (url.includes("?country=")) {
+        var split = url.split("?");
+        var country = split[1].split("=")[1];
+        var [first, second] = split[2].split("=")[1].split("-");
+        country = country.replace("%20", " ");
+        console.log(country, first, second);
+        for(let entry of naiveData){
+            if (entry.worked_in.includes(country) && entry.YOB <= second && entry.YOD >= first){
+                country_data.push(entry);
+            }
+        }
+        console.log(country_data.length);
+        naiveData = country_data;
+        H = 25 * naiveData.length;
+        svg.style("height", H + "px");
+    }
     naiveData = naiveData.slice().map((e, i) => ({ ...e, yIndex: i }));
 
-    console.log(naiveData);
+    
 
     const xScale = d3.scaleLinear()
         .domain([d3.min(naiveData, d => d.YOB), d3.max(naiveData, d => d.YOD)])
@@ -126,17 +120,19 @@ function render() {
         .range([M, H - M])
         .paddingInner(0.2);
 
-    d3.select("#xAxis")
-        .append("svg")
-        .attr("width", W)
-        .attr("height", 20)
-        .append("g")
-        .attr("class", "axis")
-        .attr("transform", "translate(0, 12)")
-        .call(d3.axisTop(xScale)
-            .tickFormat(d3.format(".0f"))
-            .tickSize(-(H - M))
-            .ticks(34));
+    var axis = document.getElementById("xAxis").childElementCount;
+    if (axis < 1) {
+        xAxis.append("svg")
+            .attr("width", W)
+            .attr("height", 20)
+            .append("g")
+            .attr("class", "axis")
+            .attr("transform", "translate(0, 12)")
+            .call(d3.axisTop(xScale)
+                .tickFormat(d3.format(".0f"))
+                .tickSize(-(H - M)));
+    }
+    
 
     var g = svg.selectAll("g")
         .data(naiveData)
@@ -152,15 +148,15 @@ function render() {
                 ? 3
                 : xScale(d.YOD) - xScale(d.YOB))
         )
-        .attr("height", yScale.bandwidth())
-        .style("fill", defaultFill)
+        .attr("height", 14)
+        .style("fill", `${DEFAULTFILL}`)
         .style("fill-opacity", 1);
 
     g.append("text")
         .attr('transform', d => `translate(${xScale(d.YOB)}, ${yScale(d.name)})`)
         .text(d => d.name)
         .attr('x', d => ((xScale(d.YOD) - xScale(d.YOB)) / 2))
-        .attr('y', yScale.bandwidth() - 3)
+        .attr('y', 11)
         .style("text-anchor", "middle")
         .style("font-family", "sans-serif")
         .style("font-size", "10px")
@@ -171,7 +167,7 @@ function render() {
     g.on("mouseenter", function (e, d) {
         d3.select(this)
             .select("rect")
-            .style("fill", `${hoverFill}`);
+            .style("fill", `${HOVERFILL}`);
 
         tooltip
             .html(
@@ -185,12 +181,12 @@ function render() {
                 .style("top", e.pageY - 50 + "px");
         })
         .on("click", function(e, d) {
-            window.open("../HTML/Map.html", "_self")
+            window.open("../HTML/Map.html?id=" + d.id, "_self");
         })
         .on("mouseleave", function (e, d) {
             d3.select(this)
                 .select("rect")
-                .style("fill", `${defaultFill}`);
+                .style("fill", `${DEFAULTFILL}`);
             tooltip.html(``).style('visibility', 'hidden');
         });
 }

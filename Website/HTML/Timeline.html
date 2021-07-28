@@ -3,13 +3,14 @@
 <html lang="en" style="height: 100%">
 
 <head>
-    <title>WFPP</title>
+    <title>WFPP-Explorer</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../CSS/baseStyle.css">
     <link rel="icon" type="image/png" href="../Images/WFPP-Logo.png" />
     <script src="https://d3js.org/d3.v6.min.js"></script>
     <script type="module" src="../JS/timeline.js" defer></script>
+    <script type="module" src="../JS/events.js" defer></script>
 </head>
 
 <body>
@@ -39,15 +40,6 @@
         </ul>
     </nav> 
 
-      <!-- <div class="header" id="header">
-        <a href="../index.html">Home</a>
-        <a href="./Map.html">Map</a>
-        <a href="./Cluster.html">Cluster</a>
-        <a href="./Timeline.html">Timeline</a>
-        <a href="./Dendrogram.html">Dendrogram</a>
-        <a href="./About.html">About</a>
-    </div> -->
-
     <div class="content-container">
         <div class="dropdown-container">
             <button class="dropbtn">Sort</button>
@@ -58,13 +50,16 @@
                 <button class="sort-button" id="name-sort-desc-button">Name&#8642;</button>
             </div>
         </div>
-        <div class="event-container">
-            <input class="event-text" id ="event-text" placeholder="Name:Start End"></textarea>
-            <button class="add-event-button" id="add-event-button">Add event</button>
+        <div class="add-event-container">
+            <input class="event-input" id ="event-name" placeholder="Event Name"></textarea>
+            <input class="event-input" id ="event-start" placeholder="Event Start"></textarea>
+            <input class="event-input" id ="event-end" placeholder="Event End"></textarea>
+            <button class="add-event-button" id="add-event-button">Add Event</button>
         </div>
         <div id="xAxis"></div>
-        <div class="svg-container" id="plot">
-            <svg class="timeline" id="timeline"></svg>
+        <div class="event-timeline-container"></div>
+        <div class="data-timeline-container">
+            <svg class="timeline" id="data-timeline"></svg>
         </div>
     </div>
 </body>
@@ -79,8 +74,8 @@
         position:relative;
     }
 
-    .svg-container {
-        height: 92vh;
+    .data-timeline-container {
+        height: 82vh;
         width: 1280px;
         border: 2px solid #000;
         margin: auto;
@@ -89,12 +84,23 @@
         position:relative;
     }
 
+    .event-timeline-container {
+        height: 10vh;
+        width: 1280px;
+        border: 2px solid #000;
+        margin: auto;
+        overflow-y: auto;
+        overflow-x: auto;
+        position: relative;
+        display: none;
+    }
+
     .timeline {
         width: 1200px;
         height: 5000px;
     }
 
-    .event-container {
+    .add-event-container {
         position: relative;
         display: inline-block;
     }
@@ -104,9 +110,11 @@
         margin: 5px;
         font-size: 16px;
         border: none;
+        color: white;
+        background-color: #009600;
     }
 
-    .event-text {
+    .event-input {
         padding: 10px;
         font-size: 16px;
         border: none;
