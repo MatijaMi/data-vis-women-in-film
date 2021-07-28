@@ -1,14 +1,50 @@
 body{
-	background: #ddd;
+	background: #333333;
 	font-family:Arial,sans-serif;
 	padding-top: 0px;
 	margin: 0px;
 	text-align: center;
     width:100%;
-    height:100%;
-    overflow: hidden;
+    height:94%;
+}
+nav{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  min-height: 6vh;
+  background-color: #060606;
+    
+  /* font-family: 'Poppins', sans-serif; */
 }
 
+.nav-links{
+  display: inline-block;
+  justify-content: space-around;
+  width: 100%;
+  height: 100%;
+    padding:none;
+    margin: none;
+}
+
+.nav-links a:hover{
+    color: #AAAAAA;
+}
+
+
+.nav-links a{
+  text-decoration: none;
+  letter-spacing: 2px;
+  font-weight: 600px;
+  font-size: 20px;
+  color:white;
+}
+
+.nav-links li{
+  display: inline-block;
+  list-style: none;
+  width: 14%;
+  height: 100%;
+}
 
 .header{
 	position: relative;
@@ -42,9 +78,14 @@ body{
  src: url('../Fonts/Blacksword.otf');
 }
 .my_dataviz{
-    background:#665545;
+    background:#333333;
+    position: relative;
     width:100%;
     height:100%;
+    overflow: hidden;
+}
+svg{
+    background-color:#333333;
 }
 
 #closeTooltipButton{
@@ -63,7 +104,7 @@ body{
 #locator button{
     display: inline-block;
     font-size: 45px;
-    font-family: 'blacksword';
+    font-family: "Roboto", sans-serif;
     background: none;
     color: #fff;
     text-shadow:2px 0 0 #000, 0 -2px 0 #000, 0 2px 0 #000, -2px 0 0 #000;
@@ -139,8 +180,9 @@ body{
     padding: 0px;
     margin: 0px;
     text-align: center;
-    font-family: "blacksword";
+    font-family: "Roboto", sans-serif;
     color: #fff;
+    z-index: 4;
     text-shadow:2px 0 0 #000, 0 -2px 0 #000, 0 2px 0 #000, -2px 0 0 #000;
     animation: fadein 1.5s;
     position: absolute; 
@@ -154,7 +196,7 @@ body{
 
 
 #subGroupOpen{
-    display: none;
+    display: block;
     color:black;
     background-color: white;
     position: absolute;
@@ -162,6 +204,7 @@ body{
     border:none;
     top:12%;
     left:0%;
+    z-index: 10;
 }
 
 #subGroupOpen:hover{
@@ -170,19 +213,21 @@ body{
 
 #subGroupPanel{
     width:0px;
-    text-align: left;
+    text-align: center;
     overflow: hidden;
-    z-index: 3;
-    background-color: gray;
-    border-bottom-right-radius: 5px;
-    border-top-right-radius: 5px;
+    z-index: 11;
+    background-color: wheat;
     position: absolute;
-    top:12%;
-    height: 87%;
+    top:4%;
+    height: 94.5%;
     transition: 0.5s;
     padding-top: 10px;
-    font-size: 30px;
+    font-size: 2vh;
     text-decoration: underline;
+}
+
+#subGroupPanelSVG{
+    background-color: wheat;
 }
 
 #closeGroupPanel{
@@ -195,4 +240,29 @@ body{
     color: #000;
     display: block;
     transition: 0.3s;
+}
+
+#back{
+    background-color: white;
+    border:solid;
+    border-width: 2px;
+    border-radius:5px;
+    width:6%;
+    height: 2%;
+    padding:5px;
+    position:fixed;
+    right: 5%;
+    bottom: 5%;
+    cursor: pointer;
+    z-index: 10;
+}
+
+#back button{
+    border:none;
+    background-color: white;
+    cursor: pointer;
+    text-align: center;
+    font-size: 50%;
+    width: 100%;
+    height: 100%;
 }

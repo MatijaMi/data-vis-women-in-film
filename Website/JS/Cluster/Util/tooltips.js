@@ -87,7 +87,6 @@ function createTextOverlay(data,mode,container){
                 .attr("class", "textOverlay")
                 .style("line-height", lineHeight)
                 .style("font-size",calculatedFont)
-                .style("z-index", 5)
                 .style("left", x-r +"px")
                 .style("top", y+yShift + "px")   
                 .style("width", 2*r +"px") 

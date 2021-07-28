@@ -1,13 +1,61 @@
+:root {
+    --panel_background_color: rgb(33, 33, 33);
+    --panel_border_color: rgb(66, 66, 66);
+    --text_color: rgb(250, 250, 250);
+    --text_font: 'Times New Roman', serif;
+}
+
+
+
 body{
-	background: #ddd;
+	background: #212121;
 	font-family:Arial,sans-serif;
 	padding-top: 0px;
 	margin: 0px;
 	text-align: center;
-    width:100%;
-    height:100%;
+    width:auto;
+    height: auto;
+}
+/* nav start */
+nav{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  min-height: 6vh;
+  background-color: #060606;
+    
+  /* font-family: 'Poppins', sans-serif; */
 }
 
+.nav-links{
+  display: inline-block;
+  justify-content: space-around;
+  width: 100%;
+  height: 100%;
+    padding:none;
+    margin: none;
+}
+
+.nav-links a:hover{
+    color: #AAAAAA;
+}
+
+
+.nav-links a{
+  text-decoration: none;
+  letter-spacing: 2px;
+  font-weight: 600px;
+  font-size: 20px;
+  color:white;
+}
+
+.nav-links li{
+  display: inline-block;
+  list-style: none;
+  width: 14%;
+  height: 100%;
+}
+/* nav end */
 
 .header{
 	position: relative;
@@ -30,38 +78,85 @@ body{
 .header a:hover{
 	background-color: #bbb;
 }
-
+/* xa */
 .caruText{
-    width:30%;
-    padding-left: 5%;
-    color: white;
-    padding-top: 5%;
-    font-size: 18px;
+  
+  /* xa */
+  display:flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: stretch;
+  /* background-color: red; */
+  align-content: space-evenly;
+  background-color: rgba(0, 0, 0, 0.00);
+
+  text-align: left;
+  width:50%;
+  margin: 0 0;
+  padding: 18px;
+  margin-right: 10%;
+  color: whitesmoke;
+  font-size: 18px;
+
 }
 
-.caruText button{
-  display: inline-block;
-  padding: 0.5em 1.7em;
-  margin: 0 0.1em 0.1em 0;
-  margin-left:35%;
-  border: 0.16em solid rgb(255, 255, 255);
-  border-radius: 2em;
-  box-sizing: border-box;
-  text-decoration: none;
-  font-family: "Roboto", sans-serif;
-  font-weight: 300;
-  color: #000;
-  text-shadow: 0 0.04em 0.04em rgba(255, 255, 255, 0.253);
-  text-align: center;
+/* xa */
+.caruText-child{
+  width: 100%;
+  display: flex;
+  margin:0 auto;
+  justify-content: left;
+  align-items: left;
+  /* background-color: red; */
+  padding-left: 15%;
+    
+}
+
+.caruText-child p{
+    font-size: 22px;
+    text-shadow:  0.08em 0.08em  rgba(0, 0, 0, 1);
+}
+
+.caruText-child h3{
+    padding-top:0px;
+    margin-top:0px;
+    font-size: 5em;
+    font-family: "Roboto", sans-serif;
+    color:white;
+    text-shadow:  0.02em 0.04em  rgba(0, 0, 0, 1);
+}
+
+#discoverButton{
+    background-image: url("../Images/down-arrow.png");
+    display: inline-block;
+    margin: 0 0.1em 0.1em 0;
+    margin-left:35%;
+    padding: 0.5em 1.7em;
+    margin-bottom: 20px;
+    font-weight: 300;
+    outline: none;
+    box-shadow: none;
+    border:none;
+    width: 10vw;
+    height: 6vh;
+    background-size: contain;
+    background-color: rgb(255,255,255, 0.0);
+    background-repeat: no-repeat;
+    font-family: "Roboto", sans-serif;
+    cursor: pointer;
 }
 
 .caruText button:hover {
-  color: black;
-  background-color: rgb(255, 255, 255);
   cursor: pointer; 
 }
 
 .carousel{
+  /* xa */
+  display: flex;
+  justify-content: left;
+
+
+
     text-align: left;
     margin-top: 0px;
     padding-top: 0px;
@@ -71,7 +166,8 @@ body{
     -ms-animation: loader 100s steps(10000) infinite;
     -o-animation: loader 100s steps(10000) infinite;
     animation: loader 100s steps(10000) infinite;
-    height: 575px;
+    height: 92vh;
+    background-size: cover;
 }
 
 .sticky {
@@ -85,21 +181,7 @@ body{
   padding-top: 60px;
 }
 
-.caruText h3{
-    padding-top:0px;
-    margin-top:0px;
-    color:white;
-}
 
-@keyframes fadein {
-    from { opacity: 0; }
-    to   { opacity: 1; }
-}
-
-@font-face{
- font-family:'blacksword';
- src: url('../Fonts/Blacksword.otf');
-}
 
 @-webkit-keyframes loader {
   from {
@@ -142,20 +224,191 @@ body{
   }
 }
 
-.content{
-	position: relative;
-	background: #eee;
-	width:100%;
-	padding-top: 10px;
+/* .content{
+  margin: 0 auto;
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: space-between;
+  
+	width:80%;
+	padding: 4rem;
+  border: 4px red solid;
+} */
+/*  
+.content_panel{
+  border: 5px yellow solid;
+  background-color: #F2DAC4;
+  margin: 1rem auto;
+  padding: 2rem;
+  width: 77%;
+  height: 25rem;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: center;
+  
+}
+
+.content_image_left{
+  width:33.33%;
+  height: 300px;
+}
+
+.content_headline{
+  font-size: 25px;
+}
+
+.content_text {
+  width: 25%;
+}
+
+.content_button {
+  display: inline-block;
+  padding: 0.5em 1.7em;
+  margin: 0 0.1em 0.1em 0;
+  position: absolute;
+  bottom: 10%;
+  left: 65%;
+  border: 0.16em solid rgb(255, 255, 255);
+  border-radius: 2em;
+  box-sizing: border-box;
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+  color: #000;
+  text-shadow: 0 0.04em 0.04em rgba(255, 255, 255, 0.253);
+  text-align: center;
+} */
+.content_panel {
+  /* border: 3px red solid; */
+  position: relative;
+  width: 85rem;
+  height: 20rem;
+  margin:  2% auto ;
+  background-color: #bb7043;
+  margin-bottom: 20px;
+  border: 4px solid #060606;
+}
+
+.content_image_left {
+  height: 100%;
+  width: 33%;
+  margin: 0 15px 0 0;
+  float: left;
+}
+
+.content_image_right{
+  height: 100%;
+  width: 33%;
+  margin: 0 0px 0 15px;
+  float: right
+}
+
+.content_headline {
+  /* border: 3px black dashed; */
+  top: 30px;
+  padding: 2rem 2rem;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 800px;
+  font-size: 25px;
+  letter-spacing: 1px;
+  color: #000;
+}
+
+.content_text {
+  /* border: 3px blue dashed; */
+  font-weight: 500px;
+  font-size: 20px;
+  color: #000000;
+  text-align: left;
+  padding: 1rem 1rem;
+}
+
+#birthday_pic{
+    display: none;
+    height: 100%;
+    width: auto;
+}
+
+#birthday_title{
+    padding: 4px;
+    padding-bottom: 0px;
+    margin: 0px;
+    margin-top: 10px;
+    object-fit: contain;
+}
+
+
+#pod_text{
+    text-align: center;
+}
+
+.content_button {
+  padding: 0.5em 1.7em;
+    margin-bottom: 20px;
+    font-weight: 300;
+    color: #000;
+    text-shadow: 0 0.04em 0.04em rgba(235, 235, 235, 0.253);
+    font-size: 17px;
+    color: #ccc;
+    background-color: #282828;
+    outline: none;
+    box-shadow: none;
+    border: 0.2em solid #060606;
+    cursor: pointer;
+
+}
+
+.contribute_button{
+    padding: 0.5em 1.7em;
+    margin-bottom: 20px;
+    font-weight: 300;
+    color: #000;
+    text-shadow: 0 0.04em 0.04em rgba(235, 235, 235, 0.253);
+    font-size: 17px;
+    color: #ccc;
+    background-color: #282828;
+    outline: none;
+    box-shadow: none;
+    font-family: "Roboto", sans-serif;
+    border: 0.2em solid #060606;
+    cursor: pointer;
 }
 
 .contentPanel{
-    height: 300px;
+  /* border: 4px green solid; */
+  display: flex;
+    height: auto;
+  flex-direction: row;
+  justify-content: center;
     margin-left: 10%;
     margin-right: 10%;
     margin-top: 1%;
     margin-bottom: 1%;
-    background-color: #ddd
+    background-color: #ddd;
+}
+
+#birthday_title{
+    color: white;
+}
+
+#pod_container{
+    background-color: #282828;
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
+
+#pod_panel{
+  width: 65rem;
+    height: 28vh;
+  background-color: #212121;
+  margin-bottom: 0px;
+  margin-top:0px;
+  text-align: center;
+  color: #dddddd;
+}
+
+#pod_panel p{
+    color: #fff;
 }
 
 .footer{
@@ -235,7 +488,7 @@ body{
 } 
 
 .my_dataviz{
-    background:#665545;
+    background:#333333;
     width:100%;
     height:100%;
 }
@@ -248,65 +501,63 @@ body{
 
 #locator{
     z-index: 1;
-    width: 100%;
-    text-align: center;
+    width: auto;
     position: absolute;
-    margin-top: 5px;
+    top:8%;
+    
 }
 #locator button{
-    display: inline-block;
-    font-size: 45px;
-    font-family: 'blacksword';
-    background: none;
-    color: #fff;
-    text-shadow:2px 0 0 #000, 0 -2px 0 #000, 0 2px 0 #000, -2px 0 0 #000;
-    outline: none;
-    border: none;
-    text-decoration:underline;
+    display: block;
+    font-size: 20px;
+}
+@keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
 }
 
-#locator button:hover{
-    cursor: pointer;
+@font-face{
+ font-family:'blacksword';
+ src: url('../Fonts/Blacksword.otf');
 }
-
 #sideishButtons{
-    border:none;
-    background: transparent;
     position: absolute;
-    top:4.5%;
-    z-index: 2;
+    top:24%;
 }
 #countryButton{
-    z-index: 2;
-    display: inline-block;
+    z-index: 1;
+    display: block;
     width: 65px;
     height: 60px;
-    border-radius: 10px;
-    border-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    top:31%;
+    left:0%;
 }
 
 #allPioneersButton{
-    z-index: 2;
-    display: inline-block;
+    z-index: 1;
+    display: block;
     width: 65px;
     height: 60px;
-    border-radius: 10px;
-    border-radius: 10px;
-    
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    top:24%;
+    left:0%;
 }
 #professionsButton{
-    z-index: 2;
-    display: inline-block;
+    z-index: 1;
+    display: none;
     width: 65px;
     height: 60px;
-    border-radius: 10px;
-    border-radius: 10px;
-    
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    top:24%;
+    left:0%;
 }
 
 #countryButton img, #allPioneersButton img,#professionsButton img{
-    width: 95%;
-    height: 90%;
+    width: 50px;
+    height: 50px;
 }
 
 #countryButton img:hover, #allPioneersButton img:hover, #professionsButton:hover{
@@ -316,20 +567,11 @@ body{
 .node:hover {
       stroke-width: 4px !important;
       opacity: 1 !important;
-}
+    }
 
-.textOverlay{
-    background-color: none;
-    display: block;
-    border: none;
-    border-width: 1px;
-    border-radius: 5px;
-    padding: 0px;
-    margin: 0px;
-    text-align: center;
-    font-family: "blacksword";
-    color: #fff;
-    text-shadow:2px 0 0 #000, 0 -2px 0 #000, 0 2px 0 #000, -2px 0 0 #000;
-    animation: fadein 1.5s;
-    position: absolute; 
-}
+    footer {
+      margin: 30px;
+      width: 20px;
+      height: 20px;
+      /* border: 2px red solid; */
+    }

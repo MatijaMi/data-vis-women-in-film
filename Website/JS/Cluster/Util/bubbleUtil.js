@@ -16,17 +16,6 @@ function determineJobSize(count){
     }
 }
 
-function determineSubGroupSize(count,data){
-    var height = document.getElementById("subGroupPanelSVG").clientHeight-50;
-    var amount = data.length;
-    var r =100;
-    if(height/(amount*2)>r){
-        return r-10;
-    }else{
-        
-    }
-    return height/(amount*2);
-}
 
 function determinePersonSize(data){
     if(data.length>140){
@@ -133,6 +122,13 @@ function findProfessionPicture(profession,data,svg,mode){
             link = '../Images/WFPP-Pictures-Squares/' + hasPic[0].name.split(' ').join('%20') +'.jpg';
         }
     }
+    if(mobileMode){
+        var currentWidth = document.getElementById("my_dataviz").clientWidth;
+        r=currentWidth/8-10;
+    }
+    if(mode=="subMobile"){
+        r=currentWidth/4-10;
+    }
     svg.append("pattern")
             .attr("class", "bubblePattern")
             .attr("x", 0)
@@ -176,7 +172,10 @@ function findCountryPicture(country,count,svg){
             link = '../Images/WFPP-Pictures-Squares/' + hasPic[0].name.split(' ').join('%20') +'.jpg';
         }
     }
-    
+    if(mobileMode){
+        var currentWidth = document.getElementById("my_dataviz").clientWidth;
+        r=currentWidth/8-10;
+    }
     svg.append("pattern")
             .attr("class", "bubblePattern")
             .attr("x", 0)
@@ -207,7 +206,10 @@ function findPersonPicture(id,data,svg){
           }
         }
     }
-    
+    if(mobileMode){
+        var currentWidth = document.getElementById("my_dataviz").clientWidth;
+        r=currentWidth/8-10;
+    }
     svg.append("pattern")
             .attr("x", 0)
             .attr("y", 0)
@@ -223,16 +225,30 @@ function findPersonPicture(id,data,svg){
     return patternID+"_"+r;
 }
 
+
+function determineSubGroupSize(data){
+    var height = document.getElementById("subGroupPanelSVG").clientHeight-50;
+    var amount = data.length;
+    var r =document.getElementById("my_dataviz").clientWidth*0.05;
+    
+    if(height/(amount*2)<r){
+        return height/(amount*2)-(15/amount);
+    }
+    
+    return r-10;
+}
+
 function determineSubgroupY(job,count,data){
     var height= document.getElementById("subGroupPanelSVG").clientHeight;
-    var xOffset=determineSubGroupSize(data[0].count,data);
+    var rOffset=determineSubGroupSize(data)+10;
+    var r = determineSubGroupSize(data);
     for(var i =0; i<data.length;i++){
         if(data[i].job==job || job==data[0].job){
             break;
         }
-        xOffset +=determineSubGroupSize(data[i].count,data)*2;
+        rOffset +=r*2+5;
     }
-    return xOffset;
+    return rOffset;
 }
 
 function determineCountrySize(count){
@@ -253,4 +269,35 @@ function determineCountrySize(count){
     }
 }
 
-export{findProfessionPicture,createLines,determineJobSize,clearPrevDataviz,addPatterns,determinePersonSize,determineSubgroupY,determineSubGroupSize,findPersonPicture,determineCountrySize,findCountryPicture}
+
+function determineCxMobile(ranking,mode){
+    var currentWidth = document.getElementById("my_dataviz").clientWidth;
+    if(mode!="subMobile"){
+        return (currentWidth/8)+ranking%4 * (currentWidth/4)-4;
+    }else{
+        return (currentWidth/4)+ranking%2 * (currentWidth/2)-4;
+    }
+    
+}
+
+function determineCyMobile(ranking,mode){
+    var currentWidth = document.getElementById("my_dataviz").clientWidth;
+    if(mode!="subMobile"){
+        return 180+ (currentWidth/4)*Math.floor(ranking/4);
+    }else{
+        return 100+ (currentWidth/2)*Math.floor(ranking/2);
+    }
+    
+    
+}
+
+function determineJobSizeMobile(mode){
+    var currentWidth = document.getElementById("my_dataviz").clientWidth;
+    if(mode!="subMobile"){
+        return currentWidth/8-10;
+    }else{
+        return currentWidth/4-10;
+    }
+}
+
+export{findProfessionPicture,createLines,determineJobSize,clearPrevDataviz,addPatterns,determinePersonSize,determineSubgroupY,determineSubGroupSize,findPersonPicture,determineCountrySize,findCountryPicture,determineCyMobile,determineCxMobile,determineJobSizeMobile}

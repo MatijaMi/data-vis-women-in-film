@@ -1,8 +1,8 @@
 import{updateState, getStates} from '../Handlers/stateHandler.js';
 import{showCountryD3} from './singleCountryCluster.js';
 import {setLevel} from '../Handlers/levelHandler.js';
-import {removeTooltip,createTextOverlay} from '../Util/tooltips.js';
-import {addPatterns,determineCountrySize,findCountryPicture} from '../Util/bubbleUtil.js';
+import {removeTooltip,createTextOverlay,createTooltip,speedUpAnimation} from '../Util/tooltips.js';
+import {addPatterns,determineCountrySize,findCountryPicture,determineJobSizeMobile,determineCxMobile,determineCyMobile} from '../Util/bubbleUtil.js';
 import{clearAllTimeouts,timeouts} from '../Handlers/connectivityHandler.js';
 
 function showCountries(timespan){
@@ -32,7 +32,6 @@ function showCountries(timespan){
             }
         } 
     } 
-    //console.log(wfpp.entries)
     var data = "country,count\r\n";
 
     countryData.forEach((value,key)=>{ 
@@ -42,7 +41,18 @@ function showCountries(timespan){
     data = d3.csvParse(data);
     // set the dimensions and margins of the graph
     var width =document.getElementById("my_dataviz").clientWidth;
-    var height = document.getElementById("my_dataviz").clientHeight;
+    
+    if(mobileMode){
+        var heightSVG =150 + (width/4)* Math.ceil(data.length/4);
+        document.getElementById("my_dataviz").style.height="100%";
+        var heightDIV = document.getElementById("my_dataviz").clientHeight;
+        var height =Math.max(heightSVG,heightDIV);
+        document.getElementById("my_dataviz").style.height=height+"px";
+        
+    }else{
+        document.getElementById("my_dataviz").style.height="100%";
+        var height = document.getElementById("my_dataviz").clientHeight;  
+    }
     
     // append the svg object to the body of the page
     var svg = d3.select("#my_dataviz")
@@ -50,19 +60,8 @@ function showCountries(timespan){
     .attr("width", width)
     .attr("height", height)
     
-    
-  
       // create a tooltip
-    var Tooltip = d3.select("body")
-        .append("div")
-        .style("opacity", 0)
-        .attr("class", "tooltip")
-        .style("background-color", "white")
-        .style("border", "solid")
-        .style("border-width", "1px")
-        .style("border-radius", "5px")
-        .style("padding", "5px")
-        .style("position", "absolute")
+    var Tooltip = createTooltip();
 
       // Three function that change the tooltip when user hover / move / leave a cell
   var mouseover = function (d) {
@@ -97,13 +96,12 @@ function showCountries(timespan){
         paras[0].parentNode.removeChild(paras[0]);
         }
       }
-  var mouseenter = function (d) {
-        createLines(d.country, data)
-      }
     
-   var showCountry = function (d) { 
-       updateState(d.country);
-       showCountryD3(d.country,"")
+   var showCountry = function () { 
+       var country = event.srcElement.id;
+       updateState(country);
+       clearAllTimeouts();
+       showCountryD3(country,"")
        var paras = document.getElementsByClassName('tooltip2');
 
         while(paras[0]) {
@@ -112,43 +110,54 @@ function showCountries(timespan){
        Tooltip.style("opacity", 0)
     }
   
-      // Initialize the circle: all located at the center of the svg area
-  var node = svg.append("g")
-        .selectAll("circle")
-        .data(data)
-        .enter()
-        .append("circle")
-        .attr("class", "node")
-        .attr("id", function(d){return d.country})
-        .attr("r", function (d) { return determineCountrySize(d.count)})
-        .attr("cx",0)
-        .attr("cy", 0)
-        .attr("fill", function(d) {
-		      return "url(#bg" + findCountryPicture(d.country,d.count,svg) +")";
-        })
-        .attr("stroke", "black")
-        .style("stroke-width", 3)
-        .on("mouseover", mouseover) // What to do when hovered
-        .on("mousemove", mousemove)
-        .on("mouseenter", mouseenter)
-        .on("mouseleave", mouseleave)
-        .on("click", function (d) {removeTooltip("textOverlay");showCountry(d)})
-        //.call(d3.drag() // call specific function when circle is dragged
-          //.on("start", dragstarted)
-          //.on("drag", dragged)
-          //.on("end", dragended));
-
-
-
+      if(mobileMode){
+          for(var i= 0; i <data.length; i++){
+              var node = svg.append("g")
+                .data(data)
+                .append("circle")
+                .attr("class", "node")
+                .attr("id", function(d){return data[i].country})
+                .attr("r", function (d) { return determineJobSizeMobile()})
+                .attr("cx",function (d){return determineCxMobile(i)})
+                .attr("cy",function (d){return determineCyMobile(i)})
+                .attr("fill", function(d) {
+                      return "url(#bg" + findCountryPicture(data[i].country,data[i].count,svg) +")";
+                })
+                .attr("stroke", "black")
+                .style("stroke-width", 3)
+                .on("click", function (d) {removeTooltip("textOverlay");showCountry()})
+            }
+      }else{
+      var node = svg.append("g")
+            .selectAll("circle")
+            .data(data)
+            .enter()
+            .append("circle")
+            .attr("class", "node")
+            .attr("id", function(d){return d.country})
+            .attr("r", function (d) { return determineCountrySize(d.count)})
+            .attr("cx",0)
+            .attr("cy", 0)
+            .attr("fill", function(d) {
+                  return "url(#bg" + findCountryPicture(d.country,d.count,svg) +")";
+            })
+            .attr("stroke", "black")
+            .style("stroke-width", 3)
+            .on("mouseover", mouseover) // What to do when hovered
+            .on("mousemove", mousemove)
+            .on("mouseleave", mouseleave)
+            .on("click", function (d) {removeTooltip("textOverlay");showCountry()})
+    }
+  if(!mobileMode){
       // Features of the forces applied to the nodes:
-  var simulation = d3.forceSimulation()
+  window.simulation = d3.forceSimulation()
       .force("center", d3.forceCenter().x(width / 2).y(height / 2 -50)) // Attraction to the center of the svg area
       .force("charge", d3.forceManyBody().strength(-2)) // Nodes are attracted one each other of value is > 0
       .force("collide", d3.forceCollide().strength(.2).radius(function (d) { return determineCountrySize(d.count)}).iterations(1))
         .force('y', d3.forceY().y(height/2).strength(0.02));// Force that avoids circle overlapping
 
   //
-      simulation
+    window.simulation
         .nodes(data)
         .on("tick", function (d) {
           node
@@ -157,7 +166,10 @@ function showCountries(timespan){
         }).on('end', function () {
             createTextOverlay(data,"Countries","body");}
         );
-    
+      speedUpAnimation(window.simulation,2);
+  }else{
+       createTextOverlay(data,"Countries","body");
+  }
     function changePattern(){
         if(getStates()[getStates().length-1]=="Countries"){
             d3.selectAll("circle").attr("fill", function(d) {

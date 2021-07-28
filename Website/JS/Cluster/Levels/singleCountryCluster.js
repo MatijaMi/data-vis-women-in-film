@@ -1,6 +1,8 @@
 import {showCountries} from './CountryCluster.js';
-import{speedUpAnimation} from '../Util/tooltips.js';
+import{speedUpAnimation,createTooltip} from '../Util/tooltips.js';
+import{determineCxMobile,determineCyMobile} from '../Util/bubbleUtil.js';
 import{goBackState} from '../Handlers/stateHandler.js';
+import{addBackButton} from '../Handlers/levelHandler.js';
 
 function showCountryD3(country,timespan){
     if(document.getElementById("my_dataviz").firstChild!=null){
@@ -32,103 +34,37 @@ function showCountryD3(country,timespan){
 
     // set the dimensions and margins of the graph
     var width =document.getElementById("my_dataviz").clientWidth;
-    var height = document.getElementById("my_dataviz").clientHeight;
+    if(mobileMode){
+        var heightSVG =150 + (width/4)* Math.ceil(data.length/4);
+        document.getElementById("my_dataviz").style.height="100%";
+        var heightDIV = document.getElementById("my_dataviz").clientHeight;
+        var height =Math.max(heightSVG,heightDIV);
+        document.getElementById("my_dataviz").style.height=height+"px";
+    }else{
+        document.getElementById("my_dataviz").style.height="100%";
+        var height = document.getElementById("my_dataviz").clientHeight;  
+    }
     
     // append the svg object to the body of the page
     var svg = d3.select("#my_dataviz")
     .append("svg")
     .attr("width", width)
     .attr("height", height)
-    
-    // Size scale for countries
-    var size = d3.scaleLinear()
-            .domain([0, 300])
-            .range([7, 55])  // circle will be between 7 and 55 px wide
   
       // create a tooltip
-    var Tooltip = d3.select("body")
-        .append("div")
-        .style("opacity", 0)
-        .attr("class", "tooltip")
-        .style("background-color", "white")
-        .style("border", "solid")
-        .style("border-width", "1px")
-        .style("border-radius", "5px")
-        .style("padding", "5px")
-        .style("position", "absolute")
+    var Tooltip = createTooltip();
     
-    var backButton = d3.select("body")
-        .append("div")
-        .style("opacity", 1)
-        .attr("class", "back")
-        .attr("id", "back")
-        .style("background-color", "white")
-        .style("border", "solid")
-        .style("border-width", "2px")
-        .style("border-radius", "5px")
-        .style("padding", "5px")
-        .style("position", "absolute")
-        .style("left", width -90 + "px")
-        .style("top", height -40 + "px")
-        .html("<button> Back </button>")
+    addBackButton();
 
     function goBack(){
-        Tooltip
-          .style("opacity", 0)
-          .style("width",0)
-          .style("border",0)
-          .style("padding", 0)
-          .html("");
+        
         document.getElementById("back").remove();
         showCountries("");    
     }
     
 document.getElementById("back").addEventListener("click", goBack)
       // Three function that change the tooltip when user hover / move / leave a cell
-  var mouseover = function (d) {
-        Tooltip
-          .style("opacity", 1)
-          .style("width","auto")
-          .style("border","solid")
-          .style("padding", "5px")
-      }
-  
-   var mousemove = function (d) {
-       var x  =d3.mouse(this)[0];
-       var y = d3.mouse(this)[1];
-      if(d.real="real"){
-          if(d.imgUrl.length<10){
-              Tooltip
-          .html('<u><b>' + d.name + '</b></u>' + "<br>" +
-                '<img src=../Images/WFPP-Pictures-Squares/Unknown.jpg width=200px>'+
-               'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.<br>'+
-               '<a href=' + d.link + '> Read More </a>')
-          .style("width", "240px")
-          .style("left", (d3.mouse(this)[0] + 20) + "px")
-          .style("top", (d3.mouse(this)[1]) + "px")
-          }else{
-           Tooltip
-          .html('<u><b>' + d.name + '</b></u>' + "<br>" +
-                '<img src=../Images/WFPP-Pictures-Squares/'+ d.name.split(' ').join('%20') +'.jpg width=200px>')
-          .style("width", "240px")
-          .style("left", (d3.mouse(this)[0] + 20) + "px")
-          .style("top", (d3.mouse(this)[1]) + "px")
-            }
-      }else{
-           Tooltip
-          .html('<u>' + d.name + '</u>' + "<br>" + d.name)
-          .style("left", (x + 20) + "px")
-          .style("top", y + "px")  
-      }
-    }
-  var mouseleave = function (d) {
-        Tooltip
-          .style("opacity", 0)
-          .style("width",0)
-          .style("border",0)
-          .style("padding", 0)
-          .html("");
-      }
+    
   var radiusofGroup=determineCountryGroupSize(data);
   var extra="-Fullsize";
     if(data.length>100){
@@ -156,47 +92,66 @@ document.getElementById("back").addEventListener("click", goBack)
         .attr("xlink:href", link);  
 }
   
-      // Initialize the circle: all located at the center of the svg area
-  var node = svg.append("g")
-        .selectAll("circle")
-        .data(data)
-        .enter()
-        .append("circle")
-        .attr("class", "node")
-        .attr("r", radiusofGroup)
-        .attr("cx",0)
-        .attr("cy", 0)
-        .attr("fill", function(d) {
-		      return "url(#"+d.id +")";
-        })
-        .attr("stroke", "black")
-        .style("stroke-width", 3)
-        .on("mouseover", mouseover) // What to do when hovered
-        .on("mousemove", mousemove)
-        .on("mouseleave", mouseleave)
+      if(mobileMode){
+          for(var i= 0; i <data.length; i++){
+            svg.append("g")
+                .data(data)
+                .append("circle")
+                .attr("class", "node")
+                .attr("r", radiusofGroup)
+                .attr("cx",function (d){return determineCxMobile(i)})
+                .attr("cy",function (d){return determineCyMobile(i)})
+                .attr("fill", function(d) {
+                      return "url(#"+data[i].id +")";
+                })
+                .attr("stroke", "black")
+                .style("stroke-width", 3)
+          }
+      }else{
+          var node = svg.append("g")
+                .selectAll("circle")
+                .data(data)
+                .enter()
+                .append("circle")
+                .attr("class", "node")
+                .attr("r", radiusofGroup)
+                .attr("cx",0)
+                .attr("cy", 0)
+                .attr("fill", function(d) {
+                      return "url(#"+d.id +")";
+                })
+                .attr("stroke", "black")
+                .style("stroke-width", 3)
+        }
 
 
-
+  if(!mobileMode){
       // Features of the forces applied to the nodes:
-  var simulation = d3.forceSimulation()
-        .force("center", d3.forceCenter().x(width / 2).y(height / 2)) // Attraction to the center of the svg area
-        .force("charge", d3.forceManyBody().strength(-10)) // Nodes are attracted one each other of 
-        .force('y', d3.forceY().y(height/2).strength(0.010))
-        .force("collide", d3.forceCollide().strength(.5).radius(radiusofGroup).iterations(1))
-      // Force that avoids circle overlapping
+      var simulation = d3.forceSimulation()
+            .force("center", d3.forceCenter().x(width / 2).y(height / 2)) // Attraction to the center of the svg area
+            .force("charge", d3.forceManyBody().strength(-10)) // Nodes are attracted one each other of 
+            .force('y', d3.forceY().y(height/2).strength(0.010))
+            .force("collide", d3.forceCollide().strength(.5).radius(radiusofGroup).iterations(1))
+          // Force that avoids circle overlapping
 
-  //
-      simulation
-        .nodes(data)
-        .on("tick", function (d) {
-          node
-            .attr("cx", function (d) { return d.x; })
-            .attr("cy", function (d) { return d.y; })
-        });
+      //
+          simulation
+            .nodes(data)
+            .on("tick", function (d) {
+              node
+                .attr("cx", function (d) { return d.x; })
+                .attr("cy", function (d) { return d.y; })
+            });
 
-    speedUpAnimation(simulation,2);
-
-    function determineCountryGroupSize(){
+        speedUpAnimation(simulation,2);
+  }
+    
+}
+function determineCountryGroupSize(data){
+        if(mobileMode){
+            var currentWidth = document.getElementById("my_dataviz").clientWidth;
+            return currentWidth/8-10;
+        }
         if(data.length>40){
             return 30;
         }
@@ -207,6 +162,4 @@ document.getElementById("back").addEventListener("click", goBack)
             return 80;
         }
     }
-}
-
 export {showCountryD3}

@@ -179,6 +179,7 @@ function showAll(){
        zoomOut(d,data)
        window.zoomedIn=false;
     } 
+   updateState("All");
    
 }
 

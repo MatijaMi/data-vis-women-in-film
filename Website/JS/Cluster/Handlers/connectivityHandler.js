@@ -11,7 +11,7 @@ import{showCountries} from '../Levels/CountryCluster.js';
 import{showCountryD3} from '../Levels/singleCountryCluster.js';
 
 var timeouts=[];
-
+window.mobileMode =false;
 function handleLoad(){
     
     document.getElementById("countryButton").addEventListener("click",switchToCountries);
@@ -21,6 +21,13 @@ function handleLoad(){
     document.getElementById("closeGroupPanel").addEventListener("click",closeSubgroupPanel);
     initializeState();
     clearPrevDataviz();
+    var newWidth =document.getElementById("my_dataviz").clientWidth;
+    if(newWidth<800){
+            mobileMode=true;
+        }else{
+            mobileMode=false;
+    }
+    
     var payload = window.location.href.substr(window.location.href.indexOf("Cluster.html")+12);
     if(payload.length>0){
         payload=payload.substr(1);
@@ -141,15 +148,16 @@ function switchToProfessions(){
     drawTopLevel();
 }
 function openSubgroupPanel() {
-    document.getElementById("subGroupPanel").style.width = "200px";
-    document.getElementById("subGroupPanel").style.border = "5px solid black";
-    document.getElementById("subGroupPanel").style.borderLeft = "none";
-   
+    if(mobileMode){
+        document.getElementById("subGroupPanel").style.width = "100%";
+    }else{
+        document.getElementById("subGroupPanel").style.width = "10%";
+    }
+     
 }
 
 function closeSubgroupPanel() {
     document.getElementById("subGroupPanel").style.width = "0";
-    document.getElementById("subGroupPanel").style.border = "none";
 } 
 
 function clearAllTimeouts(){

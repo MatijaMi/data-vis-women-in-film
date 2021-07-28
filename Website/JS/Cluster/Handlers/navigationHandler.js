@@ -78,7 +78,9 @@ function handleLocatorClick(id){
 
 function removeLastLocButton(){
     var paras = document.getElementsByClassName("locButtons");
-    paras[paras.length-1].parentNode.removeChild(paras[paras.length-1]);
+    if(paras.length>0){
+        paras[paras.length-1].parentNode.removeChild(paras[paras.length-1]);
+    }
     if(paras.length>=2){
         paras[paras.length-1].innerHTML=paras[paras.length-1].innerHTML.replace(": ","");
     }

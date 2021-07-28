@@ -22,4 +22,9 @@ function goBackState(){
     } 
 }
 
+function determineLevelFromState(){
+    
+    
+}
+
 export {initializeState,updateState, getStates, goBackState}

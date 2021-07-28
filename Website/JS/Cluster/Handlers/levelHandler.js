@@ -1,7 +1,7 @@
 import{removeTooltip,createTooltip} from '../Util/tooltips.js';
 import{updateState,goBackState} from './stateHandler.js';
 import{updateLocator,removeLastLocButton} from './navigationHandler.js';
-import{clearAllTimeouts,timeouts} from './connectivityHandler.js';
+import{clearAllTimeouts,timeouts,closeSubgroupPanel} from './connectivityHandler.js';
 import{drawTopLevel} from '../Levels/topLevel.js';
 import{drawLowerLevel} from '../Levels/lowerLevels.js';
 var level = 0;
@@ -78,20 +78,13 @@ function addBackButton(){
         .style("opacity", 1)
         .attr("class", "back")
         .attr("id", "back")
-        .style("background-color", "white")
-        .style("border", "solid")
-        .style("border-width", "2px")
-        .style("border-radius", "5px")
-        .style("padding", "5px")
-        .style("position", "absolute")
-        .style("left", width -90 + "px")
-        .style("top", height -40 + "px")
         .html("<button> Back </button>");
       document.getElementById("back").addEventListener("click", goBack)
   }
 }
 
 function goToNextLevel(profession){
+    profession=event.srcElement.id;
     removeTooltip("tooltip2");
     removeTooltip("tooltip")
     removeTooltip("textOverlay")
@@ -100,7 +93,8 @@ function goToNextLevel(profession){
     updateLocator(profession,getLevel());
     addBackButton();
     clearAllTimeouts();
+    closeSubgroupPanel();
     drawLowerLevel(profession,getLevel());
 }
 
-export {updateLevel,setLevel,getLevel,getLevels,goToNextLevel}
+export {updateLevel,setLevel,getLevel,getLevels,goToNextLevel,addBackButton}
