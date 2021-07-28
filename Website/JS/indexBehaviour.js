@@ -24,16 +24,3 @@ window.smoothScroll = function() {
 
 document.getElementById("discoverButton").addEventListener("click", smoothScroll, false);
 
-window.onscroll = function() {makeSticky()};
-
-function makeSticky() {
-    var navbar = document.getElementById("header");
-    var sticky = navbar.offsetTop;
-
-    if (window.pageYOffset >= sticky) {
-        navbar.classList.add("sticky")
-    } else {
-        navbar.classList.remove("sticky");
-    }
-} 
-

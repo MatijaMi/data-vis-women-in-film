@@ -27,17 +27,32 @@
     <body>
 
         <!-- Header -->
-        <div class="header" id="header">
-            <a href="../index.html">Home</a>
-            <a href="./Map.html">Map</a>
-            <a href="./Cluster.html">Cluster</a>
-            <a href="./Timeline.html">Timeline</a>
-            <a href="./Dendrogram.html">Dendrogram</a>
-            <a href="./About.html">About</a>
-        </div>
+        <nav>
+            <ul class="nav-links">
+                <li>
+                    <a href="../index.html">Home</a>
+                </li>
+                <li>
+                    <a href="./Map.html">Map</a>
+                </li>
+                <li>
+                    <a href="./Cluster.html">Cluster</a>
+                </li>
+                <li>
+                    <a href="./Timeline.html">Timeline</a>
+                </li>
+                <li>
+                    <a href="./Dendrogram.html">Dendrogram</a>
+                </li>
+                <li>
+                    <a href="./About.html">About</a>
+                </li>
+
+            </ul>
+        </nav>
 
         <!-- Header-Spacer -->
-        <svg height="50" width="100%"></svg>
+        <svg height="0" width="100%"></svg>
 
         <!-- Dialog Holder - Will display Dialog text of info buttons-->
         <div id="dialog" title="Information" hidden="true"></div>
@@ -103,7 +118,7 @@
                     <label class="settings_headline">Options</label>
 
                     <input type="image" class="settings_info_icon" src="../Images/question_mark.png"
-                        onclick="settingspanel_info_onclick()"> </input>
+                        onclick="settingspanel_info_onclick()">
 
                     <br><br>
 
@@ -140,7 +155,7 @@
                 <input type="image" class="histo_icon" src="../Images/barchart_icon.png"
                     onclick="histogram_button_onclick()" />
                 <input type="text" id="slider_span" readonly
-                    style="color:#1fb9f6; font-weight:bold; text-align: center; font-size: 24px; pointer-events: none; width:150px"></input>
+                    style="color:#1fb9f6; font-weight:bold; text-align: center; font-size: 24px; pointer-events: none; width:150px">
                 <input type="image" class="slider_info_icon" src="../Images/question_mark.png"
                     onclick="slider_info_onclick()" />
             </div>
@@ -156,7 +171,7 @@
         <div class="footer"></div>
 
         <!-- Footer Spacer -->
-        <svg height="50" width="100%"></svg>
+        <svg height="0" width="100%"></svg>
 
         <!-- Map -->
         <script>
