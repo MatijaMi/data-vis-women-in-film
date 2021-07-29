@@ -4,7 +4,7 @@ function mouseoverJob(Tooltip){
         Tooltip
           .style("opacity", 1)
           .style("width","auto")
-          .style("border","solid")
+          .style("border","solid black")
           .style("padding", "5px")
 }
 
@@ -29,8 +29,8 @@ function mouseoverPersonal(Tooltip){
     Tooltip
           .style("opacity", 1)
           .style("width","auto")
-          .style("border","solid")
-          .style("padding", "5px")
+          .style("border","solid black")
+          .style("padding", "10px")
 }
 
 function mousemovePersonal(Tooltip,d,env){
@@ -51,7 +51,7 @@ function mousemovePersonal(Tooltip,d,env){
     }
     
     Tooltip
-          .html('<u><b>' + d.name + '</b></u><br>'+ imgSrc + "<br>" + '<p>' + shortBio +'</p><br>' + '<button> Other Professions </button>')
+          .html('<u><b>' + d.name + '</b></u><br>'+ imgSrc + "<br>" + '<p>' + shortBio +'</p>' + '<button class="fullArticleButton"> Read Full Article</button>')
           .style("width", "300px")
           .style("left", (d3.mouse(env)[0] + 20) + "px")
           .style("top", (d3.mouse(env)[1]) + "px")

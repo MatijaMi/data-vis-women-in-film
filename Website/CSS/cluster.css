@@ -1,11 +1,12 @@
 body{
-	background: #333333;
+	background: #212121;
 	font-family:Arial,sans-serif;
 	padding-top: 0px;
 	margin: 0px;
 	text-align: center;
     width:100%;
     height:94%;
+    overflow: hidden;
 }
 nav{
   display: flex;
@@ -13,8 +14,6 @@ nav{
   align-items: center;
   min-height: 6vh;
   background-color: #060606;
-    
-  /* font-family: 'Poppins', sans-serif; */
 }
 
 .nav-links{
@@ -85,7 +84,7 @@ nav{
     overflow: hidden;
 }
 svg{
-    background-color:#333333;
+    background-color:#212121;
 }
 
 #closeTooltipButton{
@@ -101,6 +100,7 @@ svg{
     position: absolute;
     margin-top: 5px;
 }
+
 #locator button{
     display: inline-block;
     font-size: 45px;
@@ -116,12 +116,43 @@ svg{
 #locator button:hover{
     cursor: pointer;
 }
+.fullArticleButton{
+    padding: 0.5em 1.7em;
+    margin-bottom: 10px;
+    font-weight: 300;
+    color: #000;
+    text-shadow: 0 0.04em 0.04em rgba(235, 235, 235, 0.253);
+    font-size: 17px;
+    color: #ccc;
+    background-color: #282828;
+    outline: none;
+    box-shadow: none;
+    font-family: "Roboto", sans-serif;
+    border: 0.2em solid #060606;
+    cursor: pointer;
+}
+
+.tooltip{
+    background-color:#111111;
+    border:solid;
+    border-width:5px;
+    border-radius:3px;
+    padding:10px;
+    z-index:5;
+    position: absolute;
+    color: white;
+}
 
 #sideishButtons{
     border:none;
+    display: block;
     background: transparent;
-    position: absolute;
-    top:4.5%;
+    position: relative;
+    top:0%;
+    float: left;
+    margin-top: 3px;
+    margin-left: 5px;
+    margin-bottom: -60px;
     z-index: 2;
 }
 #countryButton{
@@ -131,9 +162,11 @@ svg{
     height: 60px;
     border-radius: 10px;
     border-radius: 10px;
+    background-color: black;
 }
 
 #allPioneersButton{
+    background-color: black;
     z-index: 2;
     display: inline-block;
     width: 65px;
@@ -143,7 +176,7 @@ svg{
     
 }
 #professionsButton{
-    z-index: 2;
+    z-index: 2;background-color: black;
     display: inline-block;
     width: 65px;
     height: 60px;
@@ -155,6 +188,7 @@ svg{
 #countryButton img, #allPioneersButton img,#professionsButton img{
     width: 95%;
     height: 90%;
+    filter: invert(1);
 }
 
 #countryButton img:hover, #allPioneersButton img:hover, #professionsButton:hover{
@@ -196,14 +230,13 @@ svg{
 
 
 #subGroupOpen{
-    display: block;
-    color:black;
-    background-color: white;
-    position: absolute;
+    color:white;
+    background-color: black;
+    position: relative;
     font-size: 30px;
     border:none;
-    top:12%;
-    left:0%;
+    top:5%;
+    float: left;
     z-index: 10;
 }
 
@@ -213,10 +246,11 @@ svg{
 
 #subGroupPanel{
     width:0px;
+    color: white;
     text-align: center;
     overflow: hidden;
     z-index: 11;
-    background-color: wheat;
+    background-color: black;
     position: absolute;
     top:4%;
     height: 94.5%;
@@ -227,7 +261,7 @@ svg{
 }
 
 #subGroupPanelSVG{
-    background-color: wheat;
+    background-color: black;
 }
 
 #closeGroupPanel{
@@ -237,18 +271,13 @@ svg{
     font-size: 36px;
     margin-left: 50px;
     text-decoration: none;
-    color: #000;
+    color: #fff;
     display: block;
     transition: 0.3s;
 }
 
 #back{
-    background-color: white;
-    border:solid;
-    border-width: 2px;
-    border-radius:5px;
-    width:6%;
-    height: 2%;
+    height: 4%;
     padding:5px;
     position:fixed;
     right: 5%;
@@ -265,4 +294,17 @@ svg{
     font-size: 50%;
     width: 100%;
     height: 100%;
+    padding: 0.5em 1.7em;
+    margin-bottom: 20px;
+    font-weight: 300;
+    color: #000;
+    text-shadow: 0 0.04em 0.04em rgba(235, 235, 235, 0.253);
+    font-size: 17px;
+    color: #ccc;
+    background-color: #111;
+    outline: none;
+    box-shadow: none;
+    font-family: "Roboto", sans-serif;
+    border: 0.2em solid #060606;
+    cursor: pointer;
 }

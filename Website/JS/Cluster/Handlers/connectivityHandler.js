@@ -112,39 +112,45 @@ function switchToAll(){
     removeTooltip("textOverlay");
     document.getElementById("locator").innerHTML="";
     setLevel(-1);
-    document.getElementById("countryButton").style.display="inline-block";
     document.getElementById("countryButton").style.height="40px";
     document.getElementById("countryButton").style.width="45px";
-    document.getElementById("allPioneersButton").style.display="none";
-    document.getElementById("professionsButton").style.display="inline-block";
     document.getElementById("professionsButton").style.height="40px";
     document.getElementById("professionsButton").style.width="45px";
+    document.getElementById("allPioneersButton").style.width="45px";
+    document.getElementById("allPioneersButton").style.height="40px";
+    document.getElementById("allPioneersButton").style.backgroundColor="#bb7043";
+    document.getElementById("countryButton").style.backgroundColor="black";
+    document.getElementById("professionsButton").style.backgroundColor="black";
     showAll();
 }
 function switchToCountries(){
     removeTooltip("textOverlay");
     document.getElementById("locator").innerHTML="";
     setLevel(-1);
-    document.getElementById("countryButton").style.display="none";
     document.getElementById("countryButton").style.height="60px";
+    document.getElementById("countryButton").style.backgroundColor="#bb7043";
     document.getElementById("countryButton").style.width="65px";
-    document.getElementById("allPioneersButton").style.display="inline-block";
-    document.getElementById("professionsButton").style.display="inline-block";
     document.getElementById("professionsButton").style.height="60px";
     document.getElementById("professionsButton").style.width="65px";
+    document.getElementById("professionsButton").style.backgroundColor="black";
+    document.getElementById("allPioneersButton").style.height="60px";
+    document.getElementById("allPioneersButton").style.width="65px";
+    document.getElementById("allPioneersButton").style.backgroundColor="black";
     showCountries("");
 }
 function switchToProfessions(){
     removeTooltip("textOverlay");
     document.getElementById("locator").innerHTML="";
     setLevel(-1);
-    document.getElementById("countryButton").style.display="inline-block";
-    document.getElementById("allPioneersButton").style.display="inline-block";
-    document.getElementById("professionsButton").style.display="none";
     document.getElementById("countryButton").style.height="60px";
     document.getElementById("countryButton").style.width="65px";
     document.getElementById("professionsButton").style.height="60px";
     document.getElementById("professionsButton").style.width="65px";
+    document.getElementById("allPioneersButton").style.height="60px";
+    document.getElementById("allPioneersButton").style.width="65px";
+    document.getElementById("professionsButton").style.backgroundColor="#bb7043";
+    document.getElementById("countryButton").style.backgroundColor="black";
+    document.getElementById("allPioneersButton").style.backgroundColor="black";
     drawTopLevel();
 }
 function openSubgroupPanel() {

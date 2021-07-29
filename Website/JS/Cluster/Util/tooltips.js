@@ -10,14 +10,7 @@ function createTooltip(){
    var Tooltip= d3.select("body")
         .append("div")
         .style("opacity", 0)
-        .attr("class", "tooltip")
-        .style("background-color", "white")
-        .style("border", "solid")
-        .style("border-width", "1px")
-        .style("border-radius", "5px")
-        .style("padding", "5px")
-        .style("z-index", "5")
-        .style("position", "absolute")
+        .attr("class", "tooltip");
    return Tooltip;
 }
 
@@ -43,15 +36,15 @@ function createTextOverlay(data,mode,container){
         }
         var xShift=0;
         var yShift=0;
-        var calculatedFont =r/2+"px";
+        var calculatedFont =r/2 - 5 +"px";
         var lineHeight = r/2 +4 + "px";
         
         if(text.length==1){
             var pureText=text[0].charAt(0).toUpperCase()+ text[0].slice(1);
-                yShift=r/5;
+                yShift=r/2 +10;
                 if(pureText.length>8){
                     inHtml=pureText.substr(0,Math.ceil(pureText.length/2)) +"-<br>" + pureText.substr(Math.ceil(pureText.length/2));
-                    yShift=0;
+                    yShift=30;
                 }
                 if(container!="body"){
                     yShift=r/3;
@@ -62,8 +55,9 @@ function createTextOverlay(data,mode,container){
         }else{
             if(text.length==2){
                 if(container=="body"){
-                    calculatedFont=r/2+"px";
-                    lineHeight = r/2 +4 + "px";
+                    calculatedFont=r/2+ -5 +"px";
+                    lineHeight = r/2 +8 + "px";
+                    yShift=20;
                 }else{
                     yShift=r/8;
                     calculatedFont=r/3+"px";
@@ -73,6 +67,7 @@ function createTextOverlay(data,mode,container){
                 if(container=="body"){
                     calculatedFont=r/3+"px";
                     lineHeight = r/3 +4 + "px";
+                    yShift=35;
                 }else{
                     yShift=-r/4;
                     calculatedFont=r/3+"px";

@@ -6,11 +6,12 @@ import{updateLevel,getLevels,getLevel,setLevel,goToNextLevel} from '../Handlers/
 import{setLocator, handleLocatorClick, removeLastLocButton,addButtonEvents,updateLocator} from '../Handlers/navigationHandler.js';
 import{findProfessionPicture,createLines,determineJobSize,clearPrevDataviz,addPatterns,determinePersonSize,determineSubgroupY,determineSubGroupSize,findPersonPicture, determineCxMobile,determineCyMobile,determineJobSizeMobile} from '../Util/bubbleUtil.js';
 import{drawTopLevel} from '../Levels/topLevel.js';
-import{closeSubgroupPanel} from '../Handlers/connectivityHandler.js';
+import{closeSubgroupPanel,openSubgroupPanel} from '../Handlers/connectivityHandler.js';
 
 function drawLowerLevel(profession,level){
     clearPrevDataviz();
     document.getElementById("subGroupOpen").style.display="block";
+    openSubgroupPanel();
     var data = getProfessionData(profession);
     var width =document.getElementById("my_dataviz").clientWidth;
     if(mobileMode){
@@ -125,7 +126,7 @@ function drawLowerLevel(profession,level){
                     .attr("fill", function(d) {
                           return "url(#bg" + findProfessionPicture(d,furtherSubgroups,svg,"subMobile")+")";
                     })
-                .attr("stroke", "black")
+                .attr("stroke", "white")
                 .style("stroke-width",3)
                 .on("click", function (d) {goToNextLevel()})
                 .on("mouseleave", function (d) {
@@ -155,7 +156,7 @@ function drawLowerLevel(profession,level){
                 .attr("fill", function(d) {
                       return "url(#bg" + findProfessionPicture(d,furtherSubgroups,svg,"sub")+")";
                 })
-            .attr("stroke", "black")
+            .attr("stroke", "white")
             .style("stroke-width",3)
             .on("mouseover", function (d) {createLines(d.job,data);}) 
             .on("click", function (d) {goToNextLevel(d.job)})

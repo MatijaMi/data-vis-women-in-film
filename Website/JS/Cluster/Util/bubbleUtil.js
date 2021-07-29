@@ -51,7 +51,7 @@ function createLines(job,data){
     d3.select("#my_dataviz")
         .selectAll("circle")
         .data(data)
-        .style("opacity", function(d){if(validIDs.includes(d.id)){return 1;}else{return 0.3;}})
+        .style("opacity", function(d){if(validIDs.includes(d.id)){return 1;}else{return 0.15;}})
         .style("stroke-width", function(d){if(validIDs.includes(d.id)){return "4px";}else{return "2px";}})
 }
 
