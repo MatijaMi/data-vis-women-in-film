@@ -3,7 +3,7 @@
 <html lang="en" style="height: 100%">
 
 <head>
-    <title>WFPP</title>
+    <title>WFPP-Explorer</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../CSS/baseStyle.css">
@@ -25,17 +25,34 @@
 <body>
 
     <!-- Header -->
-    <div class="header" id="header">
-        <a href="../index.html">Home</a>
-        <a href="./Map.html">Map</a>
-        <a href="./Cluster.html">Cluster</a>
-        <a href="./Timeline.html">Timeline</a>
-        <a href="./Dendrogram.html">Dendrogram</a>
-        <a href="./About.html">About</a>
-    </div>
+    <nav>
+        <ul class="nav-links">
+            <li>
+                <a href="../index.html">Home</a>
+            </li>
+            <li>
+                <a href="./Map.html">Map</a>
+            </li>
+            <li>
+                <a href="./Cluster.html">Cluster</a>
+            </li>
+            <li>
+                <a href="./Timeline.html">Timeline</a>
+            </li>
+            <li>
+                <a href="./Dendrogram.html">Dendrogram</a>
+            </li>
+            <li>
+                <a href="./About.html">About</a>
+            </li>
+
+        </ul>
+    </nav>
+
+    <div class="divWrap" style="margin-top:-10px"> </div>
 
     <!-- Header-Spacer -->
-    <svg height="50" width="100%"></svg>
+    <svg height="0" width="100%"></svg>
 
     <!-- Dialog Holder - Will display Dialog text of info buttons-->
     <div id="dialog" title="Information" hidden="true"></div>
@@ -58,18 +75,18 @@
 
                 <div id="sidepanel_holder" hidden=true>
 
-                    <label class="sidepanel_text_big">Pioneers: </label>
+                    <label class="sidepanel_text_big" id="pioneers_count_label_head">Pioneers: </label>
                     <label class="sidepanel_text_big" id="pioneers_count_label"></label><br>
 
-                    <label class="sidepanel_text_short">Different Jobs: </label>
+                    <label class="sidepanel_text_short" id="pioneers_jobs_label_head">Different Jobs: </label>
                     <label class="sidepanel_text_short" id="pioneers_jobs_label"></label><br>
 
-                    <label class="sidepanel_text_short">Connections: </label>
+                    <label class="sidepanel_text_short" id="pioneers_connections_label_head">Connections: </label>
                     <label class="sidepanel_text_short" id="pioneers_connections_label"></label>
 
                     <br><br>
 
-                    <label class="sidepanel_text_short">Example Pioneer: </label><br>
+                    <label class="sidepanel_text_short" id="pioneers_example_label_head">Example Pioneer: </label><br>
                     <label class="sidepanel_text_short" id="pioneers_ex_name"></label>
 
                     <br><br>
@@ -98,16 +115,10 @@
 
             <!-- Settings -->
             <div class="settings_panel">
-                <label class="settings_headline">Settings</label>
+                <label class="settings_headline">Options</label>
 
                 <input type="image" class="settings_info_icon" src="../Images/question_mark.png"
-                    onclick="settingspanel_info_onclick()"> </input>
-
-                <br><br>
-
-                <input type="checkbox" class="settings_checkbox" id="settings_checkbox_unknown" onclick="load_data()"
-                    checked>
-                <label class="settings_checkbox_text">Include Unknown Dates</label>
+                    onclick="settingspanel_info_onclick()">
 
                 <br><br>
 
@@ -115,7 +126,11 @@
 
                 <br><br>
 
-                <button class="settings_button" id="timeline_button">Show as timeline</button>
+                <button class="settings_button" id="timeline_button" disabled="true">Show as timeline</button>
+
+                <br><br>
+
+                <button class="settings_button" id="cluster_button" disabled="true">Show as cluster</button>
             </div>
 
         </div>
@@ -139,8 +154,7 @@
 
             <input type="image" class="histo_icon" src="../Images/barchart_icon.png"
                 onclick="histogram_button_onclick()" />
-            <input type="text" id="slider_span" readonly
-                style="color:#1fb9f6; font-weight:bold; text-align: center; font-size: 24px; pointer-events: none; width:150px"></input>
+            <input type="text" id="slider_span" class="slider_year_text" readonly>
             <input type="image" class="slider_info_icon" src="../Images/question_mark.png"
                 onclick="slider_info_onclick()" />
         </div>
@@ -156,22 +170,35 @@
     <div class="footer"></div>
 
     <!-- Footer Spacer -->
-    <svg height="50" width="100%"></svg>
+    <svg height="30" width="100%"></svg>
 
     <!-- Map -->
     <script>
 
+        //Resize
+        CheckSizeZoom()
+        $('#divWrap').css('visibility', 'visible');
+        $(window).resize(CheckSizeZoom)
+
         //Payload
         var payload = "";
-        if(window.location.href.includes("?")) payload = window.location.href.substr(window.location.href.indexOf("?") + 1);
+        if (window.location.href.includes("?")) payload = window.location.href.substr(window.location.href.indexOf("?") + 1);
 
         //Slider values
         var minSliderValue = 1900;
         var maxSliderValue = 1930;
 
+        //Payload Pioneer
+        var payload_is_used = false;
+        var payload_country;
+        var payload_name;
+        var payload_image;
+        var payload_link;
+
         //Set Slider to payload
         if (window.location.href.includes("id=")) {
             var payload_id = payload.substr("id=".length);
+            payload_is_used = true;
 
             $.ajax({
                 async: false,
@@ -182,6 +209,13 @@
                     for (var i = 0; i < rows.length; i++) {
                         var columns = rows[i].split(",");
                         if (columns[0] == payload_id) {
+                            //Payload Data
+                            payload_country = columns[6].trim().split("|");
+                            payload_name = columns[1];
+                            payload_image = columns[4];
+                            payload_link = columns[3];
+
+                            // Time
                             if (columns[8].trim().length == 4 && columns[10].trim().length == 4) {
                                 minSliderValue = columns[8];
                                 maxSliderValue = columns[10];
@@ -191,6 +225,20 @@
                     }
                 }
             });
+        }
+
+        //Panel Pioneer for payload
+        if (payload_is_used) {
+            document.getElementById('pioneers_ex_name').innerHTML = payload_name;
+            document.getElementById('pioneers_ex_image').src = "";
+            document.getElementById('pioneers_ex_image').src = payload_image;
+            document.getElementById('pioneers_read_more_button').onclick = function () { window.open(payload_link) };
+            document.getElementById('pioneers_next_button').hidden = true;
+            document.getElementById('sidepanel_holder').hidden = false;
+            document.getElementById('pioneers_count_label_head').hidden = true;
+            document.getElementById('pioneers_jobs_label_head').hidden = true;
+            document.getElementById('pioneers_connections_label_head').hidden = true;
+            document.getElementById('pioneers_example_label_head').hidden = true;
         }
 
         //Slider
@@ -213,7 +261,7 @@
             slide: function (event, ui) {
 
                 //Move Mid handler to mid
-                myS.slider("values", 1,  parseInt( myS.slider("values", 0)) + ( myS.slider("values", 2) -  myS.slider("values", 0)) / 2);
+                myS.slider("values", 1, parseInt(myS.slider("values", 0)) + (myS.slider("values", 2) - myS.slider("values", 0)) / 2);
 
                 //Min handler
                 if (ui.handleIndex === 0) {
@@ -225,7 +273,7 @@
                             myS.slider("values", 1, myS.slider("values", 0) + (minSpace + 1));
                         }
                         if ((myS.slider("values", 2) - myS.slider("values", 1)) < (minSpace + 1)) {
-                            myS.slider("values", 2, myS.slider("values", 1) + minSpace);                            
+                            myS.slider("values", 2, myS.slider("values", 1) + minSpace);
                         }
                     }
                 }
@@ -286,9 +334,6 @@
         //Slider UI on initialization
         $("#slider_span").val(minSliderValue + " - " + maxSliderValue);
 
-
-
-
         //List of all countries
         var countries = createAllCountries();
 
@@ -317,6 +362,59 @@
                 show_all_connections(countries)
             };
 
+            function drawMap(map_data) {
+                //Draw the map
+                svg.selectAll("path").remove();
+
+                svg.append("g")
+                    .selectAll("path")
+                    .data(map_data.features)
+                    .enter()
+                    .append("path")
+                    .style("stroke", "black")
+                    .style("stroke-width", 0.4)
+                    //Draw each country
+                    .attr("d", d3.geoPath()
+                        .projection(projection)
+                    )
+
+                    .attr("class", function (d) {
+                        return "Country"
+                    })
+                    .on("mouseover", mouseOver)
+                    .on("mouseleave", mouseLeave)
+                    .on("click", mouseClick)
+
+
+                    //Set the color of each country
+                    .attr("fill", function (d) {
+
+                        var colorScale = d3.scaleThreshold()
+                            .domain([1, 2, 5, 15, 50, 100])
+                            .range(d3.schemeBlues[6]);
+
+                        if (!payload_is_used) {
+                            if (findObjectByKey(countries, "country_code", d.id) != null) {
+                                return colorScale(findObjectByKey(countries, "country_code", d.id).country_pioneers.length);
+                            } else return colorScale(0);
+                        }
+                        else {
+                            //Worked in
+                            if (findObjectByKey(countries, "country_code", d.id) != null) {
+                                if (payload_country.includes(findObjectByKey(countries, "country_code", d.id).country_name)) {
+                                    return "#bb7043";
+                                }
+                                else {
+                                    return colorScale(findObjectByKey(countries, "country_code", d.id).country_pioneers.length);
+                                }
+                            }
+                            else return colorScale(0);
+                        }
+
+
+                    });
+            }
+
             //Mouse Over
             let mouseOver = function (d) {
 
@@ -324,7 +422,7 @@
                 d3.select(this)
                     .transition()
                     .duration(200)
-                    .style("stroke", "black");
+                    .style("opacity", 0.8)
 
             }
 
@@ -334,10 +432,25 @@
                 d3.select(this)
                     .transition()
                     .duration(0)
-                    .style("stroke", "transparent")
+                    .style("opacity", 1.0)
             }
 
             let mouseClick = function (d) {
+
+                //Check if map has to be redrawn
+                if (payload_is_used) {
+                    //Only Once
+                    payload_is_used = false;
+
+                    //Stop hiding things for payload                
+                    document.getElementById('pioneers_count_label_head').hidden = false;
+                    document.getElementById('pioneers_jobs_label_head').hidden = false;
+                    document.getElementById('pioneers_connections_label_head').hidden = false;
+                    document.getElementById('pioneers_example_label_head').hidden = false;
+
+                    //Draw Map normaly
+                    drawMap(map_data);
+                }
 
                 //Set last country if slider will be used
                 lastCountry = d;
@@ -356,19 +469,32 @@
                 } else {
                     document.getElementById('sidepanel_empty_text').hidden = true;
                     document.getElementById('pioneers_contribute_button').hidden = true;
-
-                    makeGrid(curr_country.country_pioneers);
                 }
 
                 //Remove old links
                 svg.selectAll(".Link").remove();
-
 
                 //Sidebar                
                 document.getElementById('country_name_label').innerHTML = curr_country.country_name;
                 document.getElementById('pioneers_count_label').innerHTML = curr_country.country_pioneers.length;
                 document.getElementById('pioneers_jobs_label').innerHTML = curr_country.country_jobs.length;
                 document.getElementById('pioneers_connections_label').innerHTML = curr_country.country_connected_countries.length;
+
+                //Button timeline
+                document.getElementById('timeline_button').onclick = function () {
+                    var timeline_link = "./Timeline.html";
+                    var country_name = curr_country.country_name;
+                    var timespan = $("#slider-range").slider("values", 0) + "-" + $("#slider-range").slider("values", 2);
+                    window.open(timeline_link + "?country=" + country_name + "?timespan=" + timespan);
+                };
+                document.getElementById('timeline_button').disabled = false;
+
+                //Button cluster
+                document.getElementById('cluster_button').onclick = function () {
+                    var cluster_link = "./Cluster.html?mode=countries&country=" + curr_country.country_name + "&timespan=" + $("#slider-range").slider("values", 0) + "-" + $("#slider-range").slider("values", 2);
+                    window.open(cluster_link)
+                };
+                document.getElementById('cluster_button').disabled = false;
 
                 //Display random pioneer on sidepanel
                 show_example_pioneer(curr_country.country_pioneers, curr_country.country_pioneers);
@@ -412,40 +538,8 @@
 
             }
 
-            //Draw the map
-            svg.selectAll("path").remove();
-
-            svg.append("g")
-                .selectAll("path")
-                .data(map_data.features)
-                .enter()
-                .append("path")
-
-                //Draw each country
-                .attr("d", d3.geoPath()
-                    .projection(projection)
-                )
-
-                .attr("class", function (d) {
-                    return "Country"
-                })
-                .on("mouseover", mouseOver)
-                .on("mouseleave", mouseLeave)
-                .on("click", mouseClick)
-
-
-                //Set the color of each country
-                .attr("fill", function (d) {
-
-                    var colorScale = d3.scaleThreshold()
-                        .domain([1, 2, 5, 15, 50, 100])
-                        .range(d3.schemeBlues[6]);
-
-                    if (findObjectByKey(countries, "country_code", d.id) != null) {
-                        return colorScale(findObjectByKey(countries, "country_code", d.id).country_pioneers.length);
-                    } else return colorScale(0);
-
-                });
+            //Draw Map
+            drawMap(map_data);
 
             //Reset UI
             if (sliderWasUsed && lastCountry !== null) {
@@ -453,8 +547,13 @@
             }
         }
 
+
+
     </script>
 
+    </div>
+
 </body>
+
 
 </html>

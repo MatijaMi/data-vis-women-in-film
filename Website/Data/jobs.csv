@@ -10,7 +10,7 @@ jobs.Adapter,35
 jobs.Agent,5
 jobs.Agent.Talent Agent,1
 jobs.Agent.Talent Manager,2
-jobs.Amateur Filmmakingclub Cofounder,2
+jobs.Amateur Filmmakingclub Co-Founder,2
 jobs.Animal Trainer,2
 jobs.Animator,4
 jobs.Anthropologist,1
@@ -18,8 +18,8 @@ jobs.Art Director,7
 jobs.Booking Clerk,1
 jobs.Business Owner,1
 jobs.Business Partner,12
-jobs.Business Partner.Business Co Founder,1
-jobs.Business Partner.Business Co Owner,3
+jobs.Business Partner.Business Co-Founder,1
+jobs.Business Partner.Business Co-Owner,3
 jobs.Business Partner.Family Business Partner,8
 jobs.Business Partner.Family Business Partner.Family Film Business Partner,5
 jobs.Camera Operator,8
@@ -68,8 +68,8 @@ jobs.Distributor,17
 jobs.Distributor.Dstribution Company Founder,2
 jobs.Distributor.Distribution Company Managing Director,1
 jobs.Distributor.Distribution Company Owner,1
-jobs.Distributor.Dilm Dealer,1
-jobs.Distributor.Dilm Renter,1
+jobs.Distributor.Film Dealer,1
+jobs.Distributor.Film Renter,1
 jobs.Dramaturge,1
 jobs.Dressmaker,1
 jobs.Editor,59
