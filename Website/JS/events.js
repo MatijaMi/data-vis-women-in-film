@@ -3,7 +3,7 @@ var events = event_container.append("svg")
     .style("width", 1200 + "px")
     .style("height", 5000 + "px");
 
-const EVENTFILL = "#aa0000";
+const EVENTFILL = "#ddd";
 const W = 1200;
 var H = 0;
 var cYOB = 9999;

@@ -20,7 +20,7 @@ function updateLocator(state,level){
             }  
         }
     state=inHtml;
-    document.getElementById(level-1+"level").innerHTML+=": "
+    document.getElementById(level-1+"level").innerHTML+="&#8250; "
     document.getElementById("locator").innerHTML=document.getElementById("locator").innerHTML +"<button class='locButtons' id='" +level+"level'>"+ state+ "</button>";
    addButtonEvents();
         
@@ -28,7 +28,7 @@ function updateLocator(state,level){
 
 function handleLocatorClick(id){
     var name = document.getElementById(id).innerHTML;
-    name=name.replace(": ","");
+    name=name.replace("&#8250; ","");
     removeTooltip("textOverlay");
     var text = name.split(" ");
     var inHtml ="";
