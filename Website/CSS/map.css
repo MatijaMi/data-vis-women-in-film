@@ -90,6 +90,7 @@
     margin-left: auto;
     margin-right: auto;
     height: 180px;
+    max-width: 280px;
     background-repeat: no-repeat;
     background-size: cover;
     pointer-events: none;
@@ -208,6 +209,17 @@
     margin-top: 10px;
     margin-left: 325px;
     width: 1400px;    
+}
+
+.slider_year_text {
+    color:#1fb9f6;
+    font-weight:bold;
+    text-align: center;
+    font-size: 24px;
+    pointer-events: none;
+    width:150px;
+    background-color: #060606;
+    border-width: 0px;
 }
 
 .slider_info_icon{

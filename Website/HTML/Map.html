@@ -154,8 +154,7 @@
 
             <input type="image" class="histo_icon" src="../Images/barchart_icon.png"
                 onclick="histogram_button_onclick()" />
-            <input type="text" id="slider_span" readonly
-                style="color:#1fb9f6; font-weight:bold; text-align: center; font-size: 24px; pointer-events: none; width:150px">
+            <input type="text" id="slider_span" class="slider_year_text" readonly>
             <input type="image" class="slider_info_icon" src="../Images/question_mark.png"
                 onclick="slider_info_onclick()" />
         </div>
@@ -229,16 +228,18 @@
         }
 
         //Panel Pioneer for payload
-        document.getElementById('pioneers_ex_name').innerHTML = payload_name;
-        document.getElementById('pioneers_ex_image').src = "";
-        document.getElementById('pioneers_ex_image').src = payload_image;
-        document.getElementById('pioneers_read_more_button').onclick = function () { window.open(payload_link) };
-        document.getElementById('pioneers_next_button').hidden = true;
-        document.getElementById('sidepanel_holder').hidden = false;
-        document.getElementById('pioneers_count_label_head').hidden = true;
-        document.getElementById('pioneers_jobs_label_head').hidden = true;
-        document.getElementById('pioneers_connections_label_head').hidden = true;
-        document.getElementById('pioneers_example_label_head').hidden = true;
+        if (payload_is_used) {
+            document.getElementById('pioneers_ex_name').innerHTML = payload_name;
+            document.getElementById('pioneers_ex_image').src = "";
+            document.getElementById('pioneers_ex_image').src = payload_image;
+            document.getElementById('pioneers_read_more_button').onclick = function () { window.open(payload_link) };
+            document.getElementById('pioneers_next_button').hidden = true;
+            document.getElementById('sidepanel_holder').hidden = false;
+            document.getElementById('pioneers_count_label_head').hidden = true;
+            document.getElementById('pioneers_jobs_label_head').hidden = true;
+            document.getElementById('pioneers_connections_label_head').hidden = true;
+            document.getElementById('pioneers_example_label_head').hidden = true;
+        }
 
         //Slider
         var sliderWasUsed = false;
@@ -361,6 +362,59 @@
                 show_all_connections(countries)
             };
 
+            function drawMap(map_data) {
+                //Draw the map
+                svg.selectAll("path").remove();
+
+                svg.append("g")
+                    .selectAll("path")
+                    .data(map_data.features)
+                    .enter()
+                    .append("path")
+                    .style("stroke", "black")
+                    .style("stroke-width", 0.4)
+                    //Draw each country
+                    .attr("d", d3.geoPath()
+                        .projection(projection)
+                    )
+
+                    .attr("class", function (d) {
+                        return "Country"
+                    })
+                    .on("mouseover", mouseOver)
+                    .on("mouseleave", mouseLeave)
+                    .on("click", mouseClick)
+
+
+                    //Set the color of each country
+                    .attr("fill", function (d) {
+
+                        var colorScale = d3.scaleThreshold()
+                            .domain([1, 2, 5, 15, 50, 100])
+                            .range(d3.schemeBlues[6]);
+
+                        if (!payload_is_used) {
+                            if (findObjectByKey(countries, "country_code", d.id) != null) {
+                                return colorScale(findObjectByKey(countries, "country_code", d.id).country_pioneers.length);
+                            } else return colorScale(0);
+                        }
+                        else {
+                            //Worked in
+                            if (findObjectByKey(countries, "country_code", d.id) != null) {
+                                if (payload_country.includes(findObjectByKey(countries, "country_code", d.id).country_name)) {
+                                    return "#bb7043";
+                                }
+                                else {
+                                    return colorScale(findObjectByKey(countries, "country_code", d.id).country_pioneers.length);
+                                }
+                            }
+                            else return colorScale(0);
+                        }
+
+
+                    });
+            }
+
             //Mouse Over
             let mouseOver = function (d) {
 
@@ -383,12 +437,20 @@
 
             let mouseClick = function (d) {
 
-                //Stop hiding things for payload
-                payload_is_used = false;
-                document.getElementById('pioneers_count_label_head').hidden = false;
-                document.getElementById('pioneers_jobs_label_head').hidden = false;
-                document.getElementById('pioneers_connections_label_head').hidden = false;
-                document.getElementById('pioneers_example_label_head').hidden = false;
+                //Check if map has to be redrawn
+                if (payload_is_used) {
+                    //Only Once
+                    payload_is_used = false;
+
+                    //Stop hiding things for payload                
+                    document.getElementById('pioneers_count_label_head').hidden = false;
+                    document.getElementById('pioneers_jobs_label_head').hidden = false;
+                    document.getElementById('pioneers_connections_label_head').hidden = false;
+                    document.getElementById('pioneers_example_label_head').hidden = false;
+
+                    //Draw Map normaly
+                    drawMap(map_data);
+                }
 
                 //Set last country if slider will be used
                 lastCountry = d;
@@ -476,62 +538,16 @@
 
             }
 
-            //Draw the map
-            svg.selectAll("path").remove();
-
-            svg.append("g")
-                .selectAll("path")
-                .data(map_data.features)
-                .enter()
-                .append("path")
-                .style("stroke", "black")
-                .style("stroke-width", 0.4)
-                //Draw each country
-                .attr("d", d3.geoPath()
-                    .projection(projection)
-                )
-
-                .attr("class", function (d) {
-                    return "Country"
-                })
-                .on("mouseover", mouseOver)
-                .on("mouseleave", mouseLeave)
-                .on("click", mouseClick)
-
-
-                //Set the color of each country
-                .attr("fill", function (d) {
-
-                    var colorScale = d3.scaleThreshold()
-                        .domain([1, 2, 5, 15, 50, 100])
-                        .range(d3.schemeBlues[6]);
-
-                    if (!payload_is_used) {
-                        if (findObjectByKey(countries, "country_code", d.id) != null) {
-                            return colorScale(findObjectByKey(countries, "country_code", d.id).country_pioneers.length);
-                        } else return colorScale(0);
-                    }
-                    else {
-                        //Worked in
-                        if (findObjectByKey(countries, "country_code", d.id) != null) {
-                            if (payload_country.includes(findObjectByKey(countries, "country_code", d.id).country_name)) {
-                                return "#bb7043";
-                            }
-                            else {
-                                return colorScale(findObjectByKey(countries, "country_code", d.id).country_pioneers.length);
-                            }
-                        }
-                        else return colorScale(0);
-                    }
-
-
-                });
+            //Draw Map
+            drawMap(map_data);
 
             //Reset UI
             if (sliderWasUsed && lastCountry !== null) {
                 mouseClick(lastCountry);
             }
         }
+
+
 
     </script>
 
