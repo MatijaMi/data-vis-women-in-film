@@ -121,7 +121,7 @@ function renderEvents() {
         .style("font-family", "sans-serif")
         .style("font-size", "10px")
         .style("font-weight", "bold")
-        .style("fill", "white")
+        .style("fill", "black")
         .style("opacity", "1");
 }
 
