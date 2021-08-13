@@ -5,6 +5,7 @@ var events = event_container.append("svg")
 
 const EVENTFILL = "#ddd";
 const W = 1200;
+const HOFFSET = 20;
 var H = 0;
 var cYOB = 9999;
 var cYOD = 0;
@@ -70,9 +71,9 @@ function addEvent(name, start, end) {
             YOB: start,
             YOD: end,
         };
+        H = H + HOFFSET;
         console.log("Adding " + name + " " + start + " " + end + " to events");
         event_list.push(object);
-        H = H + 20;
         renderEvents();
         document.getElementById("event-name").value = "";
         document.getElementById("event-start").value = "";
@@ -123,11 +124,20 @@ function renderEvents() {
         .style("font-weight", "bold")
         .style("fill", "black")
         .style("opacity", "1");
+
+    g.on("click", function (e, d) {
+        let name = d3.select(this)._groups[0][0].__data__.name;
+        event_list = event_list.filter(x => x.name != name);
+        console.log(event_list);
+        events.selectAll("g").remove();
+        H = H - HOFFSET;
+        renderEvents();
+    });
 }
 
-function isNumberKey(char){
+function isNumberKey(char) {
     const charCode = char.charCodeAt(0);
-    if (charCode >= 48 && charCode <= 57){
+    if (charCode >= 48 && charCode <= 57) {
         return true;
     }
     return false;
