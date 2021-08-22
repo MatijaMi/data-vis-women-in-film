@@ -58,6 +58,8 @@
 .sidepanel_info_icon {
   float: right;
   margin-right: 8px;
+  width: 32px;
+  height: 32px;
 }
 
 .sidepanel_text_short {
@@ -141,6 +143,8 @@
 .settings_info_icon {
   float: right;
   margin-right: 8px;
+  width: 32px;
+  height: 32px;
 }
 
 .settings_button {
@@ -218,9 +222,13 @@
 }
 
 .slider_info_icon {
-  margin-left: 24px;
+  margin-left: 10px;
   vertical-align: bottom;
-  margin-bottom: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+  height: 28px;
+  width: 28px;
+  margin-bottom: 2px;
 }
 
 /* Footer */

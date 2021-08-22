@@ -1,0 +1,64 @@
+/* Style the Icon Used to Trigger the Modal */
+.modal_icon {
+  cursor: pointer;
+  transition: 0.3s;
+  height: 28px;
+  width: 28px;
+  margin-right: 10px;
+  margin-bottom: -4px;
+}
+
+.modal_icon:hover {
+  opacity: 0.7;
+}
+
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 3; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.9); /* Black w/ opacity */
+}
+
+/* Modal Content (Image) */
+.modal-content-1 {
+  margin: auto;
+  margin-bottom: 200px;
+  display: block;
+  width: 80%;
+}
+
+.modal-content-2 {
+  margin: auto;
+  display: block;
+  height: 80%;
+}
+
+/* Add Animation - Zoom in the Modal */
+.modal-content {
+  animation-name: zoom;
+  animation-duration: 0.6s;
+}
+
+@keyframes zoom {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+/* 100% Image Width on Smaller Screens */
+@media only screen and (max-width: 700px) {
+  .modal-content {
+    width: 100%;
+  }
+}
