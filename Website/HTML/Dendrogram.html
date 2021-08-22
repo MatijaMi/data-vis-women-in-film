@@ -42,7 +42,7 @@
     <!-- Dendrogram Object -->
     <div class="switches">
         <form>
-            <label><input type="radio" name="mode" value="cluster" checked> Dendrogram</label>
+            <label><input type="radio" name="mode" value="cluster" checked> <div class="dendogramButtonText">Dendrogram</div></label>
             <label><input type="radio" name="mode" value="tree"> Tree</label>
         </form>
     </div>
@@ -55,13 +55,13 @@
         var svg = d3.select("svg"),
             width = +svg.attr("width"),
             height = +svg.attr("height"),
-            g = svg.append("g").attr("transform", "translate(40,0)");
+            g = svg.append("g").attr("transform", "translate(90,0)");
 
         var tree = d3.tree()
             .size([height - 400, width - 160]);
 
         var cluster = d3.cluster()
-            .size([height, width - 320]);
+            .size([height, width - 420]);
 
         var stratify = d3.stratify()
             .parentId(function (d) { return d.id.substring(0, d.id.lastIndexOf(".")); });
@@ -71,14 +71,15 @@
 
             var root = stratify(data)
                 .sort(function (a, b) { return (a.height - b.height) || a.id.localeCompare(b.id); });
-
+            root.id="Profession";
             cluster(root);
 
             var link = g.selectAll(".link")
                 .data(root.descendants().slice(1))
                 .enter().append("path")
                 .attr("class", "link")
-                .attr("d", diagonal);
+                .attr("d", diagonal)
+                .style("stroke","#888888");
 
             var node = g.selectAll(".node")
                 .data(root.descendants())
@@ -139,6 +140,7 @@
 
     .node text {
         font: 10px sans-serif;
+        fill:white;
     }
 
     .node--internal circle {
@@ -146,7 +148,11 @@
     }
 
     .node--internal text {
-        text-shadow: 0 1px 0 #fff, 0 -1px 0 #fff, 1px 0 0 #fff, -1px 0 0 #fff;
+        font: 13px sans-serif;
+    }
+    
+    .node.node--leaf{
+        color:red;
     }
 
     .link {
@@ -180,12 +186,24 @@
         margin-top: 40px;
     }
 
-
-
-
     /* new */
     .switches{
-        margin-top: 2.5rem;
-        color:#180f0f;
+        justify-content: space-around;
+        align-items: center;
+        margin-top: 1.2rem;
+        color:white;
+        font-size: 20px;
+    }
+    
+    .switches input{
+        padding-bottom: 100px;
+        border: none;
+        width: 20px;
+        height: 20px;
+    }
+    
+    .dendogramButtonText{
+        display: inline-block;
+        padding-bottom: 10px;
     }
 </style>

@@ -3,8 +3,8 @@ const xAxis = d3.select("#xAxis");
 var H = svg.node().getBoundingClientRect().height;
 const W = svg.node().getBoundingClientRect().width;
 var M = 5;
-const DEFAULTFILL = "#009600";
-const HOVERFILL = "#005600";
+const DEFAULTFILL = "#C76734";
+const HOVERFILL = "#8e421a";
 
 
 var tooltip = d3.select("body")
@@ -90,27 +90,8 @@ function cleanUp() {
 }
 
 function render() {
-    var url = window.location.href;
-    if (url.includes("?country=")) {
-        var split = url.split("?");
-        var country = split[1].split("=")[1];
-        var [first, second] = split[2].split("=")[1].split("-");
-        country = country.replace("%20", " ");
-        console.log(country, first, second);
-        for(let entry of naiveData){
-            if (entry.worked_in.includes(country) && entry.YOB <= second && entry.YOD >= first){
-                country_data.push(entry);
-            }
-        }
-        console.log(country_data.length);
-        naiveData = country_data;
-        H = 25 * naiveData.length;
-        svg.style("height", H + "px");
-    }
-    naiveData = naiveData.slice().map((e, i) => ({ ...e, yIndex: i }));
-
     
-
+    naiveData = naiveData.slice().map((e, i) => ({ ...e, yIndex: i }));
     const xScale = d3.scaleLinear()
         .domain([d3.min(naiveData, d => d.YOB), d3.max(naiveData, d => d.YOD)])
         .range([0, W]);
@@ -189,6 +170,7 @@ function render() {
                 .style("fill", `${DEFAULTFILL}`);
             tooltip.html(``).style('visibility', 'hidden');
         });
+    
 }
 
 d3.csv("../Data/timeline_data.csv").then(d => {
@@ -202,5 +184,22 @@ d3.csv("../Data/timeline_data.csv").then(d => {
         d.YOD = +d.YOD;
         naiveData.push(d)
     });
+    var url = window.location.href;
+    if (url.includes("?country=")) {
+        var split = url.split("?");
+        var country = split[1].split("=")[1];
+        var [first, second] = split[2].split("=")[1].split("-");
+        country = country.replace("%20", " ");
+        console.log(country, first, second);
+        for(let entry of naiveData){
+            if (entry.worked_in.includes(country) && entry.YOB <= second && entry.YOD >= first){
+                country_data.push(entry);
+            }
+        }
+        console.log(country_data.length);
+        naiveData = country_data;
+        H = 18 * naiveData.length;
+        svg.style("height", H + "px");
+    }
     render();
 });

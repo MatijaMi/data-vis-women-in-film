@@ -1,12 +1,11 @@
 import{removeTooltip,createTooltip} from '../Util/tooltips.js';
 import{updateState,goBackState} from './stateHandler.js';
-import{updateLocator} from './navigationHandler.js';
+import{updateLocator,removeLastLocButton} from './navigationHandler.js';
+import{clearAllTimeouts,timeouts,closeSubgroupPanel} from './connectivityHandler.js';
 import{drawTopLevel} from '../Levels/topLevel.js';
-import{drawFirstLevel} from '../Levels/FirstLevel.js';
-import{drawSecondLevel} from '../Levels/SecondLevel.js';
-import{drawThirdLevel} from '../Levels/ThirdLevel.js';
-import{showJobD3} from '../Levels/singleJobCluster.js';
+import{drawLowerLevel} from '../Levels/lowerLevels.js';
 var level = 0;
+
 function updateLevel(newLevel){
     level += newLevel;
 }
@@ -66,32 +65,26 @@ function goBack(){
         if(getLevel()==0){
             document.getElementById("back").remove();
         }
+        removeLastLocButton();
         goBackState();
 }
 
 function addBackButton(){ 
-    var width = window.innerWidth;
-    var height = window.innerHeight - 50;
+    var width =document.getElementById("my_dataviz").clientWidth;
+    var height = document.getElementById("my_dataviz").clientHeight;
   if(document.getElementById("back")==null){
       var backButton = d3.select("body")
         .append("div")
         .style("opacity", 1)
         .attr("class", "back")
         .attr("id", "back")
-        .style("background-color", "white")
-        .style("border", "solid")
-        .style("border-width", "2px")
-        .style("border-radius", "5px")
-        .style("padding", "5px")
-        .style("position", "absolute")
-        .style("left", width -90 + "px")
-        .style("top", height -40 + "px")
         .html("<button> Back </button>");
       document.getElementById("back").addEventListener("click", goBack)
   }
 }
 
 function goToNextLevel(profession){
+    profession=event.srcElement.id;
     removeTooltip("tooltip2");
     removeTooltip("tooltip")
     removeTooltip("textOverlay")
@@ -99,19 +92,9 @@ function goToNextLevel(profession){
     updateState(profession);
     updateLocator(profession,getLevel());
     addBackButton();
-    switch(getLevel()){
-        case 1:
-           drawFirstLevel(profession);
-            break;
-        case 2:
-            drawSecondLevel(profession);
-            break;
-        case 3: 
-            drawThirdLevel(profession);
-            break;
-        case 4: 
-            showJobD3(profession);
-    }  
+    clearAllTimeouts();
+    closeSubgroupPanel();
+    drawLowerLevel(profession,getLevel());
 }
 
-export {updateLevel,setLevel,getLevel,getLevels,goToNextLevel}
+export {updateLevel,setLevel,getLevel,getLevels,goToNextLevel,addBackButton}

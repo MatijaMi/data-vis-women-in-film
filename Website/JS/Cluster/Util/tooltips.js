@@ -10,70 +10,81 @@ function createTooltip(){
    var Tooltip= d3.select("body")
         .append("div")
         .style("opacity", 0)
-        .attr("class", "tooltip")
-        .style("background-color", "white")
-        .style("border", "solid")
-        .style("border-width", "1px")
-        .style("border-radius", "5px")
-        .style("padding", "5px")
-        .style("position", "absolute")
+        .attr("class", "tooltip");
    return Tooltip;
 }
 
 
-function createTextOverlay(data){
-    
+function createTextOverlay(data,mode,container){
     for(var i =0; i <data.length; i++){
-        var x = document.getElementById(data[i].job).cx.baseVal.value;
-        var y = document.getElementById(data[i].job).cy.baseVal.value;
-        var r = document.getElementById(data[i].job).r.baseVal.value;
-        var text = data[i].job.split(" ");
+        if(mode=="Professions"){
+            var x = document.getElementById(data[i].job).cx.baseVal.value;
+            var y = document.getElementById(data[i].job).cy.baseVal.value;
+            var r = document.getElementById(data[i].job).r.baseVal.value;
+            var text = data[i].job.split(" ");
+        }else{
+            var x = document.getElementById(data[i].country).cx.baseVal.value;
+            var y = document.getElementById(data[i].country).cy.baseVal.value;
+            var r = document.getElementById(data[i].country).r.baseVal.value;
+            var text = data[i].country.split(" ");
+        }
         var inHtml ="";
+        var pureText=""
         for(var j=0; j<text.length;j++){
             inHtml=inHtml +text[j].charAt(0).toUpperCase()+ text[j].slice(1) +"<br>";   
+            pureText=pureText +text[j].charAt(0).toUpperCase()+ text[j].slice(1);   
         }
-        var xShift;
-        var yShift;
-        var calculatedFont =r/2+"px";
+        var xShift=0;
+        var yShift=0;
+        var calculatedFont =r/2 - 5 +"px";
         var lineHeight = r/2 +4 + "px";
+        
         if(text.length==1){
-            yShift=0;
-            if(data[i].job.length>9){
-                calculatedFont="auto";
-                lineHeight = "auto";
-            }
+            var pureText=text[0].charAt(0).toUpperCase()+ text[0].slice(1);
+                yShift=r/2 +10;
+                if(pureText.length>8){
+                    inHtml=pureText.substr(0,Math.ceil(pureText.length/2)) +"-<br>" + pureText.substr(Math.ceil(pureText.length/2));
+                    yShift=30;
+                }
+                if(container!="body"){
+                    yShift=r/3;
+                    if(pureText.length<8){
+                        yShift=r/2;
+                    }
+                } 
         }else{
             if(text.length==2){
-                calculatedFont=r/3+"px";
-                lineHeight = r/3 +4 + "px";
+                if(container=="body"){
+                    calculatedFont=r/2+ -5 +"px";
+                    lineHeight = r/2 +8 + "px";
+                    yShift=20;
+                }else{
+                    yShift=r/8;
+                    calculatedFont=r/3+"px";
+                    lineHeight = r/3 +4 + "px";
+                }
             }else{
-                calculatedFont=r/4+"px";
-                lineHeight = r/4 +4 + "px";
+                if(container=="body"){
+                    calculatedFont=r/3+"px";
+                    lineHeight = r/3 +4 + "px";
+                    yShift=35;
+                }else{
+                    yShift=-r/4;
+                    calculatedFont=r/3+"px";
+                    lineHeight = r/3 +4 + "px";
+                }
             }
         }
-        
-        var Tooltip = d3.select("body")
+        var Tooltip = d3.select("#"+container)
                 .append("div")
                 .html(inHtml)//+ "\n" +data[i].count
                 .style("opacity", 1)
                 .attr("class", "textOverlay")
-                .style("background-color", "none")
-                .style("border", "none")
-                .style("border-width", "1px")
-                .style("border-radius", "5px")
-                .style("padding", "0px")
-                .style("margin", "0px")
-                .style("text-align", "center")
-                .style("font-family", " blacksword")
                 .style("line-height", lineHeight)
                 .style("font-size",calculatedFont)
-                .style("color","#fff")
-                .style("text-shadow", "2px 0 0 #000, 0 -2px 0 #000, 0 2px 0 #000, -2px 0 0 #000")
-                .style("position", "absolute")
                 .style("left", x-r +"px")
                 .style("top", y+yShift + "px")   
                 .style("width", 2*r +"px") 
-                .style("animation","fadein 1.5s")   
     }
 }
 

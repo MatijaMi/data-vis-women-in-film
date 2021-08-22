@@ -284,7 +284,7 @@ nav{
   width: 85rem;
   height: 20rem;
   margin:  2% auto ;
-  background-color: #bb7043;
+  background-color: #C76734;
   margin-bottom: 20px;
   border: 4px solid #060606;
 }
@@ -344,8 +344,8 @@ nav{
 
 .content_button {
   padding: 0.5em 1.7em;
-    margin-bottom: 20px;
-    font-weight: 300;
+  margin-bottom: 20px;
+  font-weight: 300;
     color: #000;
     text-shadow: 0 0.04em 0.04em rgba(235, 235, 235, 0.253);
     font-size: 17px;
