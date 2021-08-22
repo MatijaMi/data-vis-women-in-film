@@ -5,7 +5,7 @@ import {setLevel} from '../Handlers/levelHandler.js';
 import {getAllData} from '../Util/dataProcessing.js';
 import {removeTooltip} from '../Util/tooltips.js';
 import {showCountries} from '../Levels/CountryCluster.js';
-
+import{setLocator} from '../Handlers/navigationHandler.js';
 
 function showAll(){
     if(document.getElementById("my_dataviz").firstChild!=null){
@@ -180,6 +180,7 @@ function showAll(){
        window.zoomedIn=false;
     } 
    updateState("All");
+   setLocator("All Pioneers");
    
 }
 

@@ -54,6 +54,8 @@ function handleLoad(){
                         
                     if(country!="all"){
                         showCountryD3(country,timespan);
+                        setLocator("Countries")
+                        updateLocator(country,1);
                     }else{
                         showCountries(timespan);
                     }
@@ -135,6 +137,7 @@ function switchToProfessions(){
     document.getElementById("allPioneersButton").style.backgroundColor="black";
     drawTopLevel();
 }
+
 function openSubgroupPanel() {
     if(mobileMode){
         document.getElementById("subGroupPanel").style.width = "100%";

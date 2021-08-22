@@ -29,7 +29,7 @@ function showCountryD3(country,timespan){
             }
         }
     }
-
+    
     data = d3.csvParse(data);
 
     // set the dimensions and margins of the graph
@@ -55,7 +55,7 @@ function showCountryD3(country,timespan){
     var Tooltip = createTooltip();
     
     addBackButton();
-
+    
     function goBack(){
         
         document.getElementById("back").remove();
@@ -145,6 +145,7 @@ document.getElementById("back").addEventListener("click", goBack)
 
         speedUpAnimation(simulation,2);
   }
+    
     
 }
 function determineCountryGroupSize(data){

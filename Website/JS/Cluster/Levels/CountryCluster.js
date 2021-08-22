@@ -4,7 +4,7 @@ import {setLevel} from '../Handlers/levelHandler.js';
 import {removeTooltip,createTextOverlay,createTooltip,speedUpAnimation} from '../Util/tooltips.js';
 import {addPatterns,determineCountrySize,findCountryPicture,determineJobSizeMobile,determineCxMobile,determineCyMobile} from '../Util/bubbleUtil.js';
 import{clearAllTimeouts,timeouts} from '../Handlers/connectivityHandler.js';
-import{setLocator, handleLocatorClick, removeLastLocButton,addButtonEvents,updateLocator} from '../Handlers/navigationHandler.js';
+import{setLocator,updateLocator} from '../Handlers/navigationHandler.js';
 
 
 
@@ -103,6 +103,7 @@ function showCountries(timespan){
    var showCountry = function () { 
        var country = event.srcElement.id;
        updateState(country);
+       updateLocator(country,1);
        clearAllTimeouts();
        showCountryD3(country,"")
        var paras = document.getElementsByClassName('tooltip2');
