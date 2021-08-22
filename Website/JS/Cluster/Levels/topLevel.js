@@ -27,7 +27,6 @@ function drawTopLevel(){
     
     for(var i =25; i <wfpp.entries.length ;i++){
         var pioneer = wfpp.entries[i];
-            console.log(pioneer.link);
     }
     var svg = d3.select("#my_dataviz").append("svg").attr("width", width).attr("height", height).attr("id","mainSVG");
     

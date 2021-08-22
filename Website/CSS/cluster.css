@@ -95,9 +95,9 @@ svg{
 
 #locator{
     z-index: 1;
-    width: 100%;
+    width: 100vw;
     text-align: center;
-    position: absolute;
+    position: fixed;
     margin-top: 5px;
 }
 
@@ -110,7 +110,7 @@ svg{
     text-shadow:2px 0 0 #000, 0 -2px 0 #000, 0 2px 0 #000, -2px 0 0 #000;
     outline: none;
     border: none;
-    text-decoration:underline;
+
 }
 
 #locator button:hover{
@@ -155,34 +155,14 @@ svg{
     margin-bottom: -60px;
     z-index: 2;
 }
-#countryButton{
+#countryButton, #allPioneersButton, #professionsButton{
     z-index: 2;
     display: inline-block;
-    width: 65px;
-    height: 60px;
+    width: 55px;
+    height: 50px;
     border-radius: 10px;
     border-radius: 10px;
     background-color: black;
-}
-
-#allPioneersButton{
-    background-color: black;
-    z-index: 2;
-    display: inline-block;
-    width: 65px;
-    height: 60px;
-    border-radius: 10px;
-    border-radius: 10px;
-    
-}
-#professionsButton{
-    z-index: 2;background-color: black;
-    display: inline-block;
-    width: 65px;
-    height: 60px;
-    border-radius: 10px;
-    border-radius: 10px;
-    
 }
 
 #countryButton img, #allPioneersButton img,#professionsButton img{

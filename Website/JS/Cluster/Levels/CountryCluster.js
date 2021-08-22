@@ -4,6 +4,9 @@ import {setLevel} from '../Handlers/levelHandler.js';
 import {removeTooltip,createTextOverlay,createTooltip,speedUpAnimation} from '../Util/tooltips.js';
 import {addPatterns,determineCountrySize,findCountryPicture,determineJobSizeMobile,determineCxMobile,determineCyMobile} from '../Util/bubbleUtil.js';
 import{clearAllTimeouts,timeouts} from '../Handlers/connectivityHandler.js';
+import{setLocator, handleLocatorClick, removeLastLocButton,addButtonEvents,updateLocator} from '../Handlers/navigationHandler.js';
+
+
 
 function showCountries(timespan){
     
@@ -151,10 +154,10 @@ function showCountries(timespan){
   if(!mobileMode){
       // Features of the forces applied to the nodes:
   window.simulation = d3.forceSimulation()
-      .force("center", d3.forceCenter().x(width / 2).y(height / 2 -50)) // Attraction to the center of the svg area
+      .force("center", d3.forceCenter().x(width / 2).y(height / 2)) // Attraction to the center of the svg area
       .force("charge", d3.forceManyBody().strength(-2)) // Nodes are attracted one each other of value is > 0
       .force("collide", d3.forceCollide().strength(.2).radius(function (d) { return determineCountrySize(d.count)}).iterations(1))
-        .force('y', d3.forceY().y(height/2).strength(0.02));// Force that avoids circle overlapping
+        .force('y', d3.forceY().y(height/2).strength(0.04));
 
   //
     window.simulation
@@ -198,55 +201,7 @@ function showCountries(timespan){
     
     timeouts.push(setTimeout(temp,10000));
     updateState("Countries");
-}
-
-/////////////////////////////////////////////////////////////////
-function createLines(country,data){
-    var simCountries = new Set();
-    simCountries.add(country)
-    for(var i = 0; i <wfpp.entries.length; i++){
-        for(var j =0; j< wfpp.entries[i].worked_in.length; j++){
-            var entry=wfpp.entries[i].worked_in[j];
-            if(entry.includes(country)){
-                for(var k =0; k< wfpp.entries[i].worked_in.length; k++){
-                    var entry=wfpp.entries[i].worked_in[k];
-                    simCountries.add(entry);
-                }
-                
-            }
-        }
-    }
-    var arr = Array.from(simCountries);
-    d3.select("#my_dataviz")
-        .selectAll("circle")
-        .data(data)
-        .style("opacity", function(){if(arr.includes(d3.select(this).attr('id'))){
-        return 1;}else{return 0.3;}})
-        .style("stroke-width", function(){if(arr.includes(d3.select(this).attr('id'))){
-        return "4px";}else{return 2;}})
-    
-    simCountries.delete(country);
-    var arr = Array.from(simCountries);
-    for(var i =0; i< arr.length;i++){
-        if(document.getElementById(arr[i])!=null){
-            var x = document.getElementById(arr[i]).cx.baseVal.value;
-            var y = document.getElementById(arr[i]).cy.baseVal.value;
-            var r = document.getElementById(arr[i]).r.baseVal.value;
-            var Tooltip = d3.select("body")
-                .append("div")
-                .html('<u>' + arr[i] + '</u>')
-                .style("opacity", 1)
-                .attr("class", "tooltip2")
-                .style("background-color", "white")
-                .style("border", "solid")
-                .style("border-width", "1px")
-                .style("border-radius", "5px")
-                .style("padding", "5px")
-                .style("position", "absolute")
-                .style("left", x-arr[i].length*4 + "px")
-                .style("top", y-r+10 + "px")  
-        }
-    }
+    setLocator("Countries");
 }
 
 
