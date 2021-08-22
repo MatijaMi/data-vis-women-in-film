@@ -100,6 +100,7 @@
                     <button class="sidepanel_button" id="pioneers_next_button">Next</button>
 
                 </div>
+
                 <div class="sidepanel_text_long" id="sidepanel_empty_text" hidden="true">
                     There are no pioneers registered to the WFFP between the selected Years. <br><br> If you want to
                     contribute
@@ -107,11 +108,11 @@
                     <br><br>
                 </div>
 
+                <div class="sidepanel_text_long" id="sidepanel_start_text">Please click on a country to learn more.</div>
+
                 <button class="sidepanel_button" onclick="window.open('https://wfpp.columbia.edu/contribute/')"
                     id="pioneers_contribute_button" hidden="true">Contribute</button>
             </div>
-
-
 
             <!-- Settings -->
             <div class="settings_panel">
@@ -239,6 +240,7 @@
             document.getElementById('pioneers_jobs_label_head').hidden = true;
             document.getElementById('pioneers_connections_label_head').hidden = true;
             document.getElementById('pioneers_example_label_head').hidden = true;
+            document.getElementById('sidepanel_start_text').hidden = true;
         }
 
         //Slider
@@ -437,6 +439,9 @@
 
             let mouseClick = function (d) {
 
+                //Remove Start Text
+                document.getElementById('sidepanel_start_text').hidden = true;
+                
                 //Check if map has to be redrawn
                 if (payload_is_used) {
                     //Only Once
@@ -547,7 +552,9 @@
             }
         }
 
-
+        //Make smaller
+        var svg = d3.select("#map_holder");
+        svg.attr("height", 725);
 
     </script>
 
