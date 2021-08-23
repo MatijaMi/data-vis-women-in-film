@@ -6,12 +6,15 @@
 }
 
 .reset_button {
-  width: 64px;
-  height: 64px;
-  background-color: #222222;
-  position: absolute;
-  cursor: pointer;
-  border-radius: 45%;
+    width: 64px;
+    height: 64px;
+    background-color: #222222;
+    position: relative;
+    float: right;
+    margin-right: 16px;
+    display: inline-block;
+    cursor: pointer;
+    border-radius: 90%;
 }
 
 body {
