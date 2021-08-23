@@ -5,18 +5,6 @@
   --text_font: "Times New Roman", serif;
 }
 
-.reset_button {
-    width: 64px;
-    height: 64px;
-    background-color: #222222;
-    position: relative;
-    float: right;
-    margin-right: 16px;
-    display: inline-block;
-    cursor: pointer;
-    border-radius: 90%;
-}
-
 body {
   background: #212121;
   font-family: Arial, sans-serif;

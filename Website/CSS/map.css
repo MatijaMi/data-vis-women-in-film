@@ -18,12 +18,12 @@
 /* Wrapper */
 
 .main_wrapper {
-    width: 1750px;
-    overflow: hidden;
+  width: 1750px;
+  overflow: hidden;
 }
 
 .bottom_wrapper {
-  height: 100px;
+  height: 70px;
   width: 1750px;
   overflow: hidden;
   margin-bottom: 25px;

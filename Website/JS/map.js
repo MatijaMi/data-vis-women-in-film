@@ -302,9 +302,9 @@ function histogram_button_onclick() {
     document.getElementById('histogram_holder').hidden = !document.getElementById('histogram_holder').hidden;
 
     //Set height of spacer
-    if (document.getElementById('histogram_holder').hidden) document.getElementById('bottom_wrapper').style.height = "100px";
+    if (document.getElementById('histogram_holder').hidden) document.getElementById('bottom_wrapper').style.height = "70px";
     else {
-        document.getElementById('bottom_wrapper').style.height = "380px";
+        document.getElementById('bottom_wrapper').style.height = "403px";
         window.scrollTo(0, document.body.scrollHeight);
     }
 }
