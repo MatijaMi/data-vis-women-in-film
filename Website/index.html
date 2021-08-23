@@ -1,51 +1,48 @@
 <!DOCTYPE html>
 
 <html lang="en" style="height: 100%">
-
-<head>
+  <head>
     <title>WFPP-Explorer</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="preconnect" href="https://fonts.googleapis.com"> 
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> 
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
 
-    <link rel="stylesheet" href="./CSS/baseStyle.css">
-    <link rel="icon" type="image/png" href="./Images/WFPP-Logo.png"/>
+    <link rel="stylesheet" href="./CSS/baseStyle.css" />
+    <link rel="icon" type="image/png" href="./Images/WFPP-Logo.png" />
     <script src="https://d3js.org/d3.v4.js"></script>
     <script src="JS/pioneerOfTheDay.js"></script>
-</head>
+  </head>
 
-<body onload="getPioneerOfTheDay()">
-
+  <body onload="getPioneerOfTheDay()">
     <!-- Header -->
-    
-        <nav>
-        <ul class="nav-links">
-            <li>
-                <a href="index.html">Home</a>
-            </li>
-            <li>
-                <a href="./HTML/Map.html">Map</a>
-            </li>
-            <li>
-                <a href="./HTML/Cluster.html">Cluster</a>
-            </li>
-            <li>
-                <a href="./HTML/Timeline.html">Timeline</a> 
-            </li>
-            <li>
-                <a href="./HTML/Dendrogram.html">Dendrogram</a>          
-            </li>
-            <li>
-                <a href="./HTML/About.html">About</a> 
-            </li>
-            
-        </ul>
-    </nav> 
 
-
-
+    <nav>
+      <ul class="nav-links">
+        <li>
+          <a href="index.html">Home</a>
+        </li>
+        <li>
+          <a href="./HTML/Map.html">Map</a>
+        </li>
+        <li>
+          <a href="./HTML/Cluster.html">Cluster</a>
+        </li>
+        <li>
+          <a href="./HTML/Timeline.html">Timeline</a>
+        </li>
+        <li>
+          <a href="./HTML/Dendrogram.html">Dendrogram</a>
+        </li>
+        <li>
+          <a href="./HTML/About.html">About</a>
+        </li>
+      </ul>
+    </nav>
 
     <!-- <div class="header" id="header">
         <a href="index.html">Home</a>
@@ -58,105 +55,151 @@
 
     <!-- Carousel -->
     <div class="carousel">
-        <div class="caruText">
-            <div class="caruText-child">
-                <h3> WFPP-Explorer</h3>
-            </div>
-            <div class="caruText-child">
-                <p>The Women Film Pioneers Project is a scholarly resource for researching the worldwide participation of women at all levels of film production during the silent era.
-                    <br>
-                    <br>
-                    On this website, you can explore the data provided to the project through interactive representations.
-                    Each of the different representations offers its own perspective and can be used not only to provide an interesting look at the data, but also to show which parts of the data are incomplete. With our contribution to data representation, we hope to encourage people to support the project.
-                </p>
-            </div>
-            <div class="caruText-child">
-                <button id="discoverButton"></button>
-            </div>
-            
-            
+      <div class="caruText">
+        <div class="caruText-child">
+          <h3>WFPP-Explorer</h3>
         </div>
+        <div class="caruText-child">
+          <p>
+            The Women Film Pioneers Project is a scholarly resource for
+            researching the worldwide participation of women at all levels of
+            film production during the silent era.
+            <br />
+            <br />
+            On this website, you can explore the data provided to the project
+            through interactive representations. Each of the different
+            representations offers its own perspective and can be used not only
+            to provide an interesting look at the data, but also to show which
+            parts of the data are incomplete. With our contribution to data
+            representation, we hope to encourage people to support the project.
+          </p>
+        </div>
+        <div class="caruText-child">
+          <button id="discoverButton"></button>
+        </div>
+      </div>
     </div>
 
     <!-- Panels -->
     <div class="content" id="content">
- 
-        <div  id ="pod_container">
-            <div class="content_panel" id="pod_panel">
-                <img class="content_image_left" id="birthday_pic">
-                <div class="content_headline" id="birthday_title">Pioneer of the Day</div>
-                <div class="content_text" id="pod_text">
-                    <p id="aka"></p>
-                    <p id="lived"></p>
-                    <p id="worked"></p>
-                    <p id="description">
-                        Usually this window shows a Pioneer who was born on today's date. <br>Unfortunately, there seems to be no such woman in the WFPP database.<br>
-                        If you know of a pioneer to whom this applies, please support the project by expanding the data.
-                    </p>
-                </div>
-                <button class="contribute_button" onclick="window.open('https://wfpp.columbia.edu/contribute/')"
-                            id="birthday_contribute_button">Contribute</button>
-            </div>
+      <div id="pod_container">
+        <div class="content_panel" id="pod_panel">
+          <img class="content_image_left" id="birthday_pic" />
+          <div class="content_headline" id="birthday_title">
+            Pioneer of the Day
+          </div>
+          <div class="content_text" id="pod_text">
+            <p id="aka"></p>
+            <p id="lived"></p>
+            <p id="worked"></p>
+            <p id="description">
+              Usually this window shows a Pioneer who was born on today's date.
+              <br />Unfortunately, there seems to be no such woman in the WFPP
+              database.<br />
+              If you know of a pioneer to whom this applies, please support the
+              project by expanding the data.
+            </p>
+          </div>
+          <button
+            class="contribute_button"
+            onclick="window.open('https://wfpp.columbia.edu/contribute/')"
+            id="birthday_contribute_button"
+          >
+            Contribute
+          </button>
         </div>
+      </div>
 
-        <div class="content_panel">
-            <img class="content_image_left" id="pioneers_ex_image" src="./Images/Screenshot_19.png">
-            <div class="content_headline"> MAP</div>
-            <div class="content_text">
-                Women film pioneers were working in countries all around the world.
-                Furthermore, many of the the pioneers, had jobs in multiple countries.
-                To get an interactive overview of this subject, click the button below.
-            </div>
-            <button class="content_button" onclick="window.open('./HTML/Map.html','_self')">Discover</button>
-
+      <div class="content_panel">
+        <img
+          class="content_image_left"
+          id="pioneers_ex_image"
+          src="./Images/Screenshot_19.png"
+        />
+        <div class="content_headline">MAP</div>
+        <div class="content_text">
+          Women film pioneers were working in countries all around the world.
+          Furthermore, many of the the pioneers, had jobs in multiple countries.
+          To get an interactive overview of this subject, click the button
+          below.
         </div>
-        
-        <div class="content_panel">
-            <img class="content_image_right" id="pioneers_ex_image" src="./Images/Screenshot_19.png">
-            <div class="content_headline"> CLUSTER</div>
-            <div class="content_text">
-                Women film pioneers were working in countries all around the world.
-                Furthermore, many of the the pioneers, had jobs in multiple countries.
-                To get an interactive overview of this subject, click the button below.
-            </div>
-            <button class="content_button" onclick="window.open('./HTML/Cluster.html','_self')">Discover</button>
+        <button
+          class="content_button"
+          onclick="window.open('./HTML/Map.html','_self')"
+        >
+          Discover
+        </button>
+      </div>
 
+      <div class="content_panel">
+        <img
+          class="content_image_right"
+          id="pioneers_ex_image"
+          src="./Images/Screenshot_19.png"
+        />
+        <div class="content_headline">CLUSTER</div>
+        <div class="content_text">
+          Women film pioneers were working in countries all around the world.
+          Furthermore, many of the the pioneers, had jobs in multiple countries.
+          To get an interactive overview of this subject, click the button
+          below.
         </div>
-        
-        <div class="content_panel">
-            <img class="content_image_left" id="pioneers_ex_image" src="./Images/Screenshot_19.png">
-            <div class="content_headline"> TIMELINE</div>
-            <div class="content_text">
-                Women film pioneers were working in countries all around the world.
-                Furthermore, many of the the pioneers, had jobs in multiple countries.
-                To get an interactive overview of this subject, click the button below.
-            </div>
-            <button class="content_button" onclick="window.open('./HTML/Timeline.html','_self')">Discover</button>
+        <button
+          class="content_button"
+          onclick="window.open('./HTML/Cluster.html','_self')"
+        >
+          Discover
+        </button>
+      </div>
 
+      <div class="content_panel">
+        <img
+          class="content_image_left"
+          id="pioneers_ex_image"
+          src="./Images/Timeline.png"
+        />
+        <div class="content_headline">TIMELINE</div>
+        <div class="content_text">
+          Want to find out when the pioneers lived? Click the button below for
+          an interactive timeline allowing you to add custom events to set their
+          lifes into a historical context.
         </div>
+        <button
+          class="content_button"
+          onclick="window.open('./HTML/Timeline.html','_self')"
+        >
+          Discover
+        </button>
+      </div>
 
-        <div class="content_panel">
-            <img class="content_image_right" id="pioneers_ex_image" src="./Images/Screenshot_19.png">
-            <div class="content_headline"> DENDROGRAM</div>
-            <div class="content_text">
-                Women film pioneers were working in countries all around the world.
-                Furthermore, many of the the pioneers, had jobs in multiple countries.
-                To get an interactive overview of this subject, click the button below.
-            </div>
-            <button class="content_button" onclick="window.open('./HTML/Dendrogram.html','_self')">Discover</button>
-
+      <div class="content_panel">
+        <img
+          class="content_image_right"
+          id="pioneers_ex_image"
+          src="./Images/Screenshot_19.png"
+        />
+        <div class="content_headline">DENDROGRAM</div>
+        <div class="content_text">
+          Women film pioneers were working in countries all around the world.
+          Furthermore, many of the the pioneers, had jobs in multiple countries.
+          To get an interactive overview of this subject, click the button
+          below.
         </div>
-        
+        <button
+          class="content_button"
+          onclick="window.open('./HTML/Dendrogram.html','_self')"
+        >
+          Discover
+        </button>
+      </div>
     </div>
     <script type="module" src="./JS/indexBehaviour.js"></script>
     <script type="module" src="./JS/pioneerOfTheDay.js"></script>
-</body>
+  </body>
 
-<footer>
-    
-</footer>
+  <footer></footer>
 
-<style>
+  <style>
     /* .content_panel {
         position: relative;
         height: 300px;
@@ -203,7 +246,5 @@
         text-shadow: 0 0.04em 0.04em rgba(255, 255, 255, 0.253);
         text-align: center;
     } */
-</style>
-    
-
+  </style>
 </html>
