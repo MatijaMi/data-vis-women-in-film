@@ -3,7 +3,7 @@ import{speedUpAnimation,createTooltip} from '../Util/tooltips.js';
 import{determineCxMobile,determineCyMobile} from '../Util/bubbleUtil.js';
 import{goBackState} from '../Handlers/stateHandler.js';
 import{addBackButton} from '../Handlers/levelHandler.js';
-
+import{mousemovePersonal,mouseoverPersonal,mouseleavePersonal} from '../Handlers/mouseHandler.js';
 function showCountryD3(country,timespan){
     if(document.getElementById("my_dataviz").firstChild!=null){
         document.getElementById("my_dataviz").removeChild(document.getElementById("my_dataviz").firstChild);
@@ -122,6 +122,9 @@ document.getElementById("back").addEventListener("click", goBack)
                 })
                 .attr("stroke", "black")
                 .style("stroke-width", 3)
+                .on("mouseover", function (d) {mouseoverPersonal(Tooltip);}) 
+                .on("mousemove", function (d) {mousemovePersonal(Tooltip,d, this)})
+                .on("mouseleave", function (d) {mouseleavePersonal(Tooltip,data)})
         }
 
 

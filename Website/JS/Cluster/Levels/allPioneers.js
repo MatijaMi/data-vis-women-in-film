@@ -6,7 +6,7 @@ import {getAllData} from '../Util/dataProcessing.js';
 import {removeTooltip} from '../Util/tooltips.js';
 import {showCountries} from '../Levels/CountryCluster.js';
 import{setLocator} from '../Handlers/navigationHandler.js';
-
+import{mousemovePersonal,mouseoverPersonal,mouseleavePersonal} from '../Handlers/mouseHandler.js';
 function showAll(){
     if(document.getElementById("my_dataviz").firstChild!=null){
         document.getElementById("my_dataviz").removeChild(document.getElementById("my_dataviz").firstChild);
@@ -31,29 +31,13 @@ function showAll(){
         .style("opacity", 0)
         .attr("class", "tooltip")
         .attr("id", "tooltip")
-        .style("background-color", "white")
+        .style("background-color", "black")
         .style("border", "solid")
         .style("border-width", "2px")
         .style("border-radius", "5px")
         .style("padding", "5px")
         .style("position", "absolute")
-    
-    if(document.getElementById("SlideTooltip")==null){
-        var SlideTooltip = d3.select("body")
-        .append("div")
-        .style("opacity", 0)
-        .attr("class", "tooltip")
-        .attr("id", "SlideTooltip")
-        .style("background-color", "#999")
-        .style("color", "black")
-        .style("border", "solid black")
-        .style("border-width", "3px")
-        .style("border-left-width", "0px")
-        .style("padding", "5px")
-        .style("position", "absolute")
-    }else{
-        var SlideTooltip= d3.select("#SlideTooltip");
-    }
+        .style("color", "white")
      
 
       // Three function that change the tooltip when user hover / move / leave a cell
@@ -68,11 +52,13 @@ function showAll(){
           .style("opacity", 1)
       }
    var mousemove = function (d) {
+       if(!zoomedIn){
         Tooltip
           .html('<u>' + d.name + '</u>')
           .style("left", (d3.mouse(this)[0] + 20) + "px")
           .style("top", (d3.mouse(this)[1]) + "px")
       }
+   }
    
    var mouseleave = function (d) {
         Tooltip
@@ -87,42 +73,8 @@ function showAll(){
        if(zoomedIn){
             zoomIn(d,data,svg);
         }
-      
-       
-       SlideTooltip
-          .html('<button id ="closeTooltipButton">X</button><u><b>' + d.name + '</b></u>' + "<br>" +
-               'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.<br>'+
-               '<a href=' + d.link + '> Read More </a>')
-          .style("width", "360px")
-          .style("height", "167px")
-          .style("left", (determineCx(d.number, width)+93)+"px")
-          .style("top", determineCy(d.number, width)-53+"px")
-          .style("border", "solid black")
-          .style("border-width", "3px")
-          .style("border-left-width", "0px")
-          .style("padding", "5px")
-          .style("opacity", 1);
-       
-       document.getElementById("closeTooltipButton").onclick=closeTooltip;
-       var hoverNum=d.number;
-
-       svg.selectAll("g")
-        .data(data)
-        .enter()
-        .append("path")
-        .attr("d",function(d){
-           if(d.number==hoverNum){
-              return getHalfpipePath(d.number, width);
-           }else{
-              return "";
-           }
-           
-       })
-        .style("stroke", "black")
-        .style("fill","#999")
-        .style("fill-opacity", 1)
-        .style("stroke-width", "3px"); 
-       
+       mouseoverPersonal(Tooltip);
+       mousemovePersonal(Tooltip,d, this);
       }
   
   for(var i =0; i <data.length; i++){
@@ -163,9 +115,9 @@ function showAll(){
         .style("stroke-width", 0.8)
         .on("click", mouseClick)
         .on("mouseenter", mouseenter)
-        .on("mouseover", mouseover) // What to do when hovered
-        .on("mousemove", mousemove)
-        .on("mouseleave", mouseleave)
+        .on("mouseover", function (d) {mouseoverPersonal(Tooltip);}) 
+        .on("mousemove", function (d) {mousemovePersonal(Tooltip,d, this)})
+        .on("mouseleave", function (d) {mouseleavePersonal(Tooltip,data)})
   
   
     

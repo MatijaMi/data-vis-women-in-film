@@ -75,8 +75,12 @@ function showCountries(timespan){
           .style("padding", "5px")
       }
   var mousemove = function (d) {
+      var text = "Pioneers";
+      if(d.count==1){
+          text="Pioneer";
+      }
         Tooltip
-          .html('<u>' + d.country + '</u>' + "<br>" + d.count)
+          .html(d.count + "<br>" + text)
           .style("left", (d3.mouse(this)[0] + 20) + "px")
           .style("top", (d3.mouse(this)[1]) + "px")
       }
