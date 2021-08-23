@@ -241,7 +241,7 @@ function findObjectByKey(array, key, value) {
 }
 
 function image_load_error(id) {
-    if (document.getElementById(id) != null) document.getElementById(id).src = "../Images/Pioneer-Placeholder.png";
+    if (document.getElementById(id) != null) document.getElementById(id).src = "../Images/Unknown.jpg";
 }
 
 function uniq(a) {

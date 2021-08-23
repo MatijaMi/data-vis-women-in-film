@@ -13,33 +13,41 @@ function getPioneerOfTheDay() {
             const month = date.toLocaleString('en-us', { month: 'long' }) // Extract the month in long format
             const day = date.getDate() // Extract the day as number
             const today = "" + month + " " + day // Format String the same as it is in the data
-            const debug_today = "February 10" // For showcasing if there is no Pioneer born on day of presentation
-            if (born == debug_today) {
+            //const debug_today1 = "February 10" // For showcasing if there is no Pioneer born on day of presentation
+            //const debug_today2 = "February 11"
+            if (born == today) {
                 pioneers.push(row);
             }
         }).await(choosePioneer);
 }
 
 function choosePioneer(){
+        //If there is a pioneer
         if (pioneers.length > 0) {
             const rand = Math.floor(Math.random() * pioneers.length);
             const element = pioneers[rand];
             try {
-                const img_url = new URL(element.image_url)
-                document.getElementById("birthday_pic").src = img_url
-                document.getElementById("birthday_pic").style.display = "inline-block";
                 document.getElementById("birthday_title").innerText = "Happy Birthday: " + element.name
                 document.getElementById("description").hidden = true
                 document.getElementById("lived").innerHTML = "<b>Lived</b>:<br>" + element.MOB + " " + element.DOB + ", " + +element.YOB + " - " + element.MOD + " " + element.DOD + ", " + +element.YOD
                 var worked = String(element.worked_in)
                 worked = worked.split("|").join(", ")
-                document.getElementById("worked").innerText = "Worked in:\n" + worked
+                document.getElementById("worked").innerHTML = "<b>Worked in</b>:<br>\n" + worked
                 var aka = String(element.aka)
                 aka = aka.split("|").join(", ")
-                document.getElementById("aka").innerText = "Also known as:\n" + aka
+                document.getElementById("aka").innerHTML = "<b>Also known as</b>:<br>\n" + aka
+
+                //Try to load image
+                const img_url = new URL(element.image_url)
+                document.getElementById("birthday_pic").src = element.image_url
+                document.getElementById("birthday_pic").style.display = "inline-block";
             } catch (error) {
-                console.log("No image found for todays pioneer")
-                document.getElementById("pod_title").innerText = "Birthday: " + element.name
+                //console.log(error)
+                //console.log("No image found for todays pioneer")
+                //document.getElementById("pod_title").innerText = "Birthday: " + element.name
+                
+                document.getElementById("birthday_pic").src = "./Images/Unknown.jpg"
+                document.getElementById("birthday_pic").style.display = "inline-block";
             } finally {
                 var button = document.getElementById("birthday_contribute_button")
                 button.style.display = "none"
@@ -47,8 +55,10 @@ function choosePioneer(){
                     window.open(element.link)
                 })
             }
-        } else {
-            document.getElementById("birthday_contribute_button").style.display = ""
+        } 
+        //There is no pioneer
+        else {
+            document.getElementById("birthday_contribute_button").style.display = "";
         }
 }
 
