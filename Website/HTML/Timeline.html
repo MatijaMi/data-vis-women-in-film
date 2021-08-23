@@ -40,23 +40,24 @@
         </ul>
     </nav> 
 
-    <div class="content-container">
-        <div class="dropdowncenter">
-            <div class="dropdown-container">
-                <button class="dropbtn">Sort</button>
-                <div class="dropdown-content">
-                    <button class="sort-button" id="yob-sort-asc-button">Year of birth&#8638;</button>
-                    <button class="sort-button" id="yob-sort-desc-button">Year of birth&#8642;</button>
-                    <button class="sort-button" id="name-sort-asc-button">Name&#8638;</button>
-                    <button class="sort-button" id="name-sort-desc-button">Name&#8642;</button>
-                </div>
+    <div class="plot-header">
+        <div class="dropdown-container">
+            <button class="dropbtn">Sort</button>
+            <div class="dropdown-content">
+                <button class="sort-button" id="yob-sort-asc-button">Year of birth&#8638;</button>
+                <button class="sort-button" id="yob-sort-desc-button">Year of birth&#8642;</button>
+                <button class="sort-button" id="name-sort-asc-button">Name&#8638;</button>
+                <button class="sort-button" id="name-sort-desc-button">Name&#8642;</button>
             </div>
         </div>
         <div class="add-event-container">
-            <input class="event-input" id ="event-name" placeholder="Event Name"></textarea>
+            <input class="event-input" id ="event-name" style="margin-left: 5px;" placeholder="Event Name"></textarea>
             <input class="event-input" id ="event-start" placeholder="Event Start"></textarea>
-            <input class="event-input" id ="event-end" placeholder="Event End"></textarea>
+            <input class="event-input" id ="event-end" style="margin-right: 5px;" placeholder="Event End"></textarea>
             <button class="add-event-button" id="add-event-button">Add Event</button>
+        </div>
+        <div class="reset-container">
+            <button class="reset-button" id="reset-button">Reset</button>
         </div>
         <div id="xAxis"></div>
         <div class="event-timeline-container"></div>
@@ -72,7 +73,7 @@
         overflow: hidden;
     }
 
-    .content-container {
+    .plot-header {
         position:relative;
     }
 
@@ -81,7 +82,6 @@
         width: 1280px;
         border: 4px solid #000;
         margin: auto;
-        
         overflow-y: auto;
         overflow-x: auto;
         position:relative;
@@ -102,6 +102,28 @@
     .timeline {
         width: 1200px;
         height: 5000px;
+    }
+
+    .reset-container {
+        position: relative;
+        margin-top: 5px;
+        display: inline-block;
+    }
+
+    .reset-button {
+        margin: 5px;
+        font-size: 16px;
+        color: white;
+        padding: 0.5em 1.7em;
+        margin-bottom: 20px;
+        font-weight: 300;
+        text-shadow: 0 0.04em 0.04em rgba(235, 235, 235, 0.253);
+        font-size: 17px;
+        background-color: #282828;
+        outline: none;
+        box-shadow: none;
+        border: 0.2em solid #060606;
+        cursor: pointer;
     }
 
     .add-event-container {
@@ -152,6 +174,7 @@
     .dropdown-container {
         position: relative;
         display: inline-block;
+        margin: 5px;
     }
 
     /* Dropdown Content (Hidden by Default) */
@@ -164,14 +187,6 @@
         z-index: 1;
     }
     
-    .dropdowncenter{
-        position: absolute;
-        left: calc(50vw - 645px);
-        top:1%;
-        display: inline-block;
-        z-index: 3;
-    }
-
     /* Links inside the dropdown */
     .dropdown-content a {
         color: black;
