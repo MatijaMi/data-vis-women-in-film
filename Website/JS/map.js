@@ -263,19 +263,19 @@ function sidepanel_info_onclick() {
         "Those countries are therefore called 'connected' and displayed with blue dotted lines. " +
         "Note that this data does not primarily include international collaboration of film studios but rather international working of individual persons. " +
         "<br/><br/>" +
-        "Besides that, there is also an example pioneer given who was working in the selected country in this time period. " +
+        "Besides that, there is also an example pioneer given, who was working in the selected country in this time period. " +
         "If you want to know more about the example pioneer you can click on the 'Read more' button to visit her WFPP biography.";
 
     open_dialog(dialog_text);
 }
 
 function settingspanel_info_onclick() {
-    var dialog_text = "In this panel, you can use additional functions to to get a different view on the country-data. " +
+    var dialog_text = "In this panel, you can use additional functionality to to get a different view on the data. " +
         "<br/><br/>" +
         "The 'Show all connections' button allows you to see all international working between all countries in the selected time period. " +
         "Note that this data does not primarily include international collaboration of film studios but rather international working of individual persons." + 
         "<br/>" +
-        "The 'Show as timeline' and 'Show as cluster' buttons, can be used to switch to a different window, using the currently selected country.";
+        "The 'Show as timeline' and 'Show as cluster' buttons can be used to view the currently selected country between the selected years, from a different perspektive.";
 
     open_dialog(dialog_text);
 }
@@ -284,7 +284,9 @@ function slider_info_onclick() {
     var dialog_text = "This slider can be used to specify the time period the data is selected from. " +
         "The pioneers you will see, are those who were alive in the selected time period. " +
         "To be exact, you see those which were born before the date of the right handle and died after the date of the left handle. " +
-        "You can use this selection to see which time periods have missing data.";
+        "You can use this selection to see which time periods have missing data. " +
+        "<br/><br/>" +
+        "The buttons on the left can be used to display some graphs.";
 
     open_dialog(dialog_text);
 }

@@ -29,6 +29,25 @@
   margin-bottom: 25px;
 }
 
+/* Dialog */
+
+#dialog {
+  width: 10px;
+  height: 10px;
+  color: white;
+  background-color: #333333;
+}
+
+.ui-widget.ui-widget-content {
+  background-color: #202020;
+  border: 1px solid #202020 !important;
+}
+
+#ui-id-1.ui-dialog-title {
+  width: 100% !important;
+  font-weight: bold;
+}
+
 /* Panels */
 
 .panels {
