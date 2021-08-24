@@ -336,3 +336,49 @@ function CheckSizeZoom() {
         $('#divWrap').width("");
     }
 }
+
+function CreatePieChart(){
+    //Modal Chart
+    anychart.theme("darkProvence");
+    // create pie chart with passed data
+    var chart = anychart.pie([
+      ["United States", 172],
+      ["England", 31],
+      ["France", 19],
+      ["Germany", 16],
+      ["Australia", 15],
+      ["Other Countries", 66],
+    ]);
+
+    // create standalone label and set settings
+    var label = anychart.standalones.label();
+    label
+      .enabled(true)
+      .text("Countries with most Pioneers in total")
+      .width("100%")
+      .height("100%")
+      .adjustFontSize(true, true)
+      .minFontSize(18)
+      .maxFontSize(25)
+      .fontColor("#cccccc")
+      .position("center")
+      .anchor("center")
+      .hAlign("center")
+      .vAlign("middle");
+
+    // set label to center content of chart
+    chart.center().content(label);
+
+    // set chart title text settings
+    chart
+      // set chart radius
+      .radius("43%")
+      // create empty area in pie chart
+      .innerRadius("40%")
+      .explode(0);
+
+    // set container id for the chart
+    chart.container("country_chart");
+    // initiate chart drawing
+    chart.draw();
+}

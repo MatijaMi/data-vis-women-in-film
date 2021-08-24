@@ -26,6 +26,20 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src="../JS/map.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/4.5.0/papaparse.min.js"></script>
+    <script src="https://cdn.anychart.com/releases/v8/js/anychart-base.min.js"></script>
+    <script src="https://cdn.anychart.com/releases/v8/js/anychart-ui.min.js"></script>
+    <script src="https://cdn.anychart.com/releases/v8/js/anychart-exports.min.js"></script>
+    <script src="https://cdn.anychart.com/releases/v8/themes/dark_provence.min.js"></script>
+    <link
+      href="https://cdn.anychart.com/releases/v8/css/anychart-ui.min.css"
+      type="text/css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.anychart.com/releases/v8/fonts/css/anychart-font.min.css"
+      type="text/css"
+      rel="stylesheet"
+    />
   </head>
 
   <body>
@@ -65,18 +79,12 @@
     <div id="modal_1" class="modal">
       <!-- Modal Content (The Image) -->
       <img class="modal-content-1" id="modal_image_1" />
-
-      <!-- Modal Caption (Image Text) -->
-      <div id="caption"></div>
     </div>
 
     <!-- Image Modal Popup -->
     <div id="modal_2" class="modal">
       <!-- Modal Content (The Image) -->
-      <img class="modal-content-2" id="modal_image_2" />
-
-      <!-- Modal Caption (Image Text) -->
-      <div id="caption"></div>
+      <div id="country_chart"></div>
     </div>
     <!-- Main Body (Panels + Map)-->
     <div class="main_wrapper">
@@ -289,7 +297,7 @@
       };
       icon2.onclick = function () {
         modal2.style.display = "block";
-        modal_image_2.src = "../Images/Top5Countries.png";
+        //modal_image_2.src = "../Images/Top5Countries.png";
       };
 
       // When the user clicks on the modal, close the modal
@@ -299,6 +307,9 @@
       modal2.onclick = function () {
         modal2.style.display = "none";
       };
+
+      //Get Pie Chart
+      CreatePieChart();
 
       //Payload
       var payload = "";

@@ -261,3 +261,12 @@
   background-color: rgb(50, 50, 50);
   z-index: 100;
 }
+
+/* Chart */
+
+#country_chart {
+  width: 50%;
+  height: 80%;
+  margin-left: auto;
+  margin-right: auto;
+}
