@@ -1,3 +1,6 @@
+//Current Data of all countries
+var curr_country_data;
+
 /**
  * Class representing a Country
  */
@@ -77,7 +80,6 @@ function createAllCountries() {
     countries.push(new Country("Ireland", "IRL", "925", "355"));
     countries.push(new Country("Finland", "FIN", "1070", "280"));
     countries.push(new Country("Portugal", "PRT", "925", "435"));
-    countries.push(new Country("Croatia", "HRV", "1030", "405"));
     countries.push(new Country("Mexico", "MEX", "520", "520"));
     countries.push(new Country("Peru", "PER", "635", "655"));
     countries.push(new Country("Poland", "POL", "1040", "360"));
@@ -337,18 +339,35 @@ function CheckSizeZoom() {
     }
 }
 
-function CreatePieChart(){
+/**
+ * Create a pie chart of the top pioneers count of countries in the selected time span
+ * @param {Number of chart pieces created - E.g. 5 for Top 5} top 
+ */
+function CreatePieChart(top){
+
+    //Copy array
+    temp_countries = countries.slice();
+
+    //Remove empty
+    temp_countries = temp_countries.filter((x) => x.country_pioneers.length > 0);
+
+    //Sort Countries
+    temp_countries.sort((a,b) => (a.country_pioneers.length < b.country_pioneers.length) ? 1 : ((b.country_pioneers.length < a.country_pioneers.length) ? -1 : 0))
+    
+    //Convert to anychart data
+    data = temp_countries.slice(0, top).map((x) => [x.country_name, x.country_pioneers.length]);
+    
+    //Add other Other Countries sum
+    if(temp_countries.slice(0, top).length == top){
+        var other_countries_sum = temp_countries.slice(top, temp_countries.length).reduce((a, b) => a + b.country_pioneers.length, 0);
+        data[data.length] = (["Other Countries", other_countries_sum]);
+    }   
+
+    // create pie chart with passed data
+    var chart = anychart.pie(data);
+
     //Modal Chart
     anychart.theme("darkProvence");
-    // create pie chart with passed data
-    var chart = anychart.pie([
-      ["United States", 172],
-      ["England", 31],
-      ["France", 19],
-      ["Germany", 16],
-      ["Australia", 15],
-      ["Other Countries", 66],
-    ]);
 
     // create standalone label and set settings
     var label = anychart.standalones.label();
@@ -377,8 +396,100 @@ function CreatePieChart(){
       .innerRadius("40%")
       .explode(0);
 
+    //Onclick
+    chart.listen("pointClick", function(e){ 
+        //Get name by iterator
+        var click_country_name = e.iterator.get("x");
+
+        //Find id
+        var temp_country = countries.find(country => country.country_name == click_country_name);
+
+        //Break
+        if(temp_country == undefined) return;
+
+        //Find feature
+        var feature = temp_map_data.features.find(country => country["id"] == temp_country.country_code);
+
+        //Simulate click on country
+        mouseClick(feature);
+        
+    });
+
     // set container id for the chart
-    chart.container("country_chart");
+    chart.container("country_pie_chart");
+    // initiate chart drawing
+    chart.draw();
+}
+
+var temp_map_data;
+
+function CreateBarChart(){
+
+    //Copy array
+    temp_countries = countries.slice();
+
+    //Sort Countries
+    temp_countries.sort((a,b) => (a.country_pioneers.length < b.country_pioneers.length) ? 1 : ((b.country_pioneers.length < a.country_pioneers.length) ? -1 : 0))
+    
+    //Convert to anychart data
+    data = temp_countries.map((x) => [x.country_name, x.country_pioneers.length]);
+    
+    // set chart theme
+    anychart.theme("darkProvence");
+
+    // create bar chart
+    var chart = anychart.bar(data);
+
+    //chart.animation(true);
+
+    chart.padding([10, 40, 5, 20]);
+
+    chart.title(
+      "Total Pioneers per Country"
+    );
+
+    // set tooltip settings
+    chart
+      .tooltip()
+      .position("right")
+      .anchor("left-center")
+      .offsetX(5)
+      .offsetY(0)
+      .titleFormat("{%X}")
+      .format("{%Value}");
+
+    // set yAxis labels formatter
+    chart.yAxis().labels().format("{%Value}{groupsSeparator: }");
+
+    // set titles for axises
+    chart.xAxis().title("Countries");
+    chart.yAxis().title("Pioneers");
+    chart.interactivity().hoverMode("by-x");
+    chart.tooltip().positionMode("point");
+    // set scale minimum
+    chart.yScale().minimum(0);
+
+    //Onclick
+    chart.listen("pointClick", function(e){ 
+        //Get name by iterator
+        var click_country_name = e.iterator.get("x");
+
+        //Find id
+        var temp_country = countries.find(country => country.country_name == click_country_name);
+
+        //Break
+        if(temp_country == undefined) return;
+
+        //Find feature
+        var feature = temp_map_data.features.find(country => country["id"] == temp_country.country_code);
+
+        //Simulate click on country
+        mouseClick(feature);
+         
+     });
+
+    // set container id for the chart
+    chart.container("country_bar_chart");
     // initiate chart drawing
     chart.draw();
 }

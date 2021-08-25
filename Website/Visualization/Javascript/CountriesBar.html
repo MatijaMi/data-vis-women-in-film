@@ -1,111 +1,115 @@
 <html>
+  <head>
+    <script src="https://cdn.anychart.com/releases/v8/js/anychart-base.min.js"></script>
+    <script src="https://cdn.anychart.com/releases/v8/js/anychart-ui.min.js"></script>
+    <script src="https://cdn.anychart.com/releases/v8/js/anychart-exports.min.js"></script>
+    <script src="https://cdn.anychart.com/releases/v8/themes/dark_provence.min.js"></script>
+    <link
+      href="https://cdn.anychart.com/releases/v8/css/anychart-ui.min.css"
+      type="text/css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.anychart.com/releases/v8/fonts/css/anychart-font.min.css"
+      type="text/css"
+      rel="stylesheet"
+    />
+    <style type="text/css">
+      html,
+      body,
+      #container {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+  </head>
 
-<head>
-  <script src="https://cdn.anychart.com/releases/v8/js/anychart-base.min.js"></script>
-  <script src="https://cdn.anychart.com/releases/v8/js/anychart-ui.min.js"></script>
-  <script src="https://cdn.anychart.com/releases/v8/js/anychart-exports.min.js"></script>
-  <script src="https://cdn.anychart.com/releases/v8/themes/dark_provence.min.js"></script>
-  <link href="https://cdn.anychart.com/releases/v8/css/anychart-ui.min.css" type="text/css" rel="stylesheet">
-  <link href="https://cdn.anychart.com/releases/v8/fonts/css/anychart-font.min.css" type="text/css" rel="stylesheet">
-  <style type="text/css">
-    html,
-    body,
-    #container {
-      width: 100%;
-      height: 100%;
-      margin: 0;
-      padding: 0;
-    }
-  </style>
-</head>
+  <body>
+    <div id="container"></div>
 
-<body>
+    <script>
+      anychart.onDocumentReady(function () {
+        // set chart theme
+        anychart.theme("darkProvence");
+        // create bar chart
+        var chart = anychart.bar();
 
-  <div id="container"></div>
+        chart.animation(true);
 
+        chart.padding([10, 40, 5, 20]);
 
-  <script>
+        chart.title(
+          "Amount of women per country they lived in\n(during their entire lifetime)"
+        );
 
-    anychart.onDocumentReady(function () {
-      // set chart theme
-      anychart.theme('darkProvence');
-      // create bar chart
-      var chart = anychart.bar();
+        // create bar series with passed data
+        var series = chart.bar([
+          ["United States", "172"],
+          ["England", "31"],
+          ["France", "19"],
+          ["Germany", "16"],
+          ["Australia", "15"],
+          ["Italy", "14"],
+          ["Mexico", "10"],
+          ["China", "9"],
+          ["Canada", "8"],
+          ["Ireland", "8"],
+          ["Soviet Union", "7"],
+          ["Russia", "7"],
+          ["Denmark", "6"],
+          ["Sweden", "5"],
+          ["Norway", "5"],
+          ["Finland", "4"],
+          ["Peru", "4"],
+          ["Chile", "3"],
+          ["Austria", "3"],
+          ["Brazil", "3"],
+          ["Hong Kong", "3"],
+          ["Czechoslovakia", "2"],
+          ["Poland", "2"],
+          ["Spain", "2"],
+          ["Turkey", "2"],
+          ["The Netherlands", "2"],
+          ["Japan", "2"],
+          ["New Zealand", "2"],
+          ["Argentina", "1"],
+          ["Colombia", "1"],
+          ["Croatia", "1"],
+          ["Hungary", "1"],
+          ["Portugal", "1"],
+          ["Scotland", "1"],
+          ["The Philippines", "1"],
+          ["Tunisia", "1"],
+        ]);
 
-      chart.animation(true);
+        // set tooltip settings
+        series
+          .tooltip()
+          .position("right")
+          .anchor("left-center")
+          .offsetX(5)
+          .offsetY(0)
+          .titleFormat("{%X}")
+          .format("{%Value}");
 
-      chart.padding([10, 40, 5, 20]);
+        // set yAxis labels formatter
+        chart.yAxis().labels().format("{%Value}{groupsSeparator: }");
 
-      chart.title("Amount of women per country they lived in\n(during their entire lifetime)");
+        // set titles for axises
+        chart.xAxis().title("Countries");
+        chart.yAxis().title("Amount");
+        chart.interactivity().hoverMode("by-x");
+        chart.tooltip().positionMode("point");
+        // set scale minimum
+        chart.yScale().minimum(0);
 
-      // create bar series with passed data
-      var series = chart.bar([
-        ["Argentina", "1"],
-        ["Australia", "15"],
-        ["Austria", "3"],
-        ["Brazil", "3"],
-        ["Canada", "8"],
-        ["Chile", "3"],
-        ["China", "9"],
-        ["Colombia", "1"],
-        ["Croatia", "1"],
-        ["Czechoslovakia", "2"],
-        ["Denmark", "6"],
-        ["England", "31"],
-        ["Finland", "4"],
-        ["France", "19"],
-        ["Germany", "16"],
-        ["Hong Kong", "3"],
-        ["Hungary", "1"],
-        ["Ireland", "8"],
-        ["Italy", "14"],
-        ["Japan", "2"],
-        ["Mexico", "10"],
-        ["New Zealand", "2"],
-        ["Norway", "5"],
-        ["Peru", "4"],
-        ["Poland", "2"],
-        ["Portugal", "1"],
-        ["Russia", "7"],
-        ["Scotland", "1"],
-        ["Soviet Union", "7"],
-        ["Spain", "2"],
-        ["Sweden", "5"],
-        ["The Netherlands", "2"],
-        ["The Philippines", "1"],
-        ["Tunisia", "1"],
-        ["Turkey", "2"],
-        ["United States", "172"]
-      ]);
-
-      // set tooltip settings
-      series
-        .tooltip()
-        .position('right')
-        .anchor('left-center')
-        .offsetX(5)
-        .offsetY(0)
-        .titleFormat('{%X}')
-        .format('{%Value}');
-
-      // set yAxis labels formatter
-      chart.yAxis().labels().format('{%Value}{groupsSeparator: }');
-
-      // set titles for axises
-      chart.xAxis().title('Countries');
-      chart.yAxis().title('Amount');
-      chart.interactivity().hoverMode('by-x');
-      chart.tooltip().positionMode('point');
-      // set scale minimum
-      chart.yScale().minimum(0);
-
-      // set container id for the chart
-      chart.container('container');
-      // initiate chart drawing
-      chart.draw();
-    });
-
-  </script>
-</body>
-
+        // set container id for the chart
+        chart.container("container");
+        // initiate chart drawing
+        chart.draw();
+      });
+    </script>
+  </body>
 </html>
