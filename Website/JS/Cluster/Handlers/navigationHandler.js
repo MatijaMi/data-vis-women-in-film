@@ -9,8 +9,7 @@ import{showAll} from '../Levels/allPioneers.js';
 
 function setLocator(state){
     document.getElementById("locator").innerHTML="<button class='locButtons' id='0level'>"+ state+ "</button>";
-    addButtonEvents();
-    
+    addButtonEvents(); 
 }
 
 function updateLocator(state,level){

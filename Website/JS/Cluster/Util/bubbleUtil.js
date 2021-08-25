@@ -37,7 +37,7 @@ function determinePersonSize(data){
     }
 }
 
-
+// TODO Rename this function to something like highligh persons of job
 function createLines(job,data){
     var validIDs=[];
     for(var i =0; i <wfpp.entries.length;i++){

@@ -22,7 +22,6 @@ function handleResize(){
         if(window.simulation!=null){
             window.simulation.stop();
         }
-       
         
         removeTooltip("textOverlay");
         clearAllTimeouts();

@@ -1,7 +1,5 @@
 <!DOCTYPE html>
-
 <html lang="en" style="height: 100%">
-
 <head>
     <title>WFPP</title>
     <meta charset="UTF-8">
@@ -19,7 +17,7 @@
  <body id="body"> 
   
     <!-- Header -->
-    <nav>
+    <nav id="dumbnav">
         <ul class="nav-links">
             <li>
                 <a href="../index.html">Home</a>
@@ -43,25 +41,23 @@
         </ul>
     </nav> 
 
-     
      <div id="locator"></div>
-
-     <!-- Clusterpanel -->
-     
+     <!-- Sidebuttons for navigation -->
      <div id="sideishButtons">
         <button id="professionsButton"><img id="professionsButtonPic" src="../Images/Reel.png"></button>
         <button id="countryButton"><img id="countryButtonPic" src="../Images/Globe.svg"></button>
         <button id="allPioneersButton"><img id="allPioneersButtonPic" src="../Images/AllIcon.svg"></button>
     </div>
      <br>
+     
+     <!-- Panel for sub groups -->
      <button id="subGroupOpen">&#9776;</button>
-     
-     
-    
     <div id="subGroupPanel">Sub-Groups
         <a id="closeGroupPanel" href="javascript:void(0)" class="closebtn">&times;</a>
      </div>
-    <div class="my_dataviz" id="my_dataviz" onresize="handleResize()" onload="initializeState()"></div>
+    
+     <!-- Clusterpanel -->
+    <div class="my_dataviz" id="my_dataviz" onresize="handleResize()" onload="initializeStates()"></div>
 
 </body>
 

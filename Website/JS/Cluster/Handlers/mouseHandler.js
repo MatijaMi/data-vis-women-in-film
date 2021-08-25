@@ -49,13 +49,35 @@ function mousemovePersonal(Tooltip,d,env){
     }else{
         imgSrc='<img src=../Images/WFPP-Pictures-Squares/'+ d.name.split(' ').join('%20') +'.jpg width=200px>';     
     }
-    
+
     Tooltip
           .html('<u><b>' + d.name + '</b></u><br>'+ imgSrc + "<br>" + '<p>' + shortBio +'</p>' + '<button class="fullArticleButton"> Read Full Article</button>')
           .style("width", "300px")
-          .style("left", (d3.mouse(env)[0] + 20) + "px")
-          .style("top", (d3.mouse(env)[1]) + "px")
+    
+    
+    var mouseX = d3.mouse(env)[0];
+    var mouseY = d3.mouse(env)[1];
+    var tooltipW = document.getElementById("mainTooltip").clientWidth;
+    var tooltipH = document.getElementById("mainTooltip").clientHeight;
+    
+    var top= mouseY;
+    var left = mouseX;
+    var windowWidth = document.getElementById("body").clientWidth;
+    var windowHeight = document.getElementById("body").clientHeight;
+    
+    
+    if(mouseX+tooltipW+20>windowWidth){
+        left=left-tooltipW-30;
+    }
+    if(mouseY+tooltipH>windowHeight){
+        top=windowHeight-tooltipH + document.getElementById("dumbnav").clientHeight;
+    }
+    
+    Tooltip
+        .style("left", (left + 20 +"px"))
+        .style("top", (top + "px"));
 }
+
 function mouseleavePersonal(Tooltip){
    Tooltip
           .style("opacity", 0)
@@ -63,5 +85,5 @@ function mouseleavePersonal(Tooltip){
           .style("border",0)
           .style("padding", 0)
           .html("");
-      }
+}
 export {mouseoverJob,mousemoveJob,mouseleaveJob,mouseoverPersonal,mousemovePersonal,mouseleavePersonal}

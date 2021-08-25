@@ -1,9 +1,8 @@
 import {updateState} from '../Handlers/stateHandler.js';
-import {determineCx,determineCy,} from '../Util/groupingUtil.js';
 import {handleResize} from '../Handlers/resizeHandler.js';
 import {setLevel} from '../Handlers/levelHandler.js';
 import {getAllData} from '../Util/dataProcessing.js';
-import {removeTooltip} from '../Util/tooltips.js';
+import {removeTooltip,createTooltip} from '../Util/tooltips.js';
 import {showCountries} from '../Levels/CountryCluster.js';
 import{setLocator} from '../Handlers/navigationHandler.js';
 import{mousemovePersonal,mouseoverPersonal,mouseleavePersonal} from '../Handlers/mouseHandler.js';
@@ -26,25 +25,12 @@ function showAll(){
     .attr("overflow","hidden")
   
       // create a tooltip
-    var Tooltip = d3.select("body")
-        .append("div")
-        .style("opacity", 0)
-        .attr("class", "tooltip")
-        .attr("id", "tooltip")
-        .style("background-color", "black")
-        .style("border", "solid")
-        .style("border-width", "2px")
-        .style("border-radius", "5px")
-        .style("padding", "5px")
-        .style("position", "absolute")
-        .style("color", "white")
+    var Tooltip =createTooltip();
      
-
       // Three function that change the tooltip when user hover / move / leave a cell
   var mouseenter = function (d) {
       if(!zoomedIn){
-          zoomIn(d,data,svg)
-      }
+          zoomIn(d,data,svg)}
   }
 
   var mouseover = function (d) {
@@ -77,13 +63,13 @@ function showAll(){
        mousemovePersonal(Tooltip,d, this);
       }
   
+   // TODO Get smaller images for all page
   for(var i =0; i <data.length; i++){
       if(data[i].imgUrl.length!=0){
-          var link = '../Images/WFPP-Pictures-Squares/' + data[i].name.split(' ').join('%20') +'.jpg';
+          var link = '../Images/WFPP-Pictures-Small/' + data[i].name.split(' ').join('%20') +'.jpg';
       }else{
           var link = '../Images/WFPP-Pictures-Squares/Unknown.jpg';
       }
-      
       
     svg.append("pattern")
      .attr("x", 0)
@@ -118,26 +104,25 @@ function showAll(){
         .on("mouseover", function (d) {mouseoverPersonal(Tooltip);}) 
         .on("mousemove", function (d) {mousemovePersonal(Tooltip,d, this)})
         .on("mouseleave", function (d) {mouseleavePersonal(Tooltip,data)})
-  
-  
-    
-   var closeTooltip = function(d){
-       d3.selectAll("path").style("opacity", 0);
-       document.getElementById("SlideTooltip").style.opacity = 0;
-       document.getElementById("SlideTooltip").innerHTML = "";
-       document.getElementById("SlideTooltip").style.width = "0%";
-       document.getElementById("SlideTooltip").style.border = "none";
-       document.getElementById("SlideTooltip").style.padding = "0";
-       zoomOut(d,data)
-       window.zoomedIn=false;
-    } 
+
    updateState("All");
-   setLocator("All Pioneers");
-   
+   setLocator("All Pioneers"); 
 }
 
 window.addEventListener("resize", handleResize);
 
+
+
+//TODO Add comments explainging this
+function determineCx(index, width){
+    var count = Math.floor(width/70);
+    var pad = (width- count*70-40)/2;
+    return Math.floor(index%(Math.floor(width/70)))*70+40+pad;
+}
+
+function determineCy(index, width){
+    return Math.floor(index/(Math.floor(width/70)))*70+80;
+}
 
 function findZoomInCx(elementNum, selectedNumber, width){
     var currentCx =determineCx(elementNum, width);
@@ -232,15 +217,6 @@ function findZoomInCy(elementNum, selectedNumber, width){
         return currentCy;
     }
 }
-
-
-function getHalfpipePath(number, width){
-    var cx = determineCx(number,width);
-    var cy = determineCy(number,width);
-    return "m "+ (cx+95) + " " + (cy+90) + " h -95 a 45 45 0 0 0 0 -180.5 h 95"
-}
-
-
 
 function zoomIn(d,data,svg){
     var hoverID=d.id;

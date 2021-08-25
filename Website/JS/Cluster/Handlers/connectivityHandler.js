@@ -1,4 +1,4 @@
-import{initializeState} from '../Handlers/stateHandler.js';
+import{initializeStates} from '../Handlers/stateHandler.js';
 import{setLevel} from '../Handlers/levelHandler.js';
 import{updateState} from '../Handlers/stateHandler.js';
 import{clearPrevDataviz} from '../Util/bubbleUtil.js';
@@ -12,15 +12,18 @@ import{showCountryD3} from '../Levels/singleCountryCluster.js';
 
 var timeouts=[];
 window.mobileMode =false;
+
 function handleLoad(){
-    
+    //Add event listeneves to the buttons
     document.getElementById("countryButton").addEventListener("click",switchToCountries);
     document.getElementById("allPioneersButton").addEventListener("click",switchToAll);
     document.getElementById("professionsButton").addEventListener("click",switchToProfessions);
     document.getElementById("subGroupOpen").addEventListener("click",openSubgroupPanel);
     document.getElementById("closeGroupPanel").addEventListener("click",closeSubgroupPanel);
-    initializeState();
+    
+    initializeStates();
     clearPrevDataviz();
+    
     var newWidth =document.getElementById("my_dataviz").clientWidth;
     if(newWidth<800){
             mobileMode=true;
@@ -41,7 +44,6 @@ function handleLoad(){
             if(mode=="countries"){
                 if(parts.length==1){
                     switchToCountries();
-                    showCountries("");
                 }else{
                     var country = parts[1].substr(parts[1].indexOf("=")+1);
                     if(country.includes("%20")){
@@ -101,7 +103,7 @@ function handleLoad(){
                         setLevel(Number.parseInt(level));
                     }
                 }else{
-                    alert("Bad Link");
+                    alert("Bad Link - Please try again");
                 }
             }
         }
@@ -143,8 +145,7 @@ function openSubgroupPanel() {
         document.getElementById("subGroupPanel").style.width = "100%";
     }else{
         document.getElementById("subGroupPanel").style.width = "10%";
-    }
-     
+    } 
 }
 
 function closeSubgroupPanel() {
@@ -157,6 +158,7 @@ function clearAllTimeouts(){
     }
     timeouts=[];
 }
+
 handleLoad();
 
 export{closeSubgroupPanel,openSubgroupPanel,timeouts,clearAllTimeouts};

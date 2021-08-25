@@ -2,7 +2,7 @@ import{removeLastLocButton} from './navigationHandler.js';
 import{getLevel} from './levelHandler.js';
 import{drawTopLevel} from '../Levels/topLevel.js';
 import{drawLowerLevel} from '../Levels/lowerLevels.js';
-function initializeState(){
+function initializeStates(){
    window.states = [];
 }
 function updateState(newState){
@@ -23,8 +23,8 @@ function goBackState(){
 }
 
 function determineLevelFromState(){
-    
+    // TODO Find out what this was supposed to do
     
 }
 
-export {initializeState,updateState, getStates, goBackState}
+export {initializeStates,updateState, getStates, goBackState}

@@ -1,4 +1,4 @@
-import{updateState,goBackState,initializeState} from '../Handlers/stateHandler.js';
+import{updateState,goBackState,initializeStates} from '../Handlers/stateHandler.js';
 import{getTopLevelData} from '../Util/dataProcessing.js';
 import{mouseoverJob,mousemoveJob,mouseleaveJob} from '../Handlers/mouseHandler.js';
 import{removeTooltip,createTooltip,createTextOverlay,speedUpAnimation} from '../Util/tooltips.js';
@@ -12,7 +12,7 @@ import{closeSubgroupPanel,timeouts,openSubgroupPanel} from '../Handlers/connecti
 window.simulation;
 function drawTopLevel(){
 //Preparation
-    initializeState();
+    initializeStates();
     clearPrevDataviz();
     var data = getTopLevelData();
     var width = document.getElementById("my_dataviz").clientWidth;
