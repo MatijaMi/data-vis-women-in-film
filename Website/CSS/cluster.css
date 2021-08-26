@@ -116,7 +116,7 @@ svg{
 #locator button:hover{
     cursor: pointer;
 }
-.fullArticleButton{
+#fullArticleButton{
     padding: 0.5em 1.7em;
     margin-bottom: 10px;
     font-weight: 300;
@@ -219,6 +219,16 @@ svg{
     float: left;
     z-index: 10;
     display: none;
+}
+
+#closeMainTooltip{
+    position: absolute;
+    text-decoration: none;
+    color: white;
+    top: -8px;
+    right: 0px;
+    font-size: 36px;
+    padding: none;
 }
 
 #subGroupOpen:hover{

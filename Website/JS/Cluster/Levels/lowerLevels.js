@@ -1,5 +1,5 @@
 import{updateState,goBackState} from '../Handlers/stateHandler.js';
-import{mouseoverJob,mousemoveJob,mouseleaveJob,mousemovePersonal,mouseoverPersonal,mouseleavePersonal} from '../Handlers/mouseHandler.js';
+import{mouseoverJob,mousemoveJob,mouseleaveJob,mousemovePersonal,mouseoverPersonal,mouseleavePersonal,mouseClickPersonal} from '../Handlers/mouseHandler.js';
 import{getFirstLevelData,getProfessionData,getSecondLevelData,getThirdLevelData} from '../Util/dataProcessing.js';
 import{removeTooltip,createTooltip,createTextOverlay,speedUpAnimation} from '../Util/tooltips.js';
 import{updateLevel,getLevels,getLevel,setLevel,goToNextLevel} from '../Handlers/levelHandler.js';
@@ -64,8 +64,8 @@ function drawLowerLevel(profession,level){
             .style("stroke-width", 3)
             .on("mouseover", function (d) {mouseoverPersonal(Tooltip);}) 
             .on("mousemove", function (d) {mousemovePersonal(Tooltip,d, this)})
-            //.on("mouseenter", function (d) {createLines(d.job, data)})
             .on("mouseleave", function (d) {mouseleavePersonal(Tooltip,data)})
+            .on("click", function (d) {mouseClickPersonal(Tooltip,data)});
     }
 
       // Features of the forces applied to the nodes:

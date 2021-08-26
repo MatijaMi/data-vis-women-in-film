@@ -5,7 +5,7 @@ import {getAllData} from '../Util/dataProcessing.js';
 import {removeTooltip,createTooltip} from '../Util/tooltips.js';
 import {showCountries} from '../Levels/CountryCluster.js';
 import{setLocator} from '../Handlers/navigationHandler.js';
-import{mousemovePersonal,mouseoverPersonal,mouseleavePersonal} from '../Handlers/mouseHandler.js';
+import{mousemovePersonal,mouseoverPersonal,mouseleavePersonal,mouseClickPersonal} from '../Handlers/mouseHandler.js';
 function showAll(){
     if(document.getElementById("my_dataviz").firstChild!=null){
         document.getElementById("my_dataviz").removeChild(document.getElementById("my_dataviz").firstChild);
@@ -32,17 +32,6 @@ function showAll(){
       if(!zoomedIn){
           zoomIn(d,data,svg)}
   }
- 
-   
-   var mouseClick = function (d) {
-       Tooltip
-          .style("opacity", 0)
-       zoomedIn=true;
-       d3.selectAll("path").style("opacity", 0);
-       if(zoomedIn){
-            zoomIn(d,data,svg);
-        }
-}
   
    // TODO Get smaller images for all page
   for(var i =0; i <data.length; i++){
@@ -80,7 +69,7 @@ function showAll(){
         })
         .attr("stroke", "black")
         .style("stroke-width", 0.8)
-        .on("click", mouseClick)
+        .on("click", function (d) {window.zoomedIn=true;mouseClickPersonal(Tooltip, data)})
         .on("mouseenter", mouseenter)
         .on("mouseover", function (d) {mouseoverPersonal(Tooltip);}) 
         .on("mousemove", function (d) {mousemovePersonal(Tooltip,d, this)})

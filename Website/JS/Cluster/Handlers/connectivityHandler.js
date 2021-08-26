@@ -116,6 +116,7 @@ function switchToAll(){
     removeTooltip("textOverlay");
     removeTooltip("tooltip");
     document.getElementById("locator").innerHTML="";
+    document.getElementById("subGroupOpen").style.display="none";
     setLevel(-1);
     document.getElementById("allPioneersButton").style.backgroundColor="#bb7043";
     document.getElementById("countryButton").style.backgroundColor="black";
@@ -126,6 +127,7 @@ function switchToCountries(){
     removeTooltip("textOverlay");
     removeTooltip("tooltip");
     document.getElementById("locator").innerHTML="";
+    document.getElementById("subGroupOpen").style.display="none";
     setLevel(-1);
     document.getElementById("countryButton").style.backgroundColor="#bb7043";
     document.getElementById("professionsButton").style.backgroundColor="black";
@@ -136,6 +138,7 @@ function switchToProfessions(){
     removeTooltip("textOverlay");
     removeTooltip("tooltip");
     document.getElementById("locator").innerHTML="";
+    document.getElementById("subGroupOpen").style.display="none";
     setLevel(-1);
     document.getElementById("professionsButton").style.backgroundColor="#bb7043";
     document.getElementById("countryButton").style.backgroundColor="black";

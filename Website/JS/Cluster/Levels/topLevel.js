@@ -125,7 +125,6 @@ function drawTopLevel(){
     setLevel(0);
     updateState("Professions");
     setLocator("Professions");
-    document.getElementById("subGroupOpen").style.display="none";
     closeSubgroupPanel();
 }
 

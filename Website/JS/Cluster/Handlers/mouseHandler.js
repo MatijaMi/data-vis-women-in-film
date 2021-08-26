@@ -42,17 +42,21 @@ function mousemovePersonal(Tooltip,d,env){
             shortBio=pioneer.shortBio;
         }
     }
+
     var imgSrc ="";
     if(d.imgUrl.length<10){
         imgSrc='<img src=../Images/WFPP-Pictures-Squares/Unknown.jpg width=75%>';
     }else{
         imgSrc='<img src=../Images/WFPP-Pictures-Squares/'+ d.name.split(' ').join('%20') +'.jpg width=200px>';     
     }
-
+    console.log(d.link)
     Tooltip
-          .html('<u><b>' + d.name + '</b></u><br>'+ imgSrc + "<br>" + '<p>' + shortBio +'</p>' + '<button class="fullArticleButton"> Read Full Article</button>')
+          .html('<a id="closeMainTooltip" href="javascript:void(0)" class="closebtn">&times;</a><u><b>' + d.name + '</b></u><br>'+ imgSrc + "<br>" + '<p>' + shortBio +'</p>' + '<button id="fullArticleButton"> Read Full Article</button>')
           .style("width", "300px")
     
+    document.getElementById("fullArticleButton").addEventListener("click", function(){
+        window.open(d.link,"_blank");
+    })
     
     var mouseX = d3.mouse(env)[0];
     var mouseY = d3.mouse(env)[1];
@@ -85,4 +89,36 @@ function mouseleavePersonal(Tooltip){
           .style("padding", 0)
           .html("");
 }
-export {mouseoverJob,mousemoveJob,mouseleaveJob,mouseoverPersonal,mousemovePersonal,mouseleavePersonal}
+
+function mouseClickPersonal(Tooltip,data){
+    d3.selectAll(".node")
+        .on("mouseover", "") 
+        .on("mousemove", "")
+        .on("click", "")
+        .on("mouseleave", "")
+    
+    document.getElementById("closeMainTooltip").addEventListener("click",function(){
+        closeMainTooltip(Tooltip,data);
+    })
+    
+}
+
+function closeMainTooltip(Tooltip,data){
+    d3.selectAll(".node")
+        .on("mouseover", function (d) {mouseoverPersonal(Tooltip);}) 
+        .on("mousemove", function (d) {mousemovePersonal(Tooltip,d, this)})
+        .on("click", function (d) {window.zoomedIn=true;mouseClickPersonal(Tooltip, data)})
+        .on("mouseleave", function (d) {mouseleavePersonal(Tooltip,data)})
+    Tooltip
+          .style("opacity", 0)
+          .style("width",0)   
+          .style("border",0)
+          .style("padding", 0)
+          .html("");
+    window.zoomedIn=false;
+}
+
+
+
+
+export {mouseoverJob,mousemoveJob,mouseleaveJob,mouseoverPersonal,mousemovePersonal,mouseleavePersonal,mouseClickPersonal}
