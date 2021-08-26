@@ -277,7 +277,7 @@ function settingspanel_info_onclick() {
         "The 'Show all connections' button allows you to see all international working between all countries in the selected time period. " +
         "Note that this data does not primarily include international collaboration of film studios but rather international working of individual persons." + 
         "<br/>" +
-        "The 'Show as timeline' and 'Show as cluster' buttons can be used to view the currently selected country between the selected years, from a different perspektive.";
+        "The 'Show as timeline' and 'Show as cluster' buttons can be used to view the currently selected country between the selected years, from a different perspective.";
 
     open_dialog(dialog_text);
 }
