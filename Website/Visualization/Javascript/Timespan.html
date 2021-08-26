@@ -1,0 +1,117 @@
+<html>
+  <head>
+    <script src="https://cdn.anychart.com/releases/v8/js/anychart-base.min.js"></script>
+    <script src="https://cdn.anychart.com/releases/v8/js/anychart-ui.min.js"></script>
+    <script src="https://cdn.anychart.com/releases/v8/js/anychart-exports.min.js"></script>
+    <script src="https://cdn.anychart.com/releases/v8/themes/dark_provence.min.js"></script>
+    <link href="https://cdn.anychart.com/releases/v8/css/anychart-ui.min.css" type="text/css" rel="stylesheet">
+    <link href="https://cdn.anychart.com/releases/v8/fonts/css/anychart-font.min.css" type="text/css" rel="stylesheet">
+    <style type="text/css">
+  
+      html,
+      body,
+      #container {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    
+  </style>
+  </head>
+  <body>
+    
+    <div id="container"></div>
+    
+  
+    <script>
+  
+      anychart.onDocumentReady(function () {
+    // set chart theme
+  anychart.theme('darkProvence');
+        // create column chart
+        var chart = anychart.column();
+  
+        // turn on chart animation
+        chart.animation(true);
+  
+        // set chart title text settings
+        chart.title('Alive Pioneers per Timespan');
+  
+        // create area series with passed data
+        var series = chart.column([
+          [1830,0],
+          [1835,0],
+          [1840,0],
+          [1845,3],
+          [1850,4],
+          [1855,6],
+          [1860,9],
+          [1865,19],
+          [1870,28],
+          [1875,56],
+          [1880,76],
+          [1885,113],
+          [1890,157],
+          [1895,203],
+          [1900,246],
+          [1905,268],
+          [1910,275],
+          [1915,277],
+          [1920,275],
+          [1925,270],
+          [1930,263],
+          [1935,250],
+          [1940,237],
+          [1945,217],
+          [1950,201],
+          [1955,177],
+          [1960,159],
+          [1965,137],
+          [1970,115],
+          [1975,85],
+          [1980,59],
+          [1985,37],
+          [1990,17],
+          [1995,8],
+          [2000,4]
+        ]
+);
+  
+        // set series tooltip settings
+        series.tooltip().titleFormat('{%X}');
+  
+        series
+          .tooltip()
+          .position('center-top')
+          .anchor('center-bottom')
+          .offsetX(0)
+          .offsetY(5)
+          .format('{%Value}{groupsSeparator: }');
+  
+        // set scale minimum
+        chart.yScale().minimum(0);
+  
+        // set yAxis labels formatter
+        chart.yAxis().labels().format('{%Value}{groupsSeparator: }');
+  
+        // tooltips position and interactivity settings
+        chart.tooltip().positionMode('point');
+        chart.interactivity().hoverMode('by-x');
+  
+        // axes titles
+       // chart.xAxis().title('Alive Pioneers per Timespan');
+        //chart.yAxis().title('Number of Pioneers');
+  
+        // set container id for the chart
+        chart.container('container');
+  
+        // initiate chart drawing
+        chart.draw();
+      });
+    
+  </script>
+  </body>
+  </html>
+                  
+                    
