@@ -1,68 +1,81 @@
 <!DOCTYPE html>
 
 <html lang="en" style="height: 100%">
-
-<head>
+  <head>
     <title>WFPP</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../CSS/cluster.css">
-    <script type="module" src="../JS/Cluster/Handlers/resizeHandler.js"></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../CSS/cluster.css" />
+    <link rel="icon" type="image/png" href="../Images/WFPP-Logo.png" />
+    <script
+      type="module"
+      src="../JS/Cluster/Handlers/resizeHandler.js"
+    ></script>
     <script type="module" src="../JS/Cluster/Util/bubbleUtil.js"></script>
-    <script type="module" src="../JS/Cluster/Handlers/connectivityHandler.js"></script>
+    <script
+      type="module"
+      src="../JS/Cluster/Handlers/connectivityHandler.js"
+    ></script>
     <script src="https://d3js.org/d3.v4.js"></script>
     <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
     <script type="text/javascript" src="../Data/cluster_data.json"></script>
     <script type="text/javascript" src="../Data/wfpp-text.json"></script>
-</head>
+  </head>
 
- <body id="body"> 
-  
+  <body id="body">
     <!-- Header -->
     <nav>
-        <ul class="nav-links">
-            <li>
-                <a href="../index.html">Home</a>
-            </li>
-            <li>
-                <a href="./Map.html">Map</a>
-            </li>
-            <li>
-                <a href="./Cluster.html">Cluster</a>
-            </li>
-            <li>
-                <a href="./Timeline.html">Timeline</a> 
-            </li>
-            <li>
-                <a href="./Dendrogram.html">Dendrogram</a>          
-            </li>
-            <li>
-                <a href="./About.html">About</a> 
-            </li>
-            
-        </ul>
-    </nav> 
+      <ul class="nav-links">
+        <li>
+          <a href="../index.html">Home</a>
+        </li>
+        <li>
+          <a href="./Map.html">Map</a>
+        </li>
+        <li>
+          <a href="./Cluster.html">Cluster</a>
+        </li>
+        <li>
+          <a href="./Timeline.html">Timeline</a>
+        </li>
+        <li>
+          <a href="./Dendrogram.html">Dendrogram</a>
+        </li>
+        <li>
+          <a href="./About.html">About</a>
+        </li>
+      </ul>
+    </nav>
 
-     
-     <div id="locator"></div>
+    <div id="locator"></div>
 
-     <!-- Clusterpanel -->
-     
-     <div id="sideishButtons">
-        <button id="professionsButton"><img id="professionsButtonPic" src="../Images/Reel.svg"></button>
-        <button id="countryButton"><img id="countryButtonPic" src="../Images/Globe.svg"></button>
-        <button id="allPioneersButton"><img id="allPioneersButtonPic" src="../Images/AllIcon.svg"></button>
+    <!-- Clusterpanel -->
+
+    <div id="sideishButtons">
+      <button id="professionsButton">
+        <img id="professionsButtonPic" src="../Images/Reel.svg" />
+      </button>
+      <button id="countryButton">
+        <img id="countryButtonPic" src="../Images/Globe.svg" />
+      </button>
+      <button id="allPioneersButton">
+        <img id="allPioneersButtonPic" src="../Images/AllIcon.svg" />
+      </button>
     </div>
-     <br>
-     <button id="subGroupOpen">&#9776;</button>
-     
-     
-    
-    <div id="subGroupPanel">Sub-Groups
-        <a id="closeGroupPanel" href="javascript:void(0)" class="closebtn">&times;</a>
-     </div>
-    <div class="my_dataviz" id="my_dataviz" onresize="handleResize()" onload="initializeState()"></div>
+    <br />
+    <button id="subGroupOpen">&#9776;</button>
 
-</body>
-
+    <div id="subGroupPanel">
+      Sub-Groups
+      <a id="closeGroupPanel" href="javascript:void(0)" class="closebtn"
+        >&times;</a
+      >
+    </div>
+    <div
+      class="my_dataviz"
+      id="my_dataviz"
+      onresize="handleResize()"
+      onload="initializeState()"
+    ></div>
+  </body>
 </html>
