@@ -28,7 +28,6 @@ function mouseleaveJob(Tooltip,data,env){
 function mouseoverPersonal(Tooltip){
     Tooltip
           .style("opacity", 1)
-          .style("width","auto")
           .style("border","solid black")
           .style("padding", "10px")
 }
@@ -59,13 +58,13 @@ function mousemovePersonal(Tooltip,d,env){
     var mouseY = d3.mouse(env)[1];
     var tooltipW = document.getElementById("mainTooltip").clientWidth;
     var tooltipH = document.getElementById("mainTooltip").clientHeight;
-    
+        
     var top= mouseY;
     var left = mouseX;
     var windowWidth = document.getElementById("body").clientWidth;
     var windowHeight = document.getElementById("body").clientHeight;
     
-    
+    //console.log(mouseX + ";" + mouseY + ";" + tooltipH +";" + tooltipW+ ";");
     if(mouseX+tooltipW+20>windowWidth){
         left=left-tooltipW-30;
     }

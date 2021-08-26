@@ -70,8 +70,6 @@ function goBack(){
 }
 
 function addBackButton(){ 
-    var width =document.getElementById("my_dataviz").clientWidth;
-    var height = document.getElementById("my_dataviz").clientHeight;
   if(document.getElementById("back")==null){
       var backButton = d3.select("body")
         .append("div")
@@ -79,7 +77,6 @@ function addBackButton(){
         .attr("class", "back")
         .attr("id", "back")
         .html("<button> Back </button>");
-      document.getElementById("back").addEventListener("click", goBack)
   }
 }
 
@@ -92,6 +89,7 @@ function goToNextLevel(profession){
     updateState(profession);
     updateLocator(profession,getLevel());
     addBackButton();
+    document.getElementById("back").addEventListener("click", goBack)
     clearAllTimeouts();
     closeSubgroupPanel();
     drawLowerLevel(profession,getLevel());

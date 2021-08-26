@@ -32,24 +32,7 @@ function showAll(){
       if(!zoomedIn){
           zoomIn(d,data,svg)}
   }
-
-  var mouseover = function (d) {
-        Tooltip
-          .style("opacity", 1)
-      }
-   var mousemove = function (d) {
-       if(!zoomedIn){
-        Tooltip
-          .html('<u>' + d.name + '</u>')
-          .style("left", (d3.mouse(this)[0] + 20) + "px")
-          .style("top", (d3.mouse(this)[1]) + "px")
-      }
-   }
-   
-   var mouseleave = function (d) {
-        Tooltip
-          .style("opacity", 0)
-      }
+ 
    
    var mouseClick = function (d) {
        Tooltip
@@ -59,9 +42,7 @@ function showAll(){
        if(zoomedIn){
             zoomIn(d,data,svg);
         }
-       mouseoverPersonal(Tooltip);
-       mousemovePersonal(Tooltip,d, this);
-      }
+}
   
    // TODO Get smaller images for all page
   for(var i =0; i <data.length; i++){

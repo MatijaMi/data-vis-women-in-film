@@ -4,7 +4,7 @@ import{getFirstLevelData,getProfessionData,getSecondLevelData,getThirdLevelData}
 import{removeTooltip,createTooltip,createTextOverlay,speedUpAnimation} from '../Util/tooltips.js';
 import{updateLevel,getLevels,getLevel,setLevel,goToNextLevel} from '../Handlers/levelHandler.js';
 import{setLocator, handleLocatorClick, removeLastLocButton,addButtonEvents,updateLocator} from '../Handlers/navigationHandler.js';
-import{findProfessionPicture,createLines,determineJobSize,clearPrevDataviz,addPatterns,determinePersonSize,determineSubgroupY,determineSubGroupSize,findPersonPicture, determineCxMobile,determineCyMobile,determineJobSizeMobile} from '../Util/bubbleUtil.js';
+import{findProfessionPicture,createLines,determineJobSize,clearPrevDataviz,determinePersonSize,determineSubgroupY,determineSubGroupSize,findPersonPicture, determineCxMobile,determineCyMobile,determineJobSizeMobile} from '../Util/bubbleUtil.js';
 import{drawTopLevel} from '../Levels/topLevel.js';
 import{closeSubgroupPanel,openSubgroupPanel} from '../Handlers/connectivityHandler.js';
 

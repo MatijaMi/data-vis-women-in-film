@@ -1,13 +1,11 @@
 import {showCountries} from './CountryCluster.js';
 import{speedUpAnimation,createTooltip} from '../Util/tooltips.js';
-import{determineCxMobile,determineCyMobile} from '../Util/bubbleUtil.js';
+import{determineCxMobile,determineCyMobile,clearPrevDataviz} from '../Util/bubbleUtil.js';
 import{goBackState} from '../Handlers/stateHandler.js';
 import{addBackButton} from '../Handlers/levelHandler.js';
 import{mousemovePersonal,mouseoverPersonal,mouseleavePersonal} from '../Handlers/mouseHandler.js';
 function showCountryD3(country,timespan){
-    if(document.getElementById("my_dataviz").firstChild!=null){
-        document.getElementById("my_dataviz").removeChild(document.getElementById("my_dataviz").firstChild);
-    }
+    clearPrevDataviz();
     var data = "id,name,link,imgUrl,real,country,number\r\n";
     for(var i = 0; i <wfpp.entries.length; i++){
         for(var j =0; j< wfpp.entries[i].worked_in.length; j++){
@@ -29,7 +27,6 @@ function showCountryD3(country,timespan){
             }
         }
     }
-    
     data = d3.csvParse(data);
 
     // set the dimensions and margins of the graph
@@ -57,24 +54,23 @@ function showCountryD3(country,timespan){
     addBackButton();
     
     function goBack(){
-        
         document.getElementById("back").remove();
         showCountries("");    
     }
     
-document.getElementById("back").addEventListener("click", goBack)
-      // Three function that change the tooltip when user hover / move / leave a cell
-    
+    document.getElementById("back").addEventListener("click", goBack)
+      
   var radiusofGroup=determineCountryGroupSize(data);
-  var extra="-Fullsize";
-    if(data.length>100){
-        extra=""
+  var imageSize ="Medium";
+    if(radiusofGroup<=40){
+        imageSize="Small";
     }
+ 
  for(var i =0; i <data.length; i++){
       if(data[i].imgUrl.length!=0){
-          var link = '../Images/WFPP-Pictures-Squares/' + data[i].name.split(' ').join('%20') +'.jpg';
+          var link = '../Images/WFPP-Pictures-' + imageSize + "/" + data[i].name.split(' ').join('%20') +'.jpg';
       }else{
-          var link = '../Images/WFPP-Pictures-Squares/Unknown.jpg';
+          var link = '../Images/WFPP-Pictures-' + imageSize +'/Unknown.jpg';
       }
       
     svg.append("pattern")
@@ -156,13 +152,13 @@ function determineCountryGroupSize(data){
             var currentWidth = document.getElementById("my_dataviz").clientWidth;
             return currentWidth/8-10;
         }
-        if(data.length>40){
+        if(data.length>=40){
             return 30;
         }
         if(data.length>10 && data.length<40){
             return 60;
         }
-        if(data.length<10){
+        if(data.length<=10){
             return 80;
         }
     }

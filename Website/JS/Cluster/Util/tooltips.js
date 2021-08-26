@@ -7,12 +7,15 @@ function removeTooltip(name){
 }
 
 function createTooltip(){
-   var Tooltip= d3.select("body")
-        .append("div")
-        .style("opacity", 0)
-        .attr("class", "tooltip")
-        .attr("id", "mainTooltip");
-   return Tooltip;
+    if(document.getElementById("mainTooltip")!=null){
+        document.getElementById("mainTooltip").remove();
+    }
+        var Tooltip= d3.select("body")
+            .append("div")
+            .style("opacity", 0)
+            .attr("class", "tooltip")
+            .attr("id", "mainTooltip");
+        return Tooltip;
 }
 
 

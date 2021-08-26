@@ -3,7 +3,7 @@ import{getTopLevelData} from '../Util/dataProcessing.js';
 import{mouseoverJob,mousemoveJob,mouseleaveJob} from '../Handlers/mouseHandler.js';
 import{removeTooltip,createTooltip,createTextOverlay,speedUpAnimation} from '../Util/tooltips.js';
 import{updateLevel,getLevels,getLevel,setLevel,goToNextLevel} from '../Handlers/levelHandler.js';
-import{findProfessionPicture,createLines,determineJobSize,clearPrevDataviz,addPatterns,determineCxMobile,determineCyMobile,determineJobSizeMobile} from '../Util/bubbleUtil.js';
+import{findProfessionPicture,createLines,determineJobSize,clearPrevDataviz,determineCxMobile,determineCyMobile,determineJobSizeMobile} from '../Util/bubbleUtil.js';
 import{setLocator, handleLocatorClick, removeLastLocButton,addButtonEvents,updateLocator} from '../Handlers/navigationHandler.js';
 import{drawLowerLevel} from '../Levels/lowerLevels.js';
 import{showCountries} from '../Levels/CountryCluster.js';
@@ -19,6 +19,7 @@ function drawTopLevel(){
     if(mobileMode){
         var height =150 + (width/4)* Math.ceil(data.length/4);
         document.getElementById("my_dataviz").style.height=height+"px";
+        document.getElementById("my_dataviz").style.overflow="";
     }else{
         document.getElementById("my_dataviz").style.height="100%";
         document.getElementById("my_dataviz").style.overflow="hidden";
@@ -29,8 +30,6 @@ function drawTopLevel(){
         var pioneer = wfpp.entries[i];
     }
     var svg = d3.select("#my_dataviz").append("svg").attr("width", width).attr("height", height).attr("id","mainSVG");
-    
-    var Tooltip = createTooltip();
 
 //Drawing the circles
     

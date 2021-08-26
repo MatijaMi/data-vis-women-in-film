@@ -114,6 +114,7 @@ function handleLoad(){
 
 function switchToAll(){
     removeTooltip("textOverlay");
+    removeTooltip("tooltip");
     document.getElementById("locator").innerHTML="";
     setLevel(-1);
     document.getElementById("allPioneersButton").style.backgroundColor="#bb7043";
@@ -123,6 +124,7 @@ function switchToAll(){
 }
 function switchToCountries(){
     removeTooltip("textOverlay");
+    removeTooltip("tooltip");
     document.getElementById("locator").innerHTML="";
     setLevel(-1);
     document.getElementById("countryButton").style.backgroundColor="#bb7043";
@@ -132,6 +134,7 @@ function switchToCountries(){
 }
 function switchToProfessions(){
     removeTooltip("textOverlay");
+    removeTooltip("tooltip");
     document.getElementById("locator").innerHTML="";
     setLevel(-1);
     document.getElementById("professionsButton").style.backgroundColor="#bb7043";
