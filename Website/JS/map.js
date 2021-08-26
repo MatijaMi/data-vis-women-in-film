@@ -318,6 +318,7 @@ function CheckSizeZoom() {
 
         if (typeof (document.body.style.zoom) != "undefined") {
             $(document.body).css('zoom', zoomLev);
+            $("#slider-range").css('zoom', 1/zoomLev);
         }
         else {
             // Mozilla doesn't support zoom, use -moz-transform to scale and compensate for lost width
@@ -336,6 +337,7 @@ function CheckSizeZoom() {
         $('#divWrap').css('top', "");
         $('#divWrap').css('-moz-transform', "");
         $('#divWrap').width("");
+        $("#slider-range").css('zoom', '');
     }
 }
 
