@@ -369,7 +369,7 @@ function CreatePieChart(top){
     var chart = anychart.pie(data);
 
     //Modal Chart
-    anychart.theme("darkProvence");
+    anychart.theme("darkBlue");
 
     // create standalone label and set settings
     var label = anychart.standalones.label();
@@ -437,12 +437,10 @@ function CreateBarChart(){
     data = temp_countries.map((x) => [x.country_name, x.country_pioneers.length]);
     
     // set chart theme
-    anychart.theme("darkProvence");
+    anychart.theme("darkBlue");
 
     // create bar chart
     var chart = anychart.bar(data);
-
-    //chart.animation(true);
 
     chart.padding([10, 40, 5, 20]);
 
@@ -464,8 +462,6 @@ function CreateBarChart(){
     chart.yAxis().labels().format("{%Value}{groupsSeparator: }");
 
     // set titles for axises
-    chart.xAxis().title("Countries");
-    chart.yAxis().title("Pioneers");
     chart.interactivity().hoverMode("by-x");
     chart.tooltip().positionMode("point");
     // set scale minimum
