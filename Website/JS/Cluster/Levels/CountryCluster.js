@@ -81,8 +81,8 @@ function showCountries(timespan){
       }
         Tooltip
           .html(d.count + "<br>" + text)
-          .style("left", (d3.mouse(this)[0] + 20) + "px")
-          .style("top", (d3.mouse(this)[1]) + "px")
+          .style("left", (d3.mouse(this)[0] + 15) + "px")
+          .style("top", (d3.mouse(this)[1] +30) + "px")
       }
   var mouseleave = function (d) {
         Tooltip

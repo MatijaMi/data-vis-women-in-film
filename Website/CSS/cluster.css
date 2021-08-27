@@ -97,7 +97,7 @@ svg{
     z-index: 1;
     width: 100vw;
     text-align: center;
-    position: fixed;
+    position: absolute;
     margin-top: 5px;
 }
 
@@ -178,6 +178,7 @@ svg{
 .node:hover {
       stroke-width: 5px !important;
       opacity: 1 !important;
+      cursor: pointer;
 }
 
 .subgroupNodes:hover{
