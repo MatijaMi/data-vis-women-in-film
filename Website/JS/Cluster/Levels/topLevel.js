@@ -87,12 +87,12 @@ function drawTopLevel(){
             })
         .on('end', function () {
             if(getLevel()==0){
-                createTextOverlay(data,"Professions","body");
+                createTextOverlay(data,"Professions","my_dataviz");
             }
         });
         speedUpAnimation(window.simulation,2);
     }else{
-        createTextOverlay(data,"Professions","body");
+        createTextOverlay(data,"Professions","my_dataviz");
     }
     
     

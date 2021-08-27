@@ -172,11 +172,11 @@ function showCountries(timespan){
             .attr("cx", function (d) { return d.x; })
             .attr("cy", function (d) { return d.y; })
         }).on('end', function () {
-            createTextOverlay(data,"Countries","body");}
+            createTextOverlay(data,"Countries","my_dataviz");}
         );
       speedUpAnimation(window.simulation,2);
   }else{
-       createTextOverlay(data,"Countries","body");
+       createTextOverlay(data,"Countries","my_dataviz");
   }
     function changePattern(){
         if(getStates()[getStates().length-1]=="Countries"){

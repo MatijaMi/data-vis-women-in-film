@@ -5,7 +5,7 @@ import {getAllData} from '../Util/dataProcessing.js';
 import {removeTooltip,createTooltip} from '../Util/tooltips.js';
 import {showCountries} from '../Levels/CountryCluster.js';
 import{setLocator} from '../Handlers/navigationHandler.js';
-import{mousemovePersonal,mouseoverPersonal,mouseleavePersonal,mouseClickPersonal} from '../Handlers/mouseHandler.js';
+import{mousemovePersonal,mouseoverPersonal,mouseleavePersonal,mouseClickPersonal,showMobileTooltipPanel} from '../Handlers/mouseHandler.js';
 function showAll(){
     if(document.getElementById("my_dataviz").firstChild!=null){
         document.getElementById("my_dataviz").removeChild(document.getElementById("my_dataviz").firstChild);
@@ -54,7 +54,23 @@ function showAll(){
         .attr("height", 60)
         .attr("xlink:href", link);  
 }
-  
+  if(mobileMode){
+      var node = svg.append("g")
+        .selectAll("circle")
+        .data(data)
+        .enter()
+        .append("circle")
+        .attr("class", "node")
+        .attr("r", 30)
+        .attr("cx",function(d) {return determineCx(d.number, width)})
+        .attr("cy",function(d) {return determineCy(d.number, width)})
+        .attr("fill", function(d) {
+		      return "url(#"+d.id +")";
+        })
+        .attr("stroke", "black")
+        .style("stroke-width", 0.8)
+        .on("click", function (d) {showMobileTooltipPanel(d)});
+  }else{
   var node = svg.append("g")
         .selectAll("circle")
         .data(data)
@@ -74,7 +90,7 @@ function showAll(){
         .on("mouseover", function (d) {mouseoverPersonal(Tooltip);}) 
         .on("mousemove", function (d) {mousemovePersonal(Tooltip,d, this)})
         .on("mouseleave", function (d) {mouseleavePersonal(Tooltip,data)})
-
+  }
    updateState("All");
    setLocator("All Pioneers"); 
 }

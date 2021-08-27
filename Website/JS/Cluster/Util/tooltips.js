@@ -50,7 +50,7 @@ function createTextOverlay(data,mode,container){
                     inHtml=pureText.substr(0,Math.ceil(pureText.length/2)) +"-<br>" + pureText.substr(Math.ceil(pureText.length/2));
                     yShift=30;
                 }
-                if(container!="body"){
+                if(container!="my_dataviz"){
                     yShift=r/3;
                     if(pureText.length<8){
                         yShift=r/2;
@@ -58,7 +58,7 @@ function createTextOverlay(data,mode,container){
                 } 
         }else{
             if(text.length==2){
-                if(container=="body"){
+                if(container=="my_dataviz"){
                     calculatedFont=r/2+ -5 +"px";
                     lineHeight = r/2 +8 + "px";
                     yShift=20;
@@ -68,7 +68,7 @@ function createTextOverlay(data,mode,container){
                     lineHeight = r/3 +4 + "px";
                 }
             }else{
-                if(container=="body"){
+                if(container=="my_dataviz"){
                     calculatedFont=r/3+"px";
                     lineHeight = r/3 +4 + "px";
                     yShift=35;
@@ -78,6 +78,9 @@ function createTextOverlay(data,mode,container){
                     lineHeight = r/3 +4 + "px";
                 }
             }
+        }
+        if(container=="my_dataviz"){
+            yShift=yShift-70;
         }
         var Tooltip = d3.select("#"+container)
                 .append("div")

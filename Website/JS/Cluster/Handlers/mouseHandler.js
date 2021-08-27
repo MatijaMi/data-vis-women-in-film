@@ -49,7 +49,6 @@ function mousemovePersonal(Tooltip,d,env){
     }else{
         imgSrc='<img src=../Images/WFPP-Pictures-Squares/'+ d.name.split(' ').join('%20') +'.jpg width=200px>';     
     }
-    console.log(d.link)
     Tooltip
           .html('<a id="closeMainTooltip" href="javascript:void(0)" class="closebtn">&times;</a><u><b>' + d.name + '</b></u><br>'+ imgSrc + "<br>" + '<p>' + shortBio +'</p>' + '<button id="fullArticleButton"> Read Full Article</button>')
           .style("width", "300px")
@@ -73,7 +72,7 @@ function mousemovePersonal(Tooltip,d,env){
         left=left-tooltipW-30;
     }
     if(mouseY+tooltipH>windowHeight){
-        top=windowHeight-tooltipH + document.getElementById("dumbnav").clientHeight;
+        top=windowHeight-tooltipH + document.getElementById("myTopnav").clientHeight;
     }
     
     Tooltip
@@ -118,7 +117,38 @@ function closeMainTooltip(Tooltip,data){
     window.zoomedIn=false;
 }
 
+function showMobileTooltipPanel(d){
+    document.getElementById("mobileTooltipPanel")
+    var shortBio ="";
+    for(var i =0; i <wfppTexts.entries.length ;i++){
+        var pioneer = wfppTexts.entries[i];
+        if(pioneer.id==d.id){
+            shortBio=pioneer.shortBio;
+        }
+    }
+
+    var imgSrc ="";
+    if(d.imgUrl.length<10){
+        imgSrc='<img src=../Images/WFPP-Pictures-Squares/Unknown.jpg width=75%>';
+    }else{
+        imgSrc='<img src=../Images/WFPP-Pictures-Squares/'+ d.name.split(' ').join('%20') +'.jpg width=200px>';     
+    }
+    d3.select("#mobileTooltipPanel")
+          .html('<a id="closeMobileTooltip" href="javascript:void(0)" class="closebtn">&times;</a><b>' + d.name + '</b><br>'+ imgSrc + "<br>" + '<p>' + shortBio +'</p>' + '<button id="fullArticleButton"> Read Full Article</button>')
+          .style("width", "300px")
+    
+    document.getElementById("fullArticleButton").addEventListener("click", function(){
+        window.open(d.link,"_blank");
+    })
+    
+    d3.select("#mobileTooltipPanel").style("width", "auto");
+    
+    document.getElementById("closeMobileTooltip").addEventListener("click", function(){
+         d3.select("#mobileTooltipPanel").style("width", "0px").html("");
+    });
+}
 
 
 
-export {mouseoverJob,mousemoveJob,mouseleaveJob,mouseoverPersonal,mousemovePersonal,mouseleavePersonal,mouseClickPersonal}
+
+export {mouseoverJob,mousemoveJob,mouseleaveJob,mouseoverPersonal,mousemovePersonal,mouseleavePersonal,mouseClickPersonal,showMobileTooltipPanel}

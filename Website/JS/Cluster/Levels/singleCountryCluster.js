@@ -3,7 +3,7 @@ import{speedUpAnimation,createTooltip} from '../Util/tooltips.js';
 import{determineCxMobile,determineCyMobile,clearPrevDataviz} from '../Util/bubbleUtil.js';
 import{goBackState} from '../Handlers/stateHandler.js';
 import{addBackButton} from '../Handlers/levelHandler.js';
-import{mousemovePersonal,mouseoverPersonal,mouseleavePersonal,mouseClickPersonal} from '../Handlers/mouseHandler.js';
+import{mousemovePersonal,mouseoverPersonal,mouseleavePersonal,mouseClickPersonal,showMobileTooltipPanel} from '../Handlers/mouseHandler.js';
 function showCountryD3(country,timespan){
     clearPrevDataviz();
     var data = "id,name,link,imgUrl,real,country,number\r\n";
@@ -102,6 +102,7 @@ function showCountryD3(country,timespan){
                 })
                 .attr("stroke", "black")
                 .style("stroke-width", 3)
+                .on("click", function(d){showMobileTooltipPanel(d)});
           }
       }else{
           var node = svg.append("g")

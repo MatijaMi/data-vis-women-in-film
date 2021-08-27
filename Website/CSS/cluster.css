@@ -110,12 +110,12 @@ svg{
     text-shadow:2px 0 0 #000, 0 -2px 0 #000, 0 2px 0 #000, -2px 0 0 #000;
     outline: none;
     border: none;
-
 }
 
 #locator button:hover{
     cursor: pointer;
 }
+
 #fullArticleButton{
     padding: 0.5em 1.7em;
     margin-bottom: 10px;
@@ -184,6 +184,7 @@ svg{
 .subgroupNodes:hover{
     stroke-width: 5px !important;
     opacity: 1 !important;
+    cursor: pointer;
 }
 
 .textOverlay{
@@ -213,16 +214,18 @@ svg{
 #subGroupOpen{
     color:white;
     background-color: black;
-    position: relative;
-    font-size: 30px;
+    position: absolute;
+    font-size: 40px;
+    padding-top: 0px;
+    padding-bottom: 10px;
     border:none;
-    top:5%;
-    float: left;
+    top: 45px;
+    right: 0%;
     z-index: 10;
     display: none;
 }
 
-#closeMainTooltip{
+#closeMainTooltip, #closeMobileTooltip{
     position: absolute;
     text-decoration: none;
     color: white;
@@ -244,12 +247,52 @@ svg{
     z-index: 11;
     background-color: black;
     position: absolute;
-    top:4%;
+    right: 0px;
+    top:6%;
     height: 94.5%;
     transition: 0.5s;
     padding-top: 10px;
     font-size: 2vh;
     text-decoration: underline;
+}
+
+#mobileTooltipPanel{
+    width:0px;
+    color: white;
+    text-align: center;
+    z-index: 11;
+    background-color: black;
+    position: absolute;
+    right: 0px;
+    top:5%;
+    transition: 1.5s;
+    padding-top: 10px;
+}
+
+#mobileTooltipPanel b{
+    font-size: 30px;
+}
+
+#mobileTooltipPanel img{
+    width: 40%;
+    margin-top:10px;
+}
+
+#mobileTooltipPanel p{
+    width: 80%;
+    font-size: 20px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#closeMobileTooltip{
+    position: absolute;
+    text-decoration: none;
+    color: white;
+    top: 2px;
+    right: 9px;
+    font-size: 46px;
+    padding: none;
 }
 
 #subGroupPanelSVG{
@@ -299,4 +342,15 @@ svg{
     font-family: "Roboto", sans-serif;
     border: 0.2em solid #060606;
     cursor: pointer;
+}
+
+@media screen and (max-width: 800px) {
+    #locator button{
+    display: inline-block;
+    font-size: 23px;
+    }
+    
+    #locator{
+        top:13%;
+    }
 }

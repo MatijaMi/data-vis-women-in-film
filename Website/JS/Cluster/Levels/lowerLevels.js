@@ -1,5 +1,5 @@
 import{updateState,goBackState} from '../Handlers/stateHandler.js';
-import{mouseoverJob,mousemoveJob,mouseleaveJob,mousemovePersonal,mouseoverPersonal,mouseleavePersonal,mouseClickPersonal} from '../Handlers/mouseHandler.js';
+import{mouseoverJob,mousemoveJob,mouseleaveJob,mousemovePersonal,mouseoverPersonal,mouseleavePersonal,mouseClickPersonal,showMobileTooltipPanel} from '../Handlers/mouseHandler.js';
 import{getFirstLevelData,getProfessionData,getSecondLevelData,getThirdLevelData} from '../Util/dataProcessing.js';
 import{removeTooltip,createTooltip,createTextOverlay,speedUpAnimation} from '../Util/tooltips.js';
 import{updateLevel,getLevels,getLevel,setLevel,goToNextLevel} from '../Handlers/levelHandler.js';
@@ -11,7 +11,9 @@ import{closeSubgroupPanel,openSubgroupPanel} from '../Handlers/connectivityHandl
 function drawLowerLevel(profession,level){
     clearPrevDataviz();
     document.getElementById("subGroupOpen").style.display="block";
-    openSubgroupPanel();
+    if(!mobileMode){
+        openSubgroupPanel();
+    }
     var data = getProfessionData(profession);
     var width =document.getElementById("my_dataviz").clientWidth;
     if(mobileMode){
@@ -20,6 +22,7 @@ function drawLowerLevel(profession,level){
         var heightDIV = document.getElementById("my_dataviz").clientHeight;
         var height =Math.max(heightSVG,heightDIV);
         document.getElementById("my_dataviz").style.height=height+"px";
+        document.getElementById("my_dataviz").style.overflow="auto";
     }else{
         document.getElementById("my_dataviz").style.height="100%";
         var height = document.getElementById("my_dataviz").clientHeight;  
@@ -43,7 +46,7 @@ function drawLowerLevel(profession,level){
                 })
                 .attr("stroke", "black")
                 .style("stroke-width", 3)
-                .on("click", function (d) {console.log("tooltip magic here")});
+                .on("click", function (d) {showMobileTooltipPanel(d)});
         }
         
     }else{

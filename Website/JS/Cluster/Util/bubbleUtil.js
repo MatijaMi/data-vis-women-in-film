@@ -249,7 +249,7 @@ function determineCyMobile(ranking,mode){
     if(mode!="subMobile"){
         return 180+ (currentWidth/4)*Math.floor(ranking/4);
     }else{
-        return 100+ (currentWidth/2)*Math.floor(ranking/2);
+        return 140+ (currentWidth/2)*Math.floor(ranking/2);
     }
     
     
@@ -260,7 +260,7 @@ function determineJobSizeMobile(mode){
     if(mode!="subMobile"){
         return currentWidth/8-10;
     }else{
-        return currentWidth/4-10;
+        return currentWidth/5-10;
     }
 }
 
