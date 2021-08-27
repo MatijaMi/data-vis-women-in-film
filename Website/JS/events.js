@@ -109,7 +109,7 @@ function renderEvents() {
   g.append("text")
     .attr("transform", (d) => `translate(${xScale(d.YOB)}, ${yScale(d.name)})`)
     .text((d) => d.name)
-    .attr("x", (d) => (xScale(d.YOD) - xScale(d.YOB)) / 2)
+    .attr("x", (d) => (xScale(d.YOD) - xScale(d.YOB)) / 2 + 7)
     .attr("y", yScale.bandwidth() - 7)
     .style("text-anchor", "middle")
     .style("font-family", "sans-serif")
