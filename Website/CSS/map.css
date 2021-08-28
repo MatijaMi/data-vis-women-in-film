@@ -2,7 +2,7 @@
   --panel_background_color: rgb(33, 33, 33);
   --panel_border_color: rgb(66, 66, 66);
   --text_color: rgb(250, 250, 250);
-  --text_font: "Times New Roman", serif;
+  --text_font: "Roboto", sans-serif;
 }
 
 /* Header */
@@ -134,7 +134,7 @@
   cursor: pointer;
 }
 
-/* Settings */
+/* Options */
 
 .settings_panel {
   height: 203px;
@@ -193,9 +193,9 @@
 /* Histogram */
 
 .histogram_holder {
-  margin-left: 325px;
+  margin-left: 295px;
   margin-top: 5px;
-  width: 1400px;
+  width: 1425px;
 }
 
 .histogram_image {
@@ -277,4 +277,33 @@
   margin-bottom: 200px;
   margin-left: auto;
   margin-right: auto;
+}
+
+/* Charts Close Button */
+.close1 {
+  color: #aaa;
+  font-size: 50px;
+  font-weight: bold;
+  margin-left: 68.5%;
+}
+
+.close2 {
+  color: #aaa;
+  font-size: 50px;
+  font-weight: bold;
+  margin-left: 48.5%;
+}
+
+.close1:hover,
+.close1:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.close2:hover,
+.close2:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
 }

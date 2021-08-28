@@ -375,7 +375,7 @@ function CreatePieChart(top){
     var label = anychart.standalones.label();
     label
       .enabled(true)
-      .text("Countries with most Pioneers in total")
+      .text("Countries with most pioneers between " + $("#slider-range").slider("values", 0) + " and " + $("#slider-range").slider("values", 2))
       .width("100%")
       .height("100%")
       .adjustFontSize(true, true)
@@ -445,7 +445,7 @@ function CreateBarChart(){
     chart.padding([10, 40, 5, 20]);
 
     chart.title(
-      "Total Pioneers per Country"
+      "Pioneers per country between " + $("#slider-range").slider("values", 0) + " and " + $("#slider-range").slider("values", 2)
     );
 
     // set tooltip settings

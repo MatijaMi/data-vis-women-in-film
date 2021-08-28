@@ -215,101 +215,44 @@ nav {
   }
 }
 
-/* .content{
-  margin: 0 auto;
-  display: flex;
-  flex-flow: column wrap;
-  justify-content: space-between;
-  
-	width:80%;
-	padding: 4rem;
-  border: 4px red solid;
-} */
-/*  
-.content_panel{
-  border: 5px yellow solid;
-  background-color: #F2DAC4;
-  margin: 1rem auto;
-  padding: 2rem;
-  width: 77%;
-  height: 25rem;
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: space-between;
-  align-items: center;
-  
-}
-
-.content_image_left{
-  width:33.33%;
-  height: 300px;
-}
-
-.content_headline{
-  font-size: 25px;
-}
-
-.content_text {
-  width: 25%;
-}
-
-.content_button {
-  display: inline-block;
-  padding: 0.5em 1.7em;
-  margin: 0 0.1em 0.1em 0;
-  position: absolute;
-  bottom: 10%;
-  left: 65%;
-  border: 0.16em solid rgb(255, 255, 255);
-  border-radius: 2em;
-  box-sizing: border-box;
-  font-family: "Roboto", sans-serif;
-  font-weight: 300;
-  color: #000;
-  text-shadow: 0 0.04em 0.04em rgba(255, 255, 255, 0.253);
-  text-align: center;
-} */
 .content_panel {
-  /* border: 3px red solid; */
   position: relative;
   width: 85rem;
   height: 20rem;
   margin: 2% auto;
-  background-color: #c76734;
+  background-color: #282828;
   margin-bottom: 20px;
-  border: 4px solid #060606;
+  border: 4px solid #cccccc;
 }
 
 .content_image_left {
   height: 100%;
-  width: 33%;
+  /*width: 33%;*/
   margin: 0 15px 0 0;
   float: left;
 }
 
 .content_image_right {
   height: 100%;
-  width: 33%;
+  /*width: 33%;*/
   margin: 0 0px 0 15px;
   float: right;
 }
 
 .content_headline {
-  /* border: 3px black dashed; */
   top: 30px;
   padding: 2rem 2rem;
   font-family: "Roboto", sans-serif;
   font-weight: 800px;
   font-size: 25px;
   letter-spacing: 1px;
-  color: #000;
+  color: #ffffff;
 }
 
 .content_text {
-  /* border: 3px blue dashed; */
   font-weight: 500px;
   font-size: 20px;
-  color: #000000;
+  color: #ffffff;
   text-align: left;
   padding: 1rem 1rem;
 }
@@ -340,10 +283,8 @@ nav {
   text-shadow: 0 0.04em 0.04em rgba(235, 235, 235, 0.253);
   font-size: 17px;
   color: #ccc;
-  background-color: #282828;
-  outline: none;
-  box-shadow: none;
-  border: 0.2em solid #060606;
+  background-color: #c76734;
+  border: none;
   cursor: pointer;
 }
 

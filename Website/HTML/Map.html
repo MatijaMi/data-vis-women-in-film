@@ -78,12 +78,14 @@
 
     <!-- Image Modal Popup -->
     <div id="modal_1" class="modal">
+      <span id="modal_1_close" class="close1">&times;</span>
       <!-- Modal Content (The Image) -->
       <div id="country_bar_chart"></div>
     </div>
 
     <!-- Image Modal Popup -->
     <div id="modal_2" class="modal">
+      <span id="modal_2_close" class="close2">&times;</span>
       <!-- Modal Content (The Image) -->
       <div id="country_pie_chart"></div>
     </div>
@@ -319,8 +321,8 @@
         );
 
       //Slider values
-      var minSliderValue = 1900;
-      var maxSliderValue = 1930;
+      var minSliderValue = 1895;
+      var maxSliderValue = 1926;
 
       //Payload Pioneer
       var payload_is_used = false;
@@ -572,7 +574,7 @@
           document.getElementById("pioneers_example_label_head").hidden = false;
 
           //Draw Map normaly
-          drawMap(map_data);
+          drawMap(temp_map_data);
         }
 
         //Set last country if slider will be used
