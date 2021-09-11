@@ -172,7 +172,9 @@ function showCountries(timespan){
             .attr("cx", function (d) { return d.x; })
             .attr("cy", function (d) { return d.y; })
         }).on('end', function () {
-            createTextOverlay(data,"Countries","my_dataviz");}
+            if(getStates().length == statePosition ){
+                createTextOverlay(data,"Countries","my_dataviz");}
+        }
         );
       speedUpAnimation(window.simulation,2);
   }else{
@@ -206,6 +208,7 @@ function showCountries(timespan){
     
     timeouts.push(setTimeout(temp,10000));
     updateState("Countries");
+    var statePosition = getStates().length;
     setLocator("Countries");
 }
 

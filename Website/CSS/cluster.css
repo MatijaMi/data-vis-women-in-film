@@ -72,10 +72,6 @@ nav{
     to   { opacity: 1; }
 }
 
-@font-face{
- font-family:'blacksword';
- src: url('../Fonts/Blacksword.otf');
-}
 .my_dataviz{
     background:#333333;
     position: relative;
@@ -104,7 +100,7 @@ svg{
 #locator button{
     display: inline-block;
     font-size: 45px;
-    font-family: "Roboto", sans-serif;
+    font-family: Arial,sans-serif;
     background: none;
     color: #fff;
     text-shadow:2px 0 0 #000, 0 -2px 0 #000, 0 2px 0 #000, -2px 0 0 #000;
@@ -127,7 +123,7 @@ svg{
     background-color: #282828;
     outline: none;
     box-shadow: none;
-    font-family: "Roboto", sans-serif;
+    font-family: Arial,sans-serif;
     border: 0.2em solid #060606;
     cursor: pointer;
 }
@@ -160,9 +156,11 @@ svg{
     display: inline-block;
     width: 55px;
     height: 50px;
-    border-radius: 10px;
-    border-radius: 10px;
     background-color: black;
+    border: 0.2em solid rgb(66, 66, 66);
+    color: #ccc;
+    outline: none;
+    box-shadow: none;
 }
 
 #countryButton img, #allPioneersButton img,#professionsButton img{
@@ -196,7 +194,7 @@ svg{
     padding: 0px;
     margin: 0px;
     text-align: center;
-    font-family: "Roboto", sans-serif;
+    font-family:Arial,sans-serif;
     color: #fff;
     z-index: 4;
     text-shadow:2px 0 0 #000, 0 -2px 0 #000, 0 2px 0 #000, -2px 0 0 #000;
@@ -253,7 +251,6 @@ svg{
     transition: 0.5s;
     padding-top: 10px;
     font-size: 2vh;
-    text-decoration: underline;
 }
 
 #mobileTooltipPanel{
@@ -262,9 +259,9 @@ svg{
     text-align: center;
     z-index: 11;
     background-color: black;
-    position: absolute;
+    position: fixed;
     right: 0px;
-    top:5%;
+    top: 0px;
     transition: 1.5s;
     padding-top: 10px;
 }
@@ -315,7 +312,7 @@ svg{
     height: 4%;
     padding:5px;
     position:fixed;
-    right: 5%;
+    right: 12%;
     bottom: 5%;
     cursor: pointer;
     z-index: 10;
@@ -339,7 +336,7 @@ svg{
     background-color: #111;
     outline: none;
     box-shadow: none;
-    font-family: "Roboto", sans-serif;
+    font-family: Arial,sans-serif;
     border: 0.2em solid #060606;
     cursor: pointer;
 }
@@ -353,4 +350,9 @@ svg{
     #locator{
         top:13%;
     }
+    #subGroupPanel{
+    
+    font-size: 4vh;
+}
+    
 }

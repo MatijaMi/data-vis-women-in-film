@@ -55,10 +55,12 @@ function findStateAction(){
     }else{
         if(isProfession(currectState)){
             if(currectState=="Other"){
+                
                 setLevel(1);
                drawLowerLevel("Other",1) 
             }else{
                 var level = determineProfessionLevel(currectState);
+                
                 setLevel(level);
                 drawLowerLevel(currectState,level);   
             }

@@ -179,6 +179,7 @@ function drawLowerLevel(profession,level){
             document.getElementById("subGroupPanelSVG").remove();
         }
     }
+    setLevel(level);
 }
 
 export {drawLowerLevel}

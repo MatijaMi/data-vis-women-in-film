@@ -66,6 +66,7 @@ function goBack(){
             document.getElementById("back").remove();
         }
         removeLastLocButton();
+        document.getElementById("subGroupOpen").style.display="none";
         goBackState();
 }
 
@@ -95,4 +96,4 @@ function goToNextLevel(profession){
     drawLowerLevel(profession,getLevel());
 }
 
-export {updateLevel,setLevel,getLevel,getLevels,goToNextLevel,addBackButton}
+export {updateLevel,setLevel,getLevel,getLevels,goToNextLevel,addBackButton,goBack}

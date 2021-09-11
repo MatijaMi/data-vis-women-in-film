@@ -4,6 +4,7 @@ import{determineCxMobile,determineCyMobile,clearPrevDataviz} from '../Util/bubbl
 import{goBackState} from '../Handlers/stateHandler.js';
 import{addBackButton} from '../Handlers/levelHandler.js';
 import{mousemovePersonal,mouseoverPersonal,mouseleavePersonal,mouseClickPersonal,showMobileTooltipPanel} from '../Handlers/mouseHandler.js';
+import{switchToCountries} from '../Handlers/connectivityHandler.js';
 function showCountryD3(country,timespan){
     clearPrevDataviz();
     var data = "id,name,link,imgUrl,real,country,number\r\n";
@@ -55,7 +56,7 @@ function showCountryD3(country,timespan){
     
     function goBack(){
         document.getElementById("back").remove();
-        showCountries("");    
+        switchToCountries(); 
     }
     
     document.getElementById("back").addEventListener("click", goBack)

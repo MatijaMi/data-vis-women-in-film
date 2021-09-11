@@ -12,18 +12,20 @@ function showAll(){
     }    
     
     var data = getAllData()[0];
+   
     window.zoomedIn=false;
     // set the dimensions and margins of the graph
     var width =document.getElementById("my_dataviz").clientWidth;
-    var height = document.getElementById("my_dataviz").clientHeight;
-    
+    var heightSVG =50 + 70 * Math.ceil(data.length/Math.floor(width/70));
+    var heightDIV = document.getElementById("my_dataviz").clientHeight;
+    var height =Math.max(heightSVG,heightDIV);
     // append the svg object to the body of the page
     var svg = d3.select("#my_dataviz")
     .append("svg")
     .attr("width", width)
-    .attr("height", "1000px")
-    .attr("overflow","hidden")
-  
+    .attr("height", height);
+    document.getElementById("my_dataviz").style.overflow="";
+    document.getElementById("my_dataviz").style.height=height+"px";
       // create a tooltip
     var Tooltip =createTooltip();
      
@@ -53,7 +55,9 @@ function showAll(){
    	    .attr("width", 60)
         .attr("height", 60)
         .attr("xlink:href", link);  
-}
+  }
+    
+    svg.on("leave", zoomOut(data));
   if(mobileMode){
       var node = svg.append("g")
         .selectAll("circle")
@@ -249,9 +253,7 @@ function zoomIn(d,data,svg){
                     return "3px"}})  
 }
 
-function zoomOut(d,data){
-    var hoverID=d.id;
-    var hoverNum=d.number;
+function zoomOut(data){
     var width =document.getElementById("my_dataviz").clientWidth;
  
     d3.select("#my_dataviz")
@@ -262,9 +264,7 @@ function zoomOut(d,data){
         .attr("r", 30)
         .attr("cx", function(d){ return determineCx(d.number, width)})
         .attr("cy", function(d){ return determineCy(d.number, width)})
-        .style("fill", function(d)
-               {if(hoverID==d.id){
-                    return "url(#"+d.id +")"}})     
+        .style("fill", function(d){return "url(#"+d.id +")"});     
 }
 
 export{showAll}

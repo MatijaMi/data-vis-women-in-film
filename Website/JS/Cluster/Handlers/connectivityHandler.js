@@ -9,6 +9,7 @@ import{drawLowerLevel} from '../Levels/lowerLevels.js';
 import{showAll} from '../Levels/allPioneers.js';
 import{showCountries} from '../Levels/CountryCluster.js';
 import{showCountryD3} from '../Levels/singleCountryCluster.js';
+import{addBackButton,goBack,getLevel} from '../Handlers/levelHandler.js';
 
 var timeouts=[];
 window.mobileMode =false;
@@ -100,7 +101,11 @@ function handleLoad(){
                                 drawLowerLevel(jobs[jobs.length-1],4);
                                 break;
                         }
-                        setLevel(Number.parseInt(level));
+                        addBackButton();
+                        document.getElementById("back").addEventListener("click", goBack);
+                        setTimeout(function(){
+                            setLevel(Number.parseInt(level));
+                        },1);
                     }
                 }else{
                     alert("Bad Link - Please try again");
@@ -119,7 +124,7 @@ function switchToAll(){
     clearAllTimeouts();
     document.getElementById("subGroupOpen").style.display="none";
     setLevel(-1);
-    document.getElementById("allPioneersButton").style.backgroundColor="#bb7043";
+    document.getElementById("allPioneersButton").style.backgroundColor="#c76734";
     document.getElementById("countryButton").style.backgroundColor="black";
     document.getElementById("professionsButton").style.backgroundColor="black";
     showAll();
@@ -131,7 +136,7 @@ function switchToCountries(){
     clearAllTimeouts();
     document.getElementById("subGroupOpen").style.display="none";
     setLevel(-1);
-    document.getElementById("countryButton").style.backgroundColor="#bb7043";
+    document.getElementById("countryButton").style.backgroundColor="#c76734";
     document.getElementById("professionsButton").style.backgroundColor="black";
     document.getElementById("allPioneersButton").style.backgroundColor="black";
     showCountries("");
@@ -143,7 +148,7 @@ function switchToProfessions(){
     clearAllTimeouts();
     document.getElementById("subGroupOpen").style.display="none";
     setLevel(-1);
-    document.getElementById("professionsButton").style.backgroundColor="#bb7043";
+    document.getElementById("professionsButton").style.backgroundColor="#c76734";
     document.getElementById("countryButton").style.backgroundColor="black";
     document.getElementById("allPioneersButton").style.backgroundColor="black";
     drawTopLevel();
@@ -170,4 +175,4 @@ function clearAllTimeouts(){
 
 handleLoad();
 
-export{closeSubgroupPanel,openSubgroupPanel,timeouts,clearAllTimeouts};
+export{closeSubgroupPanel,openSubgroupPanel,timeouts,clearAllTimeouts, switchToCountries};

@@ -515,10 +515,6 @@ nav{
     to   { opacity: 1; }
 }
 
-@font-face{
- font-family:'blacksword';
- src: url('../Fonts/Blacksword.otf');
-}
 #sideishButtons{
     position: absolute;
     top:24%;

@@ -116,7 +116,7 @@ function findCountryPicture(country,count,svg){
 function findPersonPicture(id,data,svg){
     var r= determinePersonSize(data);
     var imageSize ="Medium";
-    if(r<=40){
+    if(r<=40 && !mobileMode){
         imageSize="Small";
     }
     var patternID= id + "_" + r;

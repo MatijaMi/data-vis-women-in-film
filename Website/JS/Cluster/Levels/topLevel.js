@@ -1,4 +1,4 @@
-import{updateState,goBackState,initializeStates} from '../Handlers/stateHandler.js';
+import{updateState,goBackState,initializeStates,getStates} from '../Handlers/stateHandler.js';
 import{getTopLevelData} from '../Util/dataProcessing.js';
 import{mouseoverJob,mousemoveJob,mouseleaveJob} from '../Handlers/mouseHandler.js';
 import{removeTooltip,createTooltip,createTextOverlay,speedUpAnimation} from '../Util/tooltips.js';
@@ -12,8 +12,8 @@ import{closeSubgroupPanel,timeouts,openSubgroupPanel} from '../Handlers/connecti
 window.simulation;
 function drawTopLevel(){
 //Preparation
-    initializeStates();
     clearPrevDataviz();
+    
     var data = getTopLevelData();
     var width = document.getElementById("my_dataviz").clientWidth;
     if(mobileMode){
@@ -86,7 +86,7 @@ function drawTopLevel(){
                 .attr("cy", function (d) { return d.y; })
             })
         .on('end', function () {
-            if(getLevel()==0){
+            if(getLevel()==0 && getStates().length == statePosition){
                 createTextOverlay(data,"Professions","my_dataviz");
             }
         });
@@ -124,6 +124,7 @@ function drawTopLevel(){
     timeouts.push(setTimeout(temp,10000));
     setLevel(0);
     updateState("Professions");
+    var statePosition = getStates().length;
     setLocator("Professions");
     closeSubgroupPanel();
 }
