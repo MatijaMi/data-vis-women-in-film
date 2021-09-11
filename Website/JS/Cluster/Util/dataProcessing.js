@@ -1,7 +1,11 @@
 import{getStates} from '../Handlers/stateHandler.js';
 import{getLevels} from '../Handlers/levelHandler.js';
+////////////////////////////////////////////////////////
 
-     
+
+//Various data collection function that are needed in various places in the code
+
+// Data for all page
 function getAllData(){
     var data = "id,name,link,imgUrl,workedIn,real,number\r\n";
     for(var i = 0; i <wfpp.entries.length; i++){
@@ -16,6 +20,7 @@ function getAllData(){
     return [data];
 }
 
+// Top level of professions
 function getTopLevelData(){
     
     var levels = getLevels();
@@ -54,6 +59,7 @@ function getTopLevelData(){
     return d3.csvParse(data); 
 }
 
+// First lower level of professions, sorry for confusing naming
 function getFirstLevelData(profession){
     var levels = getLevels();
     var topLevel = levels[0];
@@ -89,6 +95,7 @@ function getFirstLevelData(profession){
     return d3.csvParse(data);
 }
 
+// Second lower level of professions
 function getSecondLevelData(profession){
     var levels = getLevels();
     var jobData= new Map();
@@ -130,6 +137,7 @@ function getSecondLevelData(profession){
     return d3.csvParse(data);
 }
 
+// Third lower level of professions
 function getThirdLevelData(profession){
     var levels = getLevels();
     

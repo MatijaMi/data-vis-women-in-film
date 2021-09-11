@@ -10,10 +10,12 @@ import{showAll} from '../Levels/allPioneers.js';
 import{showCountries} from '../Levels/CountryCluster.js';
 import{showCountryD3} from '../Levels/singleCountryCluster.js';
 import{addBackButton,goBack,getLevel} from '../Handlers/levelHandler.js';
-
+/////////////////////////////////////////////////
+//Timeoutes array so that they can be controlled and most importanly stopped
 var timeouts=[];
 window.mobileMode =false;
 
+//Function that handles the loading of the page and checks what mode needs to be shown and how
 function handleLoad(){
     //Add event listeneves to the buttons
     document.getElementById("countryButton").addEventListener("click",switchToCountries);
@@ -25,6 +27,7 @@ function handleLoad(){
     initializeStates();
     clearPrevDataviz();
     
+    //Check for mobile mode
     var newWidth =document.getElementById("my_dataviz").clientWidth;
     if(newWidth<800){
             mobileMode=true;
@@ -32,6 +35,8 @@ function handleLoad(){
             mobileMode=false;
     }
     
+    //Check payload in url to determine what needs to be shown
+    //Url needs to contain mode and depending on mode either county and timespan or profession, level and the whole profession path for that job
     var payload = window.location.href.substr(window.location.href.indexOf("Cluster.html")+12);
     if(payload.length>0){
         payload=payload.substr(1);
@@ -117,6 +122,7 @@ function handleLoad(){
     }  
 }
 
+// Functions for switching between the individual presentations
 function switchToAll(){
     removeTooltip("textOverlay");
     removeTooltip("tooltip");
@@ -154,6 +160,8 @@ function switchToProfessions(){
     drawTopLevel();
 }
 
+
+//Functions to open and close the subgroup panel on the side
 function openSubgroupPanel() {
     if(mobileMode){
         document.getElementById("subGroupPanel").style.width = "100%";
@@ -166,6 +174,7 @@ function closeSubgroupPanel() {
     document.getElementById("subGroupPanel").style.width = "0";
 } 
 
+//Clear all timeouts to stop possible errors
 function clearAllTimeouts(){
     for(var i =0; i<timeouts.length;i++){
         clearTimeout(timeouts[i]);

@@ -4,13 +4,18 @@ import{getFirstLevelData,getProfessionData,getSecondLevelData,getThirdLevelData}
 import{removeTooltip,createTooltip,createTextOverlay,speedUpAnimation} from '../Util/tooltips.js';
 import{updateLevel,getLevels,getLevel,setLevel,goToNextLevel} from '../Handlers/levelHandler.js';
 import{setLocator, handleLocatorClick, removeLastLocButton,addButtonEvents,updateLocator} from '../Handlers/navigationHandler.js';
-import{findProfessionPicture,createLines,determineJobSize,clearPrevDataviz,determinePersonSize,determineSubgroupY,determineSubGroupSize,findPersonPicture, determineCxMobile,determineCyMobile,determineJobSizeMobile} from '../Util/bubbleUtil.js';
+import{findProfessionPicture,highlightPioneersOfJob,determineJobSize,clearPrevDataviz,determinePersonSize,determineSubgroupY,determineSubGroupSize,findPersonPicture, determineCxMobile,determineCyMobile,determineJobSizeMobile} from '../Util/bubbleUtil.js';
 import{drawTopLevel} from '../Levels/topLevel.js';
 import{closeSubgroupPanel,openSubgroupPanel} from '../Handlers/connectivityHandler.js';
+////////////////////////////////////////////////////////////////////
 
+// Function that draws all of the lower levels of the profession mode
 function drawLowerLevel(profession,level){
+    
     clearPrevDataviz();
+    //Show sub group panel
     document.getElementById("subGroupOpen").style.display="block";
+    // Mostly similar to toplevel and country code
     if(!mobileMode){
         openSubgroupPanel();
     }
@@ -87,8 +92,9 @@ function drawLowerLevel(profession,level){
             });
             speedUpAnimation(simulation,2);
     }
-    
+    // Code for determining the subgroups and adding them to the subgroup panel
     var furtherSubgroups;
+    // Collecting the appropriate data
     switch(level){
         case 1:
             furtherSubgroups=getFirstLevelData(profession);
@@ -102,7 +108,7 @@ function drawLowerLevel(profession,level){
         case 4: 
             furtherSubgroups=[];
     }
-    
+    // Adding the subgroups to the panel
     if(furtherSubgroups.length>0 && profession!="Other"){
         if(document.getElementById("subGroupPanelSVG")!=null){
             document.getElementById("subGroupPanelSVG").remove();
@@ -161,7 +167,7 @@ function drawLowerLevel(profession,level){
                 })
             .attr("stroke", "white")
             .style("stroke-width",3)
-            .on("mouseover", function (d) {createLines(d.job,data);}) 
+            .on("mouseover", function (d) {highlightPioneersOfJob(d.job,data);}) 
             .on("click", function (d) {goToNextLevel(d.job)})
             .on("mouseleave", function (d) {
                 d3.select("#my_dataviz")
@@ -173,6 +179,7 @@ function drawLowerLevel(profession,level){
             createTextOverlay(furtherSubgroups,"Professions","subGroupPanel");
         }
     }else{
+        // No subgroups case
         document.getElementById("subGroupOpen").style.display="none";
         closeSubgroupPanel();
         if(document.getElementById("subGroupPanelSVG")!=null){

@@ -5,8 +5,9 @@ import{removeTooltip} from '../Util/tooltips.js'
 import{showCountryD3} from '../Levels/singleCountryCluster.js';
 import{showCountries} from '../Levels/CountryCluster.js';
 import{showAll} from '../Levels/allPioneers.js';
+///////////////////////////////////////////
 
-
+//Function that control the locator on the top of the data visualization for navigation purposes
 function setLocator(state){
     document.getElementById("locator").innerHTML="<button class='locButtons' id='0level'>"+ state+ "</button>";
     addButtonEvents(); 
@@ -28,6 +29,7 @@ function updateLocator(state,level){
    addButtonEvents();       
 }
 
+// Function that determines which part of the locator was clicked and what needs to be done
 function handleLocatorClick(id){
     var isCountryMode = document.getElementById("locator").innerHTML.includes("Countries");
     var isAllMode = document.getElementById("locator").innerHTML.includes("All Pioneers");
@@ -95,6 +97,7 @@ function handleLocatorClick(id){
     }
 }
 
+// Remove the last entry of the locator if going back one level
 function removeLastLocButton(){
     var paras = document.getElementsByClassName("locButtons");
     if(paras.length>0){
@@ -104,7 +107,7 @@ function removeLastLocButton(){
         paras[paras.length-1].innerHTML=paras[paras.length-1].innerHTML.replace(": ","");
     }
 }
-
+// Function that add teh proper events to the buttons so that they can be used
 function addButtonEvents(){
     var params =document.getElementsByClassName("locButtons");
     for(var i = 0; i<params.length;i++){

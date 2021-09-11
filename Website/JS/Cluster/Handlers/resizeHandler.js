@@ -7,7 +7,9 @@ import{removeTooltip} from '../Util/tooltips.js';
 import{clearAllTimeouts,timeouts} from './connectivityHandler.js';
 import{getStates} from './stateHandler.js';
 import{setLevel} from './levelHandler.js';
+///////////////////////////////////////////////////////////////
 
+//Saving the previous width so that changes only need to be made after a threshhold has been crossed
 var previousWidth = document.getElementById("my_dataviz").clientWidth;
 
 function handleResize(){
@@ -45,7 +47,8 @@ function handleResize(){
     }
 }
 
-
+// In order to show proper page it needs to be seen what the state represents, either a specific country or profession
+// All page doesn't need to be considered here
 function findStateAction(){
     var states =getStates();
     var currectState =states[states.length-1];
@@ -101,6 +104,7 @@ function isProfession(inputState){
     }
 }
 
+// Function that determines the level of the state so that it can be properly shown
 function determineProfessionLevel(inputState){
     for(var i = 0; i <wfpp.entries.length; i++){
         for(var j =0; j< wfpp.entries[i].worked_as.length; j++){

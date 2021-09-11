@@ -1,5 +1,7 @@
 import{removeTooltip} from '../Util/tooltips.js'
+////////////////////////////////////
 
+//Function that control the tooltip for professions
 function mouseoverJob(Tooltip){
         Tooltip
           .style("opacity", 1)
@@ -25,6 +27,7 @@ function mouseleaveJob(Tooltip,data,env){
       removeTooltip("tooltip2");
 }
 
+//Function that control the tooltip for the pioneers themselves
 function mouseoverPersonal(Tooltip){
     Tooltip
           .style("opacity", 1)
@@ -117,6 +120,7 @@ function closeMainTooltip(Tooltip,data){
     window.zoomedIn=false;
 }
 
+// Function for mobile tooltip, which is a panle instead of a floating div due to mobile design
 function showMobileTooltipPanel(d){
     document.getElementById("mobileTooltipPanel")
     var shortBio ="";

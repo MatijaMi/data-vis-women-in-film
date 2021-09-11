@@ -6,36 +6,42 @@ import {removeTooltip,createTooltip} from '../Util/tooltips.js';
 import {showCountries} from '../Levels/CountryCluster.js';
 import{setLocator} from '../Handlers/navigationHandler.js';
 import{mousemovePersonal,mouseoverPersonal,mouseleavePersonal,mouseClickPersonal,showMobileTooltipPanel} from '../Handlers/mouseHandler.js';
+import{clearPrevDataviz} from '../Util/bubbleUtil.js';
+///////////////////////////////////////////////////////
+//Function that displays all the pioneers on one screen
 function showAll(){
-    if(document.getElementById("my_dataviz").firstChild!=null){
-        document.getElementById("my_dataviz").removeChild(document.getElementById("my_dataviz").firstChild);
-    }    
-    
+    //The previous visulasization needs to be cleared before another one can be drawn
+    clearPrevDataviz();   
+    //For all pioneers all the data is neeeded to be collected
     var data = getAllData()[0];
-   
+    
     window.zoomedIn=false;
-    // set the dimensions and margins of the graph
+    // Set the dimensions and margins of the graph
     var width =document.getElementById("my_dataviz").clientWidth;
     var heightSVG =50 + 70 * Math.ceil(data.length/Math.floor(width/70));
     var heightDIV = document.getElementById("my_dataviz").clientHeight;
     var height =Math.max(heightSVG,heightDIV);
-    // append the svg object to the body of the page
+    document.getElementById("my_dataviz").style.overflow="";
+    document.getElementById("my_dataviz").style.height=height+"px";
+    
+    // Append the svg object to the body of the page
     var svg = d3.select("#my_dataviz")
     .append("svg")
     .attr("width", width)
     .attr("height", height);
-    document.getElementById("my_dataviz").style.overflow="";
-    document.getElementById("my_dataviz").style.height=height+"px";
-      // create a tooltip
+    
+    
+    // Create the tooltip which later is used to display useful information
     var Tooltip =createTooltip();
      
-      // Three function that change the tooltip when user hover / move / leave a cell
+      // Function that change the size of the bubble which is being hover over right now
   var mouseenter = function (d) {
       if(!zoomedIn){
           zoomIn(d,data,svg)}
   }
   
-   // TODO Get smaller images for all page
+  
+  // Appending patterns to the svg so that they can later be used as fills for the bubbles
   for(var i =0; i <data.length; i++){
       if(data[i].imgUrl.length!=0){
           var link = '../Images/WFPP-Pictures-Small/' + data[i].name.split(' ').join('%20') +'.jpg';
@@ -56,10 +62,9 @@ function showAll(){
         .attr("height", 60)
         .attr("xlink:href", link);  
   }
-    
-    svg.on("leave", zoomOut(data));
+    //Creating the nodes, depending on if the mobile or desktop version is needed
   if(mobileMode){
-      var node = svg.append("g")
+        var node = svg.append("g")
         .selectAll("circle")
         .data(data)
         .enter()
@@ -75,7 +80,7 @@ function showAll(){
         .style("stroke-width", 0.8)
         .on("click", function (d) {showMobileTooltipPanel(d)});
   }else{
-  var node = svg.append("g")
+        var node = svg.append("g")
         .selectAll("circle")
         .data(data)
         .enter()
@@ -95,6 +100,7 @@ function showAll(){
         .on("mousemove", function (d) {mousemovePersonal(Tooltip,d, this)})
         .on("mouseleave", function (d) {mouseleavePersonal(Tooltip,data)})
   }
+    //Finally update the state and locator so that they can be used for navigation
    updateState("All");
    setLocator("All Pioneers"); 
 }
@@ -103,7 +109,7 @@ window.addEventListener("resize", handleResize);
 
 
 
-//TODO Add comments explainging this
+//Functions that determine the x and y position of the centers of the bubbles based on the width of the screen
 function determineCx(index, width){
     var count = Math.floor(width/70);
     var pad = (width- count*70-40)/2;
@@ -114,6 +120,7 @@ function determineCy(index, width){
     return Math.floor(index/(Math.floor(width/70)))*70+80;
 }
 
+// Functions that determine the x and y posititons of nearby circle to create the zoom effect
 function findZoomInCx(elementNum, selectedNumber, width){
     var currentCx =determineCx(elementNum, width);
     if(elementNum==selectedNumber){
@@ -159,7 +166,6 @@ function findZoomInCx(elementNum, selectedNumber, width){
         return currentCx;
     }
 }
-
 
 
 function findZoomInCy(elementNum, selectedNumber, width){
@@ -208,6 +214,7 @@ function findZoomInCy(elementNum, selectedNumber, width){
     }
 }
 
+// Zoom in function that increase the radius of one bubble and moves the one nearby in order to create the effect
 function zoomIn(d,data,svg){
     var hoverID=d.id;
     var hoverNum=d.number;
@@ -251,20 +258,6 @@ function zoomIn(d,data,svg){
         .style("stroke-width", function(d)
                {if(hoverID==d.id){
                     return "3px"}})  
-}
-
-function zoomOut(data){
-    var width =document.getElementById("my_dataviz").clientWidth;
- 
-    d3.select("#my_dataviz")
-        .selectAll("circle")
-        .data(data)
-        .transition()
-        .duration(20)
-        .attr("r", 30)
-        .attr("cx", function(d){ return determineCx(d.number, width)})
-        .attr("cy", function(d){ return determineCy(d.number, width)})
-        .style("fill", function(d){return "url(#"+d.id +")"});     
 }
 
 export{showAll}

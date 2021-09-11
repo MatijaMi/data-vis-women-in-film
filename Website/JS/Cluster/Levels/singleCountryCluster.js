@@ -5,6 +5,9 @@ import{goBackState} from '../Handlers/stateHandler.js';
 import{addBackButton} from '../Handlers/levelHandler.js';
 import{mousemovePersonal,mouseoverPersonal,mouseleavePersonal,mouseClickPersonal,showMobileTooltipPanel} from '../Handlers/mouseHandler.js';
 import{switchToCountries} from '../Handlers/connectivityHandler.js';
+//////////////////////////////////////////////////////////////
+
+//Function to display a single country, very similar to the other representations
 function showCountryD3(country,timespan){
     clearPrevDataviz();
     var data = "id,name,link,imgUrl,real,country,number\r\n";
@@ -52,6 +55,7 @@ function showCountryD3(country,timespan){
       // create a tooltip
     var Tooltip = createTooltip();
     
+    // Back button specifi for the country mode, due to it being simpler that the profesion mode
     addBackButton();
     
     function goBack(){
@@ -60,13 +64,13 @@ function showCountryD3(country,timespan){
     }
     
     document.getElementById("back").addEventListener("click", goBack)
-      
+    // Determining the size of the bubbles so that the most optimal patterns can be used  
   var radiusofGroup=determineCountryGroupSize(data);
   var imageSize ="Medium";
     if(radiusofGroup<=40){
         imageSize="Small";
     }
- 
+ // Adding the patterns
  for(var i =0; i <data.length; i++){
       if(data[i].imgUrl.length!=0){
           var link = '../Images/WFPP-Pictures-' + imageSize + "/" + data[i].name.split(' ').join('%20') +'.jpg';
@@ -150,6 +154,8 @@ function showCountryD3(country,timespan){
     
     
 }
+
+//Function to determine the size of a group of country
 function determineCountryGroupSize(data){
         if(mobileMode){
             var currentWidth = document.getElementById("my_dataviz").clientWidth;

@@ -2,18 +2,16 @@ import{updateState, getStates} from '../Handlers/stateHandler.js';
 import{showCountryD3} from './singleCountryCluster.js';
 import {setLevel} from '../Handlers/levelHandler.js';
 import {removeTooltip,createTextOverlay,createTooltip,speedUpAnimation} from '../Util/tooltips.js';
-import {determineCountrySize,findCountryPicture,determineJobSizeMobile,determineCxMobile,determineCyMobile} from '../Util/bubbleUtil.js';
+import {determineCountrySize,findCountryPicture,determineJobSizeMobile,determineCxMobile,determineCyMobile,clearPrevDataviz} from '../Util/bubbleUtil.js';
 import{clearAllTimeouts,timeouts} from '../Handlers/connectivityHandler.js';
 import{setLocator,updateLocator} from '../Handlers/navigationHandler.js';
+/////////////////////////////////////////////////////////////////////////////////////
 
-
-
+// Function that displays the country cluster
 function showCountries(timespan){
     
-    if(document.getElementById("my_dataviz").firstChild!=null){
-        document.getElementById("my_dataviz").removeChild(document.getElementById("my_dataviz").firstChild);
-    }
-    
+    clearPrevDataviz();
+    // Collecting needed data, old code that should ideally be refactored
     var countryData= new Map();
     for(var i = 0; i <wfpp.entries.length; i++){
         for(var j =0; j< wfpp.entries[i].worked_in.length; j++){
@@ -42,7 +40,8 @@ function showCountries(timespan){
         });
 
     data = d3.csvParse(data);
-    // set the dimensions and margins of the graph
+    
+    // Set the dimensions and margins of the graph
     var width =document.getElementById("my_dataviz").clientWidth;
     
     if(mobileMode){
@@ -57,7 +56,7 @@ function showCountries(timespan){
         var height = document.getElementById("my_dataviz").clientHeight;  
     }
     
-    // append the svg object to the body of the page
+    // Append the svg object to the body of the page
     var svg = d3.select("#my_dataviz")
     .append("svg")
     .attr("width", width)
@@ -103,7 +102,7 @@ function showCountries(timespan){
         paras[0].parentNode.removeChild(paras[0]);
         }
       }
-    
+    //Function that prepares the page and calls the function to show a single countries pioneers
    var showCountry = function () { 
        var country = event.srcElement.id;
        updateState(country);
@@ -164,7 +163,6 @@ function showCountries(timespan){
       .force("collide", d3.forceCollide().strength(.2).radius(function (d) { return determineCountrySize(d.count)}).iterations(1))
         .force('y', d3.forceY().y(height/2).strength(0.04));
 
-  //
     window.simulation
         .nodes(data)
         .on("tick", function (d) {
@@ -180,6 +178,8 @@ function showCountries(timespan){
   }else{
        createTextOverlay(data,"Countries","my_dataviz");
   }
+    
+    //Similar pattern changing code as in topLevel.js
     function changePattern(){
         if(getStates()[getStates().length-1]=="Countries"){
             d3.selectAll("circle").attr("fill", function(d) {

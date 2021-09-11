@@ -1,3 +1,6 @@
+// No imports, yay :D
+
+// Function to remove all tooltips of a class
 function removeTooltip(name){
     var paras = document.getElementsByClassName(name);
 
@@ -6,6 +9,7 @@ function removeTooltip(name){
         }
 }
 
+// Function to create a new toooltip on the page
 function createTooltip(){
     if(document.getElementById("mainTooltip")!=null){
         document.getElementById("mainTooltip").remove();
@@ -19,6 +23,7 @@ function createTooltip(){
 }
 
 
+// Function that creates the text overlay on the profession and country top level
 function createTextOverlay(data,mode,container){
     for(var i =0; i <data.length; i++){
         if(mode=="Professions"){
@@ -38,6 +43,8 @@ function createTextOverlay(data,mode,container){
             inHtml=inHtml +text[j].charAt(0).toUpperCase()+ text[j].slice(1) +"<br>";   
             pureText=pureText +text[j].charAt(0).toUpperCase()+ text[j].slice(1);   
         }
+        
+        // Size and position adjustments so that the various texts can fit teh various bubbles
         var xShift=0;
         var yShift=0;
         var calculatedFont =r/2 - 5 +"px";
@@ -95,6 +102,8 @@ function createTextOverlay(data,mode,container){
     }
 }
 
+
+// Function for speeding up the simulation speed, for better experience
 function speedUpAnimation(simulation,rate){
      var ticksPerRender = rate;
 
