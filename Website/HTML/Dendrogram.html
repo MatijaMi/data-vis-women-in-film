@@ -48,7 +48,7 @@
       </form>
     </div>
 
-    <svg class="dendrogram_object" width="960" height="2400"></svg>
+    <svg class="dendrogram_object" width="1100" height="2400"></svg>
 
     <!-- Script -->
     <script>
@@ -57,7 +57,7 @@
         height = +svg.attr("height"),
         g = svg.append("g").attr("transform", "translate(90,0)");
 
-      var tree = d3.tree().size([height - 400, width - 160]);
+      var tree = d3.tree().size([height - 400, width - 200]);
 
       var cluster = d3.cluster().size([height, width - 420]);
 
@@ -71,7 +71,7 @@
         var root = stratify(data).sort(function (a, b) {
           return a.height - b.height || a.id.localeCompare(b.id);
         });
-        root.id = "Profession";
+        root.id = "Professions";
         cluster(root);
 
         var link = g
