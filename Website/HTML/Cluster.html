@@ -1,81 +1,159 @@
 <!DOCTYPE html>
-
 <html lang="en" style="height: 100%">
-  <head>
+<head>
     <title>WFPP</title>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="../CSS/cluster.css" />
-    <link rel="icon" type="image/png" href="../Images/WFPP-Logo.png" />
-    <script
-      type="module"
-      src="../JS/Cluster/Handlers/resizeHandler.js"
-    ></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../CSS/cluster.css">
+    <script type="module" src="../JS/Cluster/Handlers/resizeHandler.js"></script>
     <script type="module" src="../JS/Cluster/Util/bubbleUtil.js"></script>
-    <script
-      type="module"
-      src="../JS/Cluster/Handlers/connectivityHandler.js"
-    ></script>
+    <script type="module" src="../JS/Cluster/Handlers/connectivityHandler.js"></script>
     <script src="https://d3js.org/d3.v4.js"></script>
     <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
     <script type="text/javascript" src="../Data/cluster_data.json"></script>
     <script type="text/javascript" src="../Data/wfpp-text.json"></script>
-  </head>
+</head>
 
-  <body id="body">
-    <!-- Header -->
-    <nav>
-      <ul class="nav-links">
-        <li>
-          <a href="../index.html">Home</a>
-        </li>
-        <li>
-          <a href="./Map.html">Map</a>
-        </li>
-        <li>
-          <a href="./Cluster.html">Cluster</a>
-        </li>
-        <li>
-          <a href="./Timeline.html">Timeline</a>
-        </li>
-        <li>
-          <a href="./Dendrogram.html">Dendrogram</a>
-        </li>
-        <li>
-          <a href="./About.html">About</a>
-        </li>
-      </ul>
-    </nav>
-
-    <div id="locator"></div>
-
-    <!-- Clusterpanel -->
-
-    <div id="sideishButtons">
-      <button id="professionsButton">
-        <img id="professionsButtonPic" src="../Images/Reel.svg" />
-      </button>
-      <button id="countryButton">
-        <img id="countryButtonPic" src="../Images/Globe.svg" />
-      </button>
-      <button id="allPioneersButton">
-        <img id="allPioneersButtonPic" src="../Images/AllIcon.svg" />
-      </button>
+ <body id="body"> 
+        
+    <div class="topnav" id="myTopnav">
+        <a href="../index.html">Home</a>
+        <a href="./Map.html">Map</a>
+        <a href="./Cluster.html">Cluster</a>
+        <a href="./Timeline.html">Timeline</a> 
+        <a href="./Dendrogram.html">Dendrogram</a>   
+        <a href="./About.html">About</a> 
+        <a href="javascript:void(0);" class="icon" onclick="makeResponsive()">&#9776;</a>
+     </div>
+    
+     <div id="locator"></div>
+     <!-- Sidebuttons for navigation -->
+     <div id="sideishButtons">
+        <button id="professionsButton"><img id="professionsButtonPic" src="../Images/Reel.png"></button>
+        <button id="countryButton"><img id="countryButtonPic" src="../Images/Globe.svg"></button>
+        <button id="allPioneersButton"><img id="allPioneersButtonPic" src="../Images/AllIcon.svg"></button>
     </div>
-    <br />
-    <button id="subGroupOpen">&#9776;</button>
+     
+     <!-- Panel for sub groups -->
+     <button id="subGroupOpen">&#8249;</button>
+     <div id="subGroupPanel">Sub-Groups
+        <a id="closeGroupPanel" href="javascript:void(0)" class="closebtn">&times;</a>
+     </div>
+     <div id="mobileTooltipPanel"></div>
+    
+     <!-- Clusterpanel -->
+    <div class="my_dataviz" id="my_dataviz" onresize="handleResize()" onload="initializeStates()"></div>
 
-    <div id="subGroupPanel">
-      Sub-Groups
-      <a id="closeGroupPanel" href="javascript:void(0)" class="closebtn"
-        >&times;</a
-      >
-    </div>
-    <div
-      class="my_dataviz"
-      id="my_dataviz"
-      onresize="handleResize()"
-      onload="initializeState()"
-    ></div>
-  </body>
+</body>
+<style>
+
+.topnav {
+  padding-left: 9vw;
+  padding-right: 9vw;
+  display: flex;
+  overflow: hidden;
+  min-height: 6vh;
+  justify-content: space-around;
+  align-items: center;
+  background-color: #060606;
+  z-index: 20;
+}
+
+.topnav a {
+  text-decoration: none;
+  display: inline-block;
+  width: 14%;
+  height: 100%;
+  letter-spacing: 2px;
+  font-weight: 600px;
+  font-size: 22px;
+  color:white;
+}
+
+.topnav a:hover {
+  color: #AAAAAA;
+}
+
+.topnav a.active {
+  background-color: #04AA6D;
+  color: white;
+}
+
+.topnav .icon {
+  display: none;
+}
+
+@media screen and (max-width: 900px) {
+  .topnav{
+        padding-left: 0px;
+        padding-right: 0px;
+        display: inherit;
+  }
+  .topnav a:not(:first-child) {display: none;}
+    .topnav a {
+        float: none;
+        display: block;
+        font-size: 22px;
+        position: relative;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+        width: auto;
+        margin-top: 10px;
+    }
+  .topnav a.icon {
+      display: block;
+      position: absolute;
+      right: 0;
+      top: 0;
+      color: white;
+      width: auto;
+      font-size: 30px;
+      margin-top: 0px;
+    }
+}
+
+@media screen and (max-width: 900px) {
+  .topnav.responsive {
+      position: relative;
+      display: block;
+      justify-content: center;
+      align-items: center;
+    }
+
+  .topnav.responsive a {
+        float: none;
+        display: block;
+        position: relative;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+        font-size: 22px; 
+        width: auto;
+    }
+    
+   .topnav.responsive .icon {
+        position: absolute;
+        right: 0;
+        top: 0;
+        color: white;
+        width: auto;
+        font-size: 30px;
+        margin-top: 0px;
+  }
+}
+</style>
+    
+    
+<script>
+    //Function used to make the top navigation bar responsive to the size of the screen
+    function makeResponsive() {
+        var x = document.getElementById("myTopnav");
+        if (x.className === "topnav") {
+            x.className += " responsive";
+        } else {
+            x.className = "topnav";
+        }
+    }
+</script>
 </html>

@@ -1,89 +1,13 @@
-function determineJobSize(count){
-    var width = document.getElementById("my_dataviz").clientWidth;
-    var height = document.getElementById("my_dataviz").clientHeight;
-    if(count<10){
-        return width/25;
-    }else{
-        if(count<20 && count >=10){
-            return width/23;
-        }else{
-            if(count<50 && count >20){
-                return width/22;
-            }else{
-               return width/18;
-            }
-        }
-    }
-}
+// No imports, yay :D
 
-
-function determinePersonSize(data){
-    if(data.length>140){
-        return 35;
-    }else{
-        if(data.length>100){
-           return 40;
-        }else{
-            if(data.length>50){
-                return 50;
-            }else{
-                if(data.length>20){
-                    return 60;
-                }else{
-                    return 90;
-                }
-            }
-        }
-    }
-}
-
-
-function createLines(job,data){
-    var validIDs=[];
-    for(var i =0; i <wfpp.entries.length;i++){
-        var entry =wfpp.entries[i].worked_as;
-        for(var j=0; j<entry.length;j++){
-            if(entry[j].includes(job)){
-                validIDs.push(wfpp.entries[i].id);
-            }
-        }
-    }
-    d3.select("#my_dataviz")
-        .selectAll("circle")
-        .data(data)
-        .style("opacity", function(d){if(validIDs.includes(d.id)){return 1;}else{return 0.15;}})
-        .style("stroke-width", function(d){if(validIDs.includes(d.id)){return "4px";}else{return "2px";}})
-}
-
+// Function that clear the previous visualization so that place for the new one is made
 function clearPrevDataviz(){
     if(document.getElementById("my_dataviz").firstChild!=null){
         document.getElementById("my_dataviz").removeChild(document.getElementById("my_dataviz").firstChild);
     }
 }
 
-function addPatterns(data,svg){
-    
-    for(var i = 0; i <wfpp.entries.length; i++){
-        if(wfpp.entries[i].image_url.length!=0){
-          var link = '../Images/WFPP-Pictures-Squares/' + wfpp.entries[i].name.split(' ').join('%20') +'.jpg';
-      }else{
-          var link = '../Images/WFPP-Pictures-Squares/Unknown.jpg';
-      }
-         svg.append("pattern")
-            .attr("x", 0)
-            .attr("y", 0)
-            .attr("width", 10)
-	        .attr("height", 10)
-            .attr("id", function (d) {return "bg" + wfpp.entries[i].id})
-            .append("image")
-            .attr("x", 0)
-            .attr("y", 0)
-   			.attr("width", "210px")
-			.attr("height", "210px")
-            .attr("xlink:href", link);
-     }
-}
-
+//Function for finding the pattern for a profession randomly, so that it can be used for the pattern changing effect
 function findProfessionPicture(profession,data,svg,mode){
     var hasPic=[];
     for(var i = 0; i <wfpp.entries.length; i++){
@@ -104,7 +28,7 @@ function findProfessionPicture(profession,data,svg,mode){
     }
     var rand = hasPic.length;
     var patternID= "1704" ;
-    var link = '../Images/WFPP-Pictures-Squares/Unknown.jpg';
+    var link = '../Images/WFPP-Pictures-Medium/Unknown.jpg';
     if(mode=="top"){
         var r = determineJobSize(profession.count);
     }else{
@@ -115,11 +39,11 @@ function findProfessionPicture(profession,data,svg,mode){
     if(rand>1){
         rand =Math.floor((Math.random() * hasPic.length));
         patternID =hasPic[rand].id;
-        link = '../Images/WFPP-Pictures-Squares/' + hasPic[rand].name.split(' ').join('%20') +'.jpg';
+        link = '../Images/WFPP-Pictures-Medium/' + hasPic[rand].name.split(' ').join('%20') +'.jpg';
     }else{
         if(rand==1){
             patternID =hasPic[0].id;
-            link = '../Images/WFPP-Pictures-Squares/' + hasPic[0].name.split(' ').join('%20') +'.jpg';
+            link = '../Images/WFPP-Pictures-Medium/' + hasPic[0].name.split(' ').join('%20') +'.jpg';
         }
     }
     if(mobileMode){
@@ -145,6 +69,7 @@ function findProfessionPicture(profession,data,svg,mode){
     return patternID+"_" +r;
 }
 
+// Same as above but for the country mode
 function findCountryPicture(country,count,svg){
     var hasPic=[];
     for(var i = 0; i <wfpp.entries.length; i++){
@@ -159,17 +84,17 @@ function findCountryPicture(country,count,svg){
     }
     var rand = hasPic.length;
     var patternID= "1704" ;
-    var link = '../Images/WFPP-Pictures-Squares/Unknown.jpg';
+    var link = '../Images/WFPP-Pictures-Medium/Unknown.jpg';
     var r=determineCountrySize(count);
-    
+    var imageSize ="Medium";
     if(rand>1){
         rand =Math.floor((Math.random() * hasPic.length));
         patternID =hasPic[rand].id;
-        link = '../Images/WFPP-Pictures-Squares/' + hasPic[rand].name.split(' ').join('%20') +'.jpg';
+        link = '../Images/WFPP-Pictures-' +imageSize + "/" + hasPic[rand].name.split(' ').join('%20') +'.jpg';
     }else{
         if(rand==1){
             patternID =hasPic[0].id;
-            link = '../Images/WFPP-Pictures-Squares/' + hasPic[0].name.split(' ').join('%20') +'.jpg';
+            link = '../Images/WFPP-Pictures-' + imageSize + "/" + hasPic[0].name.split(' ').join('%20') +'.jpg';
         }
     }
     if(mobileMode){
@@ -193,16 +118,22 @@ function findCountryPicture(country,count,svg){
     return patternID+"_"+r;
 }
 
+
+// Function that finds the pattern for a specific pionneer and adds it
 function findPersonPicture(id,data,svg){
     var r= determinePersonSize(data);
+    var imageSize ="Medium";
+    if(r<=40 && !mobileMode){
+        imageSize="Small";
+    }
     var patternID= id + "_" + r;
     for(var i =0; i <data.length; i++){
         if(id==data[i].id){
           if(data[i].imgUrl.length!=0){
-              var link = '../Images/WFPP-Pictures-Squares/' + data[i].name.split(' ').join('%20') +'.jpg';
+              var link = '../Images/WFPP-Pictures-'+imageSize +"/" + data[i].name.split(' ').join('%20') +'.jpg';
           }else{
               patternID="1704_" +r;
-              var link = '../Images/WFPP-Pictures-Squares/Unknown.jpg';
+              var link = '../Images/WFPP-Pictures-' +imageSize + '/Unknown.jpg';
           }
         }
     }
@@ -225,7 +156,49 @@ function findPersonPicture(id,data,svg){
     return patternID+"_"+r;
 }
 
+//  Function to determine the size of the various jobs, based on the amount of pioneers in it
+function determineJobSize(count){
+    var width = document.getElementById("my_dataviz").clientWidth;
+    var height = document.getElementById("my_dataviz").clientHeight;
+    if(count<10){
+        return width/25;
+    }else{
+        if(count<20 && count >=10){
+            return width/23;
+        }else{
+            if(count<50 && count >20){
+                return width/22;
+            }else{
+               return width/18;
+            }
+        }
+    }
+}
 
+// Function that determines how big the individual person should be based on the size of the whole data,
+// so that all pioneers can be shown
+function determinePersonSize(data){
+    if(data.length>140){
+        return 35;
+    }else{
+        if(data.length>100){
+           return 40;
+        }else{
+            if(data.length>50){
+                return 50;
+            }else{
+                if(data.length>20){
+                    return 60;
+                }else{
+                    return 90;
+                }
+            }
+        }
+    }
+}
+
+
+// Function to determine the size and position of subgroups based on the data and other values
 function determineSubGroupSize(data){
     var height = document.getElementById("subGroupPanelSVG").clientHeight-50;
     var amount = data.length;
@@ -250,7 +223,7 @@ function determineSubgroupY(job,count,data){
     }
     return rOffset;
 }
-
+//  Function to determine the size of the various countries, based on the amount of pioneers in it
 function determineCountrySize(count){
     var width = document.getElementById("my_dataviz").clientWidth;
     var height = document.getElementById("my_dataviz").clientHeight;
@@ -269,7 +242,7 @@ function determineCountrySize(count){
     }
 }
 
-
+// Function that determing mobile x and y positions
 function determineCxMobile(ranking,mode){
     var currentWidth = document.getElementById("my_dataviz").clientWidth;
     if(mode!="subMobile"){
@@ -285,19 +258,37 @@ function determineCyMobile(ranking,mode){
     if(mode!="subMobile"){
         return 180+ (currentWidth/4)*Math.floor(ranking/4);
     }else{
-        return 100+ (currentWidth/2)*Math.floor(ranking/2);
+        return 140+ (currentWidth/2)*Math.floor(ranking/2);
     }
     
     
 }
-
+// Mobile size determination, due to changes between desktop and mobile mode
 function determineJobSizeMobile(mode){
     var currentWidth = document.getElementById("my_dataviz").clientWidth;
     if(mode!="subMobile"){
         return currentWidth/8-10;
     }else{
-        return currentWidth/4-10;
+        return currentWidth/5-10;
     }
 }
 
-export{findProfessionPicture,createLines,determineJobSize,clearPrevDataviz,addPatterns,determinePersonSize,determineSubgroupY,determineSubGroupSize,findPersonPicture,determineCountrySize,findCountryPicture,determineCyMobile,determineCxMobile,determineJobSizeMobile}
+//Function  that hightlights the pioneers of a job that is hovered over in the subgroup panel
+function highlightPioneersOfJob(job,data){
+    var validIDs=[];
+    for(var i =0; i <wfpp.entries.length;i++){
+        var entry =wfpp.entries[i].worked_as;
+        for(var j=0; j<entry.length;j++){
+            if(entry[j].includes(job)){
+                validIDs.push(wfpp.entries[i].id);
+            }
+        }
+    }
+    d3.select("#my_dataviz")
+        .selectAll("circle")
+        .data(data)
+        .style("opacity", function(d){if(validIDs.includes(d.id)){return 1;}else{return 0.15;}})
+        .style("stroke-width", function(d){if(validIDs.includes(d.id)){return "4px";}else{return "2px";}})
+}
+
+export{findProfessionPicture,highlightPioneersOfJob,determineJobSize,clearPrevDataviz,determinePersonSize,determineSubgroupY,determineSubGroupSize,findPersonPicture,determineCountrySize,findCountryPicture,determineCyMobile,determineCxMobile,determineJobSizeMobile}
