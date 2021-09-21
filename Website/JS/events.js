@@ -4,7 +4,8 @@ var events = event_container
   .style("width", 1200 + "px")
   .style("height", 5000 + "px");
 
-const EVENTFILL = "#ddd";
+const DEFAULTFILL = "#ddd";
+const HOVERFILL = "#fff";
 const W = 1200;
 const HOFFSET = 20;
 var H = 0;
@@ -13,9 +14,22 @@ var cYOD = 0;
 const M = 0;
 var event_list = [];
 
+var tooltip = d3
+  .select("body")
+  .append("div")
+  .attr("class", "tooltip")
+  .style("position", "absolute")
+  .style("z-index", "10")
+  .style("visibility", "hidden")
+  .style("padding", "10px")
+  .style("background", "rgba(0,0,0,0.7)")
+  .style("border-radius", "4px")
+  .style("color", "#fff")
+  .text("a simple tooltip")
+  .style("text-align", "left");
+
 const add_event_button = document.getElementById("add-event-button");
 add_event_button.addEventListener("click", function (event) {
-  d3.select(".data-timeline-container").style("height", 76 + "vh");
   let event_name = document.getElementById("event-name").value;
   let event_start = document.getElementById("event-start").value;
   let event_end = document.getElementById("event-end").value;
@@ -74,6 +88,7 @@ function addEvent(name, start, end) {
     H = H + HOFFSET;
     console.log("Adding " + name + " " + start + " " + end + " to events");
     event_list.push(object);
+    d3.select(".data-timeline-container").style("height", 76 + "vh");
     renderEvents();
     document.getElementById("event-name").value = "";
     document.getElementById("event-start").value = "";
@@ -103,7 +118,7 @@ function renderEvents() {
     )
     .attr("width", (d) => (d.YOB >= d.YOD ? 3 : xScale(d.YOD) - xScale(d.YOB)))
     .attr("height", 12)
-    .style("fill", `${EVENTFILL}`)
+    .style("fill", `${DEFAULTFILL}`)
     .style("fill-opacity", 1);
 
   g.append("text")
@@ -118,17 +133,37 @@ function renderEvents() {
     .style("fill", "black")
     .style("opacity", "1");
 
-  g.on("click", function (e, d) {
-    let name = d3.select(this)._groups[0][0].__data__.name;
-    event_list = event_list.filter((x) => x.name != name);
-    console.log(event_list);
-    events.selectAll("g").remove();
-    H = H - HOFFSET;
-    if (event_list.length == 0) {
-      event_container.style("display", "none");
-    }
-    renderEvents();
-  });
+  g.on("mouseenter", function (e, d) {
+    d3.select(this).select("rect").style("fill", `${HOVERFILL}`);
+
+    tooltip
+      .html(
+        `<div style="text-align: center;"><div"><i>Left click to delete</i></div></div>`
+      )
+      .style("visibility", "visible");
+  })
+    .on("mousemove", function (e, d) {
+      tooltip
+        .style("left", e.pageX + 10 + "px")
+        .style("top", e.pageY - 40 + "px");
+    })
+    .on("click", function (e, d) {
+      let name = d3.select(this)._groups[0][0].__data__.name;
+      event_list = event_list.filter((x) => x.name != name);
+      console.log(event_list);
+      events.selectAll("g").remove();
+      H = H - HOFFSET;
+      if (event_list.length == 0) {
+        event_container.style("display", "none");
+        d3.select(".data-timeline-container").style("height", 82 + "vh");
+      }
+      tooltip.html(``).style("visibility", "hidden");
+      renderEvents();
+    })
+    .on("mouseleave", function (e, d) {
+      d3.select(this).select("rect").style("fill", `${DEFAULTFILL}`);
+      tooltip.html(``).style("visibility", "hidden");
+    });
 }
 
 function isNumberKey(char) {
