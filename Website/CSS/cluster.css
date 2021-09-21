@@ -6,7 +6,7 @@ body{
 	text-align: center;
     width:100%;
     height:94%;
-    overflow: hidden;
+    overflow-x: hidden;
 }
 nav{
   display: flex;
@@ -72,10 +72,6 @@ nav{
     to   { opacity: 1; }
 }
 
-@font-face{
- font-family:'blacksword';
- src: url('../Fonts/Blacksword.otf');
-}
 .my_dataviz{
     background:#333333;
     position: relative;
@@ -95,7 +91,7 @@ svg{
 
 #locator{
     z-index: 1;
-    width: 100%;
+    width: 100vw;
     text-align: center;
     position: absolute;
     margin-top: 5px;
@@ -104,19 +100,19 @@ svg{
 #locator button{
     display: inline-block;
     font-size: 45px;
-    font-family: "Roboto", sans-serif;
+    font-family: Arial,sans-serif;
     background: none;
     color: #fff;
     text-shadow:2px 0 0 #000, 0 -2px 0 #000, 0 2px 0 #000, -2px 0 0 #000;
     outline: none;
     border: none;
-    text-decoration:underline;
 }
 
 #locator button:hover{
     cursor: pointer;
 }
-.fullArticleButton{
+
+#fullArticleButton{
     padding: 0.5em 1.7em;
     margin-bottom: 10px;
     font-weight: 300;
@@ -127,7 +123,7 @@ svg{
     background-color: #282828;
     outline: none;
     box-shadow: none;
-    font-family: "Roboto", sans-serif;
+    font-family: Arial,sans-serif;
     border: 0.2em solid #060606;
     cursor: pointer;
 }
@@ -155,34 +151,16 @@ svg{
     margin-bottom: -60px;
     z-index: 2;
 }
-#countryButton{
+#countryButton, #allPioneersButton, #professionsButton{
     z-index: 2;
     display: inline-block;
-    width: 65px;
-    height: 60px;
-    border-radius: 10px;
-    border-radius: 10px;
+    width: 55px;
+    height: 50px;
     background-color: black;
-}
-
-#allPioneersButton{
-    background-color: black;
-    z-index: 2;
-    display: inline-block;
-    width: 65px;
-    height: 60px;
-    border-radius: 10px;
-    border-radius: 10px;
-    
-}
-#professionsButton{
-    z-index: 2;background-color: black;
-    display: inline-block;
-    width: 65px;
-    height: 60px;
-    border-radius: 10px;
-    border-radius: 10px;
-    
+    border: 0.2em solid rgb(66, 66, 66);
+    color: #ccc;
+    outline: none;
+    box-shadow: none;
 }
 
 #countryButton img, #allPioneersButton img,#professionsButton img{
@@ -198,11 +176,13 @@ svg{
 .node:hover {
       stroke-width: 5px !important;
       opacity: 1 !important;
+      cursor: pointer;
 }
 
 .subgroupNodes:hover{
     stroke-width: 5px !important;
     opacity: 1 !important;
+    cursor: pointer;
 }
 
 .textOverlay{
@@ -214,7 +194,7 @@ svg{
     padding: 0px;
     margin: 0px;
     text-align: center;
-    font-family: "Roboto", sans-serif;
+    font-family:Arial,sans-serif;
     color: #fff;
     z-index: 4;
     text-shadow:2px 0 0 #000, 0 -2px 0 #000, 0 2px 0 #000, -2px 0 0 #000;
@@ -232,12 +212,25 @@ svg{
 #subGroupOpen{
     color:white;
     background-color: black;
-    position: relative;
-    font-size: 30px;
+    position: absolute;
+    font-size: 40px;
+    padding-top: 0px;
+    padding-bottom: 10px;
     border:none;
-    top:5%;
-    float: left;
+    top: 45px;
+    right: 0%;
     z-index: 10;
+    display: none;
+}
+
+#closeMainTooltip, #closeMobileTooltip{
+    position: absolute;
+    text-decoration: none;
+    color: white;
+    top: -8px;
+    right: 0px;
+    font-size: 36px;
+    padding: none;
 }
 
 #subGroupOpen:hover{
@@ -252,12 +245,51 @@ svg{
     z-index: 11;
     background-color: black;
     position: absolute;
-    top:4%;
+    right: 0px;
+    top:6%;
     height: 94.5%;
     transition: 0.5s;
     padding-top: 10px;
     font-size: 2vh;
-    text-decoration: underline;
+}
+
+#mobileTooltipPanel{
+    width:0px;
+    color: white;
+    text-align: center;
+    z-index: 11;
+    background-color: black;
+    position: fixed;
+    right: 0px;
+    top: 0px;
+    transition: 1.5s;
+    padding-top: 10px;
+}
+
+#mobileTooltipPanel b{
+    font-size: 30px;
+}
+
+#mobileTooltipPanel img{
+    width: 40%;
+    margin-top:10px;
+}
+
+#mobileTooltipPanel p{
+    width: 80%;
+    font-size: 20px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#closeMobileTooltip{
+    position: absolute;
+    text-decoration: none;
+    color: white;
+    top: 2px;
+    right: 9px;
+    font-size: 46px;
+    padding: none;
 }
 
 #subGroupPanelSVG{
@@ -280,7 +312,7 @@ svg{
     height: 4%;
     padding:5px;
     position:fixed;
-    right: 5%;
+    right: 12%;
     bottom: 5%;
     cursor: pointer;
     z-index: 10;
@@ -304,7 +336,23 @@ svg{
     background-color: #111;
     outline: none;
     box-shadow: none;
-    font-family: "Roboto", sans-serif;
+    font-family: Arial,sans-serif;
     border: 0.2em solid #060606;
     cursor: pointer;
+}
+
+@media screen and (max-width: 800px) {
+    #locator button{
+    display: inline-block;
+    font-size: 23px;
+    }
+    
+    #locator{
+        top:13%;
+    }
+    #subGroupPanel{
+    
+    font-size: 4vh;
+}
+    
 }

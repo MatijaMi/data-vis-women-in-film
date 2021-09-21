@@ -1,137 +1,53 @@
 import {updateState} from '../Handlers/stateHandler.js';
-import {determineCx,determineCy,} from '../Util/groupingUtil.js';
 import {handleResize} from '../Handlers/resizeHandler.js';
 import {setLevel} from '../Handlers/levelHandler.js';
 import {getAllData} from '../Util/dataProcessing.js';
-import {removeTooltip} from '../Util/tooltips.js';
+import {removeTooltip,createTooltip} from '../Util/tooltips.js';
 import {showCountries} from '../Levels/CountryCluster.js';
-
-
+import{setLocator} from '../Handlers/navigationHandler.js';
+import{mousemovePersonal,mouseoverPersonal,mouseleavePersonal,mouseClickPersonal,showMobileTooltipPanel} from '../Handlers/mouseHandler.js';
+import{clearPrevDataviz} from '../Util/bubbleUtil.js';
+///////////////////////////////////////////////////////
+//Function that displays all the pioneers on one screen
 function showAll(){
-    if(document.getElementById("my_dataviz").firstChild!=null){
-        document.getElementById("my_dataviz").removeChild(document.getElementById("my_dataviz").firstChild);
-    }    
-    
+    //The previous visulasization needs to be cleared before another one can be drawn
+    clearPrevDataviz();   
+    //For all pioneers all the data is neeeded to be collected
     var data = getAllData()[0];
-    window.zoomedIn=false;
-    // set the dimensions and margins of the graph
-    var width =document.getElementById("my_dataviz").clientWidth;
-    var height = document.getElementById("my_dataviz").clientHeight;
     
-    // append the svg object to the body of the page
+    window.zoomedIn=false;
+    // Set the dimensions and margins of the graph
+    var width =document.getElementById("my_dataviz").clientWidth;
+    var heightSVG =50 + 70 * Math.ceil(data.length/Math.floor(width/70));
+    var heightDIV = document.getElementById("my_dataviz").clientHeight;
+    var height =Math.max(heightSVG,heightDIV);
+    document.getElementById("my_dataviz").style.overflow="";
+    document.getElementById("my_dataviz").style.height=height+"px";
+    
+    // Append the svg object to the body of the page
     var svg = d3.select("#my_dataviz")
     .append("svg")
     .attr("width", width)
-    .attr("height", "1000px")
-    .attr("overflow","hidden")
-  
-      // create a tooltip
-    var Tooltip = d3.select("body")
-        .append("div")
-        .style("opacity", 0)
-        .attr("class", "tooltip")
-        .attr("id", "tooltip")
-        .style("background-color", "white")
-        .style("border", "solid")
-        .style("border-width", "2px")
-        .style("border-radius", "5px")
-        .style("padding", "5px")
-        .style("position", "absolute")
+    .attr("height", height);
     
-    if(document.getElementById("SlideTooltip")==null){
-        var SlideTooltip = d3.select("body")
-        .append("div")
-        .style("opacity", 0)
-        .attr("class", "tooltip")
-        .attr("id", "SlideTooltip")
-        .style("background-color", "#999")
-        .style("color", "black")
-        .style("border", "solid black")
-        .style("border-width", "3px")
-        .style("border-left-width", "0px")
-        .style("padding", "5px")
-        .style("position", "absolute")
-    }else{
-        var SlideTooltip= d3.select("#SlideTooltip");
-    }
+    
+    // Create the tooltip which later is used to display useful information
+    var Tooltip =createTooltip();
      
-
-      // Three function that change the tooltip when user hover / move / leave a cell
+      // Function that change the size of the bubble which is being hover over right now
   var mouseenter = function (d) {
       if(!zoomedIn){
-          zoomIn(d,data,svg)
-      }
+          zoomIn(d,data,svg)}
   }
-
-  var mouseover = function (d) {
-        Tooltip
-          .style("opacity", 1)
-      }
-   var mousemove = function (d) {
-        Tooltip
-          .html('<u>' + d.name + '</u>')
-          .style("left", (d3.mouse(this)[0] + 20) + "px")
-          .style("top", (d3.mouse(this)[1]) + "px")
-      }
-   
-   var mouseleave = function (d) {
-        Tooltip
-          .style("opacity", 0)
-      }
-   
-   var mouseClick = function (d) {
-       Tooltip
-          .style("opacity", 0)
-       zoomedIn=true;
-       d3.selectAll("path").style("opacity", 0);
-       if(zoomedIn){
-            zoomIn(d,data,svg);
-        }
-      
-       
-       SlideTooltip
-          .html('<button id ="closeTooltipButton">X</button><u><b>' + d.name + '</b></u>' + "<br>" +
-               'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.<br>'+
-               '<a href=' + d.link + '> Read More </a>')
-          .style("width", "360px")
-          .style("height", "167px")
-          .style("left", (determineCx(d.number, width)+93)+"px")
-          .style("top", determineCy(d.number, width)-53+"px")
-          .style("border", "solid black")
-          .style("border-width", "3px")
-          .style("border-left-width", "0px")
-          .style("padding", "5px")
-          .style("opacity", 1);
-       
-       document.getElementById("closeTooltipButton").onclick=closeTooltip;
-       var hoverNum=d.number;
-
-       svg.selectAll("g")
-        .data(data)
-        .enter()
-        .append("path")
-        .attr("d",function(d){
-           if(d.number==hoverNum){
-              return getHalfpipePath(d.number, width);
-           }else{
-              return "";
-           }
-           
-       })
-        .style("stroke", "black")
-        .style("fill","#999")
-        .style("fill-opacity", 1)
-        .style("stroke-width", "3px"); 
-       
-      }
   
+  
+  // Appending patterns to the svg so that they can later be used as fills for the bubbles
   for(var i =0; i <data.length; i++){
       if(data[i].imgUrl.length!=0){
-          var link = '../Images/WFPP-Pictures-Squares/' + data[i].name.split(' ').join('%20') +'.jpg';
+          var link = '../Images/WFPP-Pictures-Small/' + data[i].name.split(' ').join('%20') +'.jpg';
       }else{
           var link = '../Images/WFPP-Pictures-Squares/Unknown.jpg';
       }
-      
       
     svg.append("pattern")
      .attr("x", 0)
@@ -145,9 +61,10 @@ function showAll(){
    	    .attr("width", 60)
         .attr("height", 60)
         .attr("xlink:href", link);  
-}
-  
-  var node = svg.append("g")
+  }
+    //Creating the nodes, depending on if the mobile or desktop version is needed
+  if(mobileMode){
+        var node = svg.append("g")
         .selectAll("circle")
         .data(data)
         .enter()
@@ -161,31 +78,49 @@ function showAll(){
         })
         .attr("stroke", "black")
         .style("stroke-width", 0.8)
-        .on("click", mouseClick)
+        .on("click", function (d) {showMobileTooltipPanel(d)});
+  }else{
+        var node = svg.append("g")
+        .selectAll("circle")
+        .data(data)
+        .enter()
+        .append("circle")
+        .attr("class", "node")
+        .attr("r", 30)
+        .attr("cx",function(d) {return determineCx(d.number, width)})
+        .attr("cy",function(d) {return determineCy(d.number, width)})
+        .attr("fill", function(d) {
+		      return "url(#"+d.id +")";
+        })
+        .attr("stroke", "black")
+        .style("stroke-width", 0.8)
+        .on("click", function (d) {window.zoomedIn=true;mouseClickPersonal(Tooltip, data)})
         .on("mouseenter", mouseenter)
-        .on("mouseover", mouseover) // What to do when hovered
-        .on("mousemove", mousemove)
-        .on("mouseleave", mouseleave)
-  
-  
-    
-   var closeTooltip = function(d){
-       d3.selectAll("path").style("opacity", 0);
-       document.getElementById("SlideTooltip").style.opacity = 0;
-       document.getElementById("SlideTooltip").innerHTML = "";
-       document.getElementById("SlideTooltip").style.width = "0%";
-       document.getElementById("SlideTooltip").style.border = "none";
-       document.getElementById("SlideTooltip").style.padding = "0";
-       zoomOut(d,data)
-       window.zoomedIn=false;
-    } 
+        .on("mouseover", function (d) {mouseoverPersonal(Tooltip);}) 
+        .on("mousemove", function (d) {mousemovePersonal(Tooltip,d, this)})
+        .on("mouseleave", function (d) {mouseleavePersonal(Tooltip,data)})
+  }
+    //Finally update the state and locator so that they can be used for navigation
    updateState("All");
-   
+   setLocator("All Pioneers"); 
 }
 
 window.addEventListener("resize", handleResize);
 
 
+
+//Functions that determine the x and y position of the centers of the bubbles based on the width of the screen
+function determineCx(index, width){
+    var count = Math.floor(width/70);
+    var pad = (width- count*70-40)/2;
+    return Math.floor(index%(Math.floor(width/70)))*70+40+pad;
+}
+
+function determineCy(index, width){
+    return Math.floor(index/(Math.floor(width/70)))*70+80;
+}
+
+// Functions that determine the x and y posititons of nearby circle to create the zoom effect
 function findZoomInCx(elementNum, selectedNumber, width){
     var currentCx =determineCx(elementNum, width);
     if(elementNum==selectedNumber){
@@ -231,7 +166,6 @@ function findZoomInCx(elementNum, selectedNumber, width){
         return currentCx;
     }
 }
-
 
 
 function findZoomInCy(elementNum, selectedNumber, width){
@@ -280,15 +214,7 @@ function findZoomInCy(elementNum, selectedNumber, width){
     }
 }
 
-
-function getHalfpipePath(number, width){
-    var cx = determineCx(number,width);
-    var cy = determineCy(number,width);
-    return "m "+ (cx+95) + " " + (cy+90) + " h -95 a 45 45 0 0 0 0 -180.5 h 95"
-}
-
-
-
+// Zoom in function that increase the radius of one bubble and moves the one nearby in order to create the effect
 function zoomIn(d,data,svg){
     var hoverID=d.id;
     var hoverNum=d.number;
@@ -332,24 +258,6 @@ function zoomIn(d,data,svg){
         .style("stroke-width", function(d)
                {if(hoverID==d.id){
                     return "3px"}})  
-}
-
-function zoomOut(d,data){
-    var hoverID=d.id;
-    var hoverNum=d.number;
-    var width =document.getElementById("my_dataviz").clientWidth;
- 
-    d3.select("#my_dataviz")
-        .selectAll("circle")
-        .data(data)
-        .transition()
-        .duration(20)
-        .attr("r", 30)
-        .attr("cx", function(d){ return determineCx(d.number, width)})
-        .attr("cy", function(d){ return determineCy(d.number, width)})
-        .style("fill", function(d)
-               {if(hoverID==d.id){
-                    return "url(#"+d.id +")"}})     
 }
 
 export{showAll}

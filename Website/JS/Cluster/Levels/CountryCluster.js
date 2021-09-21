@@ -2,15 +2,16 @@ import{updateState, getStates} from '../Handlers/stateHandler.js';
 import{showCountryD3} from './singleCountryCluster.js';
 import {setLevel} from '../Handlers/levelHandler.js';
 import {removeTooltip,createTextOverlay,createTooltip,speedUpAnimation} from '../Util/tooltips.js';
-import {addPatterns,determineCountrySize,findCountryPicture,determineJobSizeMobile,determineCxMobile,determineCyMobile} from '../Util/bubbleUtil.js';
+import {determineCountrySize,findCountryPicture,determineJobSizeMobile,determineCxMobile,determineCyMobile,clearPrevDataviz} from '../Util/bubbleUtil.js';
 import{clearAllTimeouts,timeouts} from '../Handlers/connectivityHandler.js';
+import{setLocator,updateLocator} from '../Handlers/navigationHandler.js';
+/////////////////////////////////////////////////////////////////////////////////////
 
+// Function that displays the country cluster
 function showCountries(timespan){
     
-    if(document.getElementById("my_dataviz").firstChild!=null){
-        document.getElementById("my_dataviz").removeChild(document.getElementById("my_dataviz").firstChild);
-    }
-    
+    clearPrevDataviz();
+    // Collecting needed data, old code that should ideally be refactored
     var countryData= new Map();
     for(var i = 0; i <wfpp.entries.length; i++){
         for(var j =0; j< wfpp.entries[i].worked_in.length; j++){
@@ -39,7 +40,8 @@ function showCountries(timespan){
         });
 
     data = d3.csvParse(data);
-    // set the dimensions and margins of the graph
+    
+    // Set the dimensions and margins of the graph
     var width =document.getElementById("my_dataviz").clientWidth;
     
     if(mobileMode){
@@ -54,7 +56,7 @@ function showCountries(timespan){
         var height = document.getElementById("my_dataviz").clientHeight;  
     }
     
-    // append the svg object to the body of the page
+    // Append the svg object to the body of the page
     var svg = d3.select("#my_dataviz")
     .append("svg")
     .attr("width", width)
@@ -72,10 +74,14 @@ function showCountries(timespan){
           .style("padding", "5px")
       }
   var mousemove = function (d) {
+      var text = "Pioneers";
+      if(d.count==1){
+          text="Pioneer";
+      }
         Tooltip
-          .html('<u>' + d.country + '</u>' + "<br>" + d.count)
-          .style("left", (d3.mouse(this)[0] + 20) + "px")
-          .style("top", (d3.mouse(this)[1]) + "px")
+          .html(d.count + "<br>" + text)
+          .style("left", (d3.mouse(this)[0] + 15) + "px")
+          .style("top", (d3.mouse(this)[1] +30) + "px")
       }
   var mouseleave = function (d) {
         Tooltip
@@ -96,10 +102,11 @@ function showCountries(timespan){
         paras[0].parentNode.removeChild(paras[0]);
         }
       }
-    
+    //Function that prepares the page and calls the function to show a single countries pioneers
    var showCountry = function () { 
        var country = event.srcElement.id;
        updateState(country);
+       updateLocator(country,1);
        clearAllTimeouts();
        showCountryD3(country,"")
        var paras = document.getElementsByClassName('tooltip2');
@@ -151,12 +158,11 @@ function showCountries(timespan){
   if(!mobileMode){
       // Features of the forces applied to the nodes:
   window.simulation = d3.forceSimulation()
-      .force("center", d3.forceCenter().x(width / 2).y(height / 2 -50)) // Attraction to the center of the svg area
+      .force("center", d3.forceCenter().x(width / 2).y(height / 2)) // Attraction to the center of the svg area
       .force("charge", d3.forceManyBody().strength(-2)) // Nodes are attracted one each other of value is > 0
       .force("collide", d3.forceCollide().strength(.2).radius(function (d) { return determineCountrySize(d.count)}).iterations(1))
-        .force('y', d3.forceY().y(height/2).strength(0.02));// Force that avoids circle overlapping
+        .force('y', d3.forceY().y(height/2).strength(0.04));
 
-  //
     window.simulation
         .nodes(data)
         .on("tick", function (d) {
@@ -164,12 +170,16 @@ function showCountries(timespan){
             .attr("cx", function (d) { return d.x; })
             .attr("cy", function (d) { return d.y; })
         }).on('end', function () {
-            createTextOverlay(data,"Countries","body");}
+            if(getStates().length == statePosition ){
+                createTextOverlay(data,"Countries","my_dataviz");}
+        }
         );
       speedUpAnimation(window.simulation,2);
   }else{
-       createTextOverlay(data,"Countries","body");
+       createTextOverlay(data,"Countries","my_dataviz");
   }
+    
+    //Similar pattern changing code as in topLevel.js
     function changePattern(){
         if(getStates()[getStates().length-1]=="Countries"){
             d3.selectAll("circle").attr("fill", function(d) {
@@ -198,55 +208,8 @@ function showCountries(timespan){
     
     timeouts.push(setTimeout(temp,10000));
     updateState("Countries");
-}
-
-/////////////////////////////////////////////////////////////////
-function createLines(country,data){
-    var simCountries = new Set();
-    simCountries.add(country)
-    for(var i = 0; i <wfpp.entries.length; i++){
-        for(var j =0; j< wfpp.entries[i].worked_in.length; j++){
-            var entry=wfpp.entries[i].worked_in[j];
-            if(entry.includes(country)){
-                for(var k =0; k< wfpp.entries[i].worked_in.length; k++){
-                    var entry=wfpp.entries[i].worked_in[k];
-                    simCountries.add(entry);
-                }
-                
-            }
-        }
-    }
-    var arr = Array.from(simCountries);
-    d3.select("#my_dataviz")
-        .selectAll("circle")
-        .data(data)
-        .style("opacity", function(){if(arr.includes(d3.select(this).attr('id'))){
-        return 1;}else{return 0.3;}})
-        .style("stroke-width", function(){if(arr.includes(d3.select(this).attr('id'))){
-        return "4px";}else{return 2;}})
-    
-    simCountries.delete(country);
-    var arr = Array.from(simCountries);
-    for(var i =0; i< arr.length;i++){
-        if(document.getElementById(arr[i])!=null){
-            var x = document.getElementById(arr[i]).cx.baseVal.value;
-            var y = document.getElementById(arr[i]).cy.baseVal.value;
-            var r = document.getElementById(arr[i]).r.baseVal.value;
-            var Tooltip = d3.select("body")
-                .append("div")
-                .html('<u>' + arr[i] + '</u>')
-                .style("opacity", 1)
-                .attr("class", "tooltip2")
-                .style("background-color", "white")
-                .style("border", "solid")
-                .style("border-width", "1px")
-                .style("border-radius", "5px")
-                .style("padding", "5px")
-                .style("position", "absolute")
-                .style("left", x-arr[i].length*4 + "px")
-                .style("top", y-r+10 + "px")  
-        }
-    }
+    var statePosition = getStates().length;
+    setLocator("Countries");
 }
 
 

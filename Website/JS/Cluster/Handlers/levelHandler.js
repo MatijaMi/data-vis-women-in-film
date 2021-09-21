@@ -4,6 +4,9 @@ import{updateLocator,removeLastLocButton} from './navigationHandler.js';
 import{clearAllTimeouts,timeouts,closeSubgroupPanel} from './connectivityHandler.js';
 import{drawTopLevel} from '../Levels/topLevel.js';
 import{drawLowerLevel} from '../Levels/lowerLevels.js';
+////////////////////////////////////
+
+//Level variable used for profession to keep track of depth
 var level = 0;
 
 function updateLevel(newLevel){
@@ -17,7 +20,7 @@ function getLevel(){
     return level;
 }
 
-
+// Function that sorts all the profession so that they can be properly assigned to a level later
 function getLevels(){
     var topLevel = new Set();
     topLevel.add("Other");
@@ -59,6 +62,7 @@ function getLevels(){
     return [topLevel,firstLevel,secondLevel,thirdLevel];
 }
 
+//Function to go back one level
 function goBack(){
     setLevel(getLevel()-1);
     removeTooltip("textOverlay");
@@ -66,12 +70,11 @@ function goBack(){
             document.getElementById("back").remove();
         }
         removeLastLocButton();
+        document.getElementById("subGroupOpen").style.display="none";
         goBackState();
 }
-
+// Function that adds a back button when one is needed
 function addBackButton(){ 
-    var width =document.getElementById("my_dataviz").clientWidth;
-    var height = document.getElementById("my_dataviz").clientHeight;
   if(document.getElementById("back")==null){
       var backButton = d3.select("body")
         .append("div")
@@ -79,10 +82,10 @@ function addBackButton(){
         .attr("class", "back")
         .attr("id", "back")
         .html("<button> Back </button>");
-      document.getElementById("back").addEventListener("click", goBack)
   }
 }
 
+//Function used to go one deeper in the profession clusters
 function goToNextLevel(profession){
     profession=event.srcElement.id;
     removeTooltip("tooltip2");
@@ -92,9 +95,10 @@ function goToNextLevel(profession){
     updateState(profession);
     updateLocator(profession,getLevel());
     addBackButton();
+    document.getElementById("back").addEventListener("click", goBack)
     clearAllTimeouts();
     closeSubgroupPanel();
     drawLowerLevel(profession,getLevel());
 }
 
-export {updateLevel,setLevel,getLevel,getLevels,goToNextLevel,addBackButton}
+export {updateLevel,setLevel,getLevel,getLevels,goToNextLevel,addBackButton,goBack}
