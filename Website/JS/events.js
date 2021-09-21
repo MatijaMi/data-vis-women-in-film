@@ -15,7 +15,7 @@ var event_list = [];
 
 const add_event_button = document.getElementById("add-event-button");
 add_event_button.addEventListener("click", function (event) {
-  d3.select(".data-timeline-container").style("height", 76 + "vh");
+  
   let event_name = document.getElementById("event-name").value;
   let event_start = document.getElementById("event-start").value;
   let event_end = document.getElementById("event-end").value;
@@ -74,6 +74,7 @@ function addEvent(name, start, end) {
     H = H + HOFFSET;
     console.log("Adding " + name + " " + start + " " + end + " to events");
     event_list.push(object);
+    d3.select(".data-timeline-container").style("height", 76 + "vh");
     renderEvents();
     document.getElementById("event-name").value = "";
     document.getElementById("event-start").value = "";
