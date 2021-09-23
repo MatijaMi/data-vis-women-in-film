@@ -319,6 +319,16 @@ function CheckSizeZoom() {
         if (typeof (document.body.style.zoom) != "undefined") {
             $(document.body).css('zoom', zoomLev);
             $("#slider-range").css('zoom', 1/zoomLev);
+
+            //Resize slider
+            if(document.getElementById('slider-range').getElementsByTagName( 'span' )[0] != undefined) {
+                var fonSizeOfSlider = 0.8 * (zoomLev * 1.5);
+
+                document.getElementById('slider-range').getElementsByTagName( 'span' )[0].style.fontSize = fonSizeOfSlider + 'em';
+                document.getElementById('slider-range').getElementsByTagName( 'span' )[1].style.fontSize = fonSizeOfSlider + 'em';
+                document.getElementById('slider-range').getElementsByTagName( 'span' )[2].style.fontSize = fonSizeOfSlider + 'em';
+            }
+           
         }
         else {
             // Mozilla doesn't support zoom, use -moz-transform to scale and compensate for lost width
