@@ -33,6 +33,21 @@
     </nav>
 
     <div class="main-wrapper">
+
+      <div style="margin-top:50px"></div>
+
+      <div class="row">
+        <div class="column">
+          <img src="Images/AGM_Logo2.png" alt="Logo 1" style="height:100px">
+        </div>
+        <div class="column">
+          <img src="Images/IFM02_logo_dach_farb_rgb.jpg" alt="Logo 2" style="height:100px">
+        </div>
+        <div class="column">
+          <img src="Images/BMBF_Logo.png" alt="Logo 3" style="height:100px">
+        </div>
+      </div>
+
       <h1>Introduction</h1>
 
       <div class="introduction-text">
@@ -171,6 +186,15 @@
     /* Global Constants */
     .root {
       --text_color: rgb(250, 250, 250);
+    }
+
+    .row {
+      display: flex;
+    }
+
+    .column {
+      flex: 33.33%;
+      padding: 5px;
     }
 
     .main-wrapper a {
