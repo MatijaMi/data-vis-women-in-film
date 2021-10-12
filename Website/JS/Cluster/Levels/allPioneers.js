@@ -44,9 +44,9 @@ function showAll(){
   // Appending patterns to the svg so that they can later be used as fills for the bubbles
   for(var i =0; i <data.length; i++){
       if(data[i].imgUrl.length!=0){
-          var link = '../Images/WFPP-Pictures-Small/' + data[i].name.split(' ').join('%20') +'.jpg';
+          var link = 'Images/WFPP-Pictures-Small/' + data[i].name.split(' ').join('%20') +'.jpg';
       }else{
-          var link = '../Images/WFPP-Pictures-Squares/Unknown.jpg';
+          var link = 'Images/WFPP-Pictures-Squares/Unknown.jpg';
       }
       
     svg.append("pattern")
@@ -221,9 +221,9 @@ function zoomIn(d,data,svg){
     var width =document.getElementById("my_dataviz").clientWidth;
     
     if(d.imgUrl.length!=0){
-        var link = '../Images/WFPP-Pictures-Squares/' + d.name.split(' ').join('%20') +'.jpg';
+        var link = 'Images/WFPP-Pictures-Squares/' + d.name.split(' ').join('%20') +'.jpg';
     }else{
-          var link = '../Images/WFPP-Pictures-Squares/Unknown.jpg';
+          var link = 'Images/WFPP-Pictures-Squares/Unknown.jpg';
     }
       
       svg.append("pattern")

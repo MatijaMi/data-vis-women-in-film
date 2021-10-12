@@ -5,10 +5,10 @@
     <title>Women Film Pioneers Explorer</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="../CSS/baseStyle.css" />
-    <link rel="stylesheet" href="../CSS/map.css" />
-    <link rel="stylesheet" href="../CSS/map_modal.css" />
-    <link rel="icon" type="image/png" href="../Images/Reel.png" />
+    <link rel="stylesheet" href="CSS/baseStyle.css" />
+    <link rel="stylesheet" href="CSS/map.css" />
+    <link rel="stylesheet" href="CSS/map_modal.css" />
+    <link rel="icon" type="image/png" href="Images/Reel.png" />
     <link
       rel="stylesheet"
       href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"
@@ -24,7 +24,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <script src="../JS/map.js"></script>
+    <script src="JS/map.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/4.5.0/papaparse.min.js"></script>
     <script src="https://cdn.anychart.com/releases/v8/js/anychart-base.min.js"></script>
     <script src="https://cdn.anychart.com/releases/v8/js/anychart-ui.min.js"></script>
@@ -48,22 +48,22 @@
     <nav>
       <ul class="nav-links">
         <li>
-          <a href="../index.html">Home</a>
+          <a href="index.html">Home</a>
         </li>
         <li>
-          <a href="./Map.html">Map</a>
+          <a href="Map.html">Map</a>
         </li>
         <li>
-          <a href="./Cluster.html">Cluster</a>
+          <a href="Cluster.html">Cluster</a>
         </li>
         <li>
-          <a href="./Timeline.html">Timeline</a>
+          <a href="Timeline.html">Timeline</a>
         </li>
         <li>
-          <a href="./Dendrogram.html">Dendrogram</a>
+          <a href="Dendrogram.html">Dendrogram</a>
         </li>
         <li>
-          <a href="./About.html">About</a>
+          <a href="About.html">About</a>
         </li>
       </ul>
     </nav>
@@ -98,7 +98,7 @@
           <input
             type="image"
             class="sidepanel_info_icon"
-            src="../Images/info_icon.png"
+            src="Images/info_icon.png"
             onclick="sidepanel_info_onclick()"
           />
 
@@ -188,7 +188,7 @@
           <input
             type="image"
             class="settings_info_icon"
-            src="../Images/info_icon.png"
+            src="Images/info_icon.png"
             onclick="settingspanel_info_onclick()"
           />
 
@@ -224,7 +224,7 @@
           type="image"
           onclick="histogram_button_onclick()"
           class="histogram_image"
-          src="../Images/map_histogram.png"
+          src="Images/map_histogram.png"
         />
       </div>
 
@@ -234,20 +234,20 @@
         <img
           class="modal_icon"
           id="modal_icon_1"
-          src="../Images/barchart_horizontal_icon.png"
+          src="Images/barchart_horizontal_icon.png"
           alt=""
         />
         <!-- Trigger Modal 2 -->
         <img
           class="modal_icon"
           id="modal_icon_2"
-          src="../Images/piechart_icon.png"
+          src="Images/piechart_icon.png"
           alt=""
         />
         <!-- Open Histogram -->
         <img
           class="modal_icon"
-          src="../Images/barchart_icon.png"
+          src="Images/barchart_icon.png"
           alt=""
           onclick="histogram_button_onclick()"
         />
@@ -257,7 +257,7 @@
         <input
           type="image"
           class="slider_info_icon"
-          src="../Images/info_icon.png"
+          src="Images/info_icon.png"
           onclick="slider_info_onclick()"
         />
       </div>
@@ -336,7 +336,7 @@
         $.ajax({
           async: false,
           type: "GET",
-          url: "../Data/map_pioneer_data.csv",
+          url: "Data/map_pioneer_data.csv",
           success: function (data) {
             var rows = data.split("\n");
             for (var i = 0; i < rows.length; i++) {
@@ -616,7 +616,7 @@
 
         //Button timeline
         document.getElementById("timeline_button").onclick = function () {
-          var timeline_link = "./Timeline.html";
+          var timeline_link = "Timeline.html";
           var country_name = curr_country.country_name;
           var timespan =
             $("#slider-range").slider("values", 0) +
@@ -631,7 +631,7 @@
         //Button cluster
         document.getElementById("cluster_button").onclick = function () {
           var cluster_link =
-            "./Cluster.html?mode=countries&country=" +
+            "Cluster.html?mode=countries&country=" +
             curr_country.country_name +
             "&timespan=" +
             $("#slider-range").slider("values", 0) +

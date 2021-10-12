@@ -103,8 +103,8 @@ function load_data() {
 
     //Adding data to d3 map
     d3.queue()
-        .defer(d3.json, "../Data/world_map.geojson")
-        .defer(d3.csv, "../Data/map_pioneer_data.csv", function (row) {
+        .defer(d3.json, "Data/world_map.geojson")
+        .defer(d3.csv, "Data/map_pioneer_data.csv", function (row) {
 
             //Calculations for each row
             //Use settings
@@ -243,7 +243,7 @@ function findObjectByKey(array, key, value) {
 }
 
 function image_load_error(id) {
-    if (document.getElementById(id) != null) document.getElementById(id).src = "../Images/Unknown.jpg";
+    if (document.getElementById(id) != null) document.getElementById(id).src = "Images/Unknown.jpg";
 }
 
 function uniq(a) {

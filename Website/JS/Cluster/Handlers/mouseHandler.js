@@ -48,9 +48,9 @@ function mousemovePersonal(Tooltip,d,env){
 
     var imgSrc ="";
     if(d.imgUrl.length<10){
-        imgSrc='<img src=../Images/WFPP-Pictures-Squares/Unknown.jpg width=75%>';
+        imgSrc='<img src=Images/WFPP-Pictures-Squares/Unknown.jpg width=75%>';
     }else{
-        imgSrc='<img src=../Images/WFPP-Pictures-Squares/'+ d.name.split(' ').join('%20') +'.jpg width=200px>';     
+        imgSrc='<img src=Images/WFPP-Pictures-Squares/'+ d.name.split(' ').join('%20') +'.jpg width=200px>';     
     }
     Tooltip
           .html('<a id="closeMainTooltip" href="javascript:void(0)" class="closebtn">&times;</a><u><b>' + d.name + '</b></u><br>'+ imgSrc + "<br>" + '<p>' + shortBio +'</p>' + '<button id="fullArticleButton"> Read Full Article</button>')
@@ -133,9 +133,9 @@ function showMobileTooltipPanel(d){
 
     var imgSrc ="";
     if(d.imgUrl.length<10){
-        imgSrc='<img src=../Images/WFPP-Pictures-Squares/Unknown.jpg width=75%>';
+        imgSrc='<img src=Images/WFPP-Pictures-Squares/Unknown.jpg width=75%>';
     }else{
-        imgSrc='<img src=../Images/WFPP-Pictures-Squares/'+ d.name.split(' ').join('%20') +'.jpg width=200px>';     
+        imgSrc='<img src=Images/WFPP-Pictures-Squares/'+ d.name.split(' ').join('%20') +'.jpg width=200px>';     
     }
     d3.select("#mobileTooltipPanel")
           .html('<a id="closeMobileTooltip" href="javascript:void(0)" class="closebtn">&times;</a><b>' + d.name + '</b><br>'+ imgSrc + "<br>" + '<p>' + shortBio +'</p>' + '<button id="fullArticleButton"> Read Full Article</button>')

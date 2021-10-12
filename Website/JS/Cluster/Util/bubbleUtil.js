@@ -28,7 +28,7 @@ function findProfessionPicture(profession,data,svg,mode){
     }
     var rand = hasPic.length;
     var patternID= "1704" ;
-    var link = '../Images/WFPP-Pictures-Medium/Unknown.jpg';
+    var link = 'Images/WFPP-Pictures-Medium/Unknown.jpg';
     if(mode=="top"){
         var r = determineJobSize(profession.count);
     }else{
@@ -39,11 +39,11 @@ function findProfessionPicture(profession,data,svg,mode){
     if(rand>1){
         rand =Math.floor((Math.random() * hasPic.length));
         patternID =hasPic[rand].id;
-        link = '../Images/WFPP-Pictures-Medium/' + hasPic[rand].name.split(' ').join('%20') +'.jpg';
+        link = 'Images/WFPP-Pictures-Medium/' + hasPic[rand].name.split(' ').join('%20') +'.jpg';
     }else{
         if(rand==1){
             patternID =hasPic[0].id;
-            link = '../Images/WFPP-Pictures-Medium/' + hasPic[0].name.split(' ').join('%20') +'.jpg';
+            link = 'Images/WFPP-Pictures-Medium/' + hasPic[0].name.split(' ').join('%20') +'.jpg';
         }
     }
     if(mobileMode){
@@ -84,17 +84,17 @@ function findCountryPicture(country,count,svg){
     }
     var rand = hasPic.length;
     var patternID= "1704" ;
-    var link = '../Images/WFPP-Pictures-Medium/Unknown.jpg';
+    var link = 'Images/WFPP-Pictures-Medium/Unknown.jpg';
     var r=determineCountrySize(count);
     var imageSize ="Medium";
     if(rand>1){
         rand =Math.floor((Math.random() * hasPic.length));
         patternID =hasPic[rand].id;
-        link = '../Images/WFPP-Pictures-' +imageSize + "/" + hasPic[rand].name.split(' ').join('%20') +'.jpg';
+        link = 'Images/WFPP-Pictures-' +imageSize + "/" + hasPic[rand].name.split(' ').join('%20') +'.jpg';
     }else{
         if(rand==1){
             patternID =hasPic[0].id;
-            link = '../Images/WFPP-Pictures-' + imageSize + "/" + hasPic[0].name.split(' ').join('%20') +'.jpg';
+            link = 'Images/WFPP-Pictures-' + imageSize + "/" + hasPic[0].name.split(' ').join('%20') +'.jpg';
         }
     }
     if(mobileMode){
@@ -130,10 +130,10 @@ function findPersonPicture(id,data,svg){
     for(var i =0; i <data.length; i++){
         if(id==data[i].id){
           if(data[i].imgUrl.length!=0){
-              var link = '../Images/WFPP-Pictures-'+imageSize +"/" + data[i].name.split(' ').join('%20') +'.jpg';
+              var link = 'Images/WFPP-Pictures-'+imageSize +"/" + data[i].name.split(' ').join('%20') +'.jpg';
           }else{
               patternID="1704_" +r;
-              var link = '../Images/WFPP-Pictures-' +imageSize + '/Unknown.jpg';
+              var link = 'Images/WFPP-Pictures-' +imageSize + '/Unknown.jpg';
           }
         }
     }

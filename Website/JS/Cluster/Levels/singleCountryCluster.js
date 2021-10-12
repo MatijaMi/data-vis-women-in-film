@@ -73,9 +73,9 @@ function showCountryD3(country,timespan){
  // Adding the patterns
  for(var i =0; i <data.length; i++){
       if(data[i].imgUrl.length!=0){
-          var link = '../Images/WFPP-Pictures-' + imageSize + "/" + data[i].name.split(' ').join('%20') +'.jpg';
+          var link = 'Images/WFPP-Pictures-' + imageSize + "/" + data[i].name.split(' ').join('%20') +'.jpg';
       }else{
-          var link = '../Images/WFPP-Pictures-' + imageSize +'/Unknown.jpg';
+          var link = 'Images/WFPP-Pictures-' + imageSize +'/Unknown.jpg';
       }
       
     svg.append("pattern")

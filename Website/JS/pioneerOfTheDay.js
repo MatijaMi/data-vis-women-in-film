@@ -4,7 +4,7 @@ var pioneers = [];
 //Function that finds the pioneer of the current day for main page
 function getPioneerOfTheDay() {
     //Load data
-    d3.queue().defer(d3.csv, "./Data/data_modified.csv", function (row) {
+    d3.queue().defer(d3.csv, "Data/data_modified.csv", function (row) {
             const dob = String(row.DOB) // Get the Day of Birth for the current pioneer
             const mob = String(row.MOB) // Get the Month of Birth for the current pioneer
             const born = "" + mob + " " + dob // Format Date of Birth
@@ -46,7 +46,7 @@ function choosePioneer(){
                 //console.log("No image found for todays pioneer")
                 //document.getElementById("pod_title").innerText = "Birthday: " + element.name
                 
-                document.getElementById("birthday_pic").src = "./Images/Unknown.jpg"
+                document.getElementById("birthday_pic").src = "Images/Unknown.jpg"
                 document.getElementById("birthday_pic").style.display = "inline-block";
             } finally {
                 var button = document.getElementById("birthday_contribute_button")

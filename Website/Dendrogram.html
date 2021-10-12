@@ -5,9 +5,9 @@
     <title>Women Film Pioneers Explorer</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="../CSS/baseStyle.css" />
-    <link rel="icon" type="image/png" href="../Images/Reel.png" />
-    <link rel="sidepanel_css" href="../CSS/map_sidepanel.css" />
+    <link rel="stylesheet" href="CSS/baseStyle.css" />
+    <link rel="icon" type="image/png" href="Images/Reel.png" />
+    <link rel="sidepanel_css" href="CSS/map_sidepanel.css" />
     <script src="//d3js.org/d3.v4.min.js"></script>
   </head>
 
@@ -17,22 +17,22 @@
     <nav>
       <ul class="nav-links">
         <li>
-          <a href="../index.html">Home</a>
+          <a href="index.html">Home</a>
         </li>
         <li>
-          <a href="./Map.html">Map</a>
+          <a href="Map.html">Map</a>
         </li>
         <li>
-          <a href="./Cluster.html">Cluster</a>
+          <a href="Cluster.html">Cluster</a>
         </li>
         <li>
-          <a href="./Timeline.html">Timeline</a>
+          <a href="Timeline.html">Timeline</a>
         </li>
         <li>
-          <a href="./Dendrogram.html">Dendrogram</a>
+          <a href="Dendrogram.html">Dendrogram</a>
         </li>
         <li>
-          <a href="./About.html">About</a>
+          <a href="About.html">About</a>
         </li>
       </ul>
     </nav>
@@ -65,7 +65,7 @@
         return d.id.substring(0, d.id.lastIndexOf("."));
       });
 
-      d3.csv("../Data/jobs.csv", function (error, data) {
+      d3.csv("Data/jobs.csv", function (error, data) {
         if (error) throw error;
 
         var root = stratify(data).sort(function (a, b) {

@@ -4,31 +4,28 @@
     <title>Women Film Pioneers Explorer</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="../CSS/cluster.css" />
-    <link rel="icon" type="image/png" href="../Images/Reel.png" />
+    <link rel="stylesheet" href="CSS/cluster.css" />
+    <link rel="icon" type="image/png" href="Images/Reel.png" />
+    <script type="module" src="JS/Cluster/Handlers/resizeHandler.js"></script>
+    <script type="module" src="JS/Cluster/Util/bubbleUtil.js"></script>
     <script
       type="module"
-      src="../JS/Cluster/Handlers/resizeHandler.js"
-    ></script>
-    <script type="module" src="../JS/Cluster/Util/bubbleUtil.js"></script>
-    <script
-      type="module"
-      src="../JS/Cluster/Handlers/connectivityHandler.js"
+      src="JS/Cluster/Handlers/connectivityHandler.js"
     ></script>
     <script src="https://d3js.org/d3.v4.js"></script>
     <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
-    <script type="text/javascript" src="../Data/cluster_data.json"></script>
-    <script type="text/javascript" src="../Data/wfpp-text.json"></script>
+    <script type="text/javascript" src="Data/cluster_data.json"></script>
+    <script type="text/javascript" src="Data/wfpp-text.json"></script>
   </head>
 
   <body id="body">
     <div class="topnav" id="myTopnav">
-      <a href="../index.html">Home</a>
-      <a href="./Map.html">Map</a>
-      <a href="./Cluster.html">Cluster</a>
-      <a href="./Timeline.html">Timeline</a>
-      <a href="./Dendrogram.html">Dendrogram</a>
-      <a href="./About.html">About</a>
+      <a href="index.html">Home</a>
+      <a href="Map.html">Map</a>
+      <a href="Cluster.html">Cluster</a>
+      <a href="Timeline.html">Timeline</a>
+      <a href="Dendrogram.html">Dendrogram</a>
+      <a href="About.html">About</a>
       <a href="javascript:void(0);" class="icon" onclick="makeResponsive()"
         >&#9776;</a
       >
@@ -38,13 +35,13 @@
     <!-- Sidebuttons for navigation -->
     <div id="sideishButtons">
       <button id="professionsButton">
-        <img id="professionsButtonPic" src="../Images/Reel.png" />
+        <img id="professionsButtonPic" src="Images/Reel.png" />
       </button>
       <button id="countryButton">
-        <img id="countryButtonPic" src="../Images/Globe.svg" />
+        <img id="countryButtonPic" src="Images/Globe.svg" />
       </button>
       <button id="allPioneersButton">
-        <img id="allPioneersButtonPic" src="../Images/AllIcon.svg" />
+        <img id="allPioneersButtonPic" src="Images/AllIcon.svg" />
       </button>
     </div>
 
