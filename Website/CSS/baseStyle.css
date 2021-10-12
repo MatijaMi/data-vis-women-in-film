@@ -75,69 +75,41 @@ nav {
 .header a:hover {
   background-color: #bbb;
 }
-/* xa */
-.caruText {
-  /* xa */
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  align-items: stretch;
-  /* background-color: red; */
-  align-content: space-evenly;
-  background-color: rgba(0, 0, 0, 0);
 
-  text-align: left;
-  width: 50%;
-  margin: 0 0;
-  padding: 18px;
-  margin-right: 10%;
-  color: whitesmoke;
-  font-size: 18px;
+.carousel_holder {
+  margin-top: 30px;
+  margin-left: 50px;
+  width: 40%;
+  min-width: 600px;
 }
 
-/* xa */
-.caruText-child {
-  width: 100%;
-  display: flex;
-  margin: 0 auto;
-  justify-content: left;
-  align-items: left;
-  /* background-color: red; */
-  padding-left: 15%;
-}
-
-.caruText-child p {
-  font-size: 22px;
-  text-shadow: 0.08em 0.08em rgba(0, 0, 0, 1);
-}
-
-.caruText-child h3 {
-  padding-top: 0px;
-  margin-top: 0px;
-  font-size: 5em;
+.carousel_header {
+  font-size: 90px;
   font-family: "Roboto", sans-serif;
   color: white;
   text-shadow: 0.02em 0.04em rgba(0, 0, 0, 1);
 }
 
+.carousel_text {
+  color: whitesmoke;
+  font-size: 22px;
+  text-shadow: 0.02em 0.04em rgba(0, 0, 0, 1);
+  text-align: justify;
+}
+
 #discoverButton {
   background-image: url("../Images/down-arrow.png");
+  cursor: pointer;
   display: inline-block;
-  margin: 0 0.1em 0.1em 0;
+  margin-top: 30px;
   margin-left: 35%;
-  padding: 0.5em 1.7em;
-  margin-bottom: 20px;
-  font-weight: 300;
-  outline: none;
-  box-shadow: none;
+  margin-right: auto;
   border: none;
-  width: 10vw;
-  height: 6vh;
+  width: 150px;
+  height: 150px;
   background-size: contain;
   background-color: rgb(255, 255, 255, 0);
   background-repeat: no-repeat;
-  font-family: "Roboto", sans-serif;
-  cursor: pointer;
 }
 
 .caruText button:hover {
