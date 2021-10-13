@@ -313,11 +313,6 @@ nav {
   color: #fff;
 }
 
-.footer {
-  background-color: #333;
-  height: 50px;
-}
-
 @media (max-width: 950px) {
   .content,
   .header,
@@ -478,11 +473,4 @@ nav {
 .node:hover {
   stroke-width: 4px !important;
   opacity: 1 !important;
-}
-
-footer {
-  margin: 30px;
-  width: 20px;
-  height: 20px;
-  /* border: 2px red solid; */
 }
