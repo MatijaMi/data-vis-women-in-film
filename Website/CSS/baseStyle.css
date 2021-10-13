@@ -189,7 +189,8 @@ nav {
 
 .content_panel {
   position: relative;
-  width: 85rem;
+  min-width: 1120px;
+  max-width: 85rem;
   height: 20rem;
   margin: 2% auto;
   background-color: #282828;
