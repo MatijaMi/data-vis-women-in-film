@@ -298,11 +298,12 @@ nav {
   background-color: #282828;
   padding-top: 40px;
   padding-bottom: 40px;
+  min-width: 1120px;
 }
 
 #pod_panel {
   width: 65rem;
-  height: 28vh;
+  height: 20rem;
   background-color: #212121;
   margin-bottom: 0px;
   margin-top: 0px;
