@@ -92,9 +92,15 @@ nav {
 
 .carousel_text {
   color: whitesmoke;
-  font-size: 22px;
+  font-size: 20px;
   text-shadow: 0.02em 0.04em rgba(0, 0, 0, 1);
   text-align: justify;
+}
+
+.index_link {
+  text-decoration: none;
+  color: #cccccc;
+  font-weight: bold;
 }
 
 #discoverButton {

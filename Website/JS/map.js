@@ -284,7 +284,7 @@ function settingspanel_info_onclick() {
 
 function slider_info_onclick() {
     var dialog_text = "This slider can be used to specify the time period the data is selected from. " +
-        "The pioneers you will see, are those who were alive in the selected time period. " +
+        "The pioneers you will see are those who were alive in the selected time period. " +
         "To be exact, you see those which were born before the date of the right handle and died after the date of the left handle. " +
         "You can use this selection to see which time periods have missing data. " +
         "<br/><br/>" +
