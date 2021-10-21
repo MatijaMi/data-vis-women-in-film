@@ -265,8 +265,8 @@ function sidepanel_info_onclick() {
         "Those countries are therefore called 'connected' and displayed with blue dotted lines. " +
         "Note that this data does not display international collaborations of film studios but rather transnational biographies of individuals. " +
         "<br/><br/>" +
-        "Besides, the website also features a pioneer, selected on a random basis, who was working in the selected country during this specific time period. " +
-        "If you want to know more about the example pioneer you can click on the 'Read more' button to visit her WFPP biography.";
+        "Besides, the website also features a pioneer, selected on a random basis, who was working in the selected country during the selected time period." +
+        "If you would like to learn more about the pioneer displayed you can click on the 'Read more' button to visit her WFPP biography.";
 
     open_dialog(dialog_text);
 }
