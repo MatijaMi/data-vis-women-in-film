@@ -272,23 +272,23 @@ function sidepanel_info_onclick() {
 }
 
 function settingspanel_info_onclick() {
-    var dialog_text = "In this panel, you can use additional functionality to to get a different view on the data. " +
+    var dialog_text = "In this panel you can access the other visualizations to get a different view of the selected data. " +
         "<br/><br/>" +
-        "The 'Show all connections' button allows you to see all international working between all countries in the selected time period. " +
-        "Note that this data does not primarily include international collaboration of film studios but rather international working of individual persons." + 
+        "The 'Show all connections' button allows you to see all international connections within the selected time period regardless the selected country. " +
+        "Note that this data does not display international collaborations of film studios but rather transnational biographies of individuals." + 
         "<br/>" +
-        "The 'Show as timeline' and 'Show as cluster' buttons can be used to view the currently selected country between the selected years, from a different perspective.";
+        "The 'Show as timeline' and 'Show as cluster' buttons link you to the respective visualization based on the selected country and time period.";
 
     open_dialog(dialog_text);
 }
 
 function slider_info_onclick() {
-    var dialog_text = "This slider can be used to specify the time period the data is selected from. " +
+    var dialog_text = "This slider can be used to specify the time period of the data displayed. " +
         "The pioneers you will see are those who were alive in the selected time period. " +
-        "To be exact, you see those which were born before the date of the right handle and died after the date of the left handle. " +
-        "You can use this selection to see which time periods have missing data. " +
+        "To be exact, you see those who were born before the date of the right handle and died after the date of the left handle. " +
+        "You can also use this function to identify missing data of certain time periods. " +
         "<br/><br/>" +
-        "The buttons on the left can be used to display some graphs.";
+        "The pictograms on the left can be used to display some statists.";
 
     open_dialog(dialog_text);
 }
