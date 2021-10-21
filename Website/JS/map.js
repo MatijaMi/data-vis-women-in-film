@@ -263,9 +263,9 @@ function sidepanel_info_onclick() {
     var dialog_text = "In this sidepanel you can see an overview of the pioneers registered between the selected years. " +
         "You can also see how many different jobs these women had in total and in how many countries they worked. " +
         "Those countries are therefore called 'connected' and displayed with blue dotted lines. " +
-        "Note that this data does not primarily include international collaboration of film studios but rather international working of individual persons. " +
+        "Note that this data does not display international collaborations of film studios but rather transnational biographies of individuals. " +
         "<br/><br/>" +
-        "Besides that, there is also an example pioneer given, who was working in the selected country in this time period. " +
+        "Besides, the website also features a pioneer, selected on a random basis, who was working in the selected country during this specific time period. " +
         "If you want to know more about the example pioneer you can click on the 'Read more' button to visit her WFPP biography.";
 
     open_dialog(dialog_text);
