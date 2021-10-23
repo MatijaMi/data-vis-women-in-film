@@ -360,7 +360,7 @@ function CreatePieChart(top){
     //Convert to anychart data
     data = temp_countries.slice(0, top).map((x) => [x.country_name, x.country_pioneers.length]);
     
-    //Add other Other Countries sum
+    //Add other Countries sum
     if(temp_countries.slice(0, top).length == top){
         var other_countries_sum = temp_countries.slice(top, temp_countries.length).reduce((a, b) => a + b.country_pioneers.length, 0);
         data[data.length] = (["Other Countries", other_countries_sum]);
@@ -400,7 +400,8 @@ function CreatePieChart(top){
       .explode(0);
 
     //Onclick
-    chart.listen("pointClick", function(e){ 
+    chart.listen("pointClick", function(e){        
+
         //Get name by iterator
         var click_country_name = e.iterator.get("x");
 
@@ -417,6 +418,25 @@ function CreatePieChart(top){
         mouseClick(feature);
         
     });
+
+    chart.legend().listen("click", function(e) {
+       
+       //Get name
+       var click_country_name = data[e.itemIndex][0];
+
+       //Find id
+       var temp_country = countries.find(country => country.country_name == click_country_name);
+
+       //Break
+       if(temp_country == undefined) return;
+
+       //Find feature
+       var feature = temp_map_data.features.find(country => country["id"] == temp_country.country_code);
+
+       //Simulate click on country
+       mouseClick(feature);
+      });
+      
 
     // set container id for the chart
     chart.container("country_pie_chart");
