@@ -46,7 +46,7 @@ name_desc_button.addEventListener("click", function (event) {
 
 const reset_button = document.getElementById("reset-button");
 reset_button.addEventListener("click", function (event) {
-  window.location.href = ".HTML/Timeline.html";
+  window.location.href = "Timeline.html";
 });
 
 function sortByYOBAsc() {
@@ -163,7 +163,7 @@ function render() {
         .style("top", e.pageY - 50 + "px");
     })
     .on("click", function (e, d) {
-      window.open(".HTML/Map.html?id=" + d.id, "_self");
+      window.open("Map.html?id=" + d.id, "_self");
     })
     .on("mouseleave", function (e, d) {
       d3.select(this).select("rect").style("fill", `${DEFAULTFILL}`);
