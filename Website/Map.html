@@ -68,11 +68,6 @@
       </ul>
     </nav>
 
-    <div class="divWrap" style="margin-top: -10px"></div>
-
-    <!-- Header-Spacer -->
-    <svg height="0" width="100%"></svg>
-
     <!-- Dialog Holder - Will display Dialog text of info buttons-->
     <div id="dialog" title="Information" hidden="true"></div>
 
@@ -89,6 +84,7 @@
       <!-- Modal Content (The Image) -->
       <div id="country_pie_chart"></div>
     </div>
+
     <!-- Main Body (Panels + Map)-->
     <div class="main_wrapper">
       <!-- Panels-->
@@ -169,6 +165,8 @@
             Here you can get a geographic view of the data. <br />
             <br />
             Please click on a country to discover more.
+            <br />
+            <br />
           </div>
 
           <button
@@ -212,71 +210,82 @@
         </div>
       </div>
 
-      <!-- Map -->
-      <svg id="map_holder" class="map_holder" width="1400" height="750"></svg>
+      <!-- Right Side -->
+      <div class="right_wrapper">
+        <!-- Map -->
+        <svg
+          id="map_holder"
+          class="map_holder"
+          height="100%"
+          width="100%"
+          viewBox="0 0 1400 800"
+          preserveAspectRatio="xMidYMid meet"
+        ></svg>
+
+        <!-- Bottom - (Slider + Histogram)-->
+        <div class="bottom_wrapper" id="bottom_wrapper">
+          <!-- Histogram-->
+          <div
+            class="histogram_holder"
+            id="histogram_holder"
+            hidden="true"
+          ></div>
+
+          <!-- Slider Holder -->
+          <div class="icons_wrapper">
+            <!-- Trigger Modal 1 -->
+            <img
+              class="modal_icon"
+              id="modal_icon_1"
+              src="Images/barchart_horizontal_icon.png"
+              alt=""
+            />
+            <!-- Trigger Modal 2 -->
+            <img
+              class="modal_icon"
+              id="modal_icon_2"
+              src="Images/piechart_icon.png"
+              alt=""
+            />
+            <!-- Open Histogram -->
+            <img
+              class="modal_icon"
+              src="Images/barchart_icon.png"
+              alt=""
+              onclick="histogram_button_onclick()"
+            />
+            <!-- Slider Span -->
+            <input
+              type="text"
+              id="slider_span"
+              class="slider_year_text"
+              readonly
+            />
+            <!-- Info Icon-->
+            <input
+              type="image"
+              class="slider_info_icon"
+              src="Images/info_icon.png"
+              onclick="slider_info_onclick()"
+            />
+          </div>
+
+          <!-- Slider-->
+          <div class="slider_holder" id="slider-holder">
+            <div id="slider-range"></div>
+          </div>
+        </div>
+      </div>
     </div>
-
-    <!-- Bottom - (Slider + Histogram)-->
-    <div class="bottom_wrapper" id="bottom_wrapper">
-      <!-- Histogram-->
-      <div class="histogram_holder" id="histogram_holder" hidden="true">
-        <input
-          type="image"
-          onclick="histogram_button_onclick()"
-          class="histogram_image"
-          src="Images/map_histogram.png"
-        />
-      </div>
-
-      <!-- Slider Holder -->
-      <div class="slider_text_holder">
-        <!-- Trigger Modal 1 -->
-        <img
-          class="modal_icon"
-          id="modal_icon_1"
-          src="Images/barchart_horizontal_icon.png"
-          alt=""
-        />
-        <!-- Trigger Modal 2 -->
-        <img
-          class="modal_icon"
-          id="modal_icon_2"
-          src="Images/piechart_icon.png"
-          alt=""
-        />
-        <!-- Open Histogram -->
-        <img
-          class="modal_icon"
-          src="Images/barchart_icon.png"
-          alt=""
-          onclick="histogram_button_onclick()"
-        />
-        <!-- Slider Span -->
-        <input type="text" id="slider_span" class="slider_year_text" readonly />
-        <!-- Info Icon-->
-        <input
-          type="image"
-          class="slider_info_icon"
-          src="Images/info_icon.png"
-          onclick="slider_info_onclick()"
-        />
-      </div>
-
-      <!-- Slider-->
-      <div class="slider_holder" id="slider-holder">
-        <div id="slider-range"></div>
-      </div>
-    </div>
-
-    <!-- Footer Spacer -->
-    <svg height="30" width="100%"></svg>
 
     <!-- Map -->
     <script>
       //Resize
       CheckSizeZoom();
-      $("#divWrap").css("visibility", "visible");
       $(window).resize(CheckSizeZoom);
+
+      //Create histogram (hidden)
+      CreateHisto();
 
       // Get Modals
       var modal1 = document.getElementById("modal_1");
@@ -505,9 +514,9 @@
       var countries = createAllCountries();
 
       // Append the svg object to the body of the page
-      var svg = d3.select("#map_holder"),
-        width = +svg.attr("width"),
-        height = +svg.attr("height");
+      var svg = d3.select("#map_holder");
+      var width = 1400;
+      var height = 750;
 
       // Map and projection
       var path = d3.geoPath();
@@ -753,10 +762,6 @@
             }
           });
       }
-
-      //Make smaller
-      var svg = d3.select("#map_holder");
-      svg.attr("height", 725);
     </script>
   </body>
 </html>

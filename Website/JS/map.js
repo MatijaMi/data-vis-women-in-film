@@ -1,10 +1,7 @@
-//Current Data of all countries
-var curr_country_data;
-
 /**
  * Class representing a Country
  */
-class Country {
+ class Country {
 
     //Constant data
     country_name;
@@ -278,7 +275,7 @@ function settingspanel_info_onclick() {
         "Note that this data does not display international collaborations of film studios but rather transnational biographies of individuals." + 
         "<br/>" +
         "The 'Show as timeline' and 'Show as cluster' buttons link you to the respective visualization based on the selected country and time period.";
-
+        
     open_dialog(dialog_text);
 }
 
@@ -289,7 +286,6 @@ function slider_info_onclick() {
         "You can also use this function to identify missing data of certain time periods. " +
         "<br/><br/>" +
         "The pictograms on the left can be used to display some statists.";
-
     open_dialog(dialog_text);
 }
 
@@ -301,13 +297,18 @@ function open_dialog(dialog_text) {
 }
 
 function histogram_button_onclick() {
-    document.getElementById('histogram_holder').hidden = !document.getElementById('histogram_holder').hidden;
+    //Check if it is hidden
+    var is_hidden = document.getElementById('histogram_holder').hidden;
+    
+    //Stop hiding
+    is_hidden = !is_hidden;
+    document.getElementById('histogram_holder').hidden = is_hidden;
 
-    //Set height of spacer
-    if (document.getElementById('histogram_holder').hidden) document.getElementById('bottom_wrapper').style.height = "70px";
-    else {
-        document.getElementById('bottom_wrapper').style.height = "403px";
-        window.scrollTo(0, document.body.scrollHeight);
+    if(is_hidden){
+        document.getElementById('map_holder').style.height = "calc(80vh - 30px)";
+    }
+    else{
+        document.getElementById('map_holder').style.height = "calc(60vh - 30px)";
     }
 }
 
@@ -315,41 +316,31 @@ function CheckSizeZoom() {
     var minW = 1800;
     if ($(window).width() < minW) {
         var zoomLev = $(window).width() / minW;
-
+       
+        
         if (typeof (document.body.style.zoom) != "undefined") {
-            $(document.body).css('zoom', zoomLev);
-            $("#slider-range").css('zoom', 1/zoomLev);
-
-            //Resize slider
-            if(document.getElementById('slider-range').getElementsByTagName( 'span' )[0] != undefined) {
-                var fonSizeOfSlider = 0.8 * (zoomLev * 1.5);
-
-                document.getElementById('slider-range').getElementsByTagName( 'span' )[0].style.fontSize = fonSizeOfSlider + 'em';
-                document.getElementById('slider-range').getElementsByTagName( 'span' )[1].style.fontSize = fonSizeOfSlider + 'em';
-                document.getElementById('slider-range').getElementsByTagName( 'span' )[2].style.fontSize = fonSizeOfSlider + 'em';
-            }
-           
+            $("#map_holder").css('zoom', zoomLev);            
         }
         else {
             // Mozilla doesn't support zoom, use -moz-transform to scale and compensate for lost width
-            $('#divWrap').css('-moz-transform', "scale(" + zoomLev + ")");
-            $('#divWrap').width($(window).width() / zoomLev + 10);
-            $('#divWrap').css('position', 'relative');
-            $('#divWrap').css('left', (($(window).width() - minW - 16) / 2) + "px");
-            $('#divWrap').css('top', "-19px");
-            $('#divWrap').css('position', 'relative');
+            $('#map_holder').css('-moz-transform', "scale(" + zoomLev + ")");
+            $('#map_holder').width($(window).width() / zoomLev + 10);
+            $('#map_holder').css('position', 'relative');
+            $('#map_holder').css('left', (($(window).width() - minW - 16) / 2) + "px");
+            $('#map_holder').css('top', "-19px");
+            $('#map_holder').css('position', 'relative');
         }
     }
     else {
-        $(document.body).css('zoom', '');
-        $('#divWrap').css('position', '');
-        $('#divWrap').css('left', "");
-        $('#divWrap').css('top', "");
-        $('#divWrap').css('-moz-transform', "");
-        $('#divWrap').width("");
-        $("#slider-range").css('zoom', '');
+        $("#map_holder").css('zoom', '');
+        $('#map_holder').css('position', '');
+        $('#map_holder').css('left', "");
+        $('#map_holder').css('top', "");
+        $('#map_holder').css('-moz-transform', "");
+        $('#map_holder').width("");
     }
 }
+
 
 /**
  * Create a pie chart of the top pioneers count of countries in the selected time span
@@ -498,6 +489,82 @@ function CreateBarChart(){
 
     // set container id for the chart
     chart.container("country_bar_chart");
+    // initiate chart drawing
+    chart.draw();
+}
+
+function CreateHisto(){
+
+    //Data copied from map_histogram_ipynb
+    var data = 
+    [[1835, 0],
+     [1840, 0],
+     [1845, 3],
+     [1850, 4],
+     [1855, 6],
+     [1860, 9],
+     [1865, 19],
+     [1870, 28],
+     [1875, 55],
+     [1880, 75],
+     [1885, 112],
+     [1890, 156],
+     [1895, 202],
+     [1900, 245],
+     [1905, 268],
+     [1910, 275],
+     [1915, 276],
+     [1920, 274],
+     [1925, 269],
+     [1930, 262],
+     [1935, 249],
+     [1940, 236],
+     [1945, 216],
+     [1950, 200],
+     [1955, 176],
+     [1960, 159],
+     [1965, 137],
+     [1970, 114],
+     [1975, 84],
+     [1980, 58],
+     [1985, 36],
+     [1990, 16],
+     [1995, 7],
+     [2000, 3]    
+    ];
+
+    //Set chart theme
+    anychart.theme("darkBlue");
+
+    //Create histo
+    var chart = anychart.column(data);
+
+    //Add space to bottom
+    chart.padding([10, 10, 15, 0]);
+
+    //Title
+    chart.title("Pioneers alive per timespan");
+
+    //Set tooltip settings
+    chart.tooltip().titleFormat('{%X}');
+    chart
+    .tooltip()
+    .position('center-top')
+    .anchor('center-bottom')
+    .offsetX(0)
+    .offsetY(0)
+    .format('{%Value}{groupsSeparator: }');
+
+    // set titles for axises
+    chart.interactivity().hoverMode("by-x");
+    chart.tooltip().positionMode("point");
+
+    // set scale minimum
+    chart.yScale().minimum(0);
+
+    // set container id for the chart
+    chart.container("histogram_holder");
+
     // initiate chart drawing
     chart.draw();
 }
