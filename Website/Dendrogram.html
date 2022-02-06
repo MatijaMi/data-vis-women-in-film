@@ -1,159 +1,220 @@
 <!DOCTYPE html>
 
 <html lang="en" style="height: 100%">
-  <head>
-    <title>Women Film Pioneers Explorer</title>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="CSS/baseStyle.css" />
-    <link rel="icon" type="image/png" href="Images/Reel.png" />
-    <link rel="sidepanel_css" href="CSS/map_sidepanel.css" />
-    <script src="//d3js.org/d3.v4.min.js"></script>
-  </head>
 
-  <body>
-    <!-- Header -->
+<head>
+  <title>Women Film Pioneers Explorer</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="CSS/baseStyle.css" />
+  <link rel="icon" type="image/png" href="Images/Reel.png" />
+  <link rel="sidepanel_css" href="CSS/map_sidepanel.css" />
+  <script src="//d3js.org/d3.v4.min.js"></script>
+  <script src="JS/fileReader.js"></script>
+</head>
 
-    <nav>
-      <ul class="nav-links">
-        <li>
-          <a href="index.html">Home</a>
-        </li>
-        <li>
-          <a href="Map.html">Map</a>
-        </li>
-        <li>
-          <a href="Cluster.html">Cluster</a>
-        </li>
-        <li>
-          <a href="Timeline.html">Timeline</a>
-        </li>
-        <li>
-          <a href="Dendrogram.html">Dendrogram</a>
-        </li>
-        <li>
-          <a href="About.html">About</a>
-        </li>
-      </ul>
-    </nav>
+<body>
+  <!-- Header -->
 
-    <!-- Dendrogram Object -->
-    <div class="switches">
-      <form>
-        <label
-          ><input type="radio" name="mode" value="cluster" checked />
-          <div class="dendogramButtonText">Dendrogram</div></label
-        >
-        <label><input type="radio" name="mode" value="tree" /> Tree</label>
-      </form>
-    </div>
+  <nav>
+    <ul class="nav-links">
+      <li>
+        <a href="index.html">Home</a>
+      </li>
+      <li>
+        <a href="Map.html">Map</a>
+      </li>
+      <li>
+        <a href="Cluster.html">Cluster</a>
+      </li>
+      <li>
+        <a href="Timeline.html">Timeline</a>
+      </li>
+      <li>
+        <a href="Dendrogram.html">Dendrogram</a>
+      </li>
+      <li>
+        <a href="About.html">About</a>
+      </li>
+    </ul>
+  </nav>
 
-    <svg class="dendrogram_object" width="1100" height="2400"></svg>
+  <!-- Dendrogram Object -->
+  <div class="switches">
+    <form>
+      <label><input type="radio" name="mode" value="cluster" checked />
+        <div class="dendogramButtonText">Dendrogram</div>
+      </label>
+      <label><input type="radio" name="mode" value="tree" /> Tree</label>
+    </form>
+  </div>
 
-    <!-- Script -->
-    <script>
-      var svg = d3.select("svg"),
-        width = +svg.attr("width"),
-        height = +svg.attr("height"),
-        g = svg.append("g").attr("transform", "translate(90,0)");
+  <svg class="dendrogram_object" width="1100" height="2400"></svg>
 
-      var tree = d3.tree().size([height - 400, width - 200]);
+  <!-- Script -->
+  <script>
+    var svg = d3.select("svg"),
+      width = +svg.attr("width"),
+      height = +svg.attr("height"),
+      g = svg.append("g").attr("transform", "translate(90,0)");
 
-      var cluster = d3.cluster().size([height, width - 420]);
+    var tree = d3.tree().size([height - 400, width - 200]);
 
-      var stratify = d3.stratify().parentId(function (d) {
-        return d.id.substring(0, d.id.lastIndexOf("."));
-      });
+    var cluster = d3.cluster().size([height, width - 420]);
 
-      d3.csv("Data/jobs.csv", function (error, data) {
-        if (error) throw error;
+    var stratify = d3.stratify().parentId(function (d) {
+      return d.id.substring(0, d.id.lastIndexOf("."));
+    });
 
-        var root = stratify(data).sort(function (a, b) {
-          return a.height - b.height || a.id.localeCompare(b.id);
-        });
-        root.id = "Professions";
-        cluster(root);
+    //Data
+    var data = new Map();
+    var pioneers = getAllPioneers();
 
-        var link = g
-          .selectAll(".link")
-          .data(root.descendants().slice(1))
-          .enter()
-          .append("path")
-          .attr("class", "link")
-          .attr("d", diagonal)
-          .style("stroke", "#888888");
+    //Convert
+    pioneers.forEach(pioneer => {
 
-        var node = g
-          .selectAll(".node")
-          .data(root.descendants())
-          .enter()
-          .append("g")
-          .attr("class", function (d) {
-            return "node" + (d.children ? " node--internal" : " node--leaf");
-          })
-          .attr("transform", function (d) {
-            return "translate(" + d.y + "," + d.x + ")";
-          });
+      //Jobs
+      var jobs = pioneer.worked_as;
 
-        node.append("circle").attr("r", 2.5);
+      //For each job
+      jobs.forEach(job => {
 
-        node
-          .append("text")
-          .attr("dy", 3)
-          .attr("x", function (d) {
-            return d.children ? -8 : 8;
-          })
-          .style("text-anchor", function (d) {
-            return d.children ? "end" : "start";
-          })
-          .text(function (d) {
-            return d.id.substring(d.id.lastIndexOf(".") + 1);
-          });
+        //Split
+        var subjobs = job.split(">");
 
-        d3.selectAll("input").on("change", changed);
+        for (var i = 0; i < subjobs.length; i++) {
+          //Get substrings
+          var tempjobs = ["Jobs"].concat(subjobs.slice(0, i + 1));
 
-        function changed() {
-          var timeout = setTimeout(function () {
-            d3.select('input[value="tree"]')
-              .property("checked", true)
-              .dispatch("change");
-          }, 1000);
+          //Uppercase " "
+          for (var j = 0; j < tempjobs.length; j++) {
+            var words = tempjobs[j].split(" ");
+            for (var x = 0; x < words.length; x++) {
+              words[x] = words[x].charAt(0).toUpperCase() + words[x].substr(1);
+            }
+            tempjobs[j] = words.join(" ");
+          }
 
-          timeout = clearTimeout(timeout);
-          (this.value === "tree" ? tree : cluster)(root);
-          var t = d3.transition().duration(750);
-          node.transition(t).attr("transform", function (d) {
-            return "translate(" + d.y + "," + d.x + ")";
-          });
-          link.transition(t).attr("d", diagonal);
+          //Uppercase "-"
+          for (var j = 0; j < tempjobs.length; j++) {
+            var words = tempjobs[j].split("-");
+            for (var x = 0; x < words.length; x++) {
+              words[x] = words[x].charAt(0).toUpperCase() + words[x].substr(1);
+            }
+            tempjobs[j] = words.join("-");
+          }
+
+          //Concat
+          var jobname = tempjobs.join(".");
+
+          //Add to map
+          if (data.has(jobname)) {
+            oldvalue = data.get(jobname);
+            data.set(jobname, oldvalue + 1);
+          }
+          else data.set(jobname, 1);
         }
+
       });
 
-      function diagonal(d) {
-        return (
-          "M" +
-          d.y +
-          "," +
-          d.x +
-          "C" +
-          (d.parent.y + 100) +
-          "," +
-          d.x +
-          " " +
-          (d.parent.y + 100) +
-          "," +
-          d.parent.x +
-          " " +
-          d.parent.y +
-          "," +
-          d.parent.x
-        );
-      }
-    </script>
+    });
 
-    <!-- Footer Spacer -->
-    <svg height="30" width="100%"></svg>
-  </body>
+    //Convert to d3 object
+    d3_data = [{ id: "Jobs", " value": '' }];
+    for (var i = 0; i < data.size; i++) {
+      var key = Array.from(data.keys())[i];
+      var val = data.get(key);
+
+      d3_data[i + 1] = { id: key, " value": val };
+    }
+
+    //Tree element
+    var root = stratify(d3_data).sort(function (a, b) {
+      return a.height - b.height || a.id.localeCompare(b.id);
+    });
+    root.id = "Professions";
+    cluster(root);
+
+    var link = g
+      .selectAll(".link")
+      .data(root.descendants().slice(1))
+      .enter()
+      .append("path")
+      .attr("class", "link")
+      .attr("d", diagonal)
+      .style("stroke", "#888888");
+
+    var node = g
+      .selectAll(".node")
+      .data(root.descendants())
+      .enter()
+      .append("g")
+      .attr("class", function (d) {
+        return "node" + (d.children ? " node--internal" : " node--leaf");
+      })
+      .attr("transform", function (d) {
+        return "translate(" + d.y + "," + d.x + ")";
+      });
+
+    node.append("circle").attr("r", 2.5);
+
+    node
+      .append("text")
+      .attr("dy", 3)
+      .attr("x", function (d) {
+        return d.children ? -8 : 8;
+      })
+      .style("text-anchor", function (d) {
+        return d.children ? "end" : "start";
+      })
+      .text(function (d) {
+        return d.id.substring(d.id.lastIndexOf(".") + 1);
+      });
+
+    d3.selectAll("input").on("change", changed);
+
+    function changed() {
+      var timeout = setTimeout(function () {
+        d3.select('input[value="tree"]')
+          .property("checked", true)
+          .dispatch("change");
+      }, 1000);
+
+      timeout = clearTimeout(timeout);
+      (this.value === "tree" ? tree : cluster)(root);
+      var t = d3.transition().duration(750);
+      node.transition(t).attr("transform", function (d) {
+        return "translate(" + d.y + "," + d.x + ")";
+      });
+      link.transition(t).attr("d", diagonal);
+    }
+
+    function diagonal(d) {
+      return (
+        "M" +
+        d.y +
+        "," +
+        d.x +
+        "C" +
+        (d.parent.y + 100) +
+        "," +
+        d.x +
+        " " +
+        (d.parent.y + 100) +
+        "," +
+        d.parent.x +
+        " " +
+        d.parent.y +
+        "," +
+        d.parent.x
+      );
+    }
+  </script>
+
+  <!-- Footer Spacer -->
+  <svg height="30" width="100%"></svg>
+</body>
+
 </html>
 
 <style>
