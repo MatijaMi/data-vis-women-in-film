@@ -1,7 +1,7 @@
 /**
  * Class representing a Country
  */
- class Country {
+class Country {
 
     //Constant data
     country_name;
@@ -26,26 +26,6 @@
         this.country_connected_countries.length = 0
         this.country_pioneers.length = 0
         this.country_jobs.length = 0
-    }
-}
-
-/**
- * Class representing a pioneer
- */
-class Pioneer {
-
-    pioneer_name;
-    pioneer_image;
-    pioneer_link;
-    pioneer_worked_in = [];
-    pioneer_worked_as = [];
-
-    constructor(name, image, link, worked_in, worked_as) {
-        this.pioneer_name = name;
-        this.pioneer_image = image;
-        this.pioneer_link = link;
-        this.pioneer_worked_in = worked_in;
-        this.pioneer_worked_as = worked_as;
     }
 }
 
@@ -98,60 +78,70 @@ function load_data() {
     //Clear country data incase this method gets reused
     countries.forEach(country => country.clear());
 
+    //Set country data
+    add_pioneers_to_countries();
+
     //Adding data to d3 map
     d3.queue()
         .defer(d3.json, "Data/world_map.geojson")
-        .defer(d3.csv, "Data/map_pioneer_data.csv", function (row) {
-
-            //Calculations for each row
-            //Use settings
-            if (row.YOB > $("#slider-range").slider("values", 2)) return;
-            if (row.YOD < $("#slider-range").slider("values", 0)) return;
-
-            //Population
-            var curr_countries_names = row.worked_in.split("|");
-            for (i = 0; i < curr_countries_names.length; i++) {
-                var curr_country_name = curr_countries_names[i];
-                var curr_country = findObjectByKey(countries, "country_name", curr_country_name);
-
-                if (curr_country != null) {
-                    var row_worked_as = row.worked_as.split("|");
-                    row_worked_as.forEach(function (part, index) {
-                        this[index] = this[index].split(">").pop();
-                    }, row_worked_as);
-
-                    curr_country.country_pioneers.push(new Pioneer(row.name, row.image_url, row.link, curr_countries_names, row_worked_as));
-
-                    //Connections
-                    for (j = 0; j < curr_countries_names.length; j++) {
-                        var connection_name = curr_countries_names[j];
-                        if (curr_country_name !== connection_name) {
-                            if (curr_country.country_connected_countries.findIndex(x => x == connection_name) === -1) {
-                                curr_country.country_connected_countries.push(connection_name);
-                            }
-
-                        }
-                    }
-                }
-            }
-
-            //Different Jobs
-            for (i = 0; i < countries.length; i++) {
-                var curr_country = countries[i];
-                var jobs = []
-                for (j = 0; j < curr_country.country_pioneers.length; j++) {
-                    var curr_pioneer = curr_country.country_pioneers[j];
-                    for (u = 0; u < curr_country.country_pioneers.length; u++) {
-                        var curr_job = curr_pioneer.pioneer_worked_as[u]
-                        if (typeof curr_job !== "undefined") {
-                            jobs.push(curr_job);
-                        }
-                    }
-                }
-                curr_country.country_jobs = uniq(jobs);
-            }
-        })
         .await(ready);
+}
+
+function add_pioneers_to_countries() {
+
+    //Get pioneers
+    var pioneers = getAllPioneers();
+
+    //Add to countries
+    pioneers.forEach(pioneer => {
+        //Use settings
+        if (pioneer.birth_date.getFullYear() > $("#slider-range").slider("values", 2)) return;
+        if (pioneer.death_date.getFullYear() < $("#slider-range").slider("values", 0)) return;
+
+        //Population
+        var curr_countries_names = pioneer.worked_in;
+        for (i = 0; i < curr_countries_names.length; i++) {
+            var curr_country_name = curr_countries_names[i];
+            var curr_country = findObjectByKey(countries, "country_name", curr_country_name);
+
+            if (curr_country != null) {
+                var row_worked_as = pioneer.worked_as;
+                row_worked_as.forEach(function (part, index) {
+                    this[index] = this[index].split(">").pop();
+                }, row_worked_as);
+
+                //Add pioneer
+                curr_country.country_pioneers.push(pioneer);
+
+                //Connections
+                for (j = 0; j < curr_countries_names.length; j++) {
+                    var connection_name = curr_countries_names[j];
+                    if (curr_country_name !== connection_name) {
+                        if (curr_country.country_connected_countries.findIndex(x => x == connection_name) === -1) {
+                            curr_country.country_connected_countries.push(connection_name);
+                        }
+
+                    }
+                }
+            }
+        }
+
+        //Different Jobs
+        for (i = 0; i < countries.length; i++) {
+            var curr_country = countries[i];
+            var jobs = []
+            for (j = 0; j < curr_country.country_pioneers.length; j++) {
+                var curr_pioneer = curr_country.country_pioneers[j];
+                for (u = 0; u < curr_country.country_pioneers.length; u++) {
+                    var curr_job = curr_pioneer.worked_as[u];
+                    if (typeof curr_job !== "undefined") {
+                        jobs.push(curr_job);
+                    }
+                }
+            }
+            curr_country.country_jobs = uniq(jobs);
+        }
+    });
 }
 
 /**
@@ -177,10 +167,10 @@ function show_example_pioneer(pioneers, all_pioneers, last_pioneer) {
     }
 
     //Display values for the random pioneer
-    document.getElementById('pioneers_ex_name').innerHTML = example_pioneer.pioneer_name;
+    document.getElementById('pioneers_ex_name').innerHTML = example_pioneer.name;
     document.getElementById('pioneers_ex_image').src = "";
-    document.getElementById('pioneers_ex_image').src = example_pioneer.pioneer_image;
-    document.getElementById('pioneers_read_more_button').onclick = function () { window.open(example_pioneer.pioneer_link) };
+    document.getElementById('pioneers_ex_image').src = example_pioneer.image_url;
+    document.getElementById('pioneers_read_more_button').onclick = function () { window.open(example_pioneer.link) };
 
     //Set the onclick function for the next button
     document.getElementById('pioneers_next_button').onclick = function () {
@@ -272,10 +262,10 @@ function settingspanel_info_onclick() {
     var dialog_text = "In this panel you can access the other visualizations to get a different view of the selected data. " +
         "<br/><br/>" +
         "The 'Show all connections' button allows you to see all international connections within the selected time period regardless the selected country. " +
-        "Note that this data does not display international collaborations of film studios but rather transnational biographies of individuals." + 
+        "Note that this data does not display international collaborations of film studios but rather transnational biographies of individuals." +
         "<br/>" +
         "The 'Show as timeline' and 'Show as cluster' buttons link you to the respective visualization based on the selected country and time period.";
-        
+
     open_dialog(dialog_text);
 }
 
@@ -299,15 +289,15 @@ function open_dialog(dialog_text) {
 function histogram_button_onclick() {
     //Check if it is hidden
     var is_hidden = document.getElementById('histogram_holder').hidden;
-    
+
     //Stop hiding
     is_hidden = !is_hidden;
     document.getElementById('histogram_holder').hidden = is_hidden;
 
-    if(is_hidden){
+    if (is_hidden) {
         document.getElementById('map_holder').style.height = "calc(80vh - 30px)";
     }
-    else{
+    else {
         document.getElementById('map_holder').style.height = "calc(60vh - 30px)";
     }
 }
@@ -316,10 +306,10 @@ function CheckSizeZoom() {
     var minW = 1800;
     if ($(window).width() < minW) {
         var zoomLev = $(window).width() / minW;
-       
-        
+
+
         if (typeof (document.body.style.zoom) != "undefined") {
-            $("#map_holder").css('zoom', zoomLev);            
+            $("#map_holder").css('zoom', zoomLev);
         }
         else {
             // Mozilla doesn't support zoom, use -moz-transform to scale and compensate for lost width
@@ -346,7 +336,7 @@ function CheckSizeZoom() {
  * Create a pie chart of the top pioneers count of countries in the selected time span
  * @param {Number of chart pieces created - E.g. 5 for Top 5} top 
  */
-function CreatePieChart(top){
+function CreatePieChart(top) {
 
     //Copy array
     temp_countries = countries.slice();
@@ -355,16 +345,16 @@ function CreatePieChart(top){
     temp_countries = temp_countries.filter((x) => x.country_pioneers.length > 0);
 
     //Sort Countries
-    temp_countries.sort((a,b) => (a.country_pioneers.length < b.country_pioneers.length) ? 1 : ((b.country_pioneers.length < a.country_pioneers.length) ? -1 : 0))
-    
+    temp_countries.sort((a, b) => (a.country_pioneers.length < b.country_pioneers.length) ? 1 : ((b.country_pioneers.length < a.country_pioneers.length) ? -1 : 0))
+
     //Convert to anychart data
     data = temp_countries.slice(0, top).map((x) => [x.country_name, x.country_pioneers.length]);
-    
+
     //Add other Countries sum
-    if(temp_countries.slice(0, top).length == top){
+    if (temp_countries.slice(0, top).length == top) {
         var other_countries_sum = temp_countries.slice(top, temp_countries.length).reduce((a, b) => a + b.country_pioneers.length, 0);
         data[data.length] = (["Other Countries", other_countries_sum]);
-    }   
+    }
 
     // create pie chart with passed data
     var chart = anychart.pie(data);
@@ -375,32 +365,32 @@ function CreatePieChart(top){
     // create standalone label and set settings
     var label = anychart.standalones.label();
     label
-      .enabled(true)
-      .text("Countries with most pioneers between " + $("#slider-range").slider("values", 0) + " and " + $("#slider-range").slider("values", 2))
-      .width("100%")
-      .height("100%")
-      .adjustFontSize(true, true)
-      .minFontSize(18)
-      .maxFontSize(25)
-      .fontColor("#cccccc")
-      .position("center")
-      .anchor("center")
-      .hAlign("center")
-      .vAlign("middle");
+        .enabled(true)
+        .text("Countries with most pioneers between " + $("#slider-range").slider("values", 0) + " and " + $("#slider-range").slider("values", 2))
+        .width("100%")
+        .height("100%")
+        .adjustFontSize(true, true)
+        .minFontSize(18)
+        .maxFontSize(25)
+        .fontColor("#cccccc")
+        .position("center")
+        .anchor("center")
+        .hAlign("center")
+        .vAlign("middle");
 
     // set label to center content of chart
     chart.center().content(label);
 
     // set chart title text settings
     chart
-      // set chart radius
-      .radius("43%")
-      // create empty area in pie chart
-      .innerRadius("40%")
-      .explode(0);
+        // set chart radius
+        .radius("43%")
+        // create empty area in pie chart
+        .innerRadius("40%")
+        .explode(0);
 
     //Onclick
-    chart.listen("pointClick", function(e){        
+    chart.listen("pointClick", function (e) {
 
         //Get name by iterator
         var click_country_name = e.iterator.get("x");
@@ -409,34 +399,34 @@ function CreatePieChart(top){
         var temp_country = countries.find(country => country.country_name == click_country_name);
 
         //Break
-        if(temp_country == undefined) return;
+        if (temp_country == undefined) return;
 
         //Find feature
         var feature = temp_map_data.features.find(country => country["id"] == temp_country.country_code);
 
         //Simulate click on country
         mouseClick(feature);
-        
+
     });
 
-    chart.legend().listen("click", function(e) {
-       
-       //Get name
-       var click_country_name = data[e.itemIndex][0];
+    chart.legend().listen("click", function (e) {
 
-       //Find id
-       var temp_country = countries.find(country => country.country_name == click_country_name);
+        //Get name
+        var click_country_name = data[e.itemIndex][0];
 
-       //Break
-       if(temp_country == undefined) return;
+        //Find id
+        var temp_country = countries.find(country => country.country_name == click_country_name);
 
-       //Find feature
-       var feature = temp_map_data.features.find(country => country["id"] == temp_country.country_code);
+        //Break
+        if (temp_country == undefined) return;
 
-       //Simulate click on country
-       mouseClick(feature);
-      });
-      
+        //Find feature
+        var feature = temp_map_data.features.find(country => country["id"] == temp_country.country_code);
+
+        //Simulate click on country
+        mouseClick(feature);
+    });
+
 
     // set container id for the chart
     chart.container("country_pie_chart");
@@ -446,17 +436,17 @@ function CreatePieChart(top){
 
 var temp_map_data;
 
-function CreateBarChart(){
+function CreateBarChart() {
 
     //Copy array
     temp_countries = countries.slice();
 
     //Sort Countries
-    temp_countries.sort((a,b) => (a.country_pioneers.length < b.country_pioneers.length) ? 1 : ((b.country_pioneers.length < a.country_pioneers.length) ? -1 : 0))
-    
+    temp_countries.sort((a, b) => (a.country_pioneers.length < b.country_pioneers.length) ? 1 : ((b.country_pioneers.length < a.country_pioneers.length) ? -1 : 0))
+
     //Convert to anychart data
     data = temp_countries.map((x) => [x.country_name, x.country_pioneers.length]);
-    
+
     // set chart theme
     anychart.theme("darkBlue");
 
@@ -466,18 +456,18 @@ function CreateBarChart(){
     chart.padding([10, 40, 5, 20]);
 
     chart.title(
-      "Pioneers per country between " + $("#slider-range").slider("values", 0) + " and " + $("#slider-range").slider("values", 2)
+        "Pioneers per country between " + $("#slider-range").slider("values", 0) + " and " + $("#slider-range").slider("values", 2)
     );
 
     // set tooltip settings
     chart
-      .tooltip()
-      .position("right")
-      .anchor("left-center")
-      .offsetX(5)
-      .offsetY(0)
-      .titleFormat("{%X}")
-      .format("{%Value}");
+        .tooltip()
+        .position("right")
+        .anchor("left-center")
+        .offsetX(5)
+        .offsetY(0)
+        .titleFormat("{%X}")
+        .format("{%Value}");
 
     // set yAxis labels formatter
     chart.yAxis().labels().format("{%Value}{groupsSeparator: }");
@@ -489,7 +479,7 @@ function CreateBarChart(){
     chart.yScale().minimum(0);
 
     //Onclick
-    chart.listen("pointClick", function(e){ 
+    chart.listen("pointClick", function (e) {
         //Get name by iterator
         var click_country_name = e.iterator.get("x");
 
@@ -497,15 +487,15 @@ function CreateBarChart(){
         var temp_country = countries.find(country => country.country_name == click_country_name);
 
         //Break
-        if(temp_country == undefined) return;
+        if (temp_country == undefined) return;
 
         //Find feature
         var feature = temp_map_data.features.find(country => country["id"] == temp_country.country_code);
 
         //Simulate click on country
         mouseClick(feature);
-         
-     });
+
+    });
 
     // set container id for the chart
     chart.container("country_bar_chart");
@@ -513,45 +503,45 @@ function CreateBarChart(){
     chart.draw();
 }
 
-function CreateHisto(){
+function CreateHisto() {
 
     //Data copied from map_histogram_ipynb
-    var data = 
-    [[1835, 0],
-     [1840, 0],
-     [1845, 3],
-     [1850, 4],
-     [1855, 6],
-     [1860, 9],
-     [1865, 19],
-     [1870, 28],
-     [1875, 55],
-     [1880, 75],
-     [1885, 112],
-     [1890, 156],
-     [1895, 202],
-     [1900, 245],
-     [1905, 268],
-     [1910, 275],
-     [1915, 276],
-     [1920, 274],
-     [1925, 269],
-     [1930, 262],
-     [1935, 249],
-     [1940, 236],
-     [1945, 216],
-     [1950, 200],
-     [1955, 176],
-     [1960, 159],
-     [1965, 137],
-     [1970, 114],
-     [1975, 84],
-     [1980, 58],
-     [1985, 36],
-     [1990, 16],
-     [1995, 7],
-     [2000, 3]    
-    ];
+    var data =
+        [[1835, 0],
+        [1840, 0],
+        [1845, 3],
+        [1850, 4],
+        [1855, 6],
+        [1860, 9],
+        [1865, 19],
+        [1870, 28],
+        [1875, 55],
+        [1880, 75],
+        [1885, 112],
+        [1890, 156],
+        [1895, 202],
+        [1900, 245],
+        [1905, 268],
+        [1910, 275],
+        [1915, 276],
+        [1920, 274],
+        [1925, 269],
+        [1930, 262],
+        [1935, 249],
+        [1940, 236],
+        [1945, 216],
+        [1950, 200],
+        [1955, 176],
+        [1960, 159],
+        [1965, 137],
+        [1970, 114],
+        [1975, 84],
+        [1980, 58],
+        [1985, 36],
+        [1990, 16],
+        [1995, 7],
+        [2000, 3]
+        ];
 
     //Set chart theme
     anychart.theme("darkBlue");
@@ -568,12 +558,12 @@ function CreateHisto(){
     //Set tooltip settings
     chart.tooltip().titleFormat('{%X}');
     chart
-    .tooltip()
-    .position('center-top')
-    .anchor('center-bottom')
-    .offsetX(0)
-    .offsetY(0)
-    .format('{%Value}{groupsSeparator: }');
+        .tooltip()
+        .position('center-top')
+        .anchor('center-bottom')
+        .offsetX(0)
+        .offsetY(0)
+        .format('{%Value}{groupsSeparator: }');
 
     // set titles for axises
     chart.interactivity().hoverMode("by-x");
