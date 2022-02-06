@@ -65,7 +65,6 @@ function getAllPioneers() {
     }
 
     //Return
-    console.log(pioneers);
     return pioneers;
 }
 

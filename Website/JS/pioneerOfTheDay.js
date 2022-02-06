@@ -21,7 +21,7 @@ function getPioneerOfTheDay() {
             //Set values
             document.getElementById("birthday_title").innerText = "Happy Birthday: " + pioneer.name;
             document.getElementById("description").hidden = true;
-            document.getElementById("lived").innerHTML = "<b>Lived</b>:<br>" + pioneer.birth_date.toDateString() + " - " + pioneer.death_date.toDateString();
+            document.getElementById("lived").innerHTML = "<b>Lived</b>:<br>" + pioneer.birth_date.toDateString().split(' ').slice(1).join(' ') + " - " + pioneer.death_date.toDateString().split(' ').slice(1).join(' ');
             document.getElementById("worked").innerHTML = "<b>Worked in</b>:<br>\n" + pioneer.worked_in.join(", ");
             document.getElementById("aka").innerHTML = "<b>Also known as</b>:<br>\n" + pioneer.aka.join(", ");
             document.getElementById("birthday_pic").src = pioneer.image_url;
