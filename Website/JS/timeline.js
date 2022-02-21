@@ -50,12 +50,12 @@ reset_button.addEventListener("click", function (event) {
 });
 
 function sortByYOBAsc() {
-  naiveData.sort((a, b) => d3.ascending(a.YOB, b.YOB));
+  naiveData.sort((a, b) => d3.ascending(a.birth_date.getFullYear(), b.birth_date.getFullYear()));
   render();
 }
 
 function sortByYOBDesc() {
-  naiveData.sort((a, b) => d3.descending(a.YOB, b.YOB));
+  naiveData.sort((a, b) => d3.descending(a.birth_date.getFullYear(), b.birth_date.getFullYear()));
   render();
 }
 
@@ -98,7 +98,7 @@ function render() {
   naiveData = naiveData.slice().map((e, i) => ({ ...e, yIndex: i }));
   const xScale = d3
     .scaleLinear()
-    .domain([d3.min(naiveData, (d) => d.YOB), d3.max(naiveData, (d) => d.YOD)])
+    .domain([d3.min(naiveData, (d) => d.birth_date.getFullYear()), d3.max(naiveData, (d) => d.death_date.getFullYear())])
     .range([0, W]);
 
   const yScale = d3
@@ -129,17 +129,17 @@ function render() {
   g.append("rect")
     .attr(
       "transform",
-      (d) => `translate(${xScale(d.YOB) + 8}, ${yScale(d.name)})`
+      (d) => `translate(${xScale(d.birth_date.getFullYear()) + 8}, ${yScale(d.name)})`
     )
-    .attr("width", (d) => (d.YOB >= d.YOD ? 3 : xScale(d.YOD) - xScale(d.YOB)))
+    .attr("width", (d) => (d.birth_date.getFullYear() >= d.death_date.getFullYear() ? 3 : xScale(d.death_date.getFullYear()) - xScale(d.birth_date.getFullYear())))
     .attr("height", 14)
     .style("fill", `${DEFAULTFILL}`)
     .style("fill-opacity", 1);
 
   g.append("text")
-    .attr("transform", (d) => `translate(${xScale(d.YOB)}, ${yScale(d.name)})`)
+    .attr("transform", (d) => `translate(${xScale(d.birth_date.getFullYear())}, ${yScale(d.name)})`)
     .text((d) => d.name)
-    .attr("x", (d) => (xScale(d.YOD) - xScale(d.YOB)) / 2)
+    .attr("x", (d) => (xScale(d.death_date.getFullYear()) - xScale(d.birth_date.getFullYear())) / 2)
     .attr("y", 11)
     .style("text-anchor", "middle")
     .style("font-family", "sans-serif")
@@ -153,7 +153,7 @@ function render() {
 
     tooltip
       .html(
-        `<div style="text-align: center;"><div>${d.name}</div><div">${d.YOB} - ${d.YOD}</div><div"><i>Left click to visit Map</i></div></div>`
+        `<div style="text-align: center;"><div>${d.name}</div><div">${d.birth_date.getFullYear()} - ${d.death_date.getFullYear()}</div><div"><i>Left click to visit Map</i></div></div>`
       )
       .style("visibility", "visible");
   })
@@ -171,37 +171,42 @@ function render() {
     });
 }
 
-d3.csv("Data/timeline_data.csv").then((d) => {
-  data = d;
-  data.sort((a, b) => a.YOB - b.YOB);
-  data.forEach((d) => {
-    if (d.YOB == "" || d.YOD == "") {
-      return;
-    }
-    d.YOB = +d.YOB;
-    d.YOD = +d.YOD;
-    naiveData.push(d);
-  });
-  var url = window.location.href;
-  if (url.includes("?country=")) {
-    var split = url.split("?");
-    var country = split[1].split("=")[1];
-    var [first, second] = split[2].split("=")[1].split("-");
-    country = country.replace("%20", " ");
-    console.log(country, first, second);
-    for (let entry of naiveData) {
-      if (
-        entry.worked_in.includes(country) &&
-        entry.YOB <= second &&
-        entry.YOD >= first
-      ) {
-        country_data.push(entry);
-      }
-    }
-    console.log(country_data.length);
-    naiveData = country_data;
-    H = 18 * naiveData.length;
-    svg.style("height", H + "px");
+//Read data
+var data = getAllPioneers();
+data = data.filter(x => x.birth_date instanceof Date && !isNaN(x.birth_date));
+data = data.filter(x => x.death_date instanceof Date && !isNaN(x.death_date));
+
+//Sort
+data.sort((a, b) => a.birth_date.getFullYear() - b.birth_date.getFullYear());
+
+data.forEach((d) => {
+  if (d.birth_date.getFullYear() == "" || d.death_date.getFullYear() == "") {
+    return;
   }
-  render();
+  else naiveData.push(d);
 });
+
+//Check url if visit from map
+var url = window.location.href;
+if (url.includes("?country=")) {
+  var split = url.split("?");
+  var country = split[1].split("=")[1];
+  var [first, second] = split[2].split("=")[1].split("-");
+  country = country.replace("%20", " ");
+  for (let entry of naiveData) {
+    if (
+      entry.worked_in.includes(country) &&
+      entry.birth_date.getFullYear() <= second &&
+      entry.death_date.getFullYear() >= first
+    ) {
+      country_data.push(entry);
+    }
+  }
+  naiveData = country_data;
+  H = 18 * naiveData.length;
+  svg.style("height", H + "px");
+}
+
+//Start render
+render();
+
