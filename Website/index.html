@@ -1,205 +1,166 @@
 <!DOCTYPE html>
 
 <html lang="en" style="height: 100%">
-  <head>
-    <title>Women Film Pioneers Explorer</title>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
-      rel="stylesheet"
-    />
 
-    <link rel="stylesheet" href="CSS/baseStyle.css" />
-    <link rel="icon" type="image/png" href="Images/Reel.png" />
-    <script src="https://d3js.org/d3.v4.js"></script>
-    <script src="JS/pioneerOfTheDay.js"></script>
-    <script src="JS/fileReader.js"></script>
-  </head>
+<head>
+  <title>Women Film Pioneers Explorer</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
 
-  <body onload="getPioneerOfTheDay()">
-    <!-- Header -->
-    <nav>
-      <ul class="nav-links">
-        <li>
-          <a href="index.html">Home</a>
-        </li>
-        <li>
-          <a href="Map.html">Map</a>
-        </li>
-        <li>
-          <a href="Cluster.html">Cluster</a>
-        </li>
-        <li>
-          <a href="Timeline.html">Timeline</a>
-        </li>
-        <li>
-          <a href="Dendrogram.html">Dendrogram</a>
-        </li>
-        <li>
-          <a href="About.html">About</a>
-        </li>
-      </ul>
-    </nav>
+  <link rel="stylesheet" href="CSS/baseStyle.css" />
+  <link rel="icon" type="image/png" href="Images/Reel.png" />
+  <script src="https://d3js.org/d3.v4.js"></script>
+  <script src="JS/pioneerOfTheDay.js"></script>
+  <script src="JS/fileReader.js"></script>
+</head>
 
-    <!-- Carousel -->
-    <div class="carousel">
-      <div class="carousel_holder">
-        <div class="carousel_header">Women Film Pioneers Explorer</div>
+<body onload="getPioneerOfTheDay()">
+  <!-- Header -->
+  <nav>
+    <ul class="nav-links">
+      <li>
+        <a href="index.html">Home</a>
+      </li>
+      <li>
+        <a href="Map.html">Map</a>
+      </li>
+      <li>
+        <a href="Cluster.html">Cluster</a>
+      </li>
+      <li>
+        <a href="Timeline.html">Timeline</a>
+      </li>
+      <li>
+        <a href="Dendrogram.html">Dendrogram</a>
+      </li>
+      <li>
+        <a href="About.html">About</a>
+      </li>
+    </ul>
+  </nav>
 
+  <!-- Carousel -->
+  <div class="carousel">
+    <div class="carousel_holder">
+      <div class="carousel_header">Women Film Pioneers Explorer</div>
+
+      <br />
+
+      <div class="carousel_text">
+        The Women Film Pioneers Explorer allows you to explore the worldwide
+        participation of women in early film production through interactive
+        data visualizations. Each data visualization offers its own view on
+        film history.
+        <br />
         <br />
 
-        <div class="carousel_text">
-          The Women Film Pioneers Explorer allows you to explore the worldwide
-          participation of women in early film production through interactive
-          data visualizations. Each data visualization offers its own view on
-          film history.
-          <br />
-          <br />
+        The website is based on the collaborative database of the
+        <i>Women Film Pioneers Project</i> (<a class="index_link" href="https://wfpp.columbia.edu/">WFPP</a>) created by
+        Jane Gaines, Radha Vatsal, and Monica Dall’Asta. The
+        different visualizations aim to provide new perspectives on the WFPP’s
+        rich collection of research data. Furthermore, they emphasize blind
+        spots and absences of women in film history by pointing out which data
+        is missing. <br />
+        <br />
 
-          The website is based on the collaborative database of the
-          <i>Women Film Pioneers Project</i> (<a
-            class="index_link"
-            href="https://wfpp.columbia.edu/"
-            >WFPP</a
-          >) created by Jane Gaines, Radha Vatsal, and Monica Dall’Asta. The
-          different visualizations aim to provide new perspectives on the WFPP’s
-          rich collection of research data. Furthermore, they emphasize blind
-          spots and absences of women in film history by pointing out which data
-          is missing. <br />
-          <br />
-
-          The Women Film Pioneers Explorer seeks to encourage users to further
-          contribute to the WFPP and also think about what data means for
-          present film historiography.
-        </div>
-
-        <button id="discoverButton"></button>
+        The Women Film Pioneers Explorer seeks to encourage users to further
+        contribute to the WFPP and also think about what data means for
+        present film historiography.
       </div>
+
+      <button id="discoverButton"></button>
     </div>
+  </div>
 
-    <!-- Panels -->
-    <div class="content" id="content">
-      <div id="pod_container">
-        <div class="content_panel" id="pod_panel">
-          <img
-            class="content_image_left"
-            id="birthday_pic"
-            onerror="javascript: src='Images/Unknown.jpg'"
-          />
-          <div class="content_headline" id="birthday_title">
-            Pioneer of the Day
-          </div>
-          <div class="content_text" id="pod_text">
-            <p id="aka"></p>
-            <p id="lived"></p>
-            <p id="worked"></p>
-            <p id="description">
-              Usually this window shows a pioneer who was born on today's date.
-              <br />Unfortunately, there seems to be no such woman in the WFPP
-              database.<br />
-              If you know of a pioneer to whom this applies, please support the
-              project by expanding the data.
-            </p>
-          </div>
-          <button
-            class="contribute_button"
-            onclick="window.open('https://wfpp.columbia.edu/contribute/')"
-            id="birthday_contribute_button"
-          >
-            Contribute
-          </button>
+  <!-- Panels -->
+  <div class="content" id="content">
+    <div id="pod_container">
+      <div class="content_panel" id="pod_panel">
+        <img class="content_image_left" id="birthday_pic" onerror="javascript: src='Images/Unknown.jpg'" />
+        <div class="content_headline" id="birthday_title">
+          Pioneer of the Day
         </div>
-      </div>
-
-      <div class="content_panel">
-        <img
-          class="content_image_left"
-          id="pioneers_ex_image"
-          src="Images/map_screenshot.PNG"
-        />
-        <div class="content_headline">MAP</div>
-        <div class="content_text">
-          Women were working in film production all over the world. Many
-          pioneers had various jobs in multiple countries. For an interactive
-          overview of where the women were involved click the button below.
+        <div class="content_text" id="pod_text">
+          <p id="aka"></p>
+          <p id="lived"></p>
+          <p id="worked"></p>
+          <p id="description">
+            Usually this window shows a pioneer who was born on today's date.
+            <br />Unfortunately, there seems to be no such woman in the WFPP
+            database.<br />
+            If you know of a pioneer to whom this applies, please support the
+            project by expanding the data.
+          </p>
         </div>
-        <button
-          class="content_button"
-          onclick="window.open('Map.html','_self')"
-        >
-          Discover
-        </button>
-      </div>
-
-      <div class="content_panel">
-        <img
-          class="content_image_right"
-          id="pioneers_ex_image"
-          src="Images/ClusterIcon.png"
-        />
-        <div class="content_headline">CLUSTER</div>
-        <div class="content_text">
-          Women held a great number of various positions in early film
-          industries. For an overview of the numerous professions and the
-          subcategories explore the cluster visualization. It also shows in
-          which country the many women have worked.
-        </div>
-        <button
-          class="content_button"
-          onclick="window.open('Cluster.html','_self')"
-        >
-          Discover
-        </button>
-      </div>
-
-      <div class="content_panel">
-        <img
-          class="content_image_left"
-          id="pioneers_ex_image"
-          src="Images/Timeline.png"
-        />
-        <div class="content_headline">TIMELINE</div>
-        <div class="content_text">
-          Want to find out when the pioneers lived? Just click the button below
-          for an interactive timeline. The timeline also allows you to add
-          custom events in order to put the individual biographies into a
-          historical context.
-        </div>
-        <button
-          class="content_button"
-          onclick="window.open('Timeline.html','_self')"
-        >
-          Discover
-        </button>
-      </div>
-
-      <div class="content_panel">
-        <img
-          class="content_image_right"
-          id="pioneers_ex_image"
-          src="Images/Dendrog.png"
-        />
-        <div class="content_headline">DENDROGRAM</div>
-        <div class="content_text">
-          Women have contributed a lot to the film industry since the beginning.
-          This dendrogram displays the numerous profession they hold in addition
-          to the many subcategories. For an overview click the button.
-        </div>
-        <button
-          class="content_button"
-          onclick="window.open('Dendrogram.html','_self')"
-        >
-          Discover
+        <button class="contribute_button" onclick="window.open('https://wfpp.columbia.edu/contribute/')"
+          id="birthday_contribute_button">
+          Contribute
         </button>
       </div>
     </div>
 
-    <script type="module" src="JS/indexBehaviour.js"></script>
-    <script type="module" src="JS/pioneerOfTheDay.js"></script>
-  </body>
+    <div class="content_panel">
+      <img class="content_image_left" id="pioneers_ex_image" src="Images/map_screenshot.PNG" />
+      <div class="content_headline">MAP</div>
+      <div class="content_text">
+        Women were working in film production all over the world. Many
+        pioneers had various jobs in multiple countries. For an interactive
+        overview of where the women were involved click the button below.
+      </div>
+      <button class="content_button" onclick="window.open('Map.html','_self')">
+        Discover
+      </button>
+    </div>
 
-  <div style="height: 40px"></div>
+    <div class="content_panel">
+      <img class="content_image_right" id="pioneers_ex_image" src="Images/ClusterIcon.png" />
+      <div class="content_headline">CLUSTER</div>
+      <div class="content_text">
+        Women held a great number of various positions in early film
+        industries. For an overview of the numerous professions and the
+        subcategories explore the cluster visualization. It also shows in
+        which country the many women have worked.
+      </div>
+      <button class="content_button" onclick="window.open('Cluster.html','_self')">
+        Discover
+      </button>
+    </div>
+
+    <div class="content_panel">
+      <img class="content_image_left" id="pioneers_ex_image" src="Images/Timeline.png" />
+      <div class="content_headline">TIMELINE</div>
+      <div class="content_text">
+        Want to find out when the pioneers lived? Just click the button below
+        for an interactive timeline. The timeline also allows you to add
+        custom events in order to put the individual biographies into a
+        historical context.
+      </div>
+      <button class="content_button" onclick="window.open('Timeline.html','_self')">
+        Discover
+      </button>
+    </div>
+
+    <div class="content_panel">
+      <img class="content_image_right" id="pioneers_ex_image" src="Images/Dendrog.png" />
+      <div class="content_headline">DENDROGRAM</div>
+      <div class="content_text">
+        Women have contributed a lot to the film industry since the beginning.
+        This dendrogram displays the numerous profession they hold in addition
+        to the many subcategories. For an overview click the button.
+      </div>
+      <button class="content_button" onclick="window.open('Dendrogram.html','_self')">
+        Discover
+      </button>
+    </div>
+  </div>
+
+  <script type="module" src="JS/indexBehaviour.js"></script>
+  <script type="module" src="JS/pioneerOfTheDay.js"></script>
+</body>
+
+<div style="height: 40px"></div>
+
 </html>

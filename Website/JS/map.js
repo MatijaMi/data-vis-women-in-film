@@ -94,6 +94,7 @@ function add_pioneers_to_countries() {
 
     //Only view valid dates
     pioneers = pioneers.filter(x => x.birth_date instanceof Date && !isNaN(x.birth_date));
+    pioneers = pioneers.filter(x => x.death_date instanceof Date && !isNaN(x.death_date));
 
 
     //Add to countries
