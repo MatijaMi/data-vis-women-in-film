@@ -82,6 +82,13 @@ function getAllPioneers() {
 
         }
 
+        //Reduce countries
+        var countries_string = data[6].trim()
+            .replace("England", "Great Britain")
+            .replace("Scotland", "Great Britain")
+            .replace("Soviet Union", "Russia")
+            .replace("Hong Kong", "China")
+
         //Extract values
         var id = data[0];
         var name = data[1].trim();
@@ -89,7 +96,7 @@ function getAllPioneers() {
         var link = data[3].trim();
         var image_url = data[4].trim();
         var worked_as = data[5].trim().split('|');
-        var worked_in = data[6].trim().split('|');
+        var worked_in = countries_string.split('|').filter((v, i, a) => a.indexOf(v) === i);;
         var birth_date = new Date(data[7].replace("|", ","));
         var death_date = new Date(data[8].replace("|", ","));
 
