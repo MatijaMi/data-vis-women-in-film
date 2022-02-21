@@ -79,6 +79,9 @@
       //For each job
       jobs.forEach(job => {
 
+        //Ignore empty
+        if (job.trim() == "") return;
+
         //Split
         var subjobs = job.split(">");
 
@@ -119,6 +122,7 @@
 
     });
 
+
     //Convert to d3 object
     d3_data = [{ id: "Jobs", " value": '' }];
     for (var i = 0; i < data.size; i++) {
@@ -127,6 +131,8 @@
 
       d3_data[i + 1] = { id: key, " value": val };
     }
+
+    console.log(d3_data);
 
     //Tree element
     var root = stratify(d3_data).sort(function (a, b) {

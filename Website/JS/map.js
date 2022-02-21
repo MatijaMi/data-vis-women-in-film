@@ -92,6 +92,10 @@ function add_pioneers_to_countries() {
     //Get pioneers
     var pioneers = getAllPioneers();
 
+    //Only view valid dates
+    pioneers = pioneers.filter(x => x.birth_date instanceof Date && !isNaN(x.birth_date));
+
+
     //Add to countries
     pioneers.forEach(pioneer => {
         //Use settings
